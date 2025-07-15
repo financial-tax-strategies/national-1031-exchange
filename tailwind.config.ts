@@ -63,14 +63,17 @@ export default {
 					ring: 'hsl(var(--sidebar-ring))'
 				},
 				brand: {
-					green: 'hsl(var(--brand-green))',
-					orange: 'hsl(var(--brand-orange))',
-					yellow: 'hsl(var(--brand-yellow))',
-					gray: 'hsl(var(--brand-gray))'
+					navy: 'hsl(var(--brand-navy))',
+					teal: 'hsl(var(--brand-teal))',
+					gold: 'hsl(var(--brand-gold))',
+					copper: 'hsl(var(--brand-copper))',
+					slate: 'hsl(var(--brand-slate))',
+					pearl: 'hsl(var(--brand-pearl))'
 				}
 			},
 			backgroundImage: {
 				'gradient-primary': 'var(--gradient-primary)',
+				'gradient-secondary': 'var(--gradient-secondary)',
 				'gradient-accent': 'var(--gradient-accent)'
 			},
 			boxShadow: {
