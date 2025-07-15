@@ -42,7 +42,11 @@ const Index = () => {
       <header className="bg-background border-b sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center">
-            <span className="text-xl font-bold text-primary">National 1031 Exchange Services</span>
+            <img 
+              src="/lovable-uploads/4aa2d4a4-8796-408d-a878-61e838d69e82.png" 
+              alt="National 1031 Exchange Services" 
+              className="h-10 w-auto"
+            />
           </div>
           <nav className="hidden md:flex items-center space-x-6">
             <a href="#tools" className="text-foreground hover:text-brand-teal transition-colors">Tools</a>
@@ -713,7 +717,11 @@ const Index = () => {
           <div className="grid md:grid-cols-4 gap-8">
             <div>
               <div className="flex items-center mb-4">
-                <span className="font-bold">National 1031 Exchange Services</span>
+                <img 
+                  src="/lovable-uploads/4aa2d4a4-8796-408d-a878-61e838d69e82.png" 
+                  alt="National 1031 Exchange Services" 
+                  className="h-8 w-auto"
+                />
               </div>
               <p className="text-sm text-primary-foreground/80 mb-4">
                 Helping real estate investors save millions in taxes through expert 1031 exchange guidance and tools.
