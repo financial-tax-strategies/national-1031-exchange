@@ -114,7 +114,7 @@ const Index = () => {
       </section>
 
       {/* Value Proposition Section */}
-      <section className="py-16 bg-brand-slate">
+      <section className="py-16 bg-brand-pearl">
         <div className="container mx-auto px-4">
           <div className="text-center space-y-4 mb-12">
             <h2 className="text-3xl lg:text-4xl font-bold text-primary">
@@ -253,7 +253,7 @@ const Index = () => {
       </section>
 
       {/* Social Proof Section */}
-      <section className="py-16 bg-brand-slate">
+      <section className="py-16 bg-brand-pearl">
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
@@ -402,7 +402,7 @@ const Index = () => {
       </section>
 
       {/* Safety Net Section */}
-      <section className="py-16 bg-brand-slate">
+      <section className="py-16 bg-brand-pearl">
         <div className="container mx-auto px-4">
           <div className="text-center space-y-4 mb-12">
             <h2 className="text-3xl lg:text-4xl font-bold text-primary">
@@ -592,7 +592,7 @@ const Index = () => {
       </section>
 
       {/* Final CTA Section */}
-      <section id="pricing" className="py-16 bg-brand-slate">
+      <section id="pricing" className="py-16 bg-brand-pearl">
         <div className="container mx-auto px-4">
           <div className="text-center space-y-4 mb-12">
             <h2 className="text-3xl lg:text-4xl font-bold text-primary">
