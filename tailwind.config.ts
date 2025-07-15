@@ -63,12 +63,12 @@ export default {
 					ring: 'hsl(var(--sidebar-ring))'
 				},
 				brand: {
-					primary: 'hsl(var(--brand-primary))',
-					green: 'hsl(var(--brand-green))',
-					orange: 'hsl(var(--brand-orange))',
-					yellow: 'hsl(var(--brand-yellow))',
-					gray: 'hsl(var(--brand-gray))',
-					light: 'hsl(var(--brand-light))'
+					navy: 'hsl(var(--brand-navy))',
+					teal: 'hsl(var(--brand-teal))',
+					gold: 'hsl(var(--brand-gold))',
+					copper: 'hsl(var(--brand-copper))',
+					slate: 'hsl(var(--brand-slate))',
+					pearl: 'hsl(var(--brand-pearl))'
 				}
 			},
 			backgroundImage: {

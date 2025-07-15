@@ -34,7 +34,6 @@ import {
 
 import heroImage from "@/assets/hero-image.jpg";
 import testimonialPhoto from "@/assets/testimonial-photo.jpg";
-import logo from "@/assets/logo.png";
 
 const Index = () => {
   return (
@@ -42,14 +41,13 @@ const Index = () => {
       {/* Header */}
       <header className="bg-background border-b sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center space-x-4">
-            <img src={logo} alt="National 1031 Exchange Services" className="h-12 w-auto" />
+          <div className="flex items-center">
             <span className="text-xl font-bold text-primary">National 1031 Exchange Services</span>
           </div>
           <nav className="hidden md:flex items-center space-x-6">
-            <a href="#tools" className="text-foreground hover:text-brand-green transition-colors">Tools</a>
-            <a href="#education" className="text-foreground hover:text-brand-green transition-colors">Education</a>
-            <a href="#pricing" className="text-foreground hover:text-brand-green transition-colors">Pricing</a>
+            <a href="#tools" className="text-foreground hover:text-brand-teal transition-colors">Tools</a>
+            <a href="#education" className="text-foreground hover:text-brand-teal transition-colors">Education</a>
+            <a href="#pricing" className="text-foreground hover:text-brand-teal transition-colors">Pricing</a>
             <Button variant="brand" size="sm">Get Started</Button>
           </nav>
         </div>
@@ -62,13 +60,13 @@ const Index = () => {
             <div className="space-y-8">
               <div className="space-y-4">
                 <h1 className="text-4xl lg:text-6xl font-bold text-primary leading-tight">
-                  Save <span className="text-brand-green">$100,000+</span> in Taxes on Your Property Sale
+                  Save <span className="text-brand-teal">$100,000+</span> in Taxes on Your Property Sale
                 </h1>
                 <h2 className="text-xl lg:text-2xl text-muted-foreground font-semibold">
                   Master Your 1031 Exchange with Confidence
                 </h2>
                 <p className="text-lg text-muted-foreground max-w-2xl">
-                  Join 10,000+ investors who've successfully deferred <span className="font-semibold text-brand-green">$2.5B</span> in capital gains taxes using our tools, guides, and expert network.
+                  Join 10,000+ investors who've successfully deferred <span className="font-semibold text-brand-teal">$2.5B</span> in capital gains taxes using our tools, guides, and expert network.
                 </p>
               </div>
               
@@ -86,15 +84,15 @@ const Index = () => {
               {/* Trust Bar */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-8 border-t">
                 <div className="flex items-center space-x-2">
-                  <CheckCircle className="h-5 w-5 text-brand-green" />
+                  <CheckCircle className="h-5 w-5 text-brand-teal" />
                   <span className="text-sm font-medium">99.2% Success Rate</span>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <CheckCircle className="h-5 w-5 text-brand-green" />
+                  <CheckCircle className="h-5 w-5 text-brand-teal" />
                   <span className="text-sm font-medium">$2.5B Taxes Deferred</span>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <CheckCircle className="h-5 w-5 text-brand-green" />
+                  <CheckCircle className="h-5 w-5 text-brand-teal" />
                   <span className="text-sm font-medium">10,000+ Successful Exchanges</span>
                 </div>
               </div>
@@ -106,7 +104,7 @@ const Index = () => {
                 alt="Professional real estate investor" 
                 className="w-full h-auto rounded-lg shadow-hover"
               />
-              <div className="absolute -bottom-4 -right-4 bg-brand-green text-primary-foreground p-4 rounded-lg shadow-card">
+              <div className="absolute -bottom-4 -right-4 bg-brand-teal text-primary-foreground p-4 rounded-lg shadow-card">
                 <div className="text-2xl font-bold">$2.5B</div>
                 <div className="text-sm">Taxes Saved</div>
               </div>
@@ -116,7 +114,7 @@ const Index = () => {
       </section>
 
       {/* Value Proposition Section */}
-      <section className="py-16 bg-brand-gray">
+      <section className="py-16 bg-brand-slate">
         <div className="container mx-auto px-4">
           <div className="text-center space-y-4 mb-12">
             <h2 className="text-3xl lg:text-4xl font-bold text-primary">
@@ -142,10 +140,10 @@ const Index = () => {
 
             <Card className="text-center p-6">
               <CardHeader>
-                <div className="mx-auto w-16 h-16 bg-brand-orange/10 rounded-full flex items-center justify-center mb-4">
-                  <AlertTriangle className="h-8 w-8 text-brand-orange" />
+                <div className="mx-auto w-16 h-16 bg-brand-copper/10 rounded-full flex items-center justify-center mb-4">
+                  <AlertTriangle className="h-8 w-8 text-brand-copper" />
                 </div>
-                <CardTitle className="text-brand-orange">Traditional Solution</CardTitle>
+                <CardTitle className="text-brand-copper">Traditional Solution</CardTitle>
               </CardHeader>
               <CardContent>
                 <h3 className="font-semibold mb-2">Expensive Advisors</h3>
@@ -155,12 +153,12 @@ const Index = () => {
               </CardContent>
             </Card>
 
-            <Card className="text-center p-6 border-2 border-brand-green">
+            <Card className="text-center p-6 border-2 border-brand-teal">
               <CardHeader>
-                <div className="mx-auto w-16 h-16 bg-brand-green/10 rounded-full flex items-center justify-center mb-4">
-                  <CheckCircle className="h-8 w-8 text-brand-green" />
+                <div className="mx-auto w-16 h-16 bg-brand-teal/10 rounded-full flex items-center justify-center mb-4">
+                  <CheckCircle className="h-8 w-8 text-brand-teal" />
                 </div>
-                <CardTitle className="text-brand-green">Our Solution</CardTitle>
+                <CardTitle className="text-brand-teal">Our Solution</CardTitle>
               </CardHeader>
               <CardContent>
                 <h3 className="font-semibold mb-2">Complete Success System</h3>
@@ -194,7 +192,7 @@ const Index = () => {
                 <p className="text-muted-foreground mb-4">
                   Calculate your exact tax savings and ROI in seconds.
                 </p>
-                <Button variant="ghost" className="text-brand-green hover:text-brand-green p-0">
+                <Button variant="ghost" className="text-brand-teal hover:text-brand-teal p-0">
                   Try It Free →
                 </Button>
               </CardContent>
@@ -211,7 +209,7 @@ const Index = () => {
                 <p className="text-muted-foreground mb-4">
                   Never miss a deadline with automated reminders and tracking.
                 </p>
-                <Button variant="ghost" className="text-brand-green hover:text-brand-green p-0">
+                <Button variant="ghost" className="text-brand-teal hover:text-brand-teal p-0">
                   Try It Free →
                 </Button>
               </CardContent>
@@ -228,7 +226,7 @@ const Index = () => {
                 <p className="text-muted-foreground mb-4">
                   AI-powered analysis of your exchange success probability.
                 </p>
-                <Button variant="ghost" className="text-brand-green hover:text-brand-green p-0">
+                <Button variant="ghost" className="text-brand-teal hover:text-brand-teal p-0">
                   Try It Free →
                 </Button>
               </CardContent>
@@ -245,7 +243,7 @@ const Index = () => {
                 <p className="text-muted-foreground mb-4">
                   Find qualified replacement properties in your area.
                 </p>
-                <Button variant="ghost" className="text-brand-green hover:text-brand-green p-0">
+                <Button variant="ghost" className="text-brand-teal hover:text-brand-teal p-0">
                   Try It Free →
                 </Button>
               </CardContent>
@@ -255,7 +253,7 @@ const Index = () => {
       </section>
 
       {/* Social Proof Section */}
-      <section className="py-16 bg-brand-gray">
+      <section className="py-16 bg-brand-slate">
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
@@ -269,7 +267,7 @@ const Index = () => {
                   <div>
                     <div className="flex items-center space-x-1 mb-2">
                       {[...Array(5)].map((_, i) => (
-                        <Star key={i} className="h-4 w-4 fill-brand-yellow text-brand-yellow" />
+                         <Star key={i} className="h-4 w-4 fill-brand-gold text-brand-gold" />
                       ))}
                     </div>
                     <p className="text-lg mb-4">
@@ -286,19 +284,19 @@ const Index = () => {
 
             <div className="grid grid-cols-2 gap-6">
               <div className="text-center">
-                <div className="text-3xl font-bold text-brand-green mb-2">99.2%</div>
+                <div className="text-3xl font-bold text-brand-teal mb-2">99.2%</div>
                 <div className="text-sm text-muted-foreground">Success Rate</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-brand-green mb-2">$2.5B</div>
+                <div className="text-3xl font-bold text-brand-teal mb-2">$2.5B</div>
                 <div className="text-sm text-muted-foreground">Taxes Deferred</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-brand-green mb-2">10,000+</div>
+                <div className="text-3xl font-bold text-brand-teal mb-2">10,000+</div>
                 <div className="text-sm text-muted-foreground">Successful Exchanges</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-brand-green mb-2">24/7</div>
+                <div className="text-3xl font-bold text-brand-teal mb-2">24/7</div>
                 <div className="text-sm text-muted-foreground">Expert Support</div>
               </div>
             </div>
@@ -325,7 +323,7 @@ const Index = () => {
                 <div className="flex items-center space-x-2 text-sm text-muted-foreground">
                   <div className="flex items-center">
                     {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="h-3 w-3 fill-brand-yellow text-brand-yellow" />
+                       <Star key={i} className="h-3 w-3 fill-brand-gold text-brand-gold" />
                     ))}
                   </div>
                   <span>(2,340 reviews)</span>
@@ -337,7 +335,7 @@ const Index = () => {
                 </p>
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-muted-foreground">Est. 2 hours</span>
-                  <Button variant="ghost" className="text-brand-green hover:text-brand-green p-0">
+                  <Button variant="ghost" className="text-brand-teal hover:text-brand-teal p-0">
                     Start Learning →
                   </Button>
                 </div>
@@ -353,7 +351,7 @@ const Index = () => {
                 <div className="flex items-center space-x-2 text-sm text-muted-foreground">
                   <div className="flex items-center">
                     {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="h-3 w-3 fill-brand-yellow text-brand-yellow" />
+                       <Star key={i} className="h-3 w-3 fill-brand-gold text-brand-gold" />
                     ))}
                   </div>
                   <span>(1,890 reviews)</span>
@@ -365,7 +363,7 @@ const Index = () => {
                 </p>
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-muted-foreground">Est. 3 hours</span>
-                  <Button variant="ghost" className="text-brand-green hover:text-brand-green p-0">
+                  <Button variant="ghost" className="text-brand-teal hover:text-brand-teal p-0">
                     Start Learning →
                   </Button>
                 </div>
@@ -381,7 +379,7 @@ const Index = () => {
                 <div className="flex items-center space-x-2 text-sm text-muted-foreground">
                   <div className="flex items-center">
                     {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="h-3 w-3 fill-brand-yellow text-brand-yellow" />
+                      <Star key={i} className="h-3 w-3 fill-brand-gold text-brand-gold" />
                     ))}
                   </div>
                   <span>(1,456 reviews)</span>
@@ -393,7 +391,7 @@ const Index = () => {
                 </p>
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-muted-foreground">Est. 1.5 hours</span>
-                  <Button variant="ghost" className="text-brand-green hover:text-brand-green p-0">
+                  <Button variant="ghost" className="text-brand-teal hover:text-brand-teal p-0">
                     Start Learning →
                   </Button>
                 </div>
@@ -404,7 +402,7 @@ const Index = () => {
       </section>
 
       {/* Safety Net Section */}
-      <section className="py-16 bg-brand-gray">
+      <section className="py-16 bg-brand-slate">
         <div className="container mx-auto px-4">
           <div className="text-center space-y-4 mb-12">
             <h2 className="text-3xl lg:text-4xl font-bold text-primary">
@@ -448,31 +446,31 @@ const Index = () => {
             </div>
 
             <div>
-              <h3 className="text-xl font-semibold mb-6 text-brand-green">Our Protection Solutions</h3>
+              <h3 className="text-xl font-semibold mb-6 text-brand-teal">Our Protection Solutions</h3>
               <div className="space-y-4">
                 <div className="flex items-start space-x-3">
-                  <CheckCircle className="h-5 w-5 text-brand-green mt-1" />
+                  <CheckCircle className="h-5 w-5 text-brand-teal mt-1" />
                   <div>
                     <div className="font-medium">Automated Timeline Alerts</div>
                     <div className="text-sm text-muted-foreground">Never miss critical deadlines again</div>
                   </div>
                 </div>
                 <div className="flex items-start space-x-3">
-                  <CheckCircle className="h-5 w-5 text-brand-green mt-1" />
+                  <CheckCircle className="h-5 w-5 text-brand-teal mt-1" />
                   <div>
                     <div className="font-medium">Document Verification System</div>
                     <div className="text-sm text-muted-foreground">Ensure all paperwork is complete and accurate</div>
                   </div>
                 </div>
                 <div className="flex items-start space-x-3">
-                  <CheckCircle className="h-5 w-5 text-brand-green mt-1" />
+                  <CheckCircle className="h-5 w-5 text-brand-teal mt-1" />
                   <div>
                     <div className="font-medium">Pre-Qualified Property Database</div>
                     <div className="text-sm text-muted-foreground">Access verified replacement properties</div>
                   </div>
                 </div>
                 <div className="flex items-start space-x-3">
-                  <CheckCircle className="h-5 w-5 text-brand-green mt-1" />
+                  <CheckCircle className="h-5 w-5 text-brand-teal mt-1" />
                   <div>
                     <div className="font-medium">Lender Network Access</div>
                     <div className="text-sm text-muted-foreground">Connect with 1031-experienced lenders</div>
@@ -524,7 +522,7 @@ const Index = () => {
                     <div className="flex items-center">
                       <div className="flex items-center mr-2">
                         {[...Array(5)].map((_, i) => (
-                          <Star key={i} className="h-4 w-4 fill-brand-yellow text-brand-yellow" />
+                           <Star key={i} className="h-4 w-4 fill-brand-gold text-brand-gold" />
                         ))}
                       </div>
                       <span className="text-sm">4.9</span>
@@ -548,7 +546,7 @@ const Index = () => {
                     <div className="flex items-center">
                       <div className="flex items-center mr-2">
                         {[...Array(5)].map((_, i) => (
-                          <Star key={i} className="h-4 w-4 fill-brand-yellow text-brand-yellow" />
+                         <Star key={i} className="h-4 w-4 fill-brand-gold text-brand-gold" />
                         ))}
                       </div>
                       <span className="text-sm">4.8</span>
@@ -572,7 +570,7 @@ const Index = () => {
                     <div className="flex items-center">
                       <div className="flex items-center mr-2">
                         {[...Array(5)].map((_, i) => (
-                          <Star key={i} className="h-4 w-4 fill-brand-yellow text-brand-yellow" />
+                          <Star key={i} className="h-4 w-4 fill-brand-gold text-brand-gold" />
                         ))}
                       </div>
                       <span className="text-sm">4.7</span>
@@ -594,7 +592,7 @@ const Index = () => {
       </section>
 
       {/* Final CTA Section */}
-      <section id="pricing" className="py-16 bg-brand-gray">
+      <section id="pricing" className="py-16 bg-brand-slate">
         <div className="container mx-auto px-4">
           <div className="text-center space-y-4 mb-12">
             <h2 className="text-3xl lg:text-4xl font-bold text-primary">
@@ -615,19 +613,19 @@ const Index = () => {
               <CardContent className="space-y-4">
                 <div className="space-y-2">
                   <div className="flex items-center space-x-2">
-                    <CheckCircle className="h-4 w-4 text-brand-green" />
+                    <CheckCircle className="h-4 w-4 text-brand-teal" />
                     <span className="text-sm">Tax Savings Calculator</span>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <CheckCircle className="h-4 w-4 text-brand-green" />
+                    <CheckCircle className="h-4 w-4 text-brand-teal" />
                     <span className="text-sm">Timeline Tracker</span>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <CheckCircle className="h-4 w-4 text-brand-green" />
+                    <CheckCircle className="h-4 w-4 text-brand-teal" />
                     <span className="text-sm">Basic Education Hub</span>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <CheckCircle className="h-4 w-4 text-brand-green" />
+                    <CheckCircle className="h-4 w-4 text-brand-teal" />
                     <span className="text-sm">Email Support</span>
                   </div>
                 </div>
@@ -635,9 +633,9 @@ const Index = () => {
               </CardContent>
             </Card>
 
-            <Card className="p-6 border-2 border-brand-green relative">
+            <Card className="p-6 border-2 border-brand-teal relative">
               <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                <Badge variant="secondary" className="bg-brand-green text-primary-foreground">
+                <Badge variant="secondary" className="bg-brand-teal text-primary-foreground">
                   Most Popular
                 </Badge>
               </div>
@@ -649,23 +647,23 @@ const Index = () => {
               <CardContent className="space-y-4">
                 <div className="space-y-2">
                   <div className="flex items-center space-x-2">
-                    <CheckCircle className="h-4 w-4 text-brand-green" />
+                    <CheckCircle className="h-4 w-4 text-brand-teal" />
                     <span className="text-sm">Everything in Starter</span>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <CheckCircle className="h-4 w-4 text-brand-green" />
+                    <CheckCircle className="h-4 w-4 text-brand-teal" />
                     <span className="text-sm">Property Matcher</span>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <CheckCircle className="h-4 w-4 text-brand-green" />
+                    <CheckCircle className="h-4 w-4 text-brand-teal" />
                     <span className="text-sm">Success Predictor</span>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <CheckCircle className="h-4 w-4 text-brand-green" />
+                    <CheckCircle className="h-4 w-4 text-brand-teal" />
                     <span className="text-sm">QI Marketplace Access</span>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <CheckCircle className="h-4 w-4 text-brand-green" />
+                    <CheckCircle className="h-4 w-4 text-brand-teal" />
                     <span className="text-sm">Phone Support</span>
                   </div>
                 </div>
@@ -682,23 +680,23 @@ const Index = () => {
               <CardContent className="space-y-4">
                 <div className="space-y-2">
                   <div className="flex items-center space-x-2">
-                    <CheckCircle className="h-4 w-4 text-brand-green" />
+                    <CheckCircle className="h-4 w-4 text-brand-teal" />
                     <span className="text-sm">Everything in Professional</span>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <CheckCircle className="h-4 w-4 text-brand-green" />
+                    <CheckCircle className="h-4 w-4 text-brand-teal" />
                     <span className="text-sm">Dedicated Account Manager</span>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <CheckCircle className="h-4 w-4 text-brand-green" />
+                    <CheckCircle className="h-4 w-4 text-brand-teal" />
                     <span className="text-sm">Priority Support</span>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <CheckCircle className="h-4 w-4 text-brand-green" />
+                    <CheckCircle className="h-4 w-4 text-brand-teal" />
                     <span className="text-sm">Custom Strategy Session</span>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <CheckCircle className="h-4 w-4 text-brand-green" />
+                    <CheckCircle className="h-4 w-4 text-brand-teal" />
                     <span className="text-sm">Advanced Analytics</span>
                   </div>
                 </div>
@@ -714,15 +712,14 @@ const Index = () => {
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-4 gap-8">
             <div>
-              <div className="flex items-center space-x-2 mb-4">
-                <img src={logo} alt="National 1031 Exchange Services" className="h-8 w-auto invert" />
+              <div className="flex items-center mb-4">
                 <span className="font-bold">National 1031 Exchange Services</span>
               </div>
               <p className="text-sm text-primary-foreground/80 mb-4">
                 Helping real estate investors save millions in taxes through expert 1031 exchange guidance and tools.
               </p>
               <div className="flex items-center space-x-2">
-                <CheckCircle className="h-4 w-4 text-brand-green" />
+                <CheckCircle className="h-4 w-4 text-brand-teal" />
                 <span className="text-sm">Licensed & Bonded</span>
               </div>
             </div>
@@ -730,10 +727,10 @@ const Index = () => {
             <div>
               <h4 className="font-semibold mb-4">Tools & Resources</h4>
               <ul className="space-y-2 text-sm">
-                <li><a href="#" className="hover:text-brand-green transition-colors">Tax Calculator</a></li>
-                <li><a href="#" className="hover:text-brand-green transition-colors">Timeline Tracker</a></li>
-                <li><a href="#" className="hover:text-brand-green transition-colors">Property Matcher</a></li>
-                <li><a href="#" className="hover:text-brand-green transition-colors">Education Hub</a></li>
+                <li><a href="#" className="hover:text-brand-teal transition-colors">Tax Calculator</a></li>
+                <li><a href="#" className="hover:text-brand-teal transition-colors">Timeline Tracker</a></li>
+                <li><a href="#" className="hover:text-brand-teal transition-colors">Property Matcher</a></li>
+                <li><a href="#" className="hover:text-brand-teal transition-colors">Education Hub</a></li>
               </ul>
             </div>
 
@@ -759,15 +756,15 @@ const Index = () => {
               <h4 className="font-semibold mb-4">Trust & Security</h4>
               <div className="space-y-2 text-sm">
                 <div className="flex items-center space-x-2">
-                  <Shield className="h-4 w-4 text-brand-green" />
+                  <Shield className="h-4 w-4 text-brand-teal" />
                   <span>$5M Insurance Coverage</span>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <Award className="h-4 w-4 text-brand-green" />
+                  <Award className="h-4 w-4 text-brand-teal" />
                   <span>A+ BBB Rating</span>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <CheckCircle className="h-4 w-4 text-brand-green" />
+                  <CheckCircle className="h-4 w-4 text-brand-teal" />
                   <span>99.2% Success Rate</span>
                 </div>
               </div>

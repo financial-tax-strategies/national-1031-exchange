@@ -17,16 +17,16 @@ All colors MUST be HSL.
     --popover: 0 0% 100%;
     --popover-foreground: 216 19% 16%;
 
-    --primary: 0 0% 0%;
+    --primary: 216 19% 16%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 120 100% 50%;
-    --secondary-foreground: 0 0% 100%;
+    --secondary: 220 14% 96%;
+    --secondary-foreground: 216 19% 16%;
 
-    --muted: 0 0% 96%;
-    --muted-foreground: 0 0% 45%;
+    --muted: 220 14% 96%;
+    --muted-foreground: 215 16% 47%;
 
-    --accent: 36 100% 50%;
+    --accent: 180 31% 41%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84.2% 60.2%;
@@ -36,18 +36,18 @@ All colors MUST be HSL.
     --input: 220 13% 91%;
     --ring: 180 31% 41%;
 
-    /* Brand Colors - Matching Logo's Bright Green */
-    --brand-primary: 0 0% 0%;
-    --brand-green: 120 100% 50%;
-    --brand-orange: 36 100% 50%;
-    --brand-yellow: 45 100% 50%;
-    --brand-gray: 0 0% 50%;
-    --brand-light: 0 0% 98%;
+    /* Brand Colors - Sophisticated Palette */
+    --brand-navy: 216 19% 16%;
+    --brand-teal: 180 31% 41%;
+    --brand-gold: 45 93% 58%;
+    --brand-copper: 25 69% 61%;
+    --brand-slate: 215 16% 47%;
+    --brand-pearl: 220 14% 96%;
     
-    /* Gradients - Matching Logo */
-    --gradient-primary: linear-gradient(135deg, hsl(var(--brand-green)), hsl(100 100% 40%));
-    --gradient-secondary: linear-gradient(135deg, hsl(var(--brand-orange)), hsl(var(--brand-yellow)));
-    --gradient-accent: linear-gradient(135deg, hsl(var(--brand-primary)), hsl(0 0% 20%));
+    /* Gradients - Elegant & Subtle */
+    --gradient-primary: linear-gradient(135deg, hsl(var(--brand-teal)), hsl(185 35% 35%));
+    --gradient-secondary: linear-gradient(135deg, hsl(var(--brand-gold)), hsl(var(--brand-copper)));
+    --gradient-accent: linear-gradient(135deg, hsl(var(--brand-navy)), hsl(220 25% 20%));
     
     /* Shadows - Sophisticated */
     --shadow-card: 0 4px 20px -4px hsl(216 19% 16% / 0.08);
