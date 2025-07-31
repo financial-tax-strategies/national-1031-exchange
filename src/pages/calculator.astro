@@ -1,0 +1,167 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { TaxSavingsCalculator } from '../components/calculators/TaxSavingsCalculator';
+---
+
+<Layout 
+  title="1031 Tax Savings Calculator | National 1031 Center"
+  description="Calculate your potential capital gains tax savings with a 1031 exchange. Free calculator shows federal and state tax deferral amounts instantly."
+>
+  <div class="bg-gray-50 min-h-screen py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- Hero Section -->
+      <div class="text-center mb-12">
+        <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+          1031 Exchange Tax Savings Calculator
+        </h1>
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+          Discover how much you can save in capital gains taxes by completing a 1031 exchange. 
+          Our calculator provides instant estimates based on your specific situation.
+        </p>
+      </div>
+
+      <!-- Benefits Grid -->
+      <div class="grid md:grid-cols-3 gap-6 mb-12">
+        <div class="bg-white p-6 rounded-lg shadow-md">
+          <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
+            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold text-gray-900 mb-2">Accurate Calculations</h3>
+          <p class="text-gray-600">Based on 2024 federal and state tax rates with automatic updates</p>
+        </div>
+        
+        <div class="bg-white p-6 rounded-lg shadow-md">
+          <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-4">
+            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold text-gray-900 mb-2">Instant Results</h3>
+          <p class="text-gray-600">See your potential tax savings immediately with detailed breakdown</p>
+        </div>
+        
+        <div class="bg-white p-6 rounded-lg shadow-md">
+          <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
+            <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold text-gray-900 mb-2">Detailed Report</h3>
+          <p class="text-gray-600">Get a comprehensive PDF report with your personalized results</p>
+        </div>
+      </div>
+
+      <!-- Calculator Component -->
+      <TaxSavingsCalculator client:load onLeadCapture={async (data) => {
+        // This will be replaced with actual HighLevel API integration
+        console.log('Lead captured:', data);
+        
+        // Send to Netlify Function (to be implemented)
+        try {
+          const response = await fetch('/.netlify/functions/capture-lead', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+          });
+          
+          if (!response.ok) {
+            throw new Error('Failed to capture lead');
+          }
+          
+          const result = await response.json();
+          console.log('Lead captured successfully:', result);
+        } catch (error) {
+          console.error('Error capturing lead:', error);
+          // Still allow calculator to continue even if lead capture fails
+        }
+      }} />
+
+      <!-- Educational Content -->
+      <div class="mt-16 prose prose-lg max-w-none">
+        <h2 class="text-3xl font-bold text-gray-900 mb-6">Understanding 1031 Exchange Tax Savings</h2>
+        
+        <div class="grid md:grid-cols-2 gap-8">
+          <div>
+            <h3 class="text-xl font-semibold text-gray-900 mb-3">What Taxes Can Be Deferred?</h3>
+            <ul class="space-y-2 text-gray-600">
+              <li><strong>Federal Capital Gains Tax:</strong> 0%, 15%, or 20% based on income</li>
+              <li><strong>State Capital Gains Tax:</strong> Varies by state (0% - 13.3%)</li>
+              <li><strong>Net Investment Income Tax:</strong> 3.8% for high earners</li>
+              <li><strong>Depreciation Recapture:</strong> Up to 25% on depreciated amount</li>
+            </ul>
+          </div>
+          
+          <div>
+            <h3 class="text-xl font-semibold text-gray-900 mb-3">Calculator Assumptions</h3>
+            <ul class="space-y-2 text-gray-600">
+              <li>Uses 2024 tax rates and brackets</li>
+              <li>Assumes long-term capital gains (property held >1 year)</li>
+              <li>Simplified depreciation recapture calculation</li>
+              <li>Does not include local taxes or transaction costs</li>
+            </ul>
+          </div>
+        </div>
+        
+        <div class="mt-8 bg-yellow-50 p-6 rounded-lg">
+          <p class="text-gray-800">
+            <strong>Important Note:</strong> This calculator provides estimates for educational purposes only. 
+            Actual tax savings depend on your specific situation. Consult with a qualified tax professional 
+            and 1031 exchange expert before making any investment decisions.
+          </p>
+        </div>
+      </div>
+
+      <!-- CTA Section -->
+      <div class="mt-16 bg-blue-900 text-white rounded-xl p-8 text-center">
+        <h2 class="text-3xl font-bold mb-4">Ready to Save on Taxes?</h2>
+        <p class="text-xl mb-8 text-blue-200">
+          Let our experts guide you through your 1031 exchange and maximize your tax savings.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="/contact" class="bg-yellow-400 text-blue-900 px-8 py-3 rounded-lg font-semibold hover:bg-yellow-300 transition-colors duration-200">
+            Get Expert Guidance
+          </a>
+          <a href="/complete-guide-1031-exchanges" class="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-blue-900 transition-colors duration-200">
+            Learn More About 1031s
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Schema Markup for Calculator -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "1031 Exchange Tax Savings Calculator",
+    "url": "https://national1031center.com/calculator",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "Any",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "description": "Calculate your potential capital gains tax savings with a 1031 exchange. Free calculator shows federal and state tax deferral amounts instantly.",
+    "screenshot": "https://national1031center.com/images/calculator-screenshot.jpg",
+    "creator": {
+      "@type": "Organization",
+      "name": "National 1031 Center",
+      "url": "https://national1031center.com"
+    },
+    "featureList": [
+      "Federal capital gains tax calculation",
+      "State tax calculation for all 50 states",
+      "Net investment income tax calculation",
+      "Instant results with detailed breakdown",
+      "PDF report generation",
+      "2024 tax rates"
+    ]
+  }
+  </script>
+</Layout>
