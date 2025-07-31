@@ -6,6 +6,9 @@ import {
   type TaxCalculationInput,
   type TaxCalculationResult 
 } from '../../lib/calculators/taxCalculations';
+import AppointmentBooking from '../booking/AppointmentBooking';
+import type { Appointment, BookingError } from '../../lib/types/highlevel';
+import { trackBookingEvent } from '../../lib/analytics/bookingAnalytics';
 
 interface CalculatorProps {
   onLeadCapture?: (data: LeadData) => void;
@@ -22,6 +25,7 @@ interface LeadData {
 export const TaxSavingsCalculator: React.FC<CalculatorProps> = ({ onLeadCapture }) => {
   const [showResults, setShowResults] = useState(false);
   const [showEmailCapture, setShowEmailCapture] = useState(false);
+  const [showBooking, setShowBooking] = useState(false);
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<TaxCalculationResult | null>(null);
   
@@ -119,6 +123,7 @@ export const TaxSavingsCalculator: React.FC<CalculatorProps> = ({ onLeadCapture 
   const handleReset = () => {
     setShowResults(false);
     setShowEmailCapture(false);
+    setShowBooking(false);
     setFormData({
       salePrice: 0,
       purchasePrice: 0,
@@ -134,6 +139,51 @@ export const TaxSavingsCalculator: React.FC<CalculatorProps> = ({ onLeadCapture 
       name: ''
     });
     setResult(null);
+  };
+
+  const handleStartBooking = () => {
+    // Track booking flow start
+    if (typeof window !== 'undefined' && window.trackContentEngagement) {
+      window.trackContentEngagement('booking_flow_started', 'tax_calculator_booking');
+    }
+    
+    setShowBooking(true);
+  };
+
+  const handleBookingSuccess = (appointment: Appointment) => {
+    // Track successful booking
+    if (typeof window !== 'undefined') {
+      if (window.trackContentEngagement) {
+        window.trackContentEngagement('appointment_booked', 'tax_calculator_success');
+      }
+      if (window.trackHighLevelEvent) {
+        window.trackHighLevelEvent('appointment_booked', {
+          source: '1031 Tax Calculator',
+          appointmentId: appointment.highlevelAppointmentId,
+          value: appointment.taxSavingsAmount || 0,
+          type: 'appointment_from_calculator'
+        });
+      }
+    }
+    
+    // Keep booking visible to show confirmation
+    console.log('Appointment booked successfully:', appointment);
+  };
+
+  const handleBookingError = (error: BookingError) => {
+    // Track booking error
+    if (typeof window !== 'undefined' && window.trackContentEngagement) {
+      window.trackContentEngagement('booking_error', 'tax_calculator_booking');
+    }
+    
+    console.error('Booking error:', error);
+    // Keep booking visible to show error state
+  };
+
+  const handleBookingCancel = () => {
+    // Track booking abandonment
+    trackBookingEvent.bookingAbandoned('user_cancelled', 'user_clicked_cancel');
+    setShowBooking(false);
   };
 
   return (
@@ -358,8 +408,32 @@ export const TaxSavingsCalculator: React.FC<CalculatorProps> = ({ onLeadCapture 
         </div>
       )}
 
+      {/* Booking Flow */}
+      {showBooking && result && leadData.email && (
+        <AppointmentBooking
+          leadData={{
+            email: leadData.email,
+            phone: leadData.phone,
+            firstName: leadData.name.split(' ')[0] || 'Valued',
+            lastName: leadData.name.split(' ').slice(1).join(' ') || 'Customer',
+            taxSavingsAmount: result.taxSavings,
+            propertySalePrice: formData.salePrice,
+            propertyDetails: formData
+          }}
+          onSuccess={handleBookingSuccess}
+          onError={handleBookingError}
+          onCancel={handleBookingCancel}
+          options={{
+            timezone: 'America/New_York',
+            prefetchDays: 14,
+            minBookingHours: 2,
+            maxBookingDays: 60
+          }}
+        />
+      )}
+
       {/* Results Display */}
-      {showResults && result && (
+      {showResults && result && !showBooking && (
         <div className="space-y-6">
           <div className="bg-green-50 p-6 rounded-lg border-2 border-green-200">
             <h3 className="text-2xl font-bold text-green-900 mb-2">
@@ -419,23 +493,36 @@ export const TaxSavingsCalculator: React.FC<CalculatorProps> = ({ onLeadCapture 
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4">
-            <a
-              href="/contact"
-              className="flex-1 bg-blue-900 text-white py-3 px-6 rounded-lg font-semibold hover:bg-blue-800 transition-colors duration-200 text-center"
-              onClick={() => {
-                if (typeof window !== 'undefined' && window.trackContentEngagement) {
-                  window.trackContentEngagement('cta_click', 'calculator_start_exchange');
-                }
-              }}
+            <button
+              onClick={handleStartBooking}
+              className="flex-1 bg-blue-900 text-white py-3 px-6 rounded-lg font-semibold hover:bg-blue-800 transition-colors duration-200"
             >
-              Start My 1031 Exchange
-            </a>
+              Schedule Free Consultation
+            </button>
             <button
               onClick={handleReset}
               className="flex-1 bg-gray-200 text-gray-700 py-3 px-6 rounded-lg font-semibold hover:bg-gray-300 transition-colors duration-200"
             >
               Calculate Again
             </button>
+          </div>
+
+          {/* Alternative Contact Option */}
+          <div className="text-center">
+            <p className="text-gray-600 text-sm mb-2">
+              Prefer to speak with us directly?
+            </p>
+            <a
+              href="/contact"
+              className="text-blue-600 hover:text-blue-800 font-medium"
+              onClick={() => {
+                if (typeof window !== 'undefined' && window.trackContentEngagement) {
+                  window.trackContentEngagement('cta_click', 'calculator_contact_page');
+                }
+              }}
+            >
+              Visit our contact page →
+            </a>
           </div>
         </div>
       )}

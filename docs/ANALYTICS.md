@@ -23,6 +23,19 @@ The National 1031 Center website includes comprehensive analytics tracking using
 - **calculator_complete**: Fired when calculation is completed (includes tax savings value)
 - **generate_lead**: Fired when user submits contact information
 
+### Booking Flow Events
+- **booking_flow_started**: Booking flow initiated from calculator
+- **booking_date_selected**: User selects appointment date
+- **booking_time_selected**: User selects time slot
+- **booking_confirmed**: User confirms appointment details
+- **appointment_created**: Appointment created in HighLevel
+- **appointment_assigned**: Specialist assigned to appointment
+- **booking_completed**: Full booking flow completed successfully
+- **booking_error**: Error occurred during booking process
+- **booking_abandoned**: User abandoned booking flow
+- **availability_loaded**: Availability data loaded (performance tracking)
+- **booking_submission_performance**: Booking submission performance metrics
+
 ### Content Engagement Events
 - **cta_click**: All call-to-action button clicks
   - `hero_start_exchange`: Hero section "Start Your Exchange Today"
