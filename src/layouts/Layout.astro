@@ -1,0 +1,125 @@
+---
+import '../styles/global.css';
+
+export interface Props {
+  title: string;
+  description?: string;
+  image?: string;
+  canonical?: string;
+  noindex?: boolean;
+}
+
+const { 
+  title, 
+  description = "America's most trusted 1031 exchange qualified intermediary. Defer capital gains taxes with our expert guidance and industry-leading security.",
+  image = "/images/og-image.jpg",
+  canonical,
+  noindex = false 
+} = Astro.props;
+
+const site = "https://national1031center.com";
+const fullTitle = title.includes("National 1031 Center") ? title : `${title} | National 1031 Center`;
+const canonicalURL = canonical || new URL(Astro.url.pathname, site);
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content={description} />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    
+    <!-- SEO Meta Tags -->
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalURL} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    
+    <!-- PWA and Mobile -->
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#1e3a8a" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="National 1031 Center" />
+    
+    <!-- Additional SEO -->
+    <meta name="author" content="National 1031 Center" />
+    <meta name="publisher" content="National 1031 Center" />
+    <meta name="copyright" content="© 2024 National 1031 Center" />
+    <meta name="language" content="English" />
+    <meta name="geo.region" content="US" />
+    <meta name="geo.placename" content="United States" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={new URL(image, site)} />
+    <meta property="og:site_name" content="National 1031 Center" />
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content={canonicalURL} />
+    <meta property="twitter:title" content={fullTitle} />
+    <meta property="twitter:description" content={description} />
+    <meta property="twitter:image" content={new URL(image, site)} />
+    
+    <!-- Preconnect to external domains -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://www.google-analytics.com" />
+    
+    <!-- Schema.org JSON-LD -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": "https://national1031center.com/#organization",
+      "name": "National 1031 Center",
+      "alternateName": "National 1031 Exchange Center",
+      "url": "https://national1031center.com",
+      "logo": "https://national1031center.com/images/logo.png",
+      "description": "America's most trusted 1031 exchange qualified intermediary, facilitating tax-deferred property exchanges nationwide with industry-leading security and expertise.",
+      "sameAs": [
+        "https://www.linkedin.com/company/national1031center",
+        "https://www.facebook.com/national1031center",
+        "https://twitter.com/national1031"
+      ],
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+1-800-1031-TAX",
+        "contactType": "customer service",
+        "areaServed": "US",
+        "availableLanguage": ["English", "Spanish"],
+        "contactOption": "TollFree"
+      },
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "123 Exchange Plaza",
+        "addressLocality": "Los Angeles",
+        "addressRegion": "CA",
+        "postalCode": "90210",
+        "addressCountry": "US"
+      },
+      "foundingDate": "2024",
+      "slogan": "America's Most Trusted 1031 Exchange Partner"
+    }
+    </script>
+  </head>
+  <body class="min-h-screen bg-white">
+    <slot />
+    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'GA_MEASUREMENT_ID');
+    </script>
+  </body>
+</html>

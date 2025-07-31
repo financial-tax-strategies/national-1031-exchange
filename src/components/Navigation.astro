@@ -1,0 +1,181 @@
+---
+// Navigation component with mega menu
+---
+
+<nav class="bg-white shadow-lg sticky top-0 z-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center h-16">
+      <!-- Logo -->
+      <div class="flex-shrink-0 flex items-center">
+        <a href="/" class="text-2xl font-bold text-blue-900">
+          National 1031 Center
+        </a>
+      </div>
+      
+      <!-- Desktop Navigation -->
+      <div class="hidden md:block">
+        <div class="ml-10 flex items-baseline space-x-4">
+          <!-- Services Dropdown -->
+          <div class="relative group">
+            <button class="text-gray-700 hover:text-blue-900 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 flex items-center">
+              Services
+              <svg class="ml-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+              </svg>
+            </button>
+            
+            <!-- Mega Menu -->
+            <div class="absolute left-0 mt-2 w-96 bg-white rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+              <div class="py-4 px-6 grid grid-cols-1 gap-4">
+                <div>
+                  <h3 class="text-sm font-semibold text-gray-900 mb-2">Exchange Types</h3>
+                  <div class="space-y-2">
+                    <a href="/services/delayed-exchange" class="block text-sm text-gray-600 hover:text-blue-900 transition-colors">
+                      Delayed Exchange
+                    </a>
+                    <a href="/services/reverse-exchange" class="block text-sm text-gray-600 hover:text-blue-900 transition-colors">
+                      Reverse Exchange
+                    </a>
+                    <a href="/services/improvement-exchange" class="block text-sm text-gray-600 hover:text-blue-900 transition-colors">
+                      Improvement Exchange
+                    </a>
+                    <a href="/services/partial-exchange" class="block text-sm text-gray-600 hover:text-blue-900 transition-colors">
+                      Partial Exchange
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- How It Works -->
+          <a href="/how-it-works" class="text-gray-700 hover:text-blue-900 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
+            How It Works
+          </a>
+          
+          <!-- Resources Dropdown -->
+          <div class="relative group">
+            <button class="text-gray-700 hover:text-blue-900 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 flex items-center">
+              Resources
+              <svg class="ml-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+              </svg>
+            </button>
+            
+            <div class="absolute left-0 mt-2 w-64 bg-white rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+              <div class="py-2">
+                <a href="/complete-guide-1031-exchanges" class="block px-4 py-2 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-900 transition-colors">
+                  Complete Guide to 1031 Exchanges
+                </a>
+                <a href="/calculator" class="block px-4 py-2 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-900 transition-colors">
+                  1031 Calculator
+                </a>
+                <a href="/timeline" class="block px-4 py-2 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-900 transition-colors">
+                  Exchange Timeline
+                </a>
+                <a href="/faq" class="block px-4 py-2 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-900 transition-colors">
+                  FAQ
+                </a>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Locations -->
+          <div class="relative group">
+            <button class="text-gray-700 hover:text-blue-900 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 flex items-center">
+              Locations
+              <svg class="ml-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+              </svg>
+            </button>
+            
+            <div class="absolute left-0 mt-2 w-80 bg-white rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+              <div class="py-4 px-6">
+                <h3 class="text-sm font-semibold text-gray-900 mb-2">Popular States</h3>
+                <div class="grid grid-cols-2 gap-2">
+                  <a href="/locations/california" class="text-sm text-gray-600 hover:text-blue-900 transition-colors">California</a>
+                  <a href="/locations/texas" class="text-sm text-gray-600 hover:text-blue-900 transition-colors">Texas</a>
+                  <a href="/locations/florida" class="text-sm text-gray-600 hover:text-blue-900 transition-colors">Florida</a>
+                  <a href="/locations/new-york" class="text-sm text-gray-600 hover:text-blue-900 transition-colors">New York</a>
+                  <a href="/locations/illinois" class="text-sm text-gray-600 hover:text-blue-900 transition-colors">Illinois</a>
+                  <a href="/locations/arizona" class="text-sm text-gray-600 hover:text-blue-900 transition-colors">Arizona</a>
+                </div>
+                <div class="mt-3 pt-3 border-t border-gray-200">
+                  <a href="/locations" class="text-sm text-blue-900 hover:text-blue-700 font-medium">
+                    View All 50 States →
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- About -->
+          <a href="/about" class="text-gray-700 hover:text-blue-900 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
+            About
+          </a>
+        </div>
+      </div>
+      
+      <!-- CTA Button -->
+      <div class="hidden md:block">
+        <a href="/contact" class="bg-blue-900 text-white px-6 py-2 rounded-md text-sm font-medium hover:bg-blue-800 transition-colors duration-200">
+          Start Your Exchange
+        </a>
+      </div>
+      
+      <!-- Mobile menu button -->
+      <div class="md:hidden">
+        <button type="button" class="mobile-menu-button text-gray-700 hover:text-blue-900 focus:outline-none focus:text-blue-900 transition-colors duration-200">
+          <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+    
+    <!-- Mobile Navigation Menu -->
+    <div class="mobile-menu hidden md:hidden">
+      <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-gray-50">
+        <a href="/services/delayed-exchange" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-900 hover:bg-blue-50 rounded-md transition-colors">
+          Delayed Exchange
+        </a>
+        <a href="/services/reverse-exchange" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-900 hover:bg-blue-50 rounded-md transition-colors">
+          Reverse Exchange
+        </a>
+        <a href="/services/improvement-exchange" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-900 hover:bg-blue-50 rounded-md transition-colors">
+          Improvement Exchange
+        </a>
+        <a href="/how-it-works" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-900 hover:bg-blue-50 rounded-md transition-colors">
+          How It Works
+        </a>
+        <a href="/complete-guide-1031-exchanges" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-900 hover:bg-blue-50 rounded-md transition-colors">
+          Complete Guide
+        </a>
+        <a href="/calculator" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-900 hover:bg-blue-50 rounded-md transition-colors">
+          Calculator
+        </a>
+        <a href="/locations" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-900 hover:bg-blue-50 rounded-md transition-colors">
+          Locations
+        </a>
+        <a href="/about" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-900 hover:bg-blue-50 rounded-md transition-colors">
+          About
+        </a>
+        <a href="/contact" class="block px-3 py-2 text-base font-medium bg-blue-900 text-white hover:bg-blue-800 rounded-md transition-colors">
+          Start Your Exchange
+        </a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<script>
+  // Mobile menu toggle
+  document.addEventListener('DOMContentLoaded', function() {
+    const mobileMenuButton = document.querySelector('.mobile-menu-button');
+    const mobileMenu = document.querySelector('.mobile-menu');
+    
+    mobileMenuButton?.addEventListener('click', function() {
+      mobileMenu?.classList.toggle('hidden');
+    });
+  });
+</script>

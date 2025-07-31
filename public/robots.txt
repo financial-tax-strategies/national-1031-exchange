@@ -1,14 +1,50 @@
-User-agent: Googlebot
-Allow: /
-
-User-agent: Bingbot
-Allow: /
-
-User-agent: Twitterbot
-Allow: /
-
-User-agent: facebookexternalhit
-Allow: /
+# National 1031 Center - Robots.txt
+# Optimized for search engines and AI crawlers
 
 User-agent: *
 Allow: /
+
+# Priority crawling for key pages
+Allow: /complete-guide-1031-exchanges
+Allow: /services/
+Allow: /calculator
+Allow: /how-it-works
+Allow: /locations/
+
+# Block non-essential pages
+Disallow: /admin/
+Disallow: /api/
+Disallow: /_netlify/
+Disallow: /thank-you
+Disallow: /404
+Disallow: *.json$
+
+# Allow specific AI crawlers
+User-agent: GPTBot
+Allow: /
+Allow: /complete-guide-1031-exchanges
+Allow: /services/
+Allow: /calculator
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: YouBot
+Allow: /
+
+# Crawl delay for respect
+Crawl-delay: 1
+
+# Sitemap location
+Sitemap: https://national1031center.com/sitemap.xml
+Sitemap: https://national1031center.com/sitemap-pages.xml
+Sitemap: https://national1031center.com/sitemap-locations.xml
+
+# Cache policy hint
+Cache-Control: public, max-age=86400

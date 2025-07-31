@@ -1,0 +1,80 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "18"
+  SITE_URL = "https://national1031center.com"
+
+# Performance optimizations
+[[plugins]]
+  package = "@netlify/plugin-sitemap"
+
+[[plugins]]
+  package = "netlify-plugin-checklinks"
+
+[[plugins]]
+  package = "netlify-plugin-inline-critical-css"
+
+# Security headers
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    X-XSS-Protection = "1; mode=block"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.google-analytics.com https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://www.google-analytics.com;"
+
+# Cache optimization
+[[headers]]
+  for = "*.js"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000"
+
+[[headers]]
+  for = "*.css"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000"
+
+[[headers]]
+  for = "*.woff2"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000"
+
+# SEO redirects
+[[redirects]]
+  from = "/1031-exchange"
+  to = "/complete-guide-1031-exchanges"
+  status = 301
+
+[[redirects]]
+  from = "/tax-deferred-exchange"
+  to = "/complete-guide-1031-exchanges"
+  status = 301
+
+[[redirects]]
+  from = "/like-kind-exchange"
+  to = "/complete-guide-1031-exchanges"
+  status = 301
+
+# Form handling
+[forms]
+  "contact" = { action = "/thank-you", name = "contact" }
+  "consultation" = { action = "/thank-you", name = "consultation" }
+  "calculator" = { action = "/calculator-results", name = "calculator" }
+
+# Functions configuration
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+
+# Edge functions
+[[edge_functions]]
+  function = "geo-location"
+  path = "/location/*"
+
+[[edge_functions]]
+  function = "calculator"
+  path = "/api/calculator"
