@@ -1,0 +1,30 @@
+{
+  "name": "National 1031 Center - America's Most Trusted 1031 Exchange Partner",
+  "short_name": "National 1031",
+  "description": "Defer capital gains taxes with expert 1031 exchange services. Industry-leading security, nationwide coverage, and 48-hour response guarantee.",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#1e3a8a",
+  "theme_color": "#1e3a8a",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/images/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/images/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["finance", "business", "productivity"],
+  "lang": "en-US",
+  "dir": "ltr",
+  "scope": "/",
+  "related_applications": [],
+  "prefer_related_applications": false
+}

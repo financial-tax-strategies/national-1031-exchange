@@ -1,0 +1,11 @@
+Contact: mailto:security@national1031center.com
+Contact: https://national1031center.com/security-report
+Expires: 2025-12-31T23:59:59.000Z
+Acknowledgments: https://national1031center.com/security-acknowledgments
+Preferred-Languages: en
+Canonical: https://national1031center.com/.well-known/security.txt
+Policy: https://national1031center.com/security-policy
+
+# National 1031 Center Security Contact
+# We take security seriously and appreciate responsible disclosure.
+# Please report security vulnerabilities through our secure contact methods above.

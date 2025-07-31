@@ -1,0 +1,307 @@
+{
+  "organizationSchema": {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "@id": "https://www.national1031center.com/#organization",
+    "name": "National 1031 Center",
+    "alternateName": "National 1031 Exchange Center",
+    "url": "https://www.national1031center.com",
+    "logo": "https://www.national1031center.com/images/logo.png",
+    "description": "America's most trusted 1031 exchange qualified intermediary, facilitating tax-deferred property exchanges nationwide with industry-leading security and expertise.",
+    "foundingDate": "2024",
+    "slogan": "America's Most Trusted 1031 Exchange Partner",
+    "sameAs": [
+      "https://www.linkedin.com/company/national1031center",
+      "https://www.facebook.com/national1031center",
+      "https://twitter.com/national1031",
+      "https://www.youtube.com/national1031center"
+    ],
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "telephone": "+1-800-XXX-XXXX",
+      "contactType": "customer service",
+      "areaServed": "US",
+      "availableLanguage": ["English", "Spanish"],
+      "contactOption": "TollFree"
+    },
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "123 Main Street",
+      "addressLocality": "City",
+      "addressRegion": "State",
+      "postalCode": "12345",
+      "addressCountry": "US"
+    }
+  },
+  
+  "localBusinessSchema": {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "@id": "https://www.national1031center.com/#localbusiness",
+    "name": "National 1031 Center - [State] Office",
+    "image": "https://www.national1031center.com/images/office-[state].jpg",
+    "priceRange": "$$",
+    "servesCuisine": "1031 Exchange Services",
+    "telephone": "+1-800-XXX-XXXX",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "123 State Street",
+      "addressLocality": "City",
+      "addressRegion": "[State]",
+      "postalCode": "12345",
+      "addressCountry": "US"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": 40.7128,
+      "longitude": -74.0060
+    },
+    "url": "https://www.national1031center.com/locations/[state]",
+    "openingHoursSpecification": {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+      "opens": "08:00",
+      "closes": "18:00"
+    },
+    "hasMap": "https://maps.google.com/?q=National+1031+Center+[State]",
+    "areaServed": {
+      "@type": "State",
+      "name": "[State]"
+    }
+  },
+  
+  "financialServiceSchema": {
+    "@context": "https://schema.org",
+    "@type": "FinancialService",
+    "@id": "https://www.national1031center.com/#financialservice",
+    "name": "National 1031 Center",
+    "description": "Qualified intermediary services for IRC Section 1031 tax-deferred exchanges",
+    "provider": {
+      "@id": "https://www.national1031center.com/#organization"
+    },
+    "areaServed": {
+      "@type": "Country",
+      "name": "United States"
+    },
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "1031 Exchange Services",
+      "itemListElement": [
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Delayed 1031 Exchange",
+            "description": "Standard forward exchange with 45-day identification and 180-day completion periods",
+            "provider": {
+              "@id": "https://www.national1031center.com/#organization"
+            }
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Reverse 1031 Exchange",
+            "description": "Purchase replacement property before selling relinquished property",
+            "provider": {
+              "@id": "https://www.national1031center.com/#organization"
+            }
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Improvement 1031 Exchange",
+            "description": "Use exchange funds to improve replacement property",
+            "provider": {
+              "@id": "https://www.national1031center.com/#organization"
+            }
+          }
+        }
+      ]
+    }
+  },
+  
+  "faqSchema": {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is a 1031 exchange?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "A 1031 exchange, also known as a like-kind exchange, is a tax strategy that allows real estate investors to defer paying capital gains taxes when they sell an investment property and reinvest the proceeds into a similar property."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How long do I have to complete a 1031 exchange?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "You have 45 days from the sale of your relinquished property to identify potential replacement properties, and 180 days (or until your tax return due date, whichever is earlier) to complete the purchase of the replacement property."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Do I need a qualified intermediary for a 1031 exchange?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, using a qualified intermediary is required for a 1031 exchange. The intermediary holds the proceeds from the sale of your relinquished property and uses them to purchase the replacement property, ensuring you don't have constructive receipt of the funds."
+        }
+      }
+    ]
+  },
+  
+  "howToSchema": {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Complete a 1031 Exchange",
+    "description": "Step-by-step guide to completing a tax-deferred 1031 exchange",
+    "image": "https://www.national1031center.com/images/1031-process.jpg",
+    "totalTime": "PT180D",
+    "supply": [
+      {
+        "@type": "HowToSupply",
+        "name": "Qualified Intermediary Agreement"
+      },
+      {
+        "@type": "HowToSupply",
+        "name": "Property Sale Contract"
+      },
+      {
+        "@type": "HowToSupply",
+        "name": "Identification Notice"
+      }
+    ],
+    "step": [
+      {
+        "@type": "HowToStep",
+        "name": "Engage a Qualified Intermediary",
+        "text": "Contact National 1031 Center before closing on your property to set up exchange documentation",
+        "url": "https://www.national1031center.com/how-it-works#step1"
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Sell Your Property",
+        "text": "Close on the sale with proceeds going directly to the qualified intermediary",
+        "url": "https://www.national1031center.com/how-it-works#step2"
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Identify Replacement Properties",
+        "text": "Submit written identification of up to 3 properties within 45 days",
+        "url": "https://www.national1031center.com/how-it-works#step3"
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Purchase Replacement Property",
+        "text": "Complete the purchase within 180 days using the exchange funds",
+        "url": "https://www.national1031center.com/how-it-works#step4"
+      }
+    ]
+  },
+  
+  "serviceSchema": {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "serviceType": "1031 Exchange Qualified Intermediary",
+    "provider": {
+      "@id": "https://www.national1031center.com/#organization"
+    },
+    "areaServed": {
+      "@type": "Country",
+      "name": "United States"
+    },
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "1031 Exchange Services",
+      "itemListElement": [
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Delayed Exchange",
+            "url": "https://www.national1031center.com/services/delayed-exchange"
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Reverse Exchange",
+            "url": "https://www.national1031center.com/services/reverse-exchange"
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Improvement Exchange",
+            "url": "https://www.national1031center.com/services/improvement-exchange"
+          }
+        }
+      ]
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.9",
+      "reviewCount": "487",
+      "bestRating": "5",
+      "worstRating": "1"
+    }
+  },
+  
+  "breadcrumbSchema": {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://www.national1031center.com"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Services",
+        "item": "https://www.national1031center.com/services"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Delayed Exchange",
+        "item": "https://www.national1031center.com/services/delayed-exchange"
+      }
+    ]
+  },
+  
+  "personSchema": {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "[Executive Name]",
+    "jobTitle": "CEO & Certified Exchange Specialist",
+    "worksFor": {
+      "@id": "https://www.national1031center.com/#organization"
+    },
+    "description": "Leading 1031 exchange expert with over 20 years of experience in tax-deferred exchanges",
+    "image": "https://www.national1031center.com/images/team/[name].jpg",
+    "sameAs": [
+      "https://www.linkedin.com/in/[username]",
+      "https://twitter.com/[username]"
+    ],
+    "alumniOf": {
+      "@type": "CollegeOrUniversity",
+      "name": "[University Name]"
+    },
+    "knowsAbout": [
+      "1031 Exchanges",
+      "Tax Deferral Strategies",
+      "Real Estate Investment",
+      "IRC Section 1031"
+    ]
+  }
+}
