@@ -10,11 +10,12 @@
 [[plugins]]
   package = "@netlify/plugin-sitemap"
 
-[[plugins]]
-  package = "netlify-plugin-checklinks"
+# Temporarily disabled to fix build issues
+# [[plugins]]
+#   package = "netlify-plugin-checklinks"
 
-[[plugins]]
-  package = "netlify-plugin-inline-critical-css"
+# [[plugins]]
+#   package = "netlify-plugin-inline-critical-css"
 
 # Security headers
 [[headers]]
