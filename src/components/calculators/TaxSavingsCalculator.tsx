@@ -52,6 +52,13 @@ export const TaxSavingsCalculator: React.FC<CalculatorProps> = ({ onLeadCapture 
   }, [formData]);
 
   const handleInputChange = (field: keyof TaxCalculationInput, value: string | number) => {
+    // Track calculator start on first interaction
+    if (formData.salePrice === 0 && formData.purchasePrice === 0) {
+      if (typeof window !== 'undefined' && window.trackCalculatorStart) {
+        window.trackCalculatorStart();
+      }
+    }
+    
     setFormData(prev => ({
       ...prev,
       [field]: field === 'state' || field === 'filingStatus' ? value : Number(value)
@@ -70,6 +77,25 @@ export const TaxSavingsCalculator: React.FC<CalculatorProps> = ({ onLeadCapture 
     setLoading(true);
     
     try {
+      // Track calculator completion and lead capture
+      if (result && typeof window !== 'undefined') {
+        if (window.trackCalculatorComplete) {
+          window.trackCalculatorComplete(result.taxSavings);
+        }
+        if (window.trackLeadCapture) {
+          window.trackLeadCapture('1031 Tax Calculator', result.taxSavings);
+        }
+        if (window.trackHighLevelEvent) {
+          window.trackHighLevelEvent('lead_captured', {
+            source: '1031 Tax Calculator',
+            value: result.taxSavings,
+            type: 'calculator',
+            formName: 'Tax Savings Calculator',
+            calculatorSavings: result.taxSavings
+          });
+        }
+      }
+      
       // Call the parent's lead capture handler
       if (onLeadCapture && result) {
         await onLeadCapture({
@@ -396,6 +422,11 @@ export const TaxSavingsCalculator: React.FC<CalculatorProps> = ({ onLeadCapture 
             <a
               href="/contact"
               className="flex-1 bg-blue-900 text-white py-3 px-6 rounded-lg font-semibold hover:bg-blue-800 transition-colors duration-200 text-center"
+              onClick={() => {
+                if (typeof window !== 'undefined' && window.trackContentEngagement) {
+                  window.trackContentEngagement('cta_click', 'calculator_start_exchange');
+                }
+              }}
             >
               Start My 1031 Exchange
             </a>

@@ -31,10 +31,14 @@ import Layout from '../layouts/Layout.astro';
         
         <!-- CTA Buttons -->
         <div class="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-          <a href="/contact" class="bg-yellow-400 text-blue-900 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-yellow-300 transition-all duration-300 transform hover:scale-105 shadow-lg">
+          <a href="/contact" 
+             class="bg-yellow-400 text-blue-900 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-yellow-300 transition-all duration-300 transform hover:scale-105 shadow-lg"
+             onclick="if(window.trackContentEngagement) window.trackContentEngagement('cta_click', 'hero_start_exchange');">
             Start Your Exchange Today
           </a>
-          <a href="/calculator" class="border-2 border-white text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-white hover:text-blue-900 transition-all duration-300">
+          <a href="/calculator" 
+             class="border-2 border-white text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-white hover:text-blue-900 transition-all duration-300"
+             onclick="if(window.trackContentEngagement) window.trackContentEngagement('cta_click', 'hero_calculator');">
             Calculate Your Savings
           </a>
         </div>
@@ -87,7 +91,9 @@ import Layout from '../layouts/Layout.astro';
           <p class="text-gray-600 mb-6">
             Standard forward exchanges. Sell first, then buy replacement property within 180 days.
           </p>
-          <a href="/services/delayed-exchange" class="text-blue-600 font-semibold hover:text-blue-700 transition-colors">
+          <a href="/services/delayed-exchange" 
+             class="text-blue-600 font-semibold hover:text-blue-700 transition-colors"
+             onclick="if(window.trackContentEngagement) window.trackContentEngagement('service_click', 'delayed_exchange');">
             Learn More →
           </a>
         </div>
@@ -103,7 +109,9 @@ import Layout from '../layouts/Layout.astro';
           <p class="text-gray-600 mb-6">
             Buy first, sell later. Perfect for competitive markets where timing is critical.
           </p>
-          <a href="/services/reverse-exchange" class="text-blue-600 font-semibold hover:text-blue-700 transition-colors">
+          <a href="/services/reverse-exchange" 
+             class="text-blue-600 font-semibold hover:text-blue-700 transition-colors"
+             onclick="if(window.trackContentEngagement) window.trackContentEngagement('service_click', 'reverse_exchange');">
             Learn More →
           </a>
         </div>
@@ -119,7 +127,9 @@ import Layout from '../layouts/Layout.astro';
           <p class="text-gray-600 mb-6">
             Build-to-suit exchanges. Use exchange funds to improve replacement property.
           </p>
-          <a href="/services/improvement-exchange" class="text-blue-600 font-semibold hover:text-blue-700 transition-colors">
+          <a href="/services/improvement-exchange" 
+             class="text-blue-600 font-semibold hover:text-blue-700 transition-colors"
+             onclick="if(window.trackContentEngagement) window.trackContentEngagement('service_click', 'improvement_exchange');">
             Learn More →
           </a>
         </div>
@@ -136,7 +146,9 @@ import Layout from '../layouts/Layout.astro';
           <p class="text-gray-600 mb-6">
             Strategic cash-out while still deferring taxes on the majority of proceeds.
           </p>
-          <a href="/services/partial-exchange" class="text-blue-600 font-semibold hover:text-blue-700 transition-colors">
+          <a href="/services/partial-exchange" 
+             class="text-blue-600 font-semibold hover:text-blue-700 transition-colors"
+             onclick="if(window.trackContentEngagement) window.trackContentEngagement('service_click', 'partial_exchange');">
             Learn More →
           </a>
         </div>
@@ -223,17 +235,23 @@ import Layout from '../layouts/Layout.astro';
       </p>
       
       <div class="flex flex-col sm:flex-row gap-4 justify-center">
-        <a href="/contact" class="bg-yellow-400 text-blue-900 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-yellow-300 transition-all duration-300 transform hover:scale-105">
+        <a href="/contact" 
+           class="bg-yellow-400 text-blue-900 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-yellow-300 transition-all duration-300 transform hover:scale-105"
+           onclick="if(window.trackContentEngagement) window.trackContentEngagement('cta_click', 'bottom_consultation');">
           Get Free Consultation
         </a>
-        <a href="/calculator" class="border-2 border-white text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-white hover:text-blue-900 transition-all duration-300">
+        <a href="/calculator" 
+           class="border-2 border-white text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-white hover:text-blue-900 transition-all duration-300"
+           onclick="if(window.trackContentEngagement) window.trackContentEngagement('cta_click', 'bottom_calculator');">
           Calculate Savings
         </a>
       </div>
       
       <div class="mt-12 text-center">
         <p class="text-blue-300 text-sm">
-          Call now: <a href="tel:+18001031TAX" class="text-yellow-400 hover:text-yellow-300 font-semibold">1-800-1031-TAX</a> | 
+          Call now: <a href="tel:+18001031TAX" 
+                      class="text-yellow-400 hover:text-yellow-300 font-semibold"
+                      onclick="if(window.trackPhoneCall) window.trackPhoneCall('bottom_cta');">1-800-1031-TAX</a> | 
           Available 24/7 for emergencies
         </p>
       </div>

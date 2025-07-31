@@ -1,0 +1,88 @@
+---
+// Google Tag Manager component
+const GTM_ID = import.meta.env.PUBLIC_GTM_ID || 'GTM-XXXXXXX';
+const isProduction = import.meta.env.PROD;
+---
+
+{isProduction && GTM_ID !== 'GTM-XXXXXXX' && (
+  <>
+    <!-- Google Tag Manager -->
+    <script define:vars={{ GTM_ID }}>
+      (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+      })(window,document,'script','dataLayer',GTM_ID);
+    </script>
+    
+    <!-- Data Layer Helper Functions -->
+    <script>
+      // Push custom events to GTM data layer
+      window.pushDataLayer = function(eventData) {
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push(eventData);
+      };
+      
+      // Track HighLevel events
+      window.trackHighLevelEvent = function(eventName, leadData) {
+        window.pushDataLayer({
+          'event': 'highlevel_' + eventName,
+          'lead_source': leadData.source || 'website',
+          'lead_value': leadData.value || 0,
+          'lead_type': leadData.type || 'general',
+          'form_name': leadData.formName || '',
+          'calculator_savings': leadData.calculatorSavings || 0
+        });
+      };
+      
+      // Enhanced Ecommerce for lead value tracking
+      window.trackLeadValue = function(leadSource, estimatedValue) {
+        window.pushDataLayer({
+          'event': 'lead_captured',
+          'ecommerce': {
+            'currency': 'USD',
+            'value': estimatedValue,
+            'items': [{
+              'item_name': '1031 Exchange Lead',
+              'item_category': leadSource,
+              'price': estimatedValue,
+              'quantity': 1
+            }]
+          }
+        });
+      };
+      
+      // Track calculator funnel
+      window.trackCalculatorStep = function(step, data) {
+        window.pushDataLayer({
+          'event': 'calculator_funnel',
+          'calculator_step': step,
+          'calculator_data': data || {}
+        });
+      };
+      
+      // Track form interactions
+      window.trackFormInteraction = function(action, formId, fieldName) {
+        window.pushDataLayer({
+          'event': 'form_interaction',
+          'form_action': action,
+          'form_id': formId,
+          'field_name': fieldName || ''
+        });
+      };
+    </script>
+  </>
+)}
+
+{!isProduction && (
+  <script>
+    // Development mode - log GTM events to console
+    console.log('Google Tag Manager: Development mode - events will be logged to console');
+    
+    window.pushDataLayer = (data) => console.log('GTM DataLayer:', data);
+    window.trackHighLevelEvent = (event, data) => console.log('GTM HighLevel Event:', event, data);
+    window.trackLeadValue = (source, value) => console.log('GTM Lead Value:', { source, value });
+    window.trackCalculatorStep = (step, data) => console.log('GTM Calculator Step:', step, data);
+    window.trackFormInteraction = (action, formId, field) => console.log('GTM Form:', { action, formId, field });
+  </script>
+)}
