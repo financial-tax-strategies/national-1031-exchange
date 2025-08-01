@@ -8,6 +8,8 @@
   # Exclude PUBLIC_ prefixed environment variables from secrets scanning
   # These are intentionally public and meant to be included in client-side code
   SECRETS_SCAN_OMIT_KEYS = "PUBLIC_HIGHLEVEL_API_KEY,PUBLIC_HIGHLEVEL_LOCATION_ID,PUBLIC_HIGHLEVEL_CALENDAR_ID,PUBLIC_SUPABASE_URL,PUBLIC_SUPABASE_ANON_KEY"
+  # Exclude .env.example from secrets scanning as it only contains placeholder values
+  SECRETS_SCAN_OMIT_PATHS = ".env.example"
 
 # Performance optimizations
 [[plugins]]
