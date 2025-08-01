@@ -31,16 +31,25 @@ const isProduction = import.meta.env.PROD;
     
     <!-- Custom event tracking functions -->
     <script>
+      // Safe gtag wrapper that checks if gtag is defined
+      function safeGtag() {
+        if (typeof gtag !== 'undefined') {
+          gtag.apply(null, arguments);
+        } else {
+          console.warn('Google Analytics not loaded yet, event not tracked:', arguments);
+        }
+      }
+      
       // Calculator events
       window.trackCalculatorStart = function() {
-        gtag('event', 'calculator_start', {
+        safeGtag('event', 'calculator_start', {
           event_category: 'engagement',
           event_label: '1031 Tax Calculator'
         });
       };
       
       window.trackCalculatorComplete = function(taxSavings) {
-        gtag('event', 'calculator_complete', {
+        safeGtag('event', 'calculator_complete', {
           event_category: 'conversion',
           event_label: '1031 Tax Calculator',
           value: Math.round(taxSavings),
@@ -49,7 +58,7 @@ const isProduction = import.meta.env.PROD;
       };
       
       window.trackLeadCapture = function(source, value) {
-        gtag('event', 'generate_lead', {
+        safeGtag('event', 'generate_lead', {
           event_category: 'conversion',
           event_label: source,
           value: value || 0,
@@ -57,7 +66,7 @@ const isProduction = import.meta.env.PROD;
         });
         
         // Also track for Google Ads if using
-        gtag('event', 'conversion', {
+        safeGtag('event', 'conversion', {
           'send_to': 'AW-CONVERSION_ID/CONVERSION_LABEL',
           'value': value || 0,
           'currency': 'USD'
@@ -66,14 +75,14 @@ const isProduction = import.meta.env.PROD;
       
       // Form events
       window.trackFormStart = function(formName) {
-        gtag('event', 'form_start', {
+        safeGtag('event', 'form_start', {
           event_category: 'engagement',
           event_label: formName
         });
       };
       
       window.trackFormSubmit = function(formName) {
-        gtag('event', 'form_submit', {
+        safeGtag('event', 'form_submit', {
           event_category: 'conversion',
           event_label: formName
         });
@@ -81,7 +90,7 @@ const isProduction = import.meta.env.PROD;
       
       // Phone call tracking
       window.trackPhoneCall = function(source) {
-        gtag('event', 'phone_call', {
+        safeGtag('event', 'phone_call', {
           event_category: 'conversion',
           event_label: source || 'website'
         });
@@ -89,7 +98,7 @@ const isProduction = import.meta.env.PROD;
       
       // Content engagement
       window.trackContentEngagement = function(contentType, contentName) {
-        gtag('event', 'content_engagement', {
+        safeGtag('event', 'content_engagement', {
           event_category: 'engagement',
           content_type: contentType,
           content_name: contentName
@@ -99,13 +108,15 @@ const isProduction = import.meta.env.PROD;
       // Scroll depth tracking
       let scrollDepthTracked = {};
       window.addEventListener('scroll', function() {
+        if (typeof gtag === 'undefined') return; // Don't track if gtag not loaded
+        
         const scrollPercent = Math.round((window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100);
         const depths = [25, 50, 75, 90, 100];
         
         depths.forEach(depth => {
           if (scrollPercent >= depth && !scrollDepthTracked[depth]) {
             scrollDepthTracked[depth] = true;
-            gtag('event', 'scroll', {
+            safeGtag('event', 'scroll', {
               event_category: 'engagement',
               event_label: `${depth}%`,
               value: depth
@@ -116,7 +127,7 @@ const isProduction = import.meta.env.PROD;
       
       // Time on page tracking (fires after 30 seconds)
       setTimeout(function() {
-        gtag('event', 'time_on_page', {
+        safeGtag('event', 'time_on_page', {
           event_category: 'engagement',
           event_label: '30_seconds',
           value: 30
