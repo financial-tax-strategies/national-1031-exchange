@@ -49,9 +49,30 @@ curl -H "Authorization: Bearer YOUR_API_KEY" \
 3. Check URL: `/calendars/YOUR_CALENDAR_ID`
 4. Update environment variable
 
+**Hardcoded Calendar ID (404 Error)**
+```
+# Error: GET .../calendars/will-be-loaded-from-config/... 404
+# Root Cause: Calendar ID not loaded from environment variables
+
+# Solution: Add getter to HighLevelService
+getCalendarId(): string {
+  return this.config.calendarId;
+}
+
+# Use in components:
+calendarId: highlevelService.current.getCalendarId()
+```
+
 **CORS Issues**
 - Ensure API calls go through your backend
 - Never call HighLevel directly from frontend
+
+**Content Security Policy (CSP) Blocking**
+```
+# Error: Refused to connect to 'https://services.leadconnectorhq.com/...'
+# Solution: Update netlify.toml
+Content-Security-Policy = "... connect-src 'self' https://www.google-analytics.com https://services.leadconnectorhq.com https://*.supabase.co wss://*.supabase.co;"
+```
 
 ### 2. Appointments Not Creating
 
@@ -433,6 +454,33 @@ AND webhook_received_at IS NOT NULL;
 | `ASSIGNMENT_TIMEOUT` | No specialist assigned | Check HighLevel setup |
 | `INVALID_CONFIG` | Missing configuration | Check env variables |
 | `NETWORK_ERROR` | Connection failed | Check internet/API |
+
+### BookingErrorCode Undefined in Production
+
+**Symptoms:**
+```
+ReferenceError: BookingErrorCode is not defined
+```
+
+**Root Cause:** TypeScript enum tree-shaking during bundling
+
+**Solution:**
+1. Convert enum to const assertion in `highlevel.ts`:
+```typescript
+export const BookingErrorCode = {
+  API_TIMEOUT: 'API_TIMEOUT',
+  // ... other codes
+} as const;
+export type BookingErrorCode = typeof BookingErrorCode[keyof typeof BookingErrorCode];
+```
+
+2. Import as value, not type:
+```typescript
+// Wrong
+import type { BookingErrorCode } from './types/highlevel';
+// Correct
+import { BookingErrorCode } from './types/highlevel';
+```
 
 ## Monitoring Checklist
 
