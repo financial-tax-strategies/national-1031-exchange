@@ -244,6 +244,145 @@ export class HighLevelService {
   }
 
   // ============================================
+  // Order Form Integration
+  // ============================================
+
+  /**
+   * Create lead from order form submission with all custom fields
+   */
+  async createOrderFormLead(formData: any): Promise<string> {
+    try {
+      // Map order form fields to HighLevel custom fields
+      const customFields: Record<string, string> = {};
+      
+      // Map all 1031x_ fields
+      Object.keys(formData).forEach(key => {
+        if (key.startsWith('1031x_')) {
+          // Convert field values to strings
+          let value = formData[key];
+          if (typeof value === 'number') {
+            value = value.toString();
+          } else if (value instanceof Date) {
+            value = value.toISOString();
+          } else if (typeof value === 'boolean') {
+            value = value ? 'Yes' : 'No';
+          }
+          
+          // Store in custom fields with exact key
+          customFields[key] = value || '';
+        }
+      });
+
+      // Create contact with all order form data
+      const contact: HighLevelContact = {
+        locationId: this.config.locationId,
+        email: formData['1031x_email'],
+        phone: formData['1031x_phone'],
+        firstName: formData['1031x_first_name'],
+        lastName: formData['1031x_last_name'],
+        source: 'Order Form - ' + (formData['1031x_how_heard'] || 'Website'),
+        tags: [
+          '1031-exchange-order-form',
+          'order-form-submission',
+          formData['1031x_urgency_level'] || 'standard',
+          formData['1031x_exchange_type'] || 'unknown'
+        ].filter(Boolean),
+        customFields: {
+          ...customFields,
+          'order_form_submitted': new Date().toISOString(),
+          'order_form_version': '1.0'
+        }
+      };
+
+      // Add notes about the submission
+      const notes = [];
+      if (formData['1031x_urgency_level'] === 'urgent_2_weeks') {
+        notes.push('URGENT: Less than 2 weeks timeline');
+      }
+      if (formData['1031x_has_cpa'] === 'need_referral') {
+        notes.push('Needs CPA referral');
+      }
+      if (formData['1031x_dst_interest'] === 'interested') {
+        notes.push('Interested in DST options');
+      }
+      if (formData['1031x_additional_notes']) {
+        notes.push('Additional notes: ' + formData['1031x_additional_notes']);
+      }
+      
+      if (notes.length > 0) {
+        contact.notes = notes.join('\n\n');
+      }
+
+      const response = await this.makeRequest('/contacts/', {
+        method: 'POST',
+        body: JSON.stringify(contact)
+      });
+
+      if (!response.contact?.id) {
+        throw new Error('No contact ID returned from HighLevel');
+      }
+
+      // Trigger automation based on urgency
+      if (formData['1031x_urgency_level'] === 'urgent_2_weeks') {
+        // Trigger urgent workflow
+        await this.triggerWorkflow(response.contact.id, 'urgent_order_form_submission');
+      } else {
+        // Trigger standard workflow
+        await this.triggerWorkflow(response.contact.id, 'standard_order_form_submission');
+      }
+
+      // Create calendar appointment if requested
+      if (formData['1031x_consultation_preference'] !== 'email_only') {
+        // This could be extended to auto-book based on preference
+        await this.addContactNote(
+          response.contact.id,
+          `Consultation preference: ${formData['1031x_consultation_preference']}`
+        );
+      }
+
+      return response.contact.id;
+    } catch (error) {
+      console.error('Error creating order form lead:', error);
+      throw this.createBookingError(
+        BookingErrorCode.CONTACT_CREATION_FAILED,
+        'Failed to submit order form',
+        error,
+        'Unable to submit your information. Please try again or call us directly.'
+      );
+    }
+  }
+
+  /**
+   * Trigger HighLevel workflow for contact
+   */
+  private async triggerWorkflow(contactId: string, workflowId: string): Promise<void> {
+    try {
+      await this.makeRequest(`/contacts/${contactId}/workflow/${workflowId}`, {
+        method: 'POST',
+        body: JSON.stringify({})
+      });
+    } catch (error) {
+      console.error('Error triggering workflow:', error);
+      // Don't throw - workflow trigger is not critical
+    }
+  }
+
+  /**
+   * Add note to contact
+   */
+  private async addContactNote(contactId: string, note: string): Promise<void> {
+    try {
+      await this.makeRequest(`/contacts/${contactId}/notes`, {
+        method: 'POST',
+        body: JSON.stringify({ body: note })
+      });
+    } catch (error) {
+      console.error('Error adding contact note:', error);
+      // Don't throw - note addition is not critical
+    }
+  }
+
+  // ============================================
   // Utility Methods
   // ============================================
 

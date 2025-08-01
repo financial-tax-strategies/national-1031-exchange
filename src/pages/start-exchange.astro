@@ -1,0 +1,189 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { OrderForm } from '../components/order-form/OrderForm';
+import { COMPANY } from '../config/company';
+---
+
+<Layout 
+  title="Start Your 1031 Exchange | National 1031 Center"
+  description="Begin your 1031 exchange with our comprehensive order form. Get expert guidance and save thousands in capital gains taxes."
+>
+  <div class="bg-gray-50 min-h-screen py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- Hero Section -->
+      <div class="text-center mb-12">
+        <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+          Start Your 1031 Exchange
+        </h1>
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+          Complete our secure order form to begin your tax-deferred exchange. 
+          Our specialists will guide you through every step of the process.
+        </p>
+      </div>
+
+      <!-- Trust Indicators -->
+      <div class="grid md:grid-cols-4 gap-4 mb-12 max-w-4xl mx-auto">
+        <div class="text-center">
+          <div class="text-3xl font-bold text-blue-900 mb-1">25+</div>
+          <div class="text-sm text-gray-600">Years Experience</div>
+        </div>
+        <div class="text-center">
+          <div class="text-3xl font-bold text-blue-900 mb-1">$2B+</div>
+          <div class="text-sm text-gray-600">Exchanges Completed</div>
+        </div>
+        <div class="text-center">
+          <div class="text-3xl font-bold text-blue-900 mb-1">50</div>
+          <div class="text-sm text-gray-600">States Served</div>
+        </div>
+        <div class="text-center">
+          <div class="text-3xl font-bold text-blue-900 mb-1">98%</div>
+          <div class="text-sm text-gray-600">Success Rate</div>
+        </div>
+      </div>
+
+      <!-- Order Form Component -->
+      <OrderForm client:load />
+
+      <!-- Additional Information -->
+      <div class="mt-16 max-w-4xl mx-auto">
+        <div class="bg-white rounded-xl shadow-lg p-8">
+          <h2 class="text-2xl font-bold text-gray-900 mb-6">
+            Why Choose {COMPANY.name}?
+          </h2>
+          
+          <div class="grid md:grid-cols-2 gap-8">
+            <div>
+              <h3 class="text-lg font-semibold text-gray-900 mb-3">Expert Guidance</h3>
+              <ul class="space-y-2 text-gray-600">
+                <li class="flex items-start">
+                  <svg class="w-5 h-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                  </svg>
+                  <span>Dedicated exchange specialist assigned to your account</span>
+                </li>
+                <li class="flex items-start">
+                  <svg class="w-5 h-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                  </svg>
+                  <span>Step-by-step guidance through the entire process</span>
+                </li>
+                <li class="flex items-start">
+                  <svg class="w-5 h-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                  </svg>
+                  <span>Proactive deadline tracking and reminders</span>
+                </li>
+              </ul>
+            </div>
+            
+            <div>
+              <h3 class="text-lg font-semibold text-gray-900 mb-3">Complete Security</h3>
+              <ul class="space-y-2 text-gray-600">
+                <li class="flex items-start">
+                  <svg class="w-5 h-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                  </svg>
+                  <span>Bank-level encryption for all data</span>
+                </li>
+                <li class="flex items-start">
+                  <svg class="w-5 h-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                  </svg>
+                  <span>Fully bonded and insured qualified intermediary</span>
+                </li>
+                <li class="flex items-start">
+                  <svg class="w-5 h-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                  </svg>
+                  <span>Segregated FDIC-insured accounts</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+          
+          <div class="mt-8 p-4 bg-blue-50 rounded-lg">
+            <p class="text-sm text-blue-900">
+              <strong>Privacy Notice:</strong> Your information is secure and confidential. 
+              We never share your data with third parties without your explicit consent.
+            </p>
+          </div>
+        </div>
+        
+        <!-- FAQ Section -->
+        <div class="mt-12 bg-white rounded-xl shadow-lg p-8">
+          <h2 class="text-2xl font-bold text-gray-900 mb-6">
+            Frequently Asked Questions
+          </h2>
+          
+          <div class="space-y-6">
+            <div>
+              <h3 class="text-lg font-semibold text-gray-900 mb-2">
+                How long does it take to complete the order form?
+              </h3>
+              <p class="text-gray-600">
+                Most clients complete the form in 5-10 minutes. Your progress is automatically 
+                saved, so you can return anytime to finish.
+              </p>
+            </div>
+            
+            <div>
+              <h3 class="text-lg font-semibold text-gray-900 mb-2">
+                What information do I need to have ready?
+              </h3>
+              <p class="text-gray-600">
+                You'll need basic property information (address, expected sale price), 
+                your timeline, and contact information. Having your CPA or realtor's 
+                contact info is helpful but not required.
+              </p>
+            </div>
+            
+            <div>
+              <h3 class="text-lg font-semibold text-gray-900 mb-2">
+                Is there a fee to start the process?
+              </h3>
+              <p class="text-gray-600">
+                There's no fee to submit the order form or speak with our specialists. 
+                Exchange fees are only due when you proceed with the exchange and are 
+                clearly disclosed upfront.
+              </p>
+            </div>
+            
+            <div>
+              <h3 class="text-lg font-semibold text-gray-900 mb-2">
+                What happens after I submit the form?
+              </h3>
+              <p class="text-gray-600">
+                A 1031 exchange specialist will contact you within 24 hours (or immediately 
+                for urgent exchanges) to review your situation and guide you through the next steps.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Trust badges -->
+  <div class="bg-white py-12 border-t">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-wrap justify-center items-center gap-8">
+        <img src="/images/bbb-logo.png" alt="BBB Accredited" class="h-12 opacity-70 hover:opacity-100 transition-opacity" />
+        <img src="/images/fea-logo.png" alt="Federation of Exchange Accommodators" class="h-12 opacity-70 hover:opacity-100 transition-opacity" />
+        <img src="/images/secure-badge.png" alt="Bank-Level Security" class="h-12 opacity-70 hover:opacity-100 transition-opacity" />
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<script>
+  // Add smooth scroll behavior
+  document.addEventListener('DOMContentLoaded', function() {
+    // Track page view
+    if (typeof window !== 'undefined' && window.gtag) {
+      window.gtag('event', 'page_view', {
+        page_title: 'Start Exchange Order Form',
+        page_location: window.location.href
+      });
+    }
+  });
+</script>
