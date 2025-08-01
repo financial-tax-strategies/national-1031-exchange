@@ -27,9 +27,9 @@ cp .env.example .env
 
 ```env
 # HighLevel API credentials (required for booking)
-VITE_HIGHLEVEL_API_KEY=your-api-key-here
-VITE_HIGHLEVEL_LOCATION_ID=your-location-id-here
-VITE_HIGHLEVEL_CALENDAR_ID=your-calendar-id-here
+PUBLIC_HIGHLEVEL_API_KEY=your-api-key-here
+PUBLIC_HIGHLEVEL_LOCATION_ID=your-location-id-here
+PUBLIC_HIGHLEVEL_CALENDAR_ID=your-calendar-id-here
 ```
 
 **How to find these values:**
@@ -67,9 +67,9 @@ node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 ## Environment Variables by Context
 
 ### Client-side (Browser)
-- `VITE_HIGHLEVEL_API_KEY` - For API calls
-- `VITE_HIGHLEVEL_LOCATION_ID` - For contact/appointment creation
-- `VITE_HIGHLEVEL_CALENDAR_ID` - For availability and booking
+- `PUBLIC_HIGHLEVEL_API_KEY` - For API calls
+- `PUBLIC_HIGHLEVEL_LOCATION_ID` - For contact/appointment creation
+- `PUBLIC_HIGHLEVEL_CALENDAR_ID` - For availability and booking
 - `PUBLIC_SUPABASE_URL` - For database connection
 - `PUBLIC_SUPABASE_ANON_KEY` - For database authentication
 
@@ -96,9 +96,8 @@ node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 
 1. **Security**: Never commit `.env` files to git
 2. **Prefixes**: 
-   - Use `VITE_` for Vite/React components
-   - Use `PUBLIC_` for Astro components
-   - No prefix for server-side only
+   - Use `PUBLIC_` for all client-side variables in Astro
+   - No prefix for server-side only variables
 3. **Validation**: The app will show clear error messages if variables are missing
 
 ## Troubleshooting
@@ -123,9 +122,9 @@ node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 
 ```env
 # HighLevel
-VITE_HIGHLEVEL_API_KEY=ghl_a3f8d9e7b2c5f1a8d3e9b7c2f5a1d8e3
-VITE_HIGHLEVEL_LOCATION_ID=loc_ABC123XYZ789
-VITE_HIGHLEVEL_CALENDAR_ID=cal_DEF456UVW012
+PUBLIC_HIGHLEVEL_API_KEY=ghl_a3f8d9e7b2c5f1a8d3e9b7c2f5a1d8e3
+PUBLIC_HIGHLEVEL_LOCATION_ID=loc_ABC123XYZ789
+PUBLIC_HIGHLEVEL_CALENDAR_ID=cal_DEF456UVW012
 
 # Supabase
 PUBLIC_SUPABASE_URL=https://abcdefghijklmnop.supabase.co
