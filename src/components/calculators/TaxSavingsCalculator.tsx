@@ -100,7 +100,34 @@ export const TaxSavingsCalculator: React.FC<CalculatorProps> = ({ onLeadCapture 
         }
       }
       
-      // Call the parent's lead capture handler
+      // Send lead data to Netlify Function
+      if (result) {
+        try {
+          const response = await fetch('/.netlify/functions/capture-lead', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              ...leadData,
+              calculationResult: result,
+              propertyDetails: formData
+            }),
+          });
+          
+          if (!response.ok) {
+            throw new Error('Failed to capture lead');
+          }
+          
+          const apiResult = await response.json();
+          console.log('Lead captured successfully:', apiResult);
+        } catch (apiError) {
+          console.error('Error calling capture-lead API:', apiError);
+          // Continue anyway - don't block the user
+        }
+      }
+      
+      // Call the parent's lead capture handler if provided
       if (onLeadCapture && result) {
         await onLeadCapture({
           ...leadData,
