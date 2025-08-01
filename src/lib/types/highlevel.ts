@@ -134,8 +134,8 @@ export interface AvailableSlot {
 
 export interface AvailabilityRequest {
   calendarId: string;
-  startDate: string; // YYYY-MM-DD
-  endDate: string;   // YYYY-MM-DD
+  startDate: string; // Unix timestamp as string (milliseconds)
+  endDate: string;   // Unix timestamp as string (milliseconds)
   timezone: string;
 }
 

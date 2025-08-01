@@ -130,21 +130,31 @@ export class HighLevelService {
     try {
       const { calendarId, startDate, endDate, timezone } = request;
       
-      // Try both milliseconds and seconds for Unix timestamps
-      const startDateSeconds = Math.floor(parseInt(startDate) / 1000);
-      const endDateSeconds = Math.floor(parseInt(endDate) / 1000);
+      // Convert Unix timestamps to YYYY-MM-DD format
+      const startDateObj = new Date(parseInt(startDate));
+      const endDateObj = new Date(parseInt(endDate));
+      
+      const formatDate = (date: Date) => {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+      };
+      
+      const startDateFormatted = formatDate(startDateObj);
+      const endDateFormatted = formatDate(endDateObj);
       
       const params = new URLSearchParams({
-        startDate: startDateSeconds.toString(),
-        endDate: endDateSeconds.toString(),
+        startDate: startDateFormatted,
+        endDate: endDateFormatted,
         timezone
       });
       
       console.log('HighLevel API request params:', {
         startDateMs: startDate,
-        startDateSec: startDateSeconds,
+        startDateFormatted,
         endDateMs: endDate,
-        endDateSec: endDateSeconds,
+        endDateFormatted,
         timezone
       });
 
