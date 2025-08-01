@@ -1,6 +1,6 @@
 // ============================================
 // Booking Analytics Tracking Utility
-// National 1031 Center - Extended Event Tracking
+// The 1031 Center - Extended Event Tracking
 // ============================================
 
 import type { Appointment, BookingError, AvailableSlot } from '../types/highlevel';

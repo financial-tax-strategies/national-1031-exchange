@@ -1,6 +1,6 @@
-// Dynamic sitemap generation for National 1031 Center
+// Dynamic sitemap generation for The 1031 Center
 export async function GET() {
-  const baseUrl = 'https://national1031center.com';
+  const baseUrl = 'https://the1031center.com';
   
   // Define all pages with their priorities and change frequencies
   const pages = [

@@ -1,4 +1,4 @@
-# National 1031 Center
+# The 1031 Center
 
 [![CI/CD Pipeline](https://github.com/matthewdnye/national-1031-exchange/actions/workflows/ci.yml/badge.svg)](https://github.com/matthewdnye/national-1031-exchange/actions/workflows/ci.yml)
 [![Netlify Status](https://api.netlify.com/api/v1/badges/YOUR-BADGE-ID/deploy-status)](https://app.netlify.com/sites/YOUR-SITE-NAME/deploys)

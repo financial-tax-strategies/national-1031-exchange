@@ -4,6 +4,7 @@ import Navigation from '../components/Navigation.astro';
 import Footer from '../components/Footer.astro';
 import GoogleAnalytics from '../components/analytics/GoogleAnalytics.astro';
 import GoogleTagManager from '../components/analytics/GoogleTagManager.astro';
+import { COMPANY } from '../config/company';
 
 export interface Props {
   title: string;
@@ -21,8 +22,8 @@ const {
   noindex = false 
 } = Astro.props;
 
-const site = "https://national1031center.com";
-const fullTitle = title.includes("National 1031 Center") ? title : `${title} | National 1031 Center`;
+const site = COMPANY.url;
+const fullTitle = title.includes(COMPANY.name) ? title : `${title} | ${COMPANY.name}`;
 const canonicalURL = canonical || new URL(Astro.url.pathname, site);
 ---
 
@@ -47,12 +48,12 @@ const canonicalURL = canonical || new URL(Astro.url.pathname, site);
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-    <meta name="apple-mobile-web-app-title" content="National 1031 Center" />
+    <meta name="apple-mobile-web-app-title" content={COMPANY.name} />
     
     <!-- Additional SEO -->
-    <meta name="author" content="National 1031 Center" />
-    <meta name="publisher" content="National 1031 Center" />
-    <meta name="copyright" content="© 2024 National 1031 Center" />
+    <meta name="author" content={COMPANY.name} />
+    <meta name="publisher" content={COMPANY.name} />
+    <meta name="copyright" content={`© 2024 ${COMPANY.name}`} />
     <meta name="language" content="English" />
     <meta name="geo.region" content="US" />
     <meta name="geo.placename" content="United States" />
@@ -63,7 +64,7 @@ const canonicalURL = canonical || new URL(Astro.url.pathname, site);
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={new URL(image, site)} />
-    <meta property="og:site_name" content="National 1031 Center" />
+    <meta property="og:site_name" content={COMPANY.name} />
     
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />
@@ -82,11 +83,11 @@ const canonicalURL = canonical || new URL(Astro.url.pathname, site);
     {
       "@context": "https://schema.org",
       "@type": "Organization",
-      "@id": "https://national1031center.com/#organization",
-      "name": "National 1031 Center",
-      "alternateName": "National 1031 Exchange Center",
-      "url": "https://national1031center.com",
-      "logo": "https://national1031center.com/images/logo.png",
+      "@id": "https://the1031center.com/#organization",
+      "name": COMPANY.name,
+      "alternateName": "The 1031 Exchange Center",
+      "url": "https://the1031center.com",
+      "logo": "https://the1031center.com/images/logo.png",
       "description": "America's most trusted 1031 exchange qualified intermediary, facilitating tax-deferred property exchanges nationwide with industry-leading security and expertise.",
       "sameAs": [
         "https://www.linkedin.com/company/national1031center",

@@ -1,0 +1,464 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { COMPANY, getPhoneLink } from '../config/company';
+---
+
+<Layout 
+  title={`How 1031 Exchanges Work | Step-by-Step Guide | ${COMPANY.name}`}
+  description="Learn exactly how 1031 exchanges work with our step-by-step guide. Understand deadlines, requirements, and the complete exchange process from start to finish."
+>
+  
+  <!-- Hero Section -->
+  <section class="bg-gradient-to-r from-blue-900 via-blue-800 to-blue-900 text-white py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-4xl">
+        <h1 class="text-4xl md:text-5xl font-bold mb-6">
+          How 1031 Exchanges Work
+        </h1>
+        <p class="text-xl text-blue-100">
+          A complete step-by-step guide to deferring capital gains taxes through 1031 exchanges. 
+          Learn the process, deadlines, and requirements for successful tax-deferred property swaps.
+        </p>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Overview -->
+  <section class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-4xl mx-auto text-center mb-12">
+        <h2 class="text-3xl font-bold text-gray-900 mb-6">The 1031 Exchange Process</h2>
+        <p class="text-xl text-gray-700">
+          A 1031 exchange allows you to sell investment property and reinvest the proceeds in new 
+          property while deferring all capital gains taxes. Here's exactly how it works.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Step-by-Step Process -->
+  <section class="py-16 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold text-gray-900 mb-12 text-center">Complete Step-by-Step Process</h2>
+      
+      <div class="max-w-4xl mx-auto">
+        <div class="space-y-12">
+          
+          <!-- Step 1 -->
+          <div class="flex items-start">
+            <div class="flex-shrink-0 w-16 h-16 bg-blue-500 text-white rounded-full flex items-center justify-center text-xl font-bold mr-6">
+              1
+            </div>
+            <div class="flex-grow">
+              <h3 class="text-2xl font-semibold text-gray-900 mb-3">Decide to Sell Your Property</h3>
+              <p class="text-gray-700 mb-4">
+                When you're ready to sell your investment or business property, contact {COMPANY.name} 
+                as soon as you have a potential buyer or are listing the property. Early engagement 
+                ensures proper planning and documentation.
+              </p>
+              <div class="bg-blue-50 border-l-4 border-blue-500 p-4">
+                <p class="text-blue-900 font-semibold">⏰ Timeline: Before listing or accepting an offer</p>
+                <p class="text-blue-800">The earlier you involve us, the better we can structure your exchange for maximum benefit.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="flex items-start">
+            <div class="flex-shrink-0 w-16 h-16 bg-blue-500 text-white rounded-full flex items-center justify-center text-xl font-bold mr-6">
+              2
+            </div>
+            <div class="flex-grow">
+              <h3 class="text-2xl font-semibold text-gray-900 mb-3">Sign Exchange Documents</h3>
+              <p class="text-gray-700 mb-4">
+                Before closing on your sale, you must sign our exchange agreement. This establishes 
+                {COMPANY.name} as your Qualified Intermediary and creates the legal framework for 
+                your tax-deferred exchange.
+              </p>
+              <div class="bg-red-50 border-l-4 border-red-500 p-4">
+                <p class="text-red-900 font-semibold">🚨 Critical: Must be completed BEFORE closing</p>
+                <p class="text-red-800">You cannot start a 1031 exchange after you've already closed on your sale.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="flex items-start">
+            <div class="flex-shrink-0 w-16 h-16 bg-blue-500 text-white rounded-full flex items-center justify-center text-xl font-bold mr-6">
+              3
+            </div>
+            <div class="flex-grow">
+              <h3 class="text-2xl font-semibold text-gray-900 mb-3">Close on Your Sale (Day 0)</h3>
+              <p class="text-gray-700 mb-4">
+                At closing, your sale proceeds go directly to {COMPANY.name} instead of to you. 
+                We hold your funds in segregated, FDIC-insured accounts protected by our $100 million 
+                fidelity bond. Your exchange clock officially starts ticking.
+              </p>
+              <div class="bg-green-50 border-l-4 border-green-500 p-4">
+                <p class="text-green-900 font-semibold">✅ What happens at closing:</p>
+                <ul class="text-green-800 mt-2 space-y-1">
+                  <li>• Sale proceeds transferred directly to your QI</li>
+                  <li>• Funds deposited in secure, segregated account</li>
+                  <li>• Your 45-day identification period begins</li>
+                  <li>• Your 180-day exchange period begins</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 4 -->
+          <div class="flex items-start">
+            <div class="flex-shrink-0 w-16 h-16 bg-yellow-500 text-white rounded-full flex items-center justify-center text-xl font-bold mr-6">
+              4
+            </div>
+            <div class="flex-grow">
+              <h3 class="text-2xl font-semibold text-gray-900 mb-3">Identify Replacement Properties (Day 1-45)</h3>
+              <p class="text-gray-700 mb-4">
+                You have exactly 45 calendar days from your sale closing to identify potential 
+                replacement properties in writing to {COMPANY.name}. Choose your identification 
+                rule based on your investment strategy.
+              </p>
+              
+              <div class="space-y-4">
+                <div class="bg-gray-50 p-4 rounded-lg">
+                  <p class="font-semibold text-gray-900 mb-2">3-Property Rule (Most Popular)</p>
+                  <p class="text-gray-700">Identify up to 3 properties of any value. You can close on any or all of them.</p>
+                </div>
+                
+                <div class="bg-gray-50 p-4 rounded-lg">
+                  <p class="font-semibold text-gray-900 mb-2">200% Rule</p>
+                  <p class="text-gray-700">Identify unlimited properties as long as their total value doesn't exceed 200% of your sold property's value.</p>
+                </div>
+                
+                <div class="bg-gray-50 p-4 rounded-lg">
+                  <p class="font-semibold text-gray-900 mb-2">95% Rule</p>
+                  <p class="text-gray-700">Identify any number of properties, but you must purchase at least 95% of the total identified value.</p>
+                </div>
+              </div>
+              
+              <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 mt-4">
+                <p class="text-yellow-900 font-semibold">⚠️ Day 45 Deadline</p>
+                <p class="text-yellow-800">Identification must be in writing and received by your QI by midnight on day 45. No extensions allowed.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 5 -->
+          <div class="flex items-start">
+            <div class="flex-shrink-0 w-16 h-16 bg-blue-500 text-white rounded-full flex items-center justify-center text-xl font-bold mr-6">
+              5
+            </div>
+            <div class="flex-grow">
+              <h3 class="text-2xl font-semibold text-gray-900 mb-3">Shop and Negotiate (Day 1-180)</h3>
+              <p class="text-gray-700 mb-4">
+                While your identification deadline is day 45, you can begin shopping for replacement 
+                properties immediately after your sale closes. Negotiate purchases, secure financing, 
+                and complete due diligence on your identified properties.
+              </p>
+              <div class="bg-blue-50 border-l-4 border-blue-500 p-4">
+                <p class="text-blue-900 font-semibold">💡 Pro Tips:</p>
+                <ul class="text-blue-800 mt-2 space-y-1">
+                  <li>• Start shopping before your sale closes</li>
+                  <li>• Have backup properties identified</li>
+                  <li>• Secure financing pre-approval early</li>
+                  <li>• Coordinate with your real estate agent</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 6 -->
+          <div class="flex items-start">
+            <div class="flex-shrink-0 w-16 h-16 bg-green-500 text-white rounded-full flex items-center justify-center text-xl font-bold mr-6">
+              6
+            </div>
+            <div class="flex-grow">
+              <h3 class="text-2xl font-semibold text-gray-900 mb-3">Close on Replacement Property (By Day 180)</h3>
+              <p class="text-gray-700 mb-4">
+                Complete your purchase within 180 days of your original sale (or by your tax return 
+                due date, whichever is earlier). {COMPANY.name} coordinates with your closing agent 
+                to ensure proper fund transfers and documentation.
+              </p>
+              <div class="bg-green-50 border-l-4 border-green-500 p-4">
+                <p class="text-green-900 font-semibold">✅ At replacement property closing:</p>
+                <ul class="text-green-800 mt-2 space-y-1">
+                  <li>• We transfer your exchange funds to closing</li>
+                  <li>• You receive title to your new property</li>
+                  <li>• Exchange documentation is completed</li>
+                  <li>• You've successfully deferred your taxes!</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 7 -->
+          <div class="flex items-start">
+            <div class="flex-shrink-0 w-16 h-16 bg-purple-500 text-white rounded-full flex items-center justify-center text-xl font-bold mr-6">
+              7
+            </div>
+            <div class="flex-grow">
+              <h3 class="text-2xl font-semibold text-gray-900 mb-3">File Your Tax Return</h3>
+              <p class="text-gray-700 mb-4">
+                Report your exchange on IRS Form 8824 with your tax return. {COMPANY.name} provides 
+                all necessary documentation including exchange agreements, identification notices, 
+                and closing statements.
+              </p>
+              <div class="bg-purple-50 border-l-4 border-purple-500 p-4">
+                <p class="text-purple-900 font-semibold">📋 We provide complete documentation:</p>
+                <ul class="text-purple-800 mt-2 space-y-1">
+                  <li>• Exchange agreement and amendments</li>
+                  <li>• Property identification forms</li>
+                  <li>• All closing statements</li>
+                  <li>• Form 8824 preparation assistance</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Timeline Visual -->
+  <section class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold text-gray-900 text-center mb-12">Critical Timeline</h2>
+      
+      <div class="max-w-4xl mx-auto">
+        <div class="bg-gray-50 rounded-lg p-8">
+          <div class="relative">
+            <!-- Timeline Line -->
+            <div class="absolute left-0 right-0 h-2 bg-gray-200 top-6 rounded-full"></div>
+            <div class="absolute left-0 h-2 bg-blue-500 top-6 rounded-full" style="width: 25%"></div>
+            <div class="absolute left-0 h-2 bg-green-500 top-6 rounded-full" style="width: 100%"></div>
+            
+            <!-- Timeline Points -->
+            <div class="relative flex justify-between">
+              <!-- Day 0 -->
+              <div class="text-center">
+                <div class="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold mb-4">
+                  0
+                </div>
+                <p class="text-sm font-semibold text-gray-900">Sale Closes</p>
+                <p class="text-xs text-gray-600 mt-1">Exchange begins</p>
+              </div>
+              
+              <!-- Day 45 -->
+              <div class="text-center">
+                <div class="w-12 h-12 bg-yellow-500 rounded-full flex items-center justify-center text-white font-bold mb-4">
+                  45
+                </div>
+                <p class="text-sm font-semibold text-gray-900">ID Deadline</p>
+                <p class="text-xs text-gray-600 mt-1">Must identify</p>
+              </div>
+              
+              <!-- Day 180 -->
+              <div class="text-center">
+                <div class="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center text-white font-bold mb-4">
+                  180
+                </div>
+                <p class="text-sm font-semibold text-gray-900">Purchase Deadline</p>
+                <p class="text-xs text-gray-600 mt-1">Must close</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="mt-8 bg-red-50 rounded-lg p-6">
+            <h4 class="font-semibold text-red-900 mb-2 flex items-center">
+              <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+              </svg>
+              Important: No Extensions Allowed
+            </h4>
+            <p class="text-red-800 text-sm">
+              These deadlines are set by federal law and cannot be extended for any reason, including 
+              weekends, holidays, natural disasters, or personal emergencies.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Requirements -->
+  <section class="py-16 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold text-gray-900 text-center mb-12">Key Requirements</h2>
+      
+      <div class="max-w-4xl mx-auto">
+        <div class="grid md:grid-cols-2 gap-8">
+          <div class="bg-white rounded-lg p-8 shadow-lg">
+            <h3 class="text-xl font-semibold text-gray-900 mb-6">To Defer ALL Taxes</h3>
+            <ul class="space-y-4">
+              <li class="flex items-start">
+                <svg class="w-6 h-6 text-green-500 mr-3 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                </svg>
+                <div>
+                  <p class="font-semibold text-gray-900">Equal or Greater Value</p>
+                  <p class="text-gray-600">Purchase price ≥ sale price</p>
+                </div>
+              </li>
+              <li class="flex items-start">
+                <svg class="w-6 h-6 text-green-500 mr-3 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                </svg>
+                <div>
+                  <p class="font-semibold text-gray-900">Equal or Greater Debt</p>
+                  <p class="text-gray-600">New loan ≥ paid-off loan (or add cash)</p>
+                </div>
+              </li>
+              <li class="flex items-start">
+                <svg class="w-6 h-6 text-green-500 mr-3 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                </svg>
+                <div>
+                  <p class="font-semibold text-gray-900">Use All Proceeds</p>
+                  <p class="text-gray-600">Reinvest all sale proceeds</p>
+                </div>
+              </li>
+            </ul>
+          </div>
+          
+          <div class="bg-white rounded-lg p-8 shadow-lg">
+            <h3 class="text-xl font-semibold text-gray-900 mb-6">Property Requirements</h3>
+            <ul class="space-y-4">
+              <li class="flex items-start">
+                <svg class="w-6 h-6 text-green-500 mr-3 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                </svg>
+                <div>
+                  <p class="font-semibold text-gray-900">Investment Use</p>
+                  <p class="text-gray-600">Both properties for business or investment</p>
+                </div>
+              </li>
+              <li class="flex items-start">
+                <svg class="w-6 h-6 text-green-500 mr-3 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                </svg>
+                <div>
+                  <p class="font-semibold text-gray-900">Like-Kind</p>
+                  <p class="text-gray-600">Real property for real property</p>
+                </div>
+              </li>
+              <li class="flex items-start">
+                <svg class="w-6 h-6 text-green-500 mr-3 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                </svg>
+                <div>
+                  <p class="font-semibold text-gray-900">Same Taxpayer</p>
+                  <p class="text-gray-600">Same ownership structure</p>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="py-16 bg-blue-900">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h2 class="text-3xl font-bold text-white mb-4">
+        Ready to Start Your 1031 Exchange?
+      </h2>
+      <p class="text-xl text-blue-100 mb-8">
+        Let our experts guide you through every step of the process with confidence and security.
+      </p>
+      
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="/contact" class="bg-yellow-400 text-blue-900 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-yellow-300 transition-all duration-300 transform hover:scale-105">
+          Get Expert Guidance
+        </a>
+        <a href="/calculator" class="border-2 border-white text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-white hover:text-blue-900 transition-all duration-300">
+          Calculate Your Savings
+        </a>
+      </div>
+      
+      <p class="mt-8 text-blue-200">
+        Questions? Call us at <a href={getPhoneLink()} class="text-yellow-400 hover:text-yellow-300 font-semibold">{COMPANY.phone.main}</a>
+      </p>
+    </div>
+  </section>
+  
+  <!-- Schema Markup -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Complete a 1031 Exchange",
+    "description": "Complete step-by-step guide to deferring capital gains taxes through 1031 exchanges",
+    "image": "https://the1031center.com/images/how-it-works.jpg",
+    "totalTime": "PT180D",
+    "estimatedCost": {
+      "@type": "MonetaryAmount",
+      "currency": "USD",
+      "value": "1500"
+    },
+    "supply": [
+      {
+        "@type": "HowToSupply",
+        "name": "Investment Property to Sell"
+      },
+      {
+        "@type": "HowToSupply", 
+        "name": "Qualified Intermediary"
+      },
+      {
+        "@type": "HowToSupply",
+        "name": "Replacement Property"
+      }
+    ],
+    "tool": [
+      {
+        "@type": "HowToTool",
+        "name": "Exchange Agreement"
+      },
+      {
+        "@type": "HowToTool",
+        "name": "Property Identification Form"
+      }
+    ],
+    "step": [
+      {
+        "@type": "HowToStep",
+        "name": "Engage Qualified Intermediary",
+        "text": "Contact ${COMPANY.name} before closing on your sale to establish the exchange framework",
+        "url": "https://the1031center.com/how-it-works#step1"
+      },
+      {
+        "@type": "HowToStep", 
+        "name": "Sign Exchange Documents",
+        "text": "Complete exchange agreement before closing to establish QI relationship",
+        "url": "https://the1031center.com/how-it-works#step2"
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Close on Sale",
+        "text": "Proceeds go directly to QI, starting your 45/180 day timeline",
+        "url": "https://the1031center.com/how-it-works#step3"
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Identify Replacement Properties",
+        "text": "Submit written identification within 45 days using 3-property, 200%, or 95% rule",
+        "url": "https://the1031center.com/how-it-works#step4"
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Purchase Replacement Property", 
+        "text": "Complete acquisition within 180 days with QI coordinating fund transfers",
+        "url": "https://the1031center.com/how-it-works#step5"
+      },
+      {
+        "@type": "HowToStep",
+        "name": "File Tax Return",
+        "text": "Report exchange on Form 8824 using documentation provided by QI",
+        "url": "https://the1031center.com/how-it-works#step6"
+      }
+    ]
+  }
+  </script>
+</Layout>

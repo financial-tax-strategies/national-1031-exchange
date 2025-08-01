@@ -1,6 +1,6 @@
 -- ============================================
 -- HighLevel Integration Database Schema
--- National 1031 Center - Simplified Single Calendar System
+-- The 1031 Center - Simplified Single Calendar System
 -- ============================================
 
 -- Enable UUID extension if not already enabled

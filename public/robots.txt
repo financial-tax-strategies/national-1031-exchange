@@ -1,4 +1,4 @@
-# National 1031 Center - Robots.txt
+# The 1031 Center - Robots.txt
 # Optimized for search engines and AI crawlers
 
 User-agent: *
@@ -42,9 +42,9 @@ Allow: /
 Crawl-delay: 1
 
 # Sitemap location
-Sitemap: https://national1031center.com/sitemap.xml
-Sitemap: https://national1031center.com/sitemap-pages.xml
-Sitemap: https://national1031center.com/sitemap-locations.xml
+Sitemap: https://the1031center.com/sitemap.xml
+Sitemap: https://the1031center.com/sitemap-pages.xml
+Sitemap: https://the1031center.com/sitemap-locations.xml
 
 # Cache policy hint
 Cache-Control: public, max-age=86400

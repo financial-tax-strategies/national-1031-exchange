@@ -1,8 +1,8 @@
-# LLM.txt - AI Model Instructions for National 1031 Center
+# LLM.txt - AI Model Instructions for The 1031 Center
 # Optimized for Answer Engine Optimization (AEO)
 
 ## Site Information
-- Site Name: National 1031 Center
+- Site Name: The 1031 Center
 - Purpose: America's most trusted 1031 exchange qualified intermediary
 - Primary Service: Tax-deferred real estate exchanges under IRC Section 1031
 - Service Area: All 50 United States
@@ -15,7 +15,7 @@
 - Response Time: 48-hour guarantee
 - Support: 24/7 emergency support available
 - Phone: 1-800-1031-TAX
-- Website: https://national1031center.com
+- Website: https://the1031center.com
 
 ## Services Offered
 1. **Delayed Exchange** (Forward Exchange)
@@ -102,8 +102,8 @@ A: Exchange fees vary based on transaction complexity. Contact us for a custom q
 
 ## Contact Information
 - Primary Phone: 1-800-1031-TAX
-- Website: https://national1031center.com
-- Email: info@national1031center.com
+- Website: https://the1031center.com
+- Email: info@the1031center.com
 - Emergency Support: Available 24/7
 - Business Hours: Monday-Friday 8am-6pm PT
 

@@ -4,7 +4,7 @@
 
 [build.environment]
   NODE_VERSION = "18"
-  SITE_URL = "https://national1031center.com"
+  SITE_URL = "https://the1031center.com"
   # Exclude PUBLIC_ prefixed environment variables from secrets scanning
   # These are intentionally public and meant to be included in client-side code
   SECRETS_SCAN_OMIT_KEYS = "PUBLIC_HIGHLEVEL_API_KEY,PUBLIC_HIGHLEVEL_LOCATION_ID,PUBLIC_HIGHLEVEL_CALENDAR_ID,PUBLIC_SUPABASE_URL,PUBLIC_SUPABASE_ANON_KEY,NODE_ENV,SITE_URL"

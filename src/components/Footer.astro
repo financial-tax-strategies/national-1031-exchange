@@ -1,5 +1,6 @@
 ---
 // Footer component for consistent site-wide footer
+import { COMPANY, getPhoneLink, getEmailLink } from '../config/company';
 ---
 
 <footer class="bg-gray-900 text-white py-12">
@@ -7,7 +8,7 @@
     <div class="grid md:grid-cols-4 gap-8 mb-8">
       <!-- Company Info -->
       <div class="md:col-span-2">
-        <h3 class="text-xl font-bold mb-4">National 1031 Center</h3>
+        <h3 class="text-xl font-bold mb-4">{COMPANY.name}</h3>
         <p class="text-gray-400 mb-4">
           America's most trusted 1031 exchange qualified intermediary. 
           Helping investors defer capital gains taxes since 2024.
@@ -49,20 +50,20 @@
         <h4 class="text-lg font-semibold mb-4">Contact Us</h4>
         <div class="space-y-3">
           <p class="text-gray-400">
-            <a href="tel:+18001031TAX" 
+            <a href={getPhoneLink()} 
                class="hover:text-white transition-colors"
                onclick="if(window.trackPhoneCall) window.trackPhoneCall('footer');">
-              1-800-1031-TAX
+              {COMPANY.phone.main}
             </a>
           </p>
           <p class="text-gray-400">
-            <a href="mailto:info@national1031center.com" class="hover:text-white transition-colors">
-              info@national1031center.com
+            <a href={getEmailLink()} class="hover:text-white transition-colors">
+              {COMPANY.email.main}
             </a>
           </p>
           <p class="text-gray-400">
-            123 Exchange Plaza<br>
-            Los Angeles, CA 90210
+            {COMPANY.address.street}<br>
+            {COMPANY.address.city}, {COMPANY.address.state} {COMPANY.address.zip}
           </p>
           <p class="text-yellow-400 font-semibold">
             24/7 Emergency Support
@@ -74,7 +75,7 @@
     <!-- Bottom Bar -->
     <div class="pt-8 border-t border-gray-800 text-center">
       <p class="text-gray-400 text-sm">
-        © 2024 National 1031 Center. All rights reserved. | 
+        © 2024 {COMPANY.name}. All rights reserved. | 
         <a href="/privacy" class="hover:text-white transition-colors">Privacy Policy</a> | 
         <a href="/terms" class="hover:text-white transition-colors">Terms of Service</a> | 
         <a href="/disclaimer" class="hover:text-white transition-colors">Disclaimer</a>
