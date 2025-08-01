@@ -2,6 +2,16 @@
 
 This guide explains how to configure the required environment variables for the HighLevel booking integration.
 
+## ⚠️ CRITICAL SECURITY WARNING
+
+**NEVER commit .env files to Git!** They contain sensitive API keys that could:
+- Compromise your accounts
+- Allow unauthorized API usage
+- Result in unexpected charges
+- Expose customer data
+
+The `.gitignore` file is configured to exclude `.env` files, but always double-check before committing.
+
 ## Quick Setup
 
 1. Copy `.env.example` to `.env`:
@@ -129,9 +139,19 @@ SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 GA_MEASUREMENT_ID=G-XXXXXXXXXX
 ```
 
+## Production Deployment
+
+**Important**: Environment variables for production must be set in your hosting platform (e.g., Netlify), NOT in Git!
+
+See [Netlify Deployment Guide](./NETLIFY_DEPLOYMENT.md) for detailed instructions on:
+- Setting environment variables in Netlify Dashboard
+- Security best practices
+- Common deployment issues
+
 ## Need Help?
 
 1. Check error messages in browser console
 2. Review [Troubleshooting Guide](./HIGHLEVEL_TROUBLESHOOTING.md)
-3. Verify values in HighLevel and Supabase dashboards
-4. Contact support with specific error messages
+3. Review [Netlify Deployment Guide](./NETLIFY_DEPLOYMENT.md) for production setup
+4. Verify values in HighLevel and Supabase dashboards
+5. Contact support with specific error messages

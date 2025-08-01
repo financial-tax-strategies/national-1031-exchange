@@ -15,6 +15,11 @@ Complete documentation for the appointment booking system integration:
    - How to obtain API keys and IDs
    - Common configuration errors and solutions
 
+**🚀 [Netlify Deployment Guide](./NETLIFY_DEPLOYMENT.md)** - **Essential for Production!**
+   - How to deploy environment variables securely
+   - Step-by-step Netlify configuration
+   - Security best practices and warnings
+
 1. **[HighLevel Integration Overview](./HIGHLEVEL_INTEGRATION.md)**
    - Architecture overview and system design
    - Key features and capabilities
