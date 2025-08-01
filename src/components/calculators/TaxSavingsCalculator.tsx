@@ -454,7 +454,7 @@ export const TaxSavingsCalculator: React.FC<CalculatorProps> = ({ onLeadCapture 
             timezone: 'America/New_York',
             prefetchDays: 14,
             minBookingHours: 2,
-            maxBookingDays: 60
+            maxBookingDays: 30
           }}
         />
       )}
