@@ -402,6 +402,3 @@ export type {
   // Analytics
   BookingAnalyticsEvent
 };
-
-// Export runtime values (not just types)
-export { BookingErrorCode };
