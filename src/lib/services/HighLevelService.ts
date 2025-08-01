@@ -130,32 +130,23 @@ export class HighLevelService {
     try {
       const { calendarId, startDate, endDate, timezone } = request;
       
-      // Convert Unix timestamps to YYYY-MM-DD format
-      const startDateObj = new Date(parseInt(startDate));
-      const endDateObj = new Date(parseInt(endDate));
-      
-      const formatDate = (date: Date) => {
-        const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const day = String(date.getDate()).padStart(2, '0');
-        return `${year}-${month}-${day}`;
-      };
-      
-      const startDateFormatted = formatDate(startDateObj);
-      const endDateFormatted = formatDate(endDateObj);
+      // Convert milliseconds to seconds for Unix timestamps
+      const startDateSeconds = Math.floor(parseInt(startDate) / 1000);
+      const endDateSeconds = Math.floor(parseInt(endDate) / 1000);
       
       const params = new URLSearchParams({
-        startDate: startDateFormatted,
-        endDate: endDateFormatted,
+        startDate: startDateSeconds.toString(),
+        endDate: endDateSeconds.toString(),
         timezone
       });
       
       console.log('HighLevel API request params:', {
         startDateMs: startDate,
-        startDateFormatted,
+        startDateSeconds,
         endDateMs: endDate,
-        endDateFormatted,
-        timezone
+        endDateSeconds,
+        timezone,
+        url: `/calendars/${calendarId}/free-slots?${params}`
       });
 
       const response = await this.makeRequest(

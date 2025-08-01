@@ -88,8 +88,8 @@ async getAvailability(request: AvailabilityRequest): Promise<AvailabilityRespons
 ```typescript
 interface AvailabilityRequest {
   calendarId: string;
-  startDate: string; // YYYY-MM-DD
-  endDate: string;   // YYYY-MM-DD
+  startDate: string; // Unix timestamp in milliseconds as string
+  endDate: string;   // Unix timestamp in milliseconds as string
   timezone: string;
 }
 ```
@@ -106,10 +106,14 @@ interface AvailabilityResponse {
 
 **Example:**
 ```typescript
+// Note: HighLevel API expects Unix timestamps in seconds as query params
+const startDate = new Date('2025-02-01').getTime(); // milliseconds
+const endDate = new Date('2025-02-14').getTime();   // milliseconds
+
 const availability = await highlevelService.getAvailability({
   calendarId: 'cal_123',
-  startDate: '2025-02-01',
-  endDate: '2025-02-14',
+  startDate: startDate.toString(),
+  endDate: endDate.toString(),
   timezone: 'America/New_York'
 });
 ```

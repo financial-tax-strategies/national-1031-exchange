@@ -76,12 +76,18 @@ export const AppointmentBooking: React.FC<BookingFlowProps> = ({
       databaseService.current = getDatabaseService();
       pollerRef.current = getAppointmentPoller();
       
-      // Track booking flow start
-      trackBookingEvent.flowStart({
-        taxSavingsAmount: leadData.taxSavingsAmount,
-        propertySalePrice: leadData.propertySalePrice,
-        source: '1031_tax_calculator'
-      });
+      // Track booking flow start safely
+      try {
+        if (trackBookingEvent && typeof trackBookingEvent.flowStart === 'function') {
+          trackBookingEvent.flowStart({
+            taxSavingsAmount: leadData.taxSavingsAmount,
+            propertySalePrice: leadData.propertySalePrice,
+            source: '1031_tax_calculator'
+          });
+        }
+      } catch (e) {
+        console.error('Analytics error:', e);
+      }
       
       setCurrentStep('loading-availability');
       await loadAvailableDates();
@@ -366,11 +372,17 @@ export const AppointmentBooking: React.FC<BookingFlowProps> = ({
   // ============================================
 
   const handleError = (bookingError: BookingError) => {
-    // Track booking error
-    trackBookingEvent.bookingError(bookingError, { 
-      step: currentStep,
-      timestamp: new Date().toISOString()
-    });
+    // Track booking error safely
+    try {
+      if (trackBookingEvent && typeof trackBookingEvent.bookingError === 'function') {
+        trackBookingEvent.bookingError(bookingError, { 
+          step: currentStep,
+          timestamp: new Date().toISOString()
+        });
+      }
+    } catch (analyticsError) {
+      console.error('Analytics tracking error:', analyticsError);
+    }
     
     setError(bookingError);
     setCurrentStep('error');
