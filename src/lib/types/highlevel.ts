@@ -239,7 +239,7 @@ export interface BookingOptions {
   timezone?: string; // Override default timezone
   prefetchDays?: number; // Days to load ahead (default: 14)
   minBookingHours?: number; // Minimum hours ahead (default: 2)
-  maxBookingDays?: number; // Maximum days ahead (default: 60)
+  maxBookingDays?: number; // Maximum days ahead (default: 30, max: 31 - HighLevel API limit)
   debugMode?: boolean;
 }
 

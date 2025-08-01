@@ -49,7 +49,7 @@ export const AppointmentBooking: React.FC<BookingFlowProps> = ({
     timezone = 'America/New_York',
     prefetchDays = 14,
     minBookingHours = 2,
-    maxBookingDays = 60,
+    maxBookingDays = 30, // HighLevel API limit is 31 days
     debugMode = false
   } = options;
 

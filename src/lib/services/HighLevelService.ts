@@ -13,9 +13,10 @@ import type {
   AvailabilityResponse,
   CreateAppointmentRequest,
   Appointment,
-  BookingError,
-  BookingErrorCode
+  BookingError
 } from '../types/highlevel';
+
+import { BookingErrorCode } from '../types/highlevel';
 
 // ============================================
 // HighLevel API Client
