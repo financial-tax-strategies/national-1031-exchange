@@ -126,16 +126,45 @@ export const AppointmentBooking: React.FC<BookingFlowProps> = ({
         timezone
       });
 
+      // Debug: Log the raw response
+      console.log('AppointmentBooking - Raw API response:', {
+        slotsLength: response.slots?.length || 0,
+        firstSlot: response.slots?.[0],
+        allSlots: response.slots
+      });
+
       // Group slots by date
       const dateSlotMap = new Map<string, AvailableSlot[]>();
-      response.slots.forEach((slot: AvailableSlot) => {
+      const validSlots: AvailableSlot[] = [];
+      
+      response.slots.forEach((slot: AvailableSlot, index: number) => {
+        console.log(`Processing slot ${index}:`, slot);
+        
+        if (!slot.time) {
+          console.warn(`Slot ${index} has no time property`, slot);
+          return;
+        }
+        
         const slotDate = new Date(slot.time);
+        if (isNaN(slotDate.getTime())) {
+          console.warn(`Slot ${index} has invalid time:`, slot.time);
+          return;
+        }
+        
+        validSlots.push(slot);
         const dateKey = slotDate.toISOString().split('T')[0];
         
         if (!dateSlotMap.has(dateKey)) {
           dateSlotMap.set(dateKey, []);
         }
         dateSlotMap.get(dateKey)!.push(slot);
+      });
+
+      console.log('Date grouping results:', {
+        totalSlots: response.slots.length,
+        validSlots: validSlots.length,
+        uniqueDates: dateSlotMap.size,
+        dateKeys: Array.from(dateSlotMap.keys())
       });
 
       // Convert to available dates array
@@ -148,10 +177,16 @@ export const AppointmentBooking: React.FC<BookingFlowProps> = ({
 
       // Track availability loading performance
       const duration = performance.now() - startTime;
-      trackBookingEvent.availabilityLoaded(duration, response.slots.length, response.cached || false);
+      
+      try {
+        if (trackBookingEvent && typeof trackBookingEvent.availabilityLoaded === 'function') {
+          trackBookingEvent.availabilityLoaded(duration, response.slots.length, response.cached || false);
+        }
+      } catch (e) {
+        console.error('Analytics error:', e);
+      }
 
-      if (debugMode) {
-        console.log('Loaded available dates:', dates);
+      console.log('Final available dates:', dates);
       }
     } catch (error) {
       console.error('Error loading availability:', error);
@@ -426,21 +461,33 @@ export const AppointmentBooking: React.FC<BookingFlowProps> = ({
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-        {availableDates.map((date) => (
-          <button
-            key={date.toISOString()}
-            onClick={() => handleDateSelect(date)}
-            className="p-4 border-2 border-gray-200 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-colors text-center"
-          >
-            <div className="font-semibold text-gray-900">
-              {date.toLocaleDateString('en-US', { 
-                weekday: 'long',
-                month: 'short',
-                day: 'numeric'
-              })}
-            </div>
-          </button>
-        ))}
+        {availableDates.length > 0 ? (
+          availableDates.map((date) => (
+            <button
+              key={date.toISOString()}
+              onClick={() => handleDateSelect(date)}
+              className="p-4 border-2 border-gray-200 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-colors text-center"
+            >
+              <div className="font-semibold text-gray-900">
+                {date.toLocaleDateString('en-US', { 
+                  weekday: 'long',
+                  month: 'short',
+                  day: 'numeric'
+                })}
+              </div>
+            </button>
+          ))
+        ) : (
+          <div className="col-span-full text-center py-8">
+            <p className="text-gray-600 mb-2">No available dates found.</p>
+            <p className="text-sm text-gray-500">
+              Please check the browser console for debugging information.
+            </p>
+            <p className="text-xs text-gray-400 mt-2">
+              Debug: {availableDates.length} dates loaded
+            </p>
+          </div>
+        )}
       </div>
 
       {onCancel && (

@@ -166,14 +166,37 @@ export class HighLevelService {
       // Handle different possible response structures
       const rawSlots = response.freeSlots || response.slots || response.data || [];
       
-      console.log('Raw slots from API:', rawSlots.length, 'slots found');
+      console.log('HighLevel Service - Raw slots from API:', {
+        count: rawSlots.length,
+        firstSlot: rawSlots[0],
+        responseKeys: Object.keys(response),
+        rawSlotsType: typeof rawSlots,
+        isArray: Array.isArray(rawSlots)
+      });
       
-      const slots: AvailableSlot[] = rawSlots.map((slot: any) => ({
-        time: slot.startTime || slot.time || slot.start,
-        available: true,
-        duration: slot.duration || 30,
-        displayTime: this.formatDisplayTime(slot.startTime || slot.time || slot.start, timezone)
-      }));
+      const slots: AvailableSlot[] = rawSlots.map((slot: any, index: number) => {
+        const timeValue = slot.startTime || slot.time || slot.start;
+        
+        if (index === 0) {
+          console.log('HighLevel Service - First slot details:', {
+            slot,
+            timeValue,
+            slotKeys: Object.keys(slot || {})
+          });
+        }
+        
+        return {
+          time: timeValue,
+          available: true,
+          duration: slot.duration || 30,
+          displayTime: this.formatDisplayTime(timeValue, timezone)
+        };
+      });
+      
+      console.log('HighLevel Service - Processed slots:', {
+        count: slots.length,
+        firstProcessedSlot: slots[0]
+      });
 
       return {
         calendarId,
