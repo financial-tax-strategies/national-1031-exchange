@@ -364,7 +364,8 @@ export interface BookingAnalyticsEvent {
 export type {
   // Database models
   HighLevelConfig,
-  Appointment, 
+  Appointment,
+  AppointmentStatus,
   WebhookLog,
   AvailabilityCache,
   
@@ -385,7 +386,11 @@ export type {
   BookingOptions,
   
   // UI state
+  BookingState,
   BookingUIState,
+  
+  // Error types
+  BookingError,
   
   // Utilities
   TimeZoneInfo,
@@ -397,3 +402,6 @@ export type {
   // Analytics
   BookingAnalyticsEvent
 };
+
+// Export runtime values (not just types)
+export { BookingErrorCode };

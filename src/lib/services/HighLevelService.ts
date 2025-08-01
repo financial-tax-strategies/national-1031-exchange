@@ -130,8 +130,8 @@ export class HighLevelService {
       const { calendarId, startDate, endDate, timezone } = request;
       
       const params = new URLSearchParams({
-        startDate,
-        endDate,
+        startDate: startDate.toString(),
+        endDate: endDate.toString(),
         timezone
       });
 

@@ -115,8 +115,8 @@ export const AppointmentBooking: React.FC<BookingFlowProps> = ({
 
       const response = await highlevelService.current.getAvailability({
         calendarId: highlevelService.current.getCalendarId(),
-        startDate: startDate.toISOString().split('T')[0],
-        endDate: endDate.toISOString().split('T')[0],
+        startDate: startDate.getTime().toString(),
+        endDate: endDate.getTime().toString(),
         timezone
       });
 
@@ -161,8 +161,8 @@ export const AppointmentBooking: React.FC<BookingFlowProps> = ({
       
       const response = await highlevelService.current.getAvailability({
         calendarId: highlevelService.current.getCalendarId(),
-        startDate: date.toISOString().split('T')[0],
-        endDate: date.toISOString().split('T')[0],
+        startDate: date.getTime().toString(),
+        endDate: date.getTime().toString(),
         timezone
       });
 
