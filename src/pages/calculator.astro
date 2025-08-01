@@ -54,31 +54,7 @@ import { TaxSavingsCalculator } from '../components/calculators/TaxSavingsCalcul
       </div>
 
       <!-- Calculator Component -->
-      <TaxSavingsCalculator client:load onLeadCapture={async (data) => {
-        // This will be replaced with actual HighLevel API integration
-        console.log('Lead captured:', data);
-        
-        // Send to Netlify Function (to be implemented)
-        try {
-          const response = await fetch('/.netlify/functions/capture-lead', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
-          });
-          
-          if (!response.ok) {
-            throw new Error('Failed to capture lead');
-          }
-          
-          const result = await response.json();
-          console.log('Lead captured successfully:', result);
-        } catch (error) {
-          console.error('Error capturing lead:', error);
-          // Still allow calculator to continue even if lead capture fails
-        }
-      }} />
+      <TaxSavingsCalculator client:load />
 
       <!-- Educational Content -->
       <div class="mt-16 prose prose-lg max-w-none">
