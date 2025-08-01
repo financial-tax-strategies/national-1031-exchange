@@ -187,7 +187,6 @@ export const AppointmentBooking: React.FC<BookingFlowProps> = ({
       }
 
       console.log('Final available dates:', dates);
-      }
     } catch (error) {
       console.error('Error loading availability:', error);
       handleError(error as BookingError);
