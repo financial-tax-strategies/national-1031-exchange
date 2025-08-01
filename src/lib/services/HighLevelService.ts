@@ -130,9 +130,21 @@ export class HighLevelService {
     try {
       const { calendarId, startDate, endDate, timezone } = request;
       
+      // Try both milliseconds and seconds for Unix timestamps
+      const startDateSeconds = Math.floor(parseInt(startDate) / 1000);
+      const endDateSeconds = Math.floor(parseInt(endDate) / 1000);
+      
       const params = new URLSearchParams({
-        startDate: startDate.toString(),
-        endDate: endDate.toString(),
+        startDate: startDateSeconds.toString(),
+        endDate: endDateSeconds.toString(),
+        timezone
+      });
+      
+      console.log('HighLevel API request params:', {
+        startDateMs: startDate,
+        startDateSec: startDateSeconds,
+        endDateMs: endDate,
+        endDateSec: endDateSeconds,
         timezone
       });
 
@@ -141,11 +153,25 @@ export class HighLevelService {
         { method: 'GET' }
       );
 
-      const slots: AvailableSlot[] = (response.freeSlots || []).map((slot: any) => ({
-        time: slot.startTime,
+      // Debug: Log the raw API response
+      console.log('HighLevel availability response:', {
+        calendarId,
+        startDate,
+        endDate,
+        timezone,
+        response: JSON.stringify(response, null, 2)
+      });
+
+      // Handle different possible response structures
+      const rawSlots = response.freeSlots || response.slots || response.data || [];
+      
+      console.log('Raw slots from API:', rawSlots.length, 'slots found');
+      
+      const slots: AvailableSlot[] = rawSlots.map((slot: any) => ({
+        time: slot.startTime || slot.time || slot.start,
         available: true,
-        duration: 30,
-        displayTime: this.formatDisplayTime(slot.startTime, timezone)
+        duration: slot.duration || 30,
+        displayTime: this.formatDisplayTime(slot.startTime || slot.time || slot.start, timezone)
       }));
 
       return {
