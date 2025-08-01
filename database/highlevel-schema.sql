@@ -222,7 +222,7 @@ INSERT INTO highlevel_config (
     'REPLACE_WITH_LOCATION_ID', 
     'REPLACE_WITH_CALENDAR_ID',
     'REPLACE_WITH_WEBHOOK_SECRET',
-    'https://national1031center.com/.netlify/functions/highlevel-webhook',
+    'https://the1031center.com/.netlify/functions/highlevel-webhook',
     'America/New_York',
     true
 ) ON CONFLICT DO NOTHING;

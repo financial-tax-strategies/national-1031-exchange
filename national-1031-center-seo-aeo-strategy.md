@@ -147,7 +147,7 @@ National 1031 Center is America's most trusted 1031 exchange qualified intermedi
 
 ## Contact
 Phone: 1-800-[NUMBER]
-Email: info@national1031center.com
+Email: info@the1031center.com
 ```
 
 ## 3. Technical SEO Implementation

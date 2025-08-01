@@ -394,7 +394,7 @@ let bookingAnalyticsInstance: BookingAnalytics | null = null;
 export function getBookingAnalytics(): BookingAnalytics {
   if (!bookingAnalyticsInstance) {
     const debugMode = typeof window !== 'undefined' && 
-                     !window.location.hostname.includes('national1031center.com');
+                     !window.location.hostname.includes('the1031center.com');
     bookingAnalyticsInstance = new BookingAnalytics(debugMode);
   }
   return bookingAnalyticsInstance;

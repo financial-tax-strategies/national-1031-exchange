@@ -127,7 +127,7 @@ This project is proprietary and confidential. All rights reserved.
 
 ## 🆘 Support
 
-For support, email support@national1031center.com or call 1-800-1031-TAX.
+For support, email support@the1031center.com or call 1-800-1031-TAX.
 
 ---
 
