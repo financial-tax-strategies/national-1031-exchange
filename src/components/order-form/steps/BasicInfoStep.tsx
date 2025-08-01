@@ -6,6 +6,7 @@
 import React, { useEffect } from 'react';
 import { useOrderForm } from '../OrderFormContext';
 import { FieldError } from '../components/FieldError';
+import { PrivacyNotice } from '../components/PrivacyNotice';
 import { useOrderFormAnalytics } from '../../../lib/analytics/orderFormAnalytics';
 
 // ============================================
@@ -224,12 +225,7 @@ export const BasicInfoStep: React.FC = () => {
       </div>
       
       {/* Privacy Notice */}
-      <div className="bg-blue-50 p-4 rounded-lg">
-        <p className="text-sm text-blue-900">
-          <strong>Privacy Notice:</strong> Your information is secure and will only be used 
-          to process your 1031 exchange. We never share your data with third parties.
-        </p>
-      </div>
+      <PrivacyNotice />
     </div>
   );
 };

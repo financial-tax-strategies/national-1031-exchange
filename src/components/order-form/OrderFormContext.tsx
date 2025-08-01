@@ -13,6 +13,7 @@ import type {
 import { validateStep } from '../../lib/schemas/orderFormSchemas';
 import { getHighLevelService } from '../../lib/services/HighLevelService';
 import { generateSessionId } from '../../lib/utils/sessionId';
+import { saveSecureData, loadSecureData, clearSecureData, isEncryptionSupported } from '../../lib/utils/encryption';
 
 // ============================================
 // Initial State
@@ -71,21 +72,35 @@ export const OrderFormProvider: React.FC<OrderFormProviderProps> = ({
     }
     setSessionId(savedSessionId);
 
-    // Load saved progress
+    // Load saved progress with encryption support
     try {
-      const savedProgress = localStorage.getItem(STORAGE_KEY);
-      if (savedProgress) {
-        const parsed = JSON.parse(savedProgress);
-        // Validate that the saved data is still valid
-        if (parsed.timestamp && Date.now() - parsed.timestamp < 24 * 60 * 60 * 1000) {
-          setFormState(parsed.formState);
-        } else {
-          // Clear expired data
-          localStorage.removeItem(STORAGE_KEY);
+      if (isEncryptionSupported()) {
+        // Try to load encrypted data
+        const decryptedData = loadSecureData(STORAGE_KEY);
+        if (decryptedData && decryptedData.formState) {
+          setFormState(decryptedData.formState);
+          console.log('Loaded encrypted form progress');
+        }
+      } else {
+        // Fallback to unencrypted storage for older browsers
+        const savedProgress = localStorage.getItem(STORAGE_KEY);
+        if (savedProgress) {
+          const parsed = JSON.parse(savedProgress);
+          // Validate that the saved data is still valid
+          if (parsed.timestamp && Date.now() - parsed.timestamp < 24 * 60 * 60 * 1000) {
+            setFormState(parsed.formState);
+            console.log('Loaded unencrypted form progress (fallback mode)');
+          } else {
+            // Clear expired data
+            localStorage.removeItem(STORAGE_KEY);
+          }
         }
       }
     } catch (err) {
       console.error('Error loading saved progress:', err);
+      // Clear any corrupted data
+      clearSecureData(STORAGE_KEY);
+      localStorage.removeItem(STORAGE_KEY);
     }
   }, []);
 
@@ -100,9 +115,17 @@ export const OrderFormProvider: React.FC<OrderFormProviderProps> = ({
         timestamp: Date.now(),
         sessionId
       };
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(dataToSave));
+      
+      if (isEncryptionSupported()) {
+        // Save encrypted data
+        saveSecureData(STORAGE_KEY, dataToSave);
+      } else {
+        // Fallback to unencrypted storage
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(dataToSave));
+      }
     } catch (err) {
       console.error('Error saving progress:', err);
+      // Don't throw - gracefully degrade to no persistence
     }
   }, [sessionId]);
 
@@ -273,7 +296,11 @@ export const OrderFormProvider: React.FC<OrderFormProviderProps> = ({
       const contactId = await highlevelService.createOrderFormLead(formState.data as OrderFormData);
       
       // Clear saved progress on successful submission
-      localStorage.removeItem(STORAGE_KEY);
+      if (isEncryptionSupported()) {
+        clearSecureData(STORAGE_KEY);
+      } else {
+        localStorage.removeItem(STORAGE_KEY);
+      }
       sessionStorage.removeItem(SESSION_KEY);
       
       // Call success callback
