@@ -25,7 +25,11 @@ Open your `.env` file and update these values:
 
 ```env
 # Replace YOUR_CALENDAR_ID_HERE with your actual calendar ID
-VITE_HIGHLEVEL_CALENDAR_ID=ABC123XYZ
+PUBLIC_HIGHLEVEL_CALENDAR_ID=ABC123XYZ
+
+# Replace with your actual API key and location ID
+PUBLIC_HIGHLEVEL_API_KEY=your-api-key-here
+PUBLIC_HIGHLEVEL_LOCATION_ID=your-location-id-here
 
 # Replace with your Supabase project URL
 PUBLIC_SUPABASE_URL=https://xxxxx.supabase.co
@@ -61,9 +65,10 @@ See [Netlify Deployment Guide](./docs/NETLIFY_DEPLOYMENT.md) for detailed instru
 ## Still Having Issues?
 
 Check the browser console for specific error messages. Common issues:
-- Missing VITE_HIGHLEVEL_CALENDAR_ID - get from HighLevel
+- Missing PUBLIC_HIGHLEVEL_CALENDAR_ID - get from HighLevel
+- Missing PUBLIC_HIGHLEVEL_API_KEY or PUBLIC_HIGHLEVEL_LOCATION_ID
 - Missing Supabase credentials - create a project at supabase.com
-- Wrong variable names (missing VITE_ or PUBLIC_ prefix)
+- Wrong variable names (missing PUBLIC_ prefix for client-side variables)
 
 ---
 

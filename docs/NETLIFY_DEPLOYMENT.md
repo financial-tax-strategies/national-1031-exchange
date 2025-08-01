@@ -41,9 +41,9 @@ Click "Add a variable" for each of these:
 
 #### HighLevel Variables (Required for Booking)
 ```
-VITE_HIGHLEVEL_API_KEY = your-actual-api-key
-VITE_HIGHLEVEL_LOCATION_ID = your-actual-location-id
-VITE_HIGHLEVEL_CALENDAR_ID = your-actual-calendar-id
+PUBLIC_HIGHLEVEL_API_KEY = your-actual-api-key
+PUBLIC_HIGHLEVEL_LOCATION_ID = your-actual-location-id
+PUBLIC_HIGHLEVEL_CALENDAR_ID = your-actual-calendar-id
 ```
 
 **How to find these:**
@@ -104,12 +104,12 @@ After adding all variables:
 ### Local Development Test
 ```bash
 # Your .env file should have actual values
-cat .env | grep VITE_HIGHLEVEL
+cat .env | grep PUBLIC_HIGHLEVEL
 
 # Should show:
-# VITE_HIGHLEVEL_API_KEY=your-actual-key
-# VITE_HIGHLEVEL_LOCATION_ID=your-actual-id
-# VITE_HIGHLEVEL_CALENDAR_ID=your-actual-calendar-id
+# PUBLIC_HIGHLEVEL_API_KEY=your-actual-key
+# PUBLIC_HIGHLEVEL_LOCATION_ID=your-actual-id
+# PUBLIC_HIGHLEVEL_CALENDAR_ID=your-actual-calendar-id
 ```
 
 ### Production Test
@@ -123,7 +123,7 @@ cat .env | grep VITE_HIGHLEVEL
 ### Issue: Calendar keeps spinning
 **Cause**: Missing or incorrect environment variables
 **Solution**: 
-1. Verify all VITE_ and PUBLIC_ prefixed variables are set in Netlify
+1. Verify all PUBLIC_ prefixed variables are set in Netlify
 2. Check browser console for specific missing variables
 3. Ensure you triggered a new deploy after adding variables
 
@@ -132,7 +132,7 @@ cat .env | grep VITE_HIGHLEVEL
 **Solution**: Double-check all variables from .env are added to Netlify
 
 ### Issue: "Failed to initialize booking system"
-**Cause**: Missing VITE_HIGHLEVEL_CALENDAR_ID
+**Cause**: Missing PUBLIC_HIGHLEVEL_CALENDAR_ID
 **Solution**: 
 1. In HighLevel, go to Calendars
 2. Click on your calendar
@@ -163,9 +163,9 @@ cat .env | grep VITE_HIGHLEVEL
 
 | Variable | Required | Client/Server | Description |
 |----------|----------|---------------|-------------|
-| `VITE_HIGHLEVEL_API_KEY` | ✅ | Client | HighLevel API authentication |
-| `VITE_HIGHLEVEL_LOCATION_ID` | ✅ | Client | Your HighLevel location/account |
-| `VITE_HIGHLEVEL_CALENDAR_ID` | ✅ | Client | Calendar for bookings |
+| `PUBLIC_HIGHLEVEL_API_KEY` | ✅ | Client | HighLevel API authentication |
+| `PUBLIC_HIGHLEVEL_LOCATION_ID` | ✅ | Client | Your HighLevel location/account |
+| `PUBLIC_HIGHLEVEL_CALENDAR_ID` | ✅ | Client | Calendar for bookings |
 | `PUBLIC_SUPABASE_URL` | ✅ | Client | Supabase project URL |
 | `PUBLIC_SUPABASE_ANON_KEY` | ✅ | Client | Supabase public key |
 | `HIGHLEVEL_WEBHOOK_SECRET` | ✅ | Server | Webhook verification |
@@ -176,7 +176,7 @@ cat .env | grep VITE_HIGHLEVEL
 
 Before deploying:
 - [ ] All required variables added to Netlify Dashboard
-- [ ] Variable names match exactly (including VITE_ and PUBLIC_ prefixes)
+- [ ] Variable names match exactly (including PUBLIC_ prefix for client-side)
 - [ ] No trailing spaces in variable values
 - [ ] Calendar ID obtained from HighLevel
 - [ ] Supabase project created and configured

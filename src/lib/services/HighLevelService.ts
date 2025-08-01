@@ -361,12 +361,12 @@ export async function getHighLevelService(): Promise<HighLevelService> {
  */
 async function loadHighLevelConfig(): Promise<HighLevelConfig> {
   // In a real implementation, this would load from Supabase
-  // For now, use environment variables with Vite's import.meta.env
+  // For now, use environment variables with Astro's import.meta.env
   const config: HighLevelConfig = {
     id: 'default',
-    apiKey: import.meta.env.VITE_HIGHLEVEL_API_KEY || '',
-    locationId: import.meta.env.VITE_HIGHLEVEL_LOCATION_ID || '',
-    calendarId: import.meta.env.VITE_HIGHLEVEL_CALENDAR_ID || '',
+    apiKey: import.meta.env.PUBLIC_HIGHLEVEL_API_KEY || '',
+    locationId: import.meta.env.PUBLIC_HIGHLEVEL_LOCATION_ID || '',
+    calendarId: import.meta.env.PUBLIC_HIGHLEVEL_CALENDAR_ID || '',
     webhookSecret: import.meta.env.HIGHLEVEL_WEBHOOK_SECRET,
     webhookUrl: import.meta.env.HIGHLEVEL_WEBHOOK_URL,
     timezone: 'America/New_York',
