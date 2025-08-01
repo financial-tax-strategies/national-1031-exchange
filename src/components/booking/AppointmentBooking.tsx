@@ -9,9 +9,9 @@ import type {
   BookingState, 
   AvailableSlot, 
   Appointment,
-  BookingError,
-  BookingErrorCode 
+  BookingError
 } from '../../lib/types/highlevel';
+import { BookingErrorCode } from '../../lib/types/highlevel';
 import { getHighLevelService } from '../../lib/services/HighLevelService';
 import { getDatabaseService } from '../../lib/services/DatabaseService';
 import { getAppointmentPoller } from '../../lib/utils/appointmentPoller';
@@ -114,7 +114,7 @@ export const AppointmentBooking: React.FC<BookingFlowProps> = ({
       endDate.setDate(endDate.getDate() + maxBookingDays);
 
       const response = await highlevelService.current.getAvailability({
-        calendarId: 'will-be-loaded-from-config',
+        calendarId: highlevelService.current.getCalendarId(),
         startDate: startDate.toISOString().split('T')[0],
         endDate: endDate.toISOString().split('T')[0],
         timezone
@@ -160,7 +160,7 @@ export const AppointmentBooking: React.FC<BookingFlowProps> = ({
       setLoading(true);
       
       const response = await highlevelService.current.getAvailability({
-        calendarId: 'will-be-loaded-from-config',
+        calendarId: highlevelService.current.getCalendarId(),
         startDate: date.toISOString().split('T')[0],
         endDate: date.toISOString().split('T')[0],
         timezone

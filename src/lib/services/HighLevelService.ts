@@ -31,6 +31,24 @@ export class HighLevelService {
   }
 
   // ============================================
+  // Configuration Getters
+  // ============================================
+
+  /**
+   * Get the calendar ID from configuration
+   */
+  getCalendarId(): string {
+    return this.config.calendarId;
+  }
+
+  /**
+   * Get the location ID from configuration
+   */
+  getLocationId(): string {
+    return this.config.locationId;
+  }
+
+  // ============================================
   // Contact Management
   // ============================================
 
