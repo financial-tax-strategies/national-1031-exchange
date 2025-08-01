@@ -5,6 +5,8 @@
 
 America's most trusted 1031 exchange qualified intermediary website, built with Astro for optimal performance and SEO.
 
+_Last updated: January 31, 2025_
+
 ## 🚀 Features
 
 - **SEO/AEO Optimized**: Built for both search engines and AI answer engines
