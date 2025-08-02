@@ -130,9 +130,29 @@ export class HighLevelService {
     try {
       const { calendarId, startDate, endDate, timezone } = request;
       
-      // Convert date strings to milliseconds (working implementation format)
-      const startTimestamp = new Date(startDate).getTime();
-      const endTimestamp = new Date(endDate).getTime();
+      // Handle timestamp strings (already in milliseconds) or date strings
+      let startTimestamp: number;
+      let endTimestamp: number;
+      
+      // Check if the input is already a timestamp string (numeric string)
+      if (/^\d+$/.test(startDate)) {
+        startTimestamp = parseInt(startDate);
+      } else {
+        // Convert date string to milliseconds
+        startTimestamp = new Date(startDate).getTime();
+      }
+      
+      if (/^\d+$/.test(endDate)) {
+        endTimestamp = parseInt(endDate);
+      } else {
+        // Convert date string to milliseconds  
+        endTimestamp = new Date(endDate).getTime();
+      }
+      
+      // Validate timestamps are valid numbers
+      if (isNaN(startTimestamp) || isNaN(endTimestamp)) {
+        throw new Error(`Invalid date parameters: startDate=${startDate}, endDate=${endDate}`);
+      }
       
       const params = new URLSearchParams({
         startDate: startTimestamp.toString(),

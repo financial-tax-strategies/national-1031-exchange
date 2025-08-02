@@ -291,8 +291,14 @@ export const AppointmentBooking: React.FC<BookingFlowProps> = ({
         updatedAt: new Date()
       };
 
-      // Track booking confirmation
-      trackBookingEvent.bookingConfirmed(appointmentData);
+      // Track booking confirmation safely
+      try {
+        if (trackBookingEvent && typeof trackBookingEvent.bookingConfirmed === 'function') {
+          trackBookingEvent.bookingConfirmed(appointmentData);
+        }
+      } catch (e) {
+        console.error('Analytics error:', e);
+      }
 
       // Create appointment in HighLevel
       const appointmentRequest = {
@@ -316,12 +322,24 @@ export const AppointmentBooking: React.FC<BookingFlowProps> = ({
       setAppointment(savedAppointment);
       setCurrentStep('pending-assignment');
 
-      // Track appointment creation
-      trackBookingEvent.appointmentCreated(savedAppointment);
+      // Track appointment creation safely
+      try {
+        if (trackBookingEvent && typeof trackBookingEvent.appointmentCreated === 'function') {
+          trackBookingEvent.appointmentCreated(savedAppointment);
+        }
+      } catch (e) {
+        console.error('Analytics error:', e);
+      }
 
-      // Track submission performance
-      const duration = performance.now() - startTime;
-      trackBookingEvent.submissionPerformance(duration, true);
+      // Track submission performance safely
+      try {
+        const duration = performance.now() - startTime;
+        if (trackBookingEvent && typeof trackBookingEvent.submissionPerformance === 'function') {
+          trackBookingEvent.submissionPerformance(duration, true);
+        }
+      } catch (e) {
+        console.error('Analytics error:', e);
+      }
 
       // Set up real-time subscription for assignment updates
       subscribeToAppointmentUpdates(savedAppointment.id);
@@ -334,10 +352,23 @@ export const AppointmentBooking: React.FC<BookingFlowProps> = ({
           setAppointment(updatedAppointment);
           
           if (updatedAppointment.status === 'confirmed') {
-            // Track appointment assignment
-            trackBookingEvent.appointmentAssigned(updatedAppointment);
-            // Track booking completion
-            trackBookingEvent.bookingCompleted(updatedAppointment);
+            // Track appointment assignment safely
+            try {
+              if (trackBookingEvent && typeof trackBookingEvent.appointmentAssigned === 'function') {
+                trackBookingEvent.appointmentAssigned(updatedAppointment);
+              }
+            } catch (e) {
+              console.error('Analytics error:', e);
+            }
+            
+            // Track booking completion safely
+            try {
+              if (trackBookingEvent && typeof trackBookingEvent.bookingCompleted === 'function') {
+                trackBookingEvent.bookingCompleted(updatedAppointment);
+              }
+            } catch (e) {
+              console.error('Analytics error:', e);
+            }
             
             setCurrentStep('confirmed');
             onSuccess(updatedAppointment);
@@ -350,8 +381,14 @@ export const AppointmentBooking: React.FC<BookingFlowProps> = ({
               retryable: true
             };
             
-            // Track booking error
-            trackBookingEvent.bookingError(error, { source: 'polling_fallback' });
+            // Track booking error safely
+            try {
+              if (trackBookingEvent && typeof trackBookingEvent.bookingError === 'function') {
+                trackBookingEvent.bookingError(error, { source: 'polling_fallback' });
+              }
+            } catch (e) {
+              console.error('Analytics error:', e);
+            }
             
             handleError(error);
           }
