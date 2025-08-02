@@ -337,9 +337,19 @@ export const OrderFormProvider: React.FC<OrderFormProviderProps> = ({
     // Can't proceed if we're on the last step
     if (formState.currentStep >= 6) return false;
     
+    // Don't validate during initial render when data is empty
+    if (!formState.data || Object.keys(formState.data).length === 0) {
+      return false;
+    }
+    
     // Validate current step fields
-    const result = validateStep(formState.currentStep, formState.data);
-    return result.success;
+    try {
+      const result = validateStep(formState.currentStep, formState.data);
+      return result.success;
+    } catch (error) {
+      console.error('Validation error:', error);
+      return false;
+    }
   }, [formState.currentStep, formState.data]);
   
   const canGoPrevious = formState.currentStep > 1;
