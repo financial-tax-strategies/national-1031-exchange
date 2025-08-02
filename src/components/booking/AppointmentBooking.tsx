@@ -199,10 +199,17 @@ export const AppointmentBooking: React.FC<BookingFlowProps> = ({
     try {
       setLoading(true);
       
+      // Create start of day and end of day timestamps
+      const startOfDay = new Date(date);
+      startOfDay.setHours(0, 0, 0, 0);
+      
+      const endOfDay = new Date(date);
+      endOfDay.setHours(23, 59, 59, 999);
+      
       const response = await highlevelService.current.getAvailability({
         calendarId: highlevelService.current.getCalendarId(),
-        startDate: date.getTime().toString(),
-        endDate: date.getTime().toString(),
+        startDate: startOfDay.getTime().toString(),
+        endDate: endOfDay.getTime().toString(),
         timezone
       });
 
@@ -371,7 +378,15 @@ export const AppointmentBooking: React.FC<BookingFlowProps> = ({
             }
             
             setCurrentStep('confirmed');
-            onSuccess(updatedAppointment);
+            
+            // Call parent success handler safely
+            try {
+              if (onSuccess && typeof onSuccess === 'function') {
+                onSuccess(updatedAppointment);
+              }
+            } catch (e) {
+              console.error('Error in parent success handler:', e);
+            }
           } else if (updatedAppointment.status === 'failed') {
             const error = {
               code: BookingErrorCode.ASSIGNMENT_TIMEOUT,
@@ -435,7 +450,14 @@ export const AppointmentBooking: React.FC<BookingFlowProps> = ({
             window.trackContentEngagement('appointment_confirmed', 'appointment_booking');
           }
           
-          onSuccess(updatedAppointment);
+          // Call parent success handler safely
+          try {
+            if (onSuccess && typeof onSuccess === 'function') {
+              onSuccess(updatedAppointment);
+            }
+          } catch (e) {
+            console.error('Error in parent success handler:', e);
+          }
         } else if (updatedAppointment.status === 'failed') {
           handleError({
             code: BookingErrorCode.ASSIGNMENT_TIMEOUT,
@@ -470,7 +492,15 @@ export const AppointmentBooking: React.FC<BookingFlowProps> = ({
     setError(bookingError);
     setCurrentStep('error');
     setLoading(false);
-    onError(bookingError);
+    
+    // Call parent error handler safely
+    try {
+      if (onError && typeof onError === 'function') {
+        onError(bookingError);
+      }
+    } catch (e) {
+      console.error('Error in parent error handler:', e);
+    }
   };
 
   const handleRetry = () => {
