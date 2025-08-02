@@ -130,21 +130,21 @@ export class HighLevelService {
     try {
       const { calendarId, startDate, endDate, timezone } = request;
       
-      // Convert milliseconds to seconds for Unix timestamps
-      const startDateSeconds = Math.floor(parseInt(startDate) / 1000);
-      const endDateSeconds = Math.floor(parseInt(endDate) / 1000);
+      // Convert date strings to milliseconds (working implementation format)
+      const startTimestamp = new Date(startDate).getTime();
+      const endTimestamp = new Date(endDate).getTime();
       
       const params = new URLSearchParams({
-        startDate: startDateSeconds.toString(),
-        endDate: endDateSeconds.toString(),
+        startDate: startTimestamp.toString(),
+        endDate: endTimestamp.toString(),
         timezone
       });
       
       console.log('HighLevel API request params:', {
-        startDateMs: startDate,
-        startDateSeconds,
-        endDateMs: endDate,
-        endDateSeconds,
+        startDateStr: startDate,
+        startTimestamp,
+        endDateStr: endDate,
+        endTimestamp,
         timezone,
         url: `/calendars/${calendarId}/free-slots?${params}`
       });
@@ -163,8 +163,45 @@ export class HighLevelService {
         response: JSON.stringify(response, null, 2)
       });
 
-      // Check if we got a traceId-only response (error case)
-      if (response.traceId && !response.slots && !response.freeSlots && !response.data) {
+      // Parse nested date structure from HighLevel v2 API
+      // Format: { "2025-07-28": { "slots": ["2025-07-28T14:30:00-04:00", ...] }, "traceId": "..." }
+      const slots: AvailableSlot[] = [];
+      
+      console.log('HighLevel Service - Processing response keys:', Object.keys(response));
+      
+      for (const [key, value] of Object.entries(response)) {
+        // Skip non-date keys like "traceId"
+        if (key === 'traceId' || !value || typeof value !== 'object') {
+          console.log(`Skipping non-date key: ${key}`);
+          continue;
+        }
+        
+        const dayData = value as any;
+        if ('slots' in dayData && Array.isArray(dayData.slots)) {
+          console.log(`Processing ${dayData.slots.length} slots for date: ${key}`);
+          
+          dayData.slots.forEach((slotTime: string, index: number) => {
+            if (index === 0) {
+              console.log('HighLevel Service - First slot details:', {
+                date: key,
+                slotTime,
+                parsed: new Date(slotTime),
+                parsedISO: new Date(slotTime).toISOString()
+              });
+            }
+            
+            slots.push({
+              time: slotTime,
+              available: true,
+              duration: 30,
+              displayTime: this.formatDisplayTime(slotTime, timezone)
+            });
+          });
+        }
+      }
+      
+      // Check if we got no slots data (possible error)
+      if (slots.length === 0 && response.traceId && Object.keys(response).length === 1) {
         console.error('HighLevel API returned only traceId - possible auth or permission issue:', {
           traceId: response.traceId,
           apiKey: this.config.apiKey ? 'present' : 'missing',
@@ -175,41 +212,11 @@ export class HighLevelService {
         
         throw this.createBookingError(
           BookingErrorCode.SERVICE_UNAVAILABLE,
-          'Calendar service returned incomplete data. This may be a permission issue.',
+          'Calendar service returned no availability data. This may be a permission issue.',
           response,
           'Unable to load calendar availability. Please contact support or try the widget booking option.'
         );
       }
-
-      // Handle different possible response structures
-      const rawSlots = response.freeSlots || response.slots || response.data || [];
-      
-      console.log('HighLevel Service - Raw slots from API:', {
-        count: rawSlots.length,
-        firstSlot: rawSlots[0],
-        responseKeys: Object.keys(response),
-        rawSlotsType: typeof rawSlots,
-        isArray: Array.isArray(rawSlots)
-      });
-      
-      const slots: AvailableSlot[] = rawSlots.map((slot: any, index: number) => {
-        const timeValue = slot.startTime || slot.time || slot.start;
-        
-        if (index === 0) {
-          console.log('HighLevel Service - First slot details:', {
-            slot,
-            timeValue,
-            slotKeys: Object.keys(slot || {})
-          });
-        }
-        
-        return {
-          time: timeValue,
-          available: true,
-          duration: slot.duration || 30,
-          displayTime: this.formatDisplayTime(timeValue, timezone)
-        };
-      });
       
       console.log('HighLevel Service - Processed slots:', {
         count: slots.length,
@@ -494,6 +501,7 @@ export class HighLevelService {
     
     const headers = {
       'Authorization': `Bearer ${this.config.apiKey}`,
+      'Version': '2021-07-28',
       'Content-Type': 'application/json',
       'Accept': 'application/json',
       ...((options.headers as Record<string, string>) || {})
