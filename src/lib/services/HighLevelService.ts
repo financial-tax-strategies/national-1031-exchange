@@ -94,6 +94,37 @@ export class HighLevelService {
       return response.contact.id;
     } catch (error) {
       console.error('Error creating contact:', error);
+      
+      // Handle duplicate contact errors - extract existing contact ID
+      if (error.message && error.message.includes('HTTP 400')) {
+        try {
+          // Parse error response to check for duplicate contact
+          const errorMatch = error.message.match(/\{.*\}/);
+          if (errorMatch) {
+            const errorData = JSON.parse(errorMatch[0]);
+            if (errorData.message && errorData.message.includes('duplicated contacts') && errorData.meta?.contactId) {
+              console.log('Contact already exists with ID:', errorData.meta.contactId);
+              
+              // Try to retrieve the existing contact
+              try {
+                const existingContactResponse = await this.makeRequest(`/contacts/${errorData.meta.contactId}`, {
+                  method: 'GET'
+                });
+                
+                if (existingContactResponse.contact?.id) {
+                  console.log('Retrieved existing contact from duplicate error:', existingContactResponse.contact.id);
+                  return existingContactResponse.contact.id;
+                }
+              } catch (retrieveError) {
+                console.error('Error retrieving existing contact:', retrieveError);
+              }
+            }
+          }
+        } catch (parseError) {
+          console.error('Error parsing duplicate contact error:', parseError);
+        }
+      }
+      
       throw this.createBookingError(
         BookingErrorCode.CONTACT_CREATION_FAILED,
         'Failed to create contact in CRM',
@@ -114,11 +145,13 @@ export class HighLevelService {
         return null;
       }
 
-      const response = await this.makeRequest(`/contacts/search?email=${encodeURIComponent(email)}`, {
+      // Use correct HighLevel v2 API endpoint with locationId
+      const response = await this.makeRequest(`/contacts/search/duplicate?locationId=${this.config.locationId}&email=${encodeURIComponent(email)}`, {
         method: 'GET'
       });
 
-      return response.contacts?.[0]?.id || null;
+      // HighLevel duplicate search returns contact directly, not in array
+      return response.contact?.id || null;
     } catch (error) {
       console.error('Error searching contact:', error);
       return null; // Don't throw, just return null to create new contact
