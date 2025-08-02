@@ -249,6 +249,41 @@ export class DatabaseService {
   }
 
   /**
+   * Increment polling attempts for an appointment
+   */
+  public async incrementPollingAttempts(appointmentId: string): Promise<any> {
+    try {
+      console.log('[DatabaseService] Incrementing polling attempts for appointment:', appointmentId);
+      
+      // First get current polling attempts
+      const currentAppointment = await this.getAppointment(appointmentId);
+      const newAttempts = (currentAppointment.polling_attempts || 0) + 1;
+      
+      const { data, error } = await this.supabase
+        .from('appointments')
+        .update({ 
+          polling_attempts: newAttempts,
+          last_polled_at: new Date().toISOString()
+        })
+        .eq('id', appointmentId)
+        .select()
+        .single();
+      
+      if (error) {
+        console.error('[DatabaseService] Error incrementing polling attempts:', error);
+        throw this.handleError(error, 'incrementPollingAttempts');
+      }
+      
+      console.log('[DatabaseService] Polling attempts incremented:', data);
+      return data;
+      
+    } catch (error) {
+      console.error('[DatabaseService] Error in incrementPollingAttempts:', error);
+      throw error;
+    }
+  }
+
+  /**
    * Subscribe to appointment updates
    */
   public subscribeToAppointment(
