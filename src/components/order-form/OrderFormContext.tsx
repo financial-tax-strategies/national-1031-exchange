@@ -11,7 +11,7 @@ import type {
   OrderFormData 
 } from '../../lib/types/orderForm';
 import { validateStep } from '../../lib/schemas/orderFormSchemas';
-import { getHighLevelService } from '../../lib/services/HighLevelService';
+import { HighLevelService } from '../../lib/services/highlevel.service';
 import { generateSessionId } from '../../lib/utils/sessionId';
 import { saveSecureData, loadSecureData, clearSecureData, isEncryptionSupported } from '../../lib/utils/encryption';
 
@@ -292,7 +292,7 @@ export const OrderFormProvider: React.FC<OrderFormProviderProps> = ({
       }
       
       // Submit to HighLevel
-      const highlevelService = await getHighLevelService();
+      const highlevelService = new HighLevelService();
       const contactId = await highlevelService.createOrderFormLead(formState.data as OrderFormData);
       
       // Clear saved progress on successful submission

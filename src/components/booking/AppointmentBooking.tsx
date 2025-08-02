@@ -12,8 +12,8 @@ import type {
   BookingError
 } from '../../lib/types/highlevel';
 import { BookingErrorCode } from '../../lib/types/highlevel';
-import { getHighLevelService } from '../../lib/services/HighLevelService';
-import { getDatabaseService } from '../../lib/services/DatabaseService';
+import { HighLevelService } from '../../lib/services/highlevel.service';
+import { DatabaseService } from '../../lib/services/database.service';
 import { getAppointmentPoller } from '../../lib/utils/appointmentPoller';
 import { trackBookingEvent } from '../../lib/analytics/bookingAnalytics';
 
@@ -80,8 +80,8 @@ export const AppointmentBooking: React.FC<BookingFlowProps> = ({
 
   const initializeServices = async () => {
     try {
-      highlevelService.current = await getHighLevelService();
-      databaseService.current = getDatabaseService();
+      highlevelService.current = new HighLevelService();
+      databaseService.current = DatabaseService.getInstance();
       pollerRef.current = getAppointmentPoller();
       
       // Track booking flow start safely

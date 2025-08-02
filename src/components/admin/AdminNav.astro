@@ -1,0 +1,62 @@
+---
+const currentPath = Astro.url.pathname;
+
+const navItems = [
+  { href: '/admin', label: 'Dashboard' },
+  { href: '/admin/highlevel-config', label: 'HighLevel Config' },
+  { href: '/admin/test-integration', label: 'Test Integration' },
+  { href: '/admin/leads', label: 'Leads' },
+  { href: '/admin/appointments', label: 'Appointments' },
+];
+
+function isActive(href: string): boolean {
+  return currentPath === href || (href !== '/admin' && currentPath.startsWith(href));
+}
+---
+
+<nav class="bg-gray-800 text-white">
+  <div class="container mx-auto px-4">
+    <div class="flex items-center justify-between h-16">
+      <div class="flex items-center space-x-8">
+        <div class="font-bold text-xl">Admin Panel</div>
+        <div class="hidden md:flex space-x-4">
+          {navItems.map((item) => (
+            <a 
+              href={item.href} 
+              class={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                isActive(item.href) 
+                  ? 'bg-gray-900 text-white' 
+                  : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+              }`}
+            >
+              {item.label}
+            </a>
+          ))}
+        </div>
+      </div>
+      <div class="flex items-center space-x-4">
+        <a href="/" class="text-sm text-gray-300 hover:text-white">
+          ← Back to Site
+        </a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile menu -->
+<div class="md:hidden bg-gray-800 border-t border-gray-700">
+  <div class="container mx-auto px-4 py-2 space-y-1">
+    {navItems.map((item) => (
+      <a 
+        href={item.href} 
+        class={`block px-3 py-2 rounded-md text-sm font-medium ${
+          isActive(item.href) 
+            ? 'bg-gray-900 text-white' 
+            : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+        }`}
+      >
+        {item.label}
+      </a>
+    ))}
+  </div>
+</div>

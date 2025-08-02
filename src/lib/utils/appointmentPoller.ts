@@ -3,8 +3,8 @@
 // National 1031 Center - HighLevel Integration
 // ============================================
 
-import { getDatabaseService } from '../services/DatabaseService';
-import { getHighLevelService } from '../services/HighLevelService';
+import { DatabaseService } from '../services/database.service';
+import { HighLevelService } from '../services/highlevel.service';
 import type { Appointment, AppointmentStatus } from '../types/highlevel';
 
 // ============================================
@@ -106,7 +106,7 @@ export class AppointmentPoller {
     onError: (error: Error) => void,
     signal: AbortSignal
   ): Promise<void> {
-    const databaseService = getDatabaseService();
+    const databaseService = DatabaseService.getInstance();
     let attempts = 0;
 
     while (attempts < this.config.maxAttempts && !signal.aborted) {
@@ -182,7 +182,7 @@ export class AppointmentPoller {
 
   private async checkHighLevelAPI(appointment: Appointment): Promise<Appointment | null> {
     try {
-      const highlevelService = await getHighLevelService();
+      const highlevelService = new HighLevelService();
       const apiAppointment = await highlevelService.getAppointmentStatus(
         appointment.highlevelAppointmentId
       );
@@ -196,7 +196,7 @@ export class AppointmentPoller {
                            apiAppointment.appointmentStatus === 'confirmed';
 
       if (hasAssignment) {
-        const databaseService = getDatabaseService();
+        const databaseService = DatabaseService.getInstance();
         return await databaseService.updateAppointment(appointment.id, {
           status: 'confirmed',
           assignedSpecialistId: apiAppointment.assignedUserId,

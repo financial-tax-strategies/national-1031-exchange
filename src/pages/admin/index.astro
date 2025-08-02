@@ -1,0 +1,102 @@
+---
+import AdminLayout from '../../layouts/AdminLayout.astro';
+
+// In production, add authentication check here
+// const session = await getSession(Astro.request);
+// if (!session || !session.user.isAdmin) {
+//   return Astro.redirect('/login');
+// }
+
+const adminCards = [
+  {
+    title: 'HighLevel Configuration',
+    description: 'Configure your HighLevel CRM integration settings',
+    href: '/admin/highlevel-config',
+    icon: '⚙️',
+    status: 'Ready'
+  },
+  {
+    title: 'Test Integration',
+    description: 'Test the complete lead to appointment flow',
+    href: '/admin/test-integration',
+    icon: '🧪',
+    status: 'Ready'
+  },
+  {
+    title: 'Leads Management',
+    description: 'View and manage all captured leads',
+    href: '/admin/leads',
+    icon: '👥',
+    status: 'Coming Soon'
+  },
+  {
+    title: 'Appointments',
+    description: 'Manage appointment bookings and schedules',
+    href: '/admin/appointments',
+    icon: '📅',
+    status: 'Coming Soon'
+  },
+  {
+    title: 'Analytics',
+    description: 'View conversion rates and performance metrics',
+    href: '/admin/analytics',
+    icon: '📊',
+    status: 'Coming Soon'
+  },
+  {
+    title: 'Settings',
+    description: 'System settings and user management',
+    href: '/admin/settings',
+    icon: '🔧',
+    status: 'Coming Soon'
+  }
+];
+---
+
+<AdminLayout title="Admin Dashboard">
+  <main class="container mx-auto px-4 py-8">
+    <div class="max-w-6xl mx-auto">
+      <h1 class="text-3xl font-bold mb-8">Admin Dashboard</h1>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {adminCards.map((card) => (
+          <a 
+            href={card.status === 'Ready' ? card.href : '#'}
+            class={`block p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow ${
+              card.status !== 'Ready' ? 'opacity-60 cursor-not-allowed' : ''
+            }`}
+          >
+            <div class="flex items-start justify-between mb-4">
+              <div class="text-4xl">{card.icon}</div>
+              <span class={`text-xs px-2 py-1 rounded-full ${
+                card.status === 'Ready' 
+                  ? 'bg-green-100 text-green-800' 
+                  : 'bg-gray-100 text-gray-600'
+              }`}>
+                {card.status}
+              </span>
+            </div>
+            <h2 class="text-xl font-semibold mb-2">{card.title}</h2>
+            <p class="text-gray-600">{card.description}</p>
+          </a>
+        ))}
+      </div>
+      
+      <div class="mt-12 p-6 bg-blue-50 border border-blue-200 rounded-lg">
+        <h2 class="text-lg font-semibold text-blue-900 mb-2">Getting Started</h2>
+        <ol class="list-decimal list-inside space-y-2 text-blue-800">
+          <li>Configure your HighLevel integration settings</li>
+          <li>Test the integration to ensure everything is working</li>
+          <li>Update your forms to use the new lead capture system</li>
+          <li>Monitor leads and appointments through the dashboard</li>
+        </ol>
+      </div>
+    </div>
+  </main>
+</AdminLayout>
+
+<style>
+  main {
+    min-height: calc(100vh - 200px);
+  }
+</style>
