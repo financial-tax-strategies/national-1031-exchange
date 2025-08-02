@@ -396,6 +396,7 @@ export const ModernAppointmentBooking: React.FC<BookingFlowProps> = ({
               console.error('Analytics error:', e);
             }
             
+            setCurrentStep('confirmed');
             setCurrentWizardStep('confirmation');
             
             try {
@@ -447,7 +448,8 @@ export const ModernAppointmentBooking: React.FC<BookingFlowProps> = ({
         
         setAppointment(formattedUpdated);
         
-        if (updatedAppointment.status === 'confirmed' && updatedAppointment.assignedSpecialistId) {
+        if (updatedAppointment.status === 'confirmed') {
+          setCurrentStep('confirmed');
           setCurrentWizardStep('confirmation');
           
           if (typeof window !== 'undefined' && window.trackContentEngagement) {
