@@ -37,12 +37,12 @@ const StepIndicator: React.FC<StepIndicatorProps> = ({ currentStep }) => {
       {steps.map((step, index) => (
         <div key={step.id} className="flex items-center">
           <div className={`flex items-center space-x-3 ${
-            currentStep === step.id ? 'text-yellow-600' : 
-            steps.findIndex(s => s.id === currentStep) > index ? 'text-green-600' : 'text-gray-400'
+            currentStep === step.id ? 'text-yellow-400' : 
+            steps.findIndex(s => s.id === currentStep) > index ? 'text-green-500' : 'text-gray-400'
           }`}>
             <div className={`w-12 h-12 rounded-full flex items-center justify-center text-white font-semibold ${
-              currentStep === step.id ? 'bg-yellow-500' : 
-              steps.findIndex(s => s.id === currentStep) > index ? 'bg-green-500' : 'bg-gray-300'
+              currentStep === step.id ? 'bg-yellow-400' : 
+              steps.findIndex(s => s.id === currentStep) > index ? 'bg-green-600' : 'bg-gray-300'
             }`}>
               {steps.findIndex(s => s.id === currentStep) > index ? '✓' : step.icon}
             </div>
@@ -161,6 +161,38 @@ export const ModernAppointmentBooking: React.FC<BookingFlowProps> = ({
   // ============================================
   // Keep all existing availability and booking logic
   // ============================================
+
+  const generateMonthCalendar = (month: Date, availableDates: Date[]) => {
+    const year = month.getFullYear();
+    const monthIndex = month.getMonth();
+    
+    // First day of the month
+    const firstDay = new Date(year, monthIndex, 1);
+    const lastDay = new Date(year, monthIndex + 1, 0);
+    
+    // Get day of week for first day (0 = Sunday)
+    const firstDayOfWeek = firstDay.getDay();
+    
+    // Create array of all days in month
+    const daysInMonth = [];
+    
+    // Add empty cells for days before month starts
+    for (let i = 0; i < firstDayOfWeek; i++) {
+      daysInMonth.push(null);
+    }
+    
+    // Add all days of the month
+    for (let day = 1; day <= lastDay.getDate(); day++) {
+      daysInMonth.push(new Date(year, monthIndex, day));
+    }
+    
+    // Create a Set of available date strings for quick lookup
+    const availableDateStrings = new Set(
+      availableDates.map(date => date.toDateString())
+    );
+    
+    return { daysInMonth, availableDateStrings };
+  };
 
   const loadAvailableDates = async () => {
     const startTime = performance.now();
@@ -498,7 +530,7 @@ export const ModernAppointmentBooking: React.FC<BookingFlowProps> = ({
   // ============================================
 
   const renderHeader = () => (
-    <div className="bg-gray-900 text-white py-8 px-6 mb-8">
+    <div className="bg-[#1B3BA7] text-white py-8 px-6 mb-8">
       <div className="max-w-4xl mx-auto text-center">
         <h1 className="text-3xl font-bold mb-2">Select Your Preferred Time</h1>
         <p className="text-gray-300">Choose a time that works best for your schedule</p>
@@ -519,7 +551,7 @@ export const ModernAppointmentBooking: React.FC<BookingFlowProps> = ({
               type="text"
               value={contactInfo.firstName}
               onChange={(e) => setContactInfo({...contactInfo, firstName: e.target.value})}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
               placeholder="Matt"
               required
             />
@@ -530,7 +562,7 @@ export const ModernAppointmentBooking: React.FC<BookingFlowProps> = ({
               type="text"
               value={contactInfo.lastName}
               onChange={(e) => setContactInfo({...contactInfo, lastName: e.target.value})}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
               placeholder="Nye"
               required
             />
@@ -569,7 +601,7 @@ export const ModernAppointmentBooking: React.FC<BookingFlowProps> = ({
               id="serviceConsent"
               checked={contactInfo.serviceConsent}
               onChange={(e) => setContactInfo({...contactInfo, serviceConsent: e.target.checked})}
-              className="w-5 h-5 text-yellow-600 border-gray-300 rounded focus:ring-yellow-500"
+              className="w-5 h-5 text-yellow-400 border-gray-300 rounded focus:ring-yellow-400"
             />
             <div>
               <label htmlFor="serviceConsent" className="text-sm font-medium text-gray-700">
@@ -590,7 +622,7 @@ export const ModernAppointmentBooking: React.FC<BookingFlowProps> = ({
               id="marketingConsent"
               checked={contactInfo.marketingConsent}
               onChange={(e) => setContactInfo({...contactInfo, marketingConsent: e.target.checked})}
-              className="w-5 h-5 text-yellow-600 border-gray-300 rounded focus:ring-yellow-500"
+              className="w-5 h-5 text-yellow-400 border-gray-300 rounded focus:ring-yellow-400"
             />
             <div>
               <label htmlFor="marketingConsent" className="text-sm font-medium text-gray-700">
@@ -609,7 +641,7 @@ export const ModernAppointmentBooking: React.FC<BookingFlowProps> = ({
         <button
           onClick={() => setCurrentWizardStep('datetime')}
           disabled={!contactInfo.firstName || !contactInfo.lastName || !contactInfo.email || !contactInfo.phone}
-          className="w-full py-4 bg-yellow-500 text-white font-semibold rounded-lg hover:bg-yellow-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full py-4 bg-yellow-400 text-blue-900 font-semibold rounded-lg hover:bg-yellow-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
           Continue to Date Selection →
         </button>
@@ -643,7 +675,7 @@ export const ModernAppointmentBooking: React.FC<BookingFlowProps> = ({
 
       {loading && currentStep === 'loading-availability' && (
         <div className="text-center py-8">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-500 mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-400 mx-auto mb-4"></div>
           <p className="text-gray-600">Loading available dates...</p>
         </div>
       )}
@@ -659,7 +691,12 @@ export const ModernAppointmentBooking: React.FC<BookingFlowProps> = ({
             
             <div className="bg-white border border-gray-200 rounded-lg p-4">
               <div className="text-center mb-4">
-                <h4 className="font-semibold text-gray-900">August 2025</h4>
+                <h4 className="font-semibold text-gray-900">
+                  {availableDates.length > 0 
+                    ? availableDates[0].toLocaleDateString('en-US', { month: 'long', year: 'numeric' })
+                    : new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })
+                  }
+                </h4>
               </div>
               
               <div className="grid grid-cols-7 gap-1 text-xs text-gray-500 mb-2">
@@ -673,19 +710,37 @@ export const ModernAppointmentBooking: React.FC<BookingFlowProps> = ({
               </div>
               
               <div className="grid grid-cols-7 gap-1">
-                {availableDates.slice(0, 20).map((date, index) => (
-                  <button
-                    key={date.toISOString()}
-                    onClick={() => handleDateSelect(date)}
-                    className={`p-2 text-sm rounded hover:bg-yellow-100 transition-colors ${
-                      selectedDate?.toDateString() === date.toDateString() 
-                        ? 'bg-yellow-500 text-white' 
-                        : 'text-gray-700'
-                    }`}
-                  >
-                    {date.getDate()}
-                  </button>
-                ))}
+                {(() => {
+                  const currentMonth = availableDates.length > 0 ? availableDates[0] : new Date();
+                  const { daysInMonth, availableDateStrings } = generateMonthCalendar(currentMonth, availableDates);
+                  
+                  return daysInMonth.map((date, index) => {
+                    if (!date) {
+                      return <div key={`empty-${index}`} className="p-2" />;
+                    }
+                    
+                    const isAvailable = availableDateStrings.has(date.toDateString());
+                    const isSelected = selectedDate?.toDateString() === date.toDateString();
+                    const isToday = date.toDateString() === new Date().toDateString();
+                    
+                    return (
+                      <button
+                        key={date.toISOString()}
+                        onClick={() => isAvailable && handleDateSelect(date)}
+                        disabled={!isAvailable}
+                        className={`p-2 text-sm rounded transition-colors ${
+                          isSelected 
+                            ? 'bg-yellow-400 text-blue-900 font-semibold' 
+                            : isAvailable
+                              ? 'text-gray-700 hover:bg-yellow-50 cursor-pointer'
+                              : 'text-gray-400 cursor-not-allowed bg-gray-50'
+                        } ${isToday ? 'ring-2 ring-blue-400' : ''}`}
+                      >
+                        {date.getDate()}
+                      </button>
+                    );
+                  });
+                })()}
               </div>
             </div>
           </div>
@@ -701,7 +756,7 @@ export const ModernAppointmentBooking: React.FC<BookingFlowProps> = ({
               <div className="space-y-2">
                 {loading ? (
                   <div className="text-center py-4">
-                    <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-yellow-500 mx-auto mb-2"></div>
+                    <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-yellow-400 mx-auto mb-2"></div>
                     <p className="text-sm text-gray-600">Loading time slots...</p>
                   </div>
                 ) : availableSlots.length > 0 ? (
@@ -711,7 +766,7 @@ export const ModernAppointmentBooking: React.FC<BookingFlowProps> = ({
                       onClick={() => handleSlotSelect(slot)}
                       className={`w-full p-3 text-left rounded-lg border transition-colors ${
                         selectedSlot?.time === slot.time
-                          ? 'bg-yellow-500 text-white border-yellow-500'
+                          ? 'bg-yellow-400 text-blue-900 border-yellow-400'
                           : 'bg-white border-gray-200 hover:border-yellow-300 hover:bg-yellow-50'
                       }`}
                     >
@@ -744,7 +799,7 @@ export const ModernAppointmentBooking: React.FC<BookingFlowProps> = ({
         <button
           onClick={() => setCurrentWizardStep('confirmation')}
           disabled={!selectedDate || !selectedSlot}
-          className="px-8 py-3 bg-yellow-500 text-white font-semibold rounded-lg hover:bg-yellow-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="px-8 py-3 bg-yellow-400 text-blue-900 font-semibold rounded-lg hover:bg-yellow-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
           Continue to Confirmation →
         </button>
@@ -759,7 +814,7 @@ export const ModernAppointmentBooking: React.FC<BookingFlowProps> = ({
       
       <div className="bg-yellow-50 rounded-lg p-6 space-y-4 mb-8">
         <div className="flex items-center space-x-3">
-          <span className="text-yellow-600">📅</span>
+          <span className="text-yellow-400">📅</span>
           <div>
             <span className="font-semibold text-gray-700">Date:</span>
             <span className="ml-2 text-gray-900">
@@ -774,7 +829,7 @@ export const ModernAppointmentBooking: React.FC<BookingFlowProps> = ({
         </div>
         
         <div className="flex items-center space-x-3">
-          <span className="text-yellow-600">🕐</span>
+          <span className="text-yellow-400">🕐</span>
           <div>
             <span className="font-semibold text-gray-700">Time:</span>
             <span className="ml-2 text-gray-900">
@@ -789,7 +844,7 @@ export const ModernAppointmentBooking: React.FC<BookingFlowProps> = ({
         </div>
         
         <div className="flex items-center space-x-3">
-          <span className="text-yellow-600">👤</span>
+          <span className="text-yellow-400">👤</span>
           <div>
             <span className="font-semibold text-gray-700">Name:</span>
             <span className="ml-2 text-gray-900">{contactInfo.firstName} {contactInfo.lastName}</span>
@@ -797,7 +852,7 @@ export const ModernAppointmentBooking: React.FC<BookingFlowProps> = ({
         </div>
         
         <div className="flex items-center space-x-3">
-          <span className="text-yellow-600">📧</span>
+          <span className="text-yellow-400">📧</span>
           <div>
             <span className="font-semibold text-gray-700">Email:</span>
             <span className="ml-2 text-gray-900">{contactInfo.email}</span>
@@ -805,7 +860,7 @@ export const ModernAppointmentBooking: React.FC<BookingFlowProps> = ({
         </div>
         
         <div className="flex items-center space-x-3">
-          <span className="text-yellow-600">📞</span>
+          <span className="text-yellow-400">📞</span>
           <div>
             <span className="font-semibold text-gray-700">Phone:</span>
             <span className="ml-2 text-gray-900">{contactInfo.phone}</span>
@@ -815,7 +870,7 @@ export const ModernAppointmentBooking: React.FC<BookingFlowProps> = ({
 
       {currentStep === 'creating-appointment' || currentStep === 'pending-assignment' ? (
         <div className="text-center py-8">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-500 mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-400 mx-auto mb-4"></div>
           <p className="text-gray-600">
             {currentStep === 'creating-appointment' ? 'Creating your appointment...' : 'Confirming appointment details...'}
           </p>
@@ -823,7 +878,7 @@ export const ModernAppointmentBooking: React.FC<BookingFlowProps> = ({
       ) : appointment?.status === 'confirmed' ? (
         <div className="text-center py-8">
           <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <span className="text-green-600 text-2xl">✓</span>
+            <span className="text-green-500 text-2xl">✓</span>
           </div>
           <h3 className="text-2xl font-bold text-green-900 mb-2">Appointment Confirmed!</h3>
           <p className="text-gray-600 mb-4">Your consultation has been scheduled successfully.</p>
@@ -842,7 +897,7 @@ export const ModernAppointmentBooking: React.FC<BookingFlowProps> = ({
           <button
             onClick={handleConfirmBooking}
             disabled={loading}
-            className="px-8 py-3 bg-yellow-500 text-white font-semibold rounded-lg hover:bg-yellow-600 transition-colors disabled:opacity-50"
+            className="px-8 py-3 bg-yellow-400 text-blue-900 font-semibold rounded-lg hover:bg-yellow-300 transition-colors disabled:opacity-50"
           >
             {loading ? 'Confirming...' : 'Confirm Appointment ✓'}
           </button>
@@ -873,7 +928,7 @@ export const ModernAppointmentBooking: React.FC<BookingFlowProps> = ({
         {error?.retryable && (
           <button
             onClick={() => window.location.reload()}
-            className="px-6 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition-colors"
+            className="px-6 py-2 bg-yellow-400 text-blue-900 rounded-lg hover:bg-yellow-300 transition-colors"
           >
             Try Again
           </button>
