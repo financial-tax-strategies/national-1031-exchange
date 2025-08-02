@@ -8,7 +8,7 @@ import type { HighLevelIntegration, HighLevelConfig, Webhook } from '../types/da
 export class HighLevelService {
   private db: DatabaseService;
   private config: HighLevelConfig | null = null;
-  private baseUrl = 'https://rest.gohighlevel.com/v1';
+  private baseUrl = 'https://services.leadconnectorhq.com';
   
   constructor() {
     this.db = DatabaseService.getInstance();
@@ -47,6 +47,7 @@ export class HighLevelService {
     const headers = {
       'Authorization': `Bearer ${config.api_key}`,
       'Content-Type': 'application/json',
+      'Version': '2021-07-28',
       ...options.headers
     };
     
@@ -414,7 +415,7 @@ export class HighLevelService {
     
     try {
       const response = await this.makeRequest(
-        `/calendars/${config.calendar_id}/free-slots?date=${params.date}&timezone=${params.timezone || config.timezone}`,
+        `/calendars/events/slots?calendarId=${config.calendar_id}&startDate=${params.date}&endDate=${params.date}&timezone=${params.timezone || config.timezone}`,
         { method: 'GET' }
       );
       
