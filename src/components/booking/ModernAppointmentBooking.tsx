@@ -586,6 +586,19 @@ export const ModernAppointmentBooking: React.FC<BookingFlowProps> = ({
     setContactInfo({...contactInfo, phone: formatted});
   };
 
+  const getTimeSlotGridCols = (slotCount: number): string => {
+    // Responsive grid columns based on number of available slots
+    if (slotCount <= 8) {
+      return 'grid-cols-1'; // Single column for few slots
+    } else if (slotCount <= 16) {
+      return 'grid-cols-1 lg:grid-cols-2'; // 2 columns on desktop
+    } else if (slotCount <= 24) {
+      return 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'; // Up to 3 columns
+    } else {
+      return 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'; // Max 4 columns
+    }
+  };
+
   // ============================================
   // New Modern Render Methods
   // ============================================
@@ -821,31 +834,33 @@ export const ModernAppointmentBooking: React.FC<BookingFlowProps> = ({
             </div>
             
             {selectedDate && (
-              <div className="space-y-2">
+              <div className="relative">
                 {loading ? (
                   <div className="text-center py-4">
                     <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-yellow-400 mx-auto mb-2"></div>
                     <p className="text-sm text-gray-600">Loading time slots...</p>
                   </div>
                 ) : availableSlots.length > 0 ? (
-                  availableSlots.map((slot, index) => (
-                    <button
-                      key={index}
-                      onClick={() => handleSlotSelect(slot)}
-                      className={`w-full p-3 text-left rounded-lg border transition-colors ${
-                        selectedSlot?.time === slot.time
-                          ? 'bg-yellow-400 text-blue-900 border-yellow-400'
-                          : 'bg-white border-gray-200 hover:border-yellow-300 hover:bg-yellow-50'
-                      }`}
-                    >
-                      {new Date(slot.time).toLocaleTimeString('en-US', {
-                        hour: 'numeric',
-                        minute: '2-digit',
-                        hour12: true,
-                        timeZone: timezone
-                      })}
-                    </button>
-                  ))
+                  <div className={`grid gap-2 ${getTimeSlotGridCols(availableSlots.length)} max-h-[400px] overflow-y-auto pr-2`}>
+                    {availableSlots.map((slot, index) => (
+                      <button
+                        key={index}
+                        onClick={() => handleSlotSelect(slot)}
+                        className={`p-3 text-center rounded-lg border transition-colors ${
+                          selectedSlot?.time === slot.time
+                            ? 'bg-yellow-400 text-blue-900 border-yellow-400 font-semibold'
+                            : 'bg-white border-gray-200 hover:border-yellow-300 hover:bg-yellow-50'
+                        }`}
+                      >
+                        {new Date(slot.time).toLocaleTimeString('en-US', {
+                          hour: 'numeric',
+                          minute: '2-digit',
+                          hour12: true,
+                          timeZone: timezone
+                        })}
+                      </button>
+                    ))}
+                  </div>
                 ) : (
                   <p className="text-gray-500 text-center py-4">
                     Select a date to see available times
