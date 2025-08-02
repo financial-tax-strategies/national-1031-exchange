@@ -33,23 +33,23 @@ const StepIndicator: React.FC<StepIndicatorProps> = ({ currentStep }) => {
   ];
 
   return (
-    <div className="flex items-center justify-center space-x-8 mb-8">
+    <div className="flex items-center justify-center space-x-2 sm:space-x-4 lg:space-x-8 mb-8 px-4">
       {steps.map((step, index) => (
         <div key={step.id} className="flex items-center">
-          <div className={`flex items-center space-x-3 ${
+          <div className={`flex items-center space-x-1 sm:space-x-3 ${
             currentStep === step.id ? 'text-yellow-400' : 
             steps.findIndex(s => s.id === currentStep) > index ? 'text-green-500' : 'text-gray-400'
           }`}>
-            <div className={`w-12 h-12 rounded-full flex items-center justify-center text-white font-semibold ${
+            <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center text-white font-semibold text-sm sm:text-base ${
               currentStep === step.id ? 'bg-yellow-400' : 
               steps.findIndex(s => s.id === currentStep) > index ? 'bg-green-600' : 'bg-gray-300'
             }`}>
               {steps.findIndex(s => s.id === currentStep) > index ? '✓' : step.icon}
             </div>
-            <span className="font-medium">{step.label}</span>
+            <span className="font-medium text-xs sm:text-sm md:text-base hidden sm:block">{step.label}</span>
           </div>
           {index < steps.length - 1 && (
-            <div className={`w-16 h-0.5 mx-4 ${
+            <div className={`w-8 sm:w-12 lg:w-16 h-0.5 mx-1 sm:mx-2 lg:mx-4 ${
               steps.findIndex(s => s.id === currentStep) > index ? 'bg-yellow-400' : 'bg-gray-300'
             }`} />
           )}
@@ -123,6 +123,13 @@ export const ModernAppointmentBooking: React.FC<BookingFlowProps> = ({
         pollerRef.current.stopPolling(appointment.id);
       }
     };
+  }, [currentWizardStep]);
+
+  // Scroll to top when wizard step changes
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   }, [currentWizardStep]);
 
   const initializeServices = async () => {
