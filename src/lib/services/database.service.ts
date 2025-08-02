@@ -95,14 +95,29 @@ export class DatabaseService {
   }
   
   /**
-   * Create appointment in database
+   * Create appointment in database (with lead creation)
    */
   public async createAppointment(appointmentData: any): Promise<any> {
     try {
       console.log('[DatabaseService] Creating appointment with data:', appointmentData);
       
+      // First, create or find a lead record
+      const leadId = await this.createOrFindLead({
+        email: appointmentData.contactEmail,
+        firstName: appointmentData.contactFirstName,
+        lastName: appointmentData.contactLastName,
+        phone: appointmentData.contactPhone,
+        highlevelContactId: appointmentData.highlevelContactId,
+        sourceUrl: appointmentData.sourceUrl,
+        taxSavingsAmount: appointmentData.taxSavingsAmount,
+        propertySalePrice: appointmentData.propertySalePrice
+      });
+      
+      console.log('[DatabaseService] Using lead ID:', leadId);
+      
       // Map HighLevel appointment data to database schema
       const dbAppointment = {
+        lead_id: leadId, // Required field!
         highlevel_appointment_id: appointmentData.highlevelAppointmentId,
         highlevel_contact_id: appointmentData.highlevelContactId,
         appointment_date: appointmentData.appointmentDate?.toISOString?.() || appointmentData.appointmentDate,
@@ -137,6 +152,71 @@ export class DatabaseService {
       
     } catch (error) {
       console.error('[DatabaseService] Error in createAppointment:', error);
+      throw error;
+    }
+  }
+  
+  /**
+   * Create or find lead record
+   */
+  private async createOrFindLead(leadData: {
+    email: string;
+    firstName?: string;
+    lastName?: string;
+    phone?: string;
+    highlevelContactId?: string;
+    sourceUrl?: string;
+    taxSavingsAmount?: number;
+    propertySalePrice?: number;
+  }): Promise<string> {
+    try {
+      console.log('[DatabaseService] Creating or finding lead for email:', leadData.email);
+      
+      // First, try to find existing lead by email
+      const { data: existingLead, error: searchError } = await this.supabase
+        .from('leads')
+        .select('id')
+        .eq('email', leadData.email)
+        .single();
+      
+      if (existingLead && !searchError) {
+        console.log('[DatabaseService] Found existing lead:', existingLead.id);
+        return existingLead.id;
+      }
+      
+      // Create new lead
+      console.log('[DatabaseService] Creating new lead');
+      
+      const newLead = {
+        email: leadData.email,
+        phone: leadData.phone,
+        first_name: leadData.firstName,
+        last_name: leadData.lastName,
+        lead_source: 'appointment_booking',
+        lead_status: 'new',
+        lead_score: 50, // Default score for appointment bookings
+        highlevel_contact_id: leadData.highlevelContactId,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+        last_activity_at: new Date().toISOString()
+      };
+      
+      const { data: createdLead, error: createError } = await this.supabase
+        .from('leads')
+        .insert(newLead)
+        .select('id')
+        .single();
+      
+      if (createError) {
+        console.error('[DatabaseService] Error creating lead:', createError);
+        throw this.handleError(createError, 'createOrFindLead');
+      }
+      
+      console.log('[DatabaseService] Lead created successfully:', createdLead.id);
+      return createdLead.id;
+      
+    } catch (error) {
+      console.error('[DatabaseService] Error in createOrFindLead:', error);
       throw error;
     }
   }
