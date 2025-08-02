@@ -84,30 +84,59 @@ import { COMPANY, getPhoneLink, getEmailLink } from '../config/company';
         </p>
       </div>
       
-      <!-- HighLevel Widget (Using iframe approach since API returns no data) -->
-      <div class="bg-white rounded-xl shadow-lg overflow-hidden">
-        <iframe
-          src="https://links.toptaxstrategies.com/widget/bookings/deferthegainstax/1031-exchange-consultation"
-          width="100%"
-          height="800"
-          frameborder="0"
-          scrolling="no"
-          class="highlevel-booking-widget"
-          title="Book Your 1031 Exchange Consultation"
-        ></iframe>
+      <!-- Appointment Booking Component -->
+      <div class="bg-white rounded-xl shadow-lg p-8">
+        <AppointmentBooking 
+          client:load
+          leadData={{
+            email: '',
+            phone: '',
+            firstName: '',
+            lastName: '',
+            taxSavingsAmount: 0,
+            propertySalePrice: 0,
+            propertyDetails: null
+          }}
+          onSuccess={(appointment) => {
+            console.log('Appointment booked successfully:', appointment);
+            // Track successful booking
+            if (typeof window !== 'undefined') {
+              if (window.trackContentEngagement) {
+                window.trackContentEngagement('appointment_booked', 'schedule_page_direct');
+              }
+              if (window.trackHighLevelEvent) {
+                window.trackHighLevelEvent('appointment_booked', {
+                  source: 'Schedule Page Direct',
+                  appointmentId: appointment.highlevelAppointmentId,
+                  type: 'consultation_booking'
+                });
+              }
+            }
+          }}
+          onError={(error) => {
+            console.error('Booking error:', error);
+            // Track booking error
+            if (typeof window !== 'undefined' && window.trackContentEngagement) {
+              window.trackContentEngagement('booking_error', 'schedule_page_direct');
+            }
+          }}
+          onCancel={() => {
+            console.log('Booking cancelled by user');
+            // Track booking abandonment
+            if (typeof window !== 'undefined' && window.trackContentEngagement) {
+              window.trackContentEngagement('booking_cancelled', 'schedule_page_direct');
+            }
+          }}
+          options={{
+            timezone: 'America/New_York',
+            prefetchDays: 21,
+            minBookingHours: 2,
+            maxBookingDays: 30,
+            showConsultationType: true,
+            debugMode: true
+          }}
+        />
       </div>
-      
-      <!-- Note: The API-based booking component is temporarily disabled because the HighLevel API 
-           is only returning a traceId without actual availability data. Using the widget approach
-           which is proven to work. -->
-      
-      <style>
-        .highlevel-booking-widget {
-          border: none;
-          width: 100%;
-          display: block;
-        }
-      </style>
     </div>
   </section>
 
