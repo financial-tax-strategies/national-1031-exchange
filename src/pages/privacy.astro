@@ -1,0 +1,225 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { COMPANY } from '../config/company';
+---
+
+<Layout 
+  title={`Privacy Policy | ${COMPANY.name}`}
+  description={`Privacy Policy for ${COMPANY.name}. Learn how we collect, use, and protect your personal information when you use our 1031 exchange services.`}
+>
+  
+  <!-- Hero Section -->
+  <section class="bg-gradient-to-r from-blue-900 via-blue-800 to-blue-900 text-white py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-4xl">
+        <h1 class="text-4xl md:text-5xl font-bold mb-4">
+          Privacy Policy
+        </h1>
+        <p class="text-xl text-blue-100">
+          Your privacy is important to us. Learn how we protect your information.
+        </p>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Legal Content Section -->
+  <section class="py-16 bg-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- Last Updated Notice -->
+      <div class="mb-8 p-4 bg-blue-50 border-l-4 border-blue-500 rounded">
+        <p class="text-sm text-blue-900">
+          <strong>Last Updated:</strong> <span id="termageddon-last-updated">[Date will be automatically updated by Termageddon]</span>
+        </p>
+      </div>
+
+      <!-- GDPR/CCPA Notice -->
+      <div class="mb-8 p-4 bg-green-50 border-l-4 border-green-500 rounded">
+        <p class="text-sm text-green-900">
+          <strong>Your Privacy Rights:</strong> This privacy policy explains your rights under applicable privacy laws including GDPR and CCPA.
+        </p>
+      </div>
+
+      <!-- Termageddon Embed Placeholder -->
+      <div id="termageddon-privacy-container" class="prose prose-lg max-w-none">
+        <!-- 
+          ================================================================
+          TERMAGEDDON EMBED INSTRUCTIONS:
+          ================================================================
+          
+          Replace this entire comment block with your Termageddon embed script.
+          
+          The script should look something like:
+          <script src="https://app.termageddon.com/embed/privacy/[YOUR-UNIQUE-ID]"></script>
+          
+          OR it might be an iframe:
+          <iframe src="https://app.termageddon.com/embed/privacy/[YOUR-UNIQUE-ID]" 
+                  width="100%" 
+                  height="800" 
+                  frameborder="0">
+          </iframe>
+          
+          The Termageddon script will automatically:
+          - Insert your Privacy Policy content here
+          - Keep the content compliant with changing privacy laws
+          - Handle GDPR, CCPA, and other privacy regulations
+          - Update the "Last Updated" date automatically
+          - Provide cookie consent management if configured
+          
+          ================================================================
+        -->
+        
+        <!-- Temporary Placeholder Content -->
+        <div class="bg-gray-100 border-2 border-dashed border-gray-400 rounded-lg p-8 text-center">
+          <svg class="w-16 h-16 text-gray-500 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+          </svg>
+          <h2 class="text-2xl font-semibold text-gray-700 mb-2">
+            Termageddon Privacy Policy
+          </h2>
+          <p class="text-gray-600 mb-4">
+            This area will display your Privacy Policy once you add the Termageddon embed code.
+          </p>
+          <div class="bg-white rounded p-4 text-left max-w-md mx-auto">
+            <p class="text-sm text-gray-700 font-mono">
+              &lt;!-- Add your Termageddon embed script here --&gt;
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Privacy Contact Information -->
+      <div class="mt-12 pt-8 border-t border-gray-200">
+        <h2 class="text-2xl font-bold text-gray-900 mb-4">Privacy Questions or Requests?</h2>
+        <p class="text-gray-700 mb-6">
+          If you have questions about our privacy practices or would like to exercise your privacy rights, please contact us:
+        </p>
+        
+        <div class="grid md:grid-cols-2 gap-6">
+          <!-- Contact Information -->
+          <div class="bg-gray-50 rounded-lg p-6">
+            <h3 class="font-semibold text-gray-900 mb-3">Contact Our Privacy Team</h3>
+            <div class="space-y-3">
+              <p class="text-gray-700">
+                <strong>Email:</strong> 
+                <a href={`mailto:privacy@${COMPANY.domain}`} class="text-blue-600 hover:text-blue-800 transition-colors">
+                  privacy@{COMPANY.domain}
+                </a>
+              </p>
+              <p class="text-gray-700">
+                <strong>Phone:</strong> 
+                <a href={`tel:${COMPANY.phone.main.replace(/[^0-9]/g, '')}`} class="text-blue-600 hover:text-blue-800 transition-colors">
+                  {COMPANY.phone.main}
+                </a>
+              </p>
+              <p class="text-gray-700">
+                <strong>Mail:</strong><br>
+                {COMPANY.name}<br>
+                Attn: Privacy Department<br>
+                {COMPANY.address.street}<br>
+                {COMPANY.address.city}, {COMPANY.address.state} {COMPANY.address.zip}
+              </p>
+            </div>
+          </div>
+          
+          <!-- Privacy Rights -->
+          <div class="bg-blue-50 rounded-lg p-6">
+            <h3 class="font-semibold text-gray-900 mb-3">Your Privacy Rights</h3>
+            <ul class="space-y-2 text-gray-700">
+              <li class="flex items-start">
+                <svg class="w-5 h-5 text-blue-600 mr-2 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <span>Right to access your personal data</span>
+              </li>
+              <li class="flex items-start">
+                <svg class="w-5 h-5 text-blue-600 mr-2 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <span>Right to correct inaccurate data</span>
+              </li>
+              <li class="flex items-start">
+                <svg class="w-5 h-5 text-blue-600 mr-2 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <span>Right to request deletion</span>
+              </li>
+              <li class="flex items-start">
+                <svg class="w-5 h-5 text-blue-600 mr-2 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <span>Right to opt-out of data sales</span>
+              </li>
+              <li class="flex items-start">
+                <svg class="w-5 h-5 text-blue-600 mr-2 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <span>Right to data portability</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Trust Section -->
+  <section class="py-12 bg-gray-50">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h2 class="text-2xl font-bold text-gray-900 mb-4">
+        Your Security is Our Priority
+      </h2>
+      <p class="text-gray-600 mb-8">
+        We use industry-leading security measures to protect your personal and financial information.
+      </p>
+      <div class="grid md:grid-cols-3 gap-6">
+        <div class="bg-white rounded-lg p-6 shadow-sm">
+          <svg class="w-12 h-12 text-blue-600 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+          </svg>
+          <h3 class="font-semibold text-gray-900 mb-2">Encrypted Data</h3>
+          <p class="text-sm text-gray-600">All data encrypted in transit and at rest</p>
+        </div>
+        <div class="bg-white rounded-lg p-6 shadow-sm">
+          <svg class="w-12 h-12 text-blue-600 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+          </svg>
+          <h3 class="font-semibold text-gray-900 mb-2">Secure Infrastructure</h3>
+          <p class="text-sm text-gray-600">SOC 2 compliant data centers</p>
+        </div>
+        <div class="bg-white rounded-lg p-6 shadow-sm">
+          <svg class="w-12 h-12 text-blue-600 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+          </svg>
+          <h3 class="font-semibold text-gray-900 mb-2">Regular Audits</h3>
+          <p class="text-sm text-gray-600">Annual security assessments</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  /* Styles for Termageddon content if needed */
+  #termageddon-privacy-container {
+    /* Add any custom styles for the embedded content here */
+    min-height: 400px;
+  }
+  
+  /* Ensure proper spacing for legal content */
+  #termageddon-privacy-container h1,
+  #termageddon-privacy-container h2,
+  #termageddon-privacy-container h3 {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+  }
+  
+  #termageddon-privacy-container p {
+    margin-bottom: 1rem;
+  }
+  
+  #termageddon-privacy-container ul,
+  #termageddon-privacy-container ol {
+    margin-bottom: 1rem;
+    padding-left: 2rem;
+  }
+</style>

@@ -34,12 +34,6 @@ const cashOutOptions = [
   { value: 'not_sure', label: 'Not sure yet' }
 ];
 
-const dstOptions = [
-  { value: 'interested', label: 'Interested in DST options' },
-  { value: 'traditional_only', label: 'Traditional property only' },
-  { value: 'learn_both', label: 'Want to learn about both' },
-  { value: 'not_familiar', label: 'Not familiar with DSTs' }
-];
 
 // ============================================
 // Component
@@ -184,53 +178,6 @@ export const ExchangeGoalsStep: React.FC = () => {
         </p>
       </div>
       
-      {/* DST Interest */}
-      <div>
-        <label 
-          htmlFor="dst-interest"
-          className="block text-sm font-medium text-gray-700 mb-2"
-        >
-          Are you interested in Delaware Statutory Trust (DST) properties? <span className="text-red-500">*</span>
-        </label>
-        <select
-          id="dst-interest"
-          value={formState.data['1031x_dst_interest'] || ''}
-          onChange={(e) => handleInputChange('1031x_dst_interest', e.target.value)}
-          onFocus={() => {
-            const sessionId = sessionStorage.getItem('1031_order_form_session') || '';
-            analytics.trackFieldInteraction('1031x_dst_interest', 'focus', 4, sessionId);
-          }}
-          className={`
-            w-full px-4 py-3 border rounded-lg
-            focus:ring-2 focus:ring-blue-500 focus:border-blue-500
-            transition-colors duration-200
-            ${formState.errors['1031x_dst_interest'] ? 'border-red-500' : 'border-gray-300'}
-          `}
-          aria-describedby={formState.errors['1031x_dst_interest'] ? 'dst-interest-error' : undefined}
-          aria-invalid={!!formState.errors['1031x_dst_interest']}
-        >
-          <option value="">Select option...</option>
-          {dstOptions.map(option => (
-            <option key={option.value} value={option.value}>{option.label}</option>
-          ))}
-        </select>
-        <FieldError 
-          error={formState.errors['1031x_dst_interest']} 
-          fieldId="dst-interest"
-        />
-      </div>
-      
-      {/* DST Information Box */}
-      {formState.data['1031x_dst_interest'] === 'not_familiar' && (
-        <div className="bg-blue-50 p-4 rounded-lg">
-          <h4 className="font-semibold text-blue-900 mb-2">What is a DST?</h4>
-          <p className="text-sm text-blue-800">
-            Delaware Statutory Trusts (DSTs) are professionally managed investment properties that 
-            qualify for 1031 exchanges. They offer passive income without management responsibilities 
-            and can be ideal for investors looking to simplify their real estate holdings.
-          </p>
-        </div>
-      )}
       
       {/* Exchange Type Information */}
       {formState.data['1031x_exchange_type'] && formState.data['1031x_exchange_type'] !== 'not_sure' && (

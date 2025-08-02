@@ -15,13 +15,12 @@ import { useOrderFormAnalytics } from '../../../lib/analytics/orderFormAnalytics
 const contractPreferences = [
   { value: 'electronic', label: 'Yes, use electronic contracts (recommended)' },
   { value: 'mail', label: 'Prefer traditional mail' },
-  { value: 'in_person', label: 'In-person signing' }
+  { value: 'sign_at_closing', label: 'Sign at the closing' }
 ];
 
 const consultationPreferences = [
   { value: 'phone', label: 'Phone consultation' },
   { value: 'video', label: 'Video call (Zoom)' },
-  { value: 'in_person', label: 'In-person meeting' },
   { value: 'email_only', label: 'Email only' }
 ];
 
@@ -78,7 +77,7 @@ export const ServicePreferencesStep: React.FC = () => {
           htmlFor="contract-preference"
           className="block text-sm font-medium text-gray-700 mb-2"
         >
-          How would you prefer to handle contracts? <span className="text-red-500">*</span>
+          How would you prefer to sign your exchange agreements? <span className="text-red-500">*</span>
         </label>
         <select
           id="contract-preference"

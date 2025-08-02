@@ -94,7 +94,7 @@ export const ProfessionalTeamStep: React.FC = () => {
               htmlFor="cpa-name"
               className="block text-sm font-medium text-gray-700 mb-2"
             >
-              CPA Name <span className="text-red-500">*</span>
+              CPA Name
             </label>
             <input
               id="cpa-name"
@@ -150,6 +150,38 @@ export const ProfessionalTeamStep: React.FC = () => {
             <FieldError 
               error={formState.errors['1031x_cpa_email']} 
               fieldId="cpa-email"
+            />
+          </div>
+          
+          <div>
+            <label 
+              htmlFor="cpa-phone"
+              className="block text-sm font-medium text-gray-700 mb-2"
+            >
+              CPA Phone (optional)
+            </label>
+            <input
+              id="cpa-phone"
+              type="tel"
+              value={formState.data['1031x_cpa_phone'] || ''}
+              onChange={(e) => handleInputChange('1031x_cpa_phone', e.target.value)}
+              onFocus={() => {
+                const sessionId = sessionStorage.getItem('1031_order_form_session') || '';
+                analytics.trackFieldInteraction('1031x_cpa_phone', 'focus', 5, sessionId);
+              }}
+              className={`
+                w-full px-4 py-3 border rounded-lg
+                focus:ring-2 focus:ring-blue-500 focus:border-blue-500
+                transition-colors duration-200
+                ${formState.errors['1031x_cpa_phone'] ? 'border-red-500' : 'border-gray-300'}
+              `}
+              placeholder="(555) 123-4567"
+              aria-describedby={formState.errors['1031x_cpa_phone'] ? 'cpa-phone-error' : undefined}
+              aria-invalid={!!formState.errors['1031x_cpa_phone']}
+            />
+            <FieldError 
+              error={formState.errors['1031x_cpa_phone']} 
+              fieldId="cpa-phone"
             />
             <p className="mt-1 text-sm text-gray-500">
               We can coordinate with your CPA to ensure proper tax planning

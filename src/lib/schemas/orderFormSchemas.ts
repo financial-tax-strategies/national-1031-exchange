@@ -193,13 +193,6 @@ export const exchangeGoalsSchema = z.object({
     'moderate_50_200k',
     'significant_200k_plus',
     'not_sure'
-  ]),
-  
-  '1031x_dst_interest': z.enum([
-    'interested',
-    'traditional_only',
-    'learn_both',
-    'not_familiar'
   ])
 });
 
@@ -217,6 +210,20 @@ export const professionalTeamSchema = z.object({
     .optional()
     .or(z.literal('')),
   
+  '1031x_cpa_phone': z.string()
+    .regex(phoneRegex, 'Please enter a valid phone number')
+    .optional()
+    .or(z.literal(''))
+    .transform((val) => {
+      if (!val) return val;
+      // Normalize phone number format
+      const digits = val.replace(/\D/g, '');
+      if (digits.length === 10) {
+        return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}`;
+      }
+      return val;
+    }),
+  
   '1031x_realtor_name': z.string()
     .max(100, 'Name is too long')
     .optional(),
@@ -225,24 +232,15 @@ export const professionalTeamSchema = z.object({
     .email('Please enter a valid email address')
     .optional()
     .or(z.literal(''))
-}).superRefine((data, ctx) => {
-  // Cross-field validation: CPA name required if has CPA
-  if (data['1031x_has_cpa'] === 'yes' && !data['1031x_cpa_name']) {
-    ctx.addIssue({
-      code: z.ZodIssueCode.custom,
-      message: 'Please provide your CPA\'s name',
-      path: ['1031x_cpa_name']
-    });
-  }
 });
 
 // ============================================
 // Step 6: Service Preferences Schema
 // ============================================
 export const servicePreferencesSchema = z.object({
-  '1031x_contract_preference': z.enum(['electronic', 'mail', 'in_person']),
+  '1031x_contract_preference': z.enum(['electronic', 'mail', 'sign_at_closing']),
   
-  '1031x_consultation_preference': z.enum(['phone', 'video', 'in_person', 'email_only']),
+  '1031x_consultation_preference': z.enum(['phone', 'video', 'email_only']),
   
   '1031x_how_heard': z.enum([
     'google',
