@@ -3,7 +3,7 @@
 // National 1031 Center - Order Form UI
 // ============================================
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { isEncryptionSupported } from '../../../lib/utils/encryption';
 
 // ============================================
@@ -12,7 +12,12 @@ import { isEncryptionSupported } from '../../../lib/utils/encryption';
 
 export const PrivacyNotice: React.FC = () => {
   const [showDetails, setShowDetails] = useState(false);
-  const encryptionEnabled = isEncryptionSupported();
+  const [encryptionEnabled, setEncryptionEnabled] = useState(false);
+  
+  // Check encryption support after hydration to prevent hydration mismatch
+  useEffect(() => {
+    setEncryptionEnabled(isEncryptionSupported());
+  }, []);
   
   return (
     <div className="bg-blue-50 p-4 rounded-lg text-sm">

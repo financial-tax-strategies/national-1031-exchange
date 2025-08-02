@@ -122,6 +122,11 @@ export const timelineSchema = z.object({
   '1031x_closing_date': z.string()
     .optional()
     .refine((val, ctx) => {
+      // Safety check for ctx.parent
+      if (!ctx.parent) {
+        return true;
+      }
+      
       const status = ctx.parent['1031x_contract_status'];
       if ((status === 'in_escrow' || status === 'closing_scheduled') && !val) {
         return false;
@@ -138,6 +143,11 @@ export const timelineSchema = z.object({
   '1031x_expected_listing_date': z.string()
     .optional()
     .refine((val, ctx) => {
+      // Safety check for ctx.parent
+      if (!ctx.parent) {
+        return true;
+      }
+      
       const status = ctx.parent['1031x_contract_status'];
       if (status === 'not_listed' && !val) {
         return false;
@@ -202,6 +212,11 @@ export const professionalTeamSchema = z.object({
   '1031x_cpa_name': z.string()
     .optional()
     .refine((val, ctx) => {
+      // Safety check for ctx.parent
+      if (!ctx.parent) {
+        return true;
+      }
+      
       const hasCPA = ctx.parent['1031x_has_cpa'];
       if (hasCPA === 'yes' && !val) {
         return false;
@@ -212,6 +227,11 @@ export const professionalTeamSchema = z.object({
   '1031x_cpa_email': z.string()
     .optional()
     .refine((val, ctx) => {
+      // Safety check for ctx.parent
+      if (!ctx.parent) {
+        return true;
+      }
+      
       const hasCPA = ctx.parent['1031x_has_cpa'];
       if (hasCPA === 'yes' && val && !z.string().email().safeParse(val).success) {
         return false;
