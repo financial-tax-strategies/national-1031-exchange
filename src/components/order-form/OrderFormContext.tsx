@@ -3,7 +3,7 @@
 // National 1031 Center - State Management
 // ============================================
 
-import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
+import React, { createContext, useContext, useState, useCallback, useEffect, useMemo } from 'react';
 import type { 
   OrderFormContextType, 
   FormState, 
@@ -333,7 +333,15 @@ export const OrderFormProvider: React.FC<OrderFormProviderProps> = ({
   // Computed Values
   // ============================================
   
-  const canGoNext = formState.currentStep < 6;
+  const canGoNext = useMemo(() => {
+    // Can't proceed if we're on the last step
+    if (formState.currentStep >= 6) return false;
+    
+    // Validate current step fields
+    const result = validateStep(formState.currentStep, formState.data);
+    return result.success;
+  }, [formState.currentStep, formState.data]);
+  
   const canGoPrevious = formState.currentStep > 1;
 
   // ============================================
