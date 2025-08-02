@@ -62,57 +62,56 @@ export const ProgressIndicator: React.FC<ProgressIndicatorProps> = ({
   
   return (
     <div className="w-full">
-      {/* Progress Bar */}
-      <div className="relative">
-        <div className="overflow-hidden h-2 mb-4 text-xs flex rounded-full bg-gray-200">
-          <div
-            style={{ width: `${(completedSteps.length / 6) * 100}%` }}
-            className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-900 transition-all duration-500 ease-out"
-          />
-        </div>
-        
-        {/* Step Count */}
-        <div className="text-center mb-6">
-          <span className="text-sm text-gray-600">
-            Step {currentStep} of 6
-          </span>
-        </div>
+      {/* Progress Bar - Moved to top */}
+      <div className="overflow-hidden h-2 mb-4 text-xs flex rounded-full bg-gray-200">
+        <div
+          style={{ width: `${(completedSteps.length / 6) * 100}%` }}
+          className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-900 transition-all duration-500 ease-out"
+        />
+      </div>
+      
+      {/* Step Count */}
+      <div className="text-center mb-6">
+        <span className="text-sm text-gray-600">
+          Step {currentStep} of 6
+        </span>
       </div>
       
       {/* Desktop Step Indicators */}
       <div className="hidden md:block">
         <div className="flex justify-center mb-8">
-          <div className="flex justify-between max-w-4xl w-full">
-            {steps.map((step) => {
+          <div className="flex items-center justify-center gap-8">
+            {steps.map((step, index) => {
             const status = getStepStatus(step);
             const clickable = isClickable(step);
             
             return (
               <div
                 key={step}
-                className={`flex-1 ${step < 6 ? 'pr-4' : ''}`}
+                className="relative"
               >
+                {/* Connector Line - positioned between steps */}
+                {index < steps.length - 1 && (
+                  <div
+                    className={`
+                      absolute top-5 left-full w-8 h-0.5
+                      ${completedSteps.includes(step) ? 'bg-blue-900' : 'bg-gray-300'}
+                    `}
+                  />
+                )}
+                
                 <button
                   onClick={() => clickable && onStepClick?.(step)}
                   disabled={!clickable || !onStepClick}
                   className={`
-                    w-full text-left
+                    text-center
                     ${clickable && onStepClick ? 'cursor-pointer' : 'cursor-default'}
                   `}
                 >
                   <div className="relative">
-                    {/* Connector Line */}
-                    {step < 6 && (
-                      <div
-                        className={`
-                          absolute top-5 left-10 w-full h-0.5
-                          ${completedSteps.includes(step) ? 'bg-blue-900' : 'bg-gray-300'}
-                        `}
-                      />
-                    )}
                     
                     {/* Step Circle */}
-                    <div className="flex items-center">
+                    <div className="flex items-center justify-center">
                       <div
                         className={`
                           relative z-10 w-10 h-10 rounded-full flex items-center justify-center
@@ -134,7 +133,7 @@ export const ProgressIndicator: React.FC<ProgressIndicatorProps> = ({
                     </div>
                     
                     {/* Step Label */}
-                    <div className="mt-2">
+                    <div className="mt-2 text-center w-24">
                       <div
                         className={`
                           text-xs font-medium

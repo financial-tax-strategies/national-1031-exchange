@@ -3,7 +3,7 @@
 // National 1031 Center - Multi-Step Form
 // ============================================
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { OrderFormProvider, useOrderForm } from './OrderFormContext';
 import { ProgressIndicator } from './components/ProgressIndicator';
 import { StepNavigation } from './components/StepNavigation';
@@ -14,6 +14,7 @@ import { ExchangeGoalsStep } from './steps/ExchangeGoalsStep';
 import { ProfessionalTeamStep } from './steps/ProfessionalTeamStep';
 import { ServicePreferencesStep } from './steps/ServicePreferencesStep';
 import type { FormStep } from '../../lib/types/orderForm';
+import { COMPANY, getPhoneLink } from '../../config/company';
 
 // ============================================
 // Step Components Map
@@ -45,10 +46,11 @@ const OrderFormContent: React.FC = () => {
     canGoPrevious
   } = useOrderForm();
   
+  const formContainerRef = useRef<HTMLDivElement>(null);
   const CurrentStepComponent = stepComponents[formState.currentStep];
   const isLastStep = formState.currentStep === 6;
   
-  // Track page view for analytics
+  // Track page view for analytics and scroll to form
   useEffect(() => {
     if (typeof window !== 'undefined' && window.gtag) {
       window.gtag('event', 'page_view', {
@@ -56,10 +58,15 @@ const OrderFormContent: React.FC = () => {
         page_location: window.location.href
       });
     }
+    
+    // Scroll to form container on step change
+    if (formContainerRef.current) {
+      formContainerRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   }, [formState.currentStep]);
   
   return (
-    <div className="max-w-4xl mx-auto">
+    <div className="max-w-4xl mx-auto" ref={formContainerRef}>
       {/* Progress Indicator */}
       <div className="mb-8">
         <ProgressIndicator
@@ -113,7 +120,7 @@ const OrderFormContent: React.FC = () => {
         <p className="text-sm text-gray-600">
           Need help? Call us at{' '}
           <a 
-            href="tel:1-800-1031-TAX"
+            href={getPhoneLink()}
             className="text-blue-900 font-medium hover:underline"
             onClick={() => {
               if (typeof window !== 'undefined' && window.trackPhoneCall) {
@@ -121,7 +128,7 @@ const OrderFormContent: React.FC = () => {
               }
             }}
           >
-            1-800-1031-TAX
+            {COMPANY.phone.main}
           </a>
         </p>
       </div>

@@ -1,5 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import { COMPANY, getPhoneLink } from '../../config/company';
 ---
 
 <Layout 
@@ -511,7 +512,7 @@ import Layout from '../../layouts/Layout.astro';
       </div>
       
       <p class="mt-8 text-blue-200">
-        Questions? Call our experts at <a href="tel:+18001031TAX" class="text-yellow-400 hover:text-yellow-300 font-semibold">1-800-1031-TAX</a>
+        Questions? Call our experts at <a href={getPhoneLink()} class="text-yellow-400 hover:text-yellow-300 font-semibold">{COMPANY.phone.main}</a>
       </p>
     </div>
   </section>

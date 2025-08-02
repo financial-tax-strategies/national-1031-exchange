@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { COMPANY, getPhoneLink } from '../config/company';
 ---
 
 <Layout title="America's Most Trusted 1031 Exchange Partner | National 1031 Center">
@@ -249,9 +250,9 @@ import Layout from '../layouts/Layout.astro';
       
       <div class="mt-12 text-center">
         <p class="text-blue-300 text-sm">
-          Call now: <a href="tel:+18001031TAX" 
+          Call now: <a href={getPhoneLink()} 
                       class="text-yellow-400 hover:text-yellow-300 font-semibold"
-                      onclick="if(window.trackPhoneCall) window.trackPhoneCall('bottom_cta');">1-800-1031-TAX</a> | 
+                      onclick="if(window.trackPhoneCall) window.trackPhoneCall('bottom_cta');">{COMPANY.phone.main}</a> | 
           Available 24/7 for emergencies
         </p>
       </div>

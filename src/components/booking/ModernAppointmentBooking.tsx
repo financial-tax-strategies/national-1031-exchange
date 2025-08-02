@@ -16,6 +16,7 @@ import { HighLevelService } from '../../lib/services/highlevel.service';
 import { DatabaseService } from '../../lib/services/database.service';
 import { getAppointmentPoller } from '../../lib/utils/appointmentPoller';
 import { trackBookingEvent } from '../../lib/analytics/bookingAnalytics';
+import { COMPANY, getPhoneLink } from '../../config/company';
 
 // ============================================
 // Step Progress Indicator Component
@@ -687,7 +688,7 @@ export const ModernAppointmentBooking: React.FC<BookingFlowProps> = ({
                 Service Message Consent
               </label>
               <p className="text-xs text-gray-500 mt-1">
-                I agree to receive Automated Reminders and Service Based messages from Heather Wagenhals, at 
+                I agree to receive Automated Reminders and Service Based messages from {COMPANY.name}, at 
                 the phone number provided above. This agreement isn't a condition of any purchase. Msg & data 
                 rates may apply, message frequencies vary. Text HELP to (602) 541-8585 for assistance, reply 
                 STOP or OUT to opt out or unsubscribe at any time.
@@ -709,7 +710,7 @@ export const ModernAppointmentBooking: React.FC<BookingFlowProps> = ({
                 Marketing Message Consent
               </label>
               <p className="text-xs text-gray-500 mt-1">
-                I agree to receive Marketing messages from Heather Wagenhals at the phone 
+                I agree to receive Marketing messages from {COMPANY.name} at the phone 
                 number provided above. This agreement isn't a condition of any purchase. Msg & data rates may 
                 apply, message frequencies vary. Text HELP to (602) 541-8585 for assistance, reply STOP or OUT 
                 to opt out or to unsubscribe at any time.
@@ -1018,10 +1019,10 @@ export const ModernAppointmentBooking: React.FC<BookingFlowProps> = ({
         )}
         
         <a
-          href="tel:+18001031TAX"
+          href={getPhoneLink()}
           className="px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors inline-flex items-center justify-center"
         >
-          📞 Call 1-800-1031-TAX
+          📞 Call {COMPANY.phone.main}
         </a>
       </div>
     </div>
