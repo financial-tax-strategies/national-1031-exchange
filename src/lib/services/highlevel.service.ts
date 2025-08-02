@@ -17,7 +17,7 @@ export class HighLevelService {
   /**
    * Get active HighLevel configuration
    */
-  private async getConfig(): Promise<HighLevelConfig> {
+  async getConfig(): Promise<HighLevelConfig> {
     if (!this.config) {
       const { data, error } = await this.db.getTable('highlevel_config')
         .select('*')
@@ -413,6 +413,16 @@ export class HighLevelService {
   }
   
   /**
+   * Get calendar ID from configuration
+   */
+  getCalendarId(): string {
+    if (!this.config) {
+      throw new Error('HighLevel configuration not loaded. Call getConfig() first.');
+    }
+    return this.config.calendar_id;
+  }
+  
+  /**
    * Get calendar availability
    */
   async getAvailability(params: {
@@ -421,28 +431,151 @@ export class HighLevelService {
   }): Promise<any[]> {
     const config = await this.getConfig();
     
+    console.log('[HighLevelService] getAvailability called with:', {
+      date: params.date,
+      timezone: params.timezone,
+      calendarId: config.calendar_id
+    });
+    
     try {
-      // Convert ISO date to Unix timestamp in seconds (HighLevel requirement)
+      // Convert ISO date to Unix timestamp in MILLISECONDS (HighLevel requirement)
       const dateObj = new Date(params.date);
-      const startTimestamp = Math.floor(dateObj.getTime() / 1000);
-      const endTimestamp = startTimestamp + 86400; // Add 24 hours
+      const startTimestamp = dateObj.getTime(); // Milliseconds!
+      const endTimestamp = startTimestamp + 86400000; // Add 24 hours in milliseconds
       
-      const response = await this.makeRequest(
-        `/calendars/${config.calendar_id}/free-slots?startDate=${startTimestamp}&endDate=${endTimestamp}`,
-        { method: 'GET' }
-      );
+      // Add timezone parameter if provided
+      let endpoint = `/calendars/${config.calendar_id}/free-slots?startDate=${startTimestamp}&endDate=${endTimestamp}`;
+      if (params.timezone) {
+        endpoint += `&timezone=${encodeURIComponent(params.timezone)}`;
+      }
       
-      return response.slots || [];
+      console.log('[HighLevelService] Making calendar API request:', {
+        endpoint,
+        startTimestamp,
+        endTimestamp,
+        startDate: new Date(startTimestamp).toISOString(),
+        endDate: new Date(endTimestamp).toISOString()
+      });
+      
+      const response = await this.makeRequest(endpoint, { method: 'GET' });
+      
+      console.log('[HighLevelService] Calendar API raw response:', response);
+      
+      // HighLevel returns slots organized by date:
+      // {
+      //   "2025-08-04": { "slots": ["2025-08-04T10:00:00-04:00", ...] },
+      //   "2025-08-05": { "slots": ["2025-08-05T10:30:00-04:00", ...] },
+      //   "traceId": "..."
+      // }
+      
+      // Extract slots for the requested date
+      const dateKey = params.date; // YYYY-MM-DD format
+      const dateData = response[dateKey];
+      
+      if (dateData && dateData.slots && Array.isArray(dateData.slots)) {
+        console.log(`[HighLevelService] Found ${dateData.slots.length} slots for ${dateKey}`);
+        
+        // Convert string timestamps to slot objects
+        const slots = dateData.slots.map((slotTime: string) => ({
+          time: slotTime,
+          available: true
+        }));
+        
+        return slots;
+      }
+      
+      // If no slots for the specific date, return empty array
+      console.log(`[HighLevelService] No slots found for ${dateKey}`);
+      return [];
+      
     } catch (error: any) {
-      console.error('Calendar API Error:', {
+      console.error('[HighLevelService] Calendar API Error:', {
         message: error.message,
         calendarId: config.calendar_id,
         date: params.date,
-        endpoint: 'calendars/free-slots'
+        endpoint: 'calendars/free-slots',
+        error: error
       });
       
-      // Return empty array for now - calendar feature needs proper endpoint discovery
-      // TODO: Contact HighLevel support for correct v2 calendar endpoint
+      return [];
+    }
+  }
+  
+  /**
+   * Get calendar availability for a date range
+   */
+  async getAvailabilityRange(params: {
+    startDate: string;
+    endDate: string;
+    timezone?: string;
+  }): Promise<{ date: string; slots: any[] }[]> {
+    const config = await this.getConfig();
+    
+    console.log('[HighLevelService] getAvailabilityRange called with:', {
+      startDate: params.startDate,
+      endDate: params.endDate,
+      timezone: params.timezone,
+      calendarId: config.calendar_id
+    });
+    
+    try {
+      // Convert dates to millisecond timestamps
+      const startTimestamp = new Date(params.startDate).getTime();
+      const endTimestamp = new Date(params.endDate).getTime();
+      
+      // Add timezone parameter if provided
+      let endpoint = `/calendars/${config.calendar_id}/free-slots?startDate=${startTimestamp}&endDate=${endTimestamp}`;
+      if (params.timezone) {
+        endpoint += `&timezone=${encodeURIComponent(params.timezone)}`;
+      }
+      
+      console.log('[HighLevelService] Making calendar range API request:', {
+        endpoint,
+        startTimestamp,
+        endTimestamp
+      });
+      
+      const response = await this.makeRequest(endpoint, { method: 'GET' });
+      
+      console.log('[HighLevelService] Calendar range API response keys:', Object.keys(response));
+      
+      // Parse the date-organized response
+      const result: { date: string; slots: any[] }[] = [];
+      
+      for (const dateKey in response) {
+        // Skip the traceId field
+        if (dateKey === 'traceId') continue;
+        
+        const dateData = response[dateKey];
+        if (dateData && dateData.slots && Array.isArray(dateData.slots)) {
+          // Convert string timestamps to slot objects
+          const slots = dateData.slots.map((slotTime: string) => ({
+            time: slotTime,
+            available: true
+          }));
+          
+          result.push({
+            date: dateKey,
+            slots
+          });
+        }
+      }
+      
+      // Sort by date
+      result.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+      
+      console.log(`[HighLevelService] Found availability for ${result.length} dates`);
+      return result;
+      
+    } catch (error: any) {
+      console.error('[HighLevelService] Calendar range API Error:', {
+        message: error.message,
+        calendarId: config.calendar_id,
+        startDate: params.startDate,
+        endDate: params.endDate,
+        error: error
+      });
+      
       return [];
     }
   }

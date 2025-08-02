@@ -111,12 +111,30 @@ export default function TestIntegrationComponent() {
       addTestResult('Testing calendar availability...', true, 'In progress');
       
       try {
+        const testDate = tomorrow.toISOString().split('T')[0];
+        console.log('[TestIntegration] Testing calendar availability for:', testDate);
+        
+        const startTime = performance.now();
         const slots = await highLevelService.getAvailability({
-          date: tomorrow.toISOString().split('T')[0]
+          date: testDate
+        });
+        const duration = performance.now() - startTime;
+        
+        console.log('[TestIntegration] Calendar availability response:', {
+          date: testDate,
+          slotsReceived: slots.length,
+          duration: `${duration.toFixed(2)}ms`,
+          firstSlot: slots[0],
+          allSlots: slots
         });
         
-        updateTestResult(5, true, `Found ${slots.length} available slots`);
+        if (slots.length === 0) {
+          updateTestResult(5, true, `No available slots found for ${testDate} (API returned empty array)`);
+        } else {
+          updateTestResult(5, true, `Found ${slots.length} available slots for ${testDate} (took ${duration.toFixed(0)}ms)`);
+        }
       } catch (error: any) {
+        console.error('[TestIntegration] Calendar availability error:', error);
         updateTestResult(5, false, `Availability check failed: ${error.message}`);
       }
       

@@ -84,6 +84,9 @@ export const AppointmentBooking: React.FC<BookingFlowProps> = ({
       databaseService.current = DatabaseService.getInstance();
       pollerRef.current = getAppointmentPoller();
       
+      // Ensure HighLevel config is loaded
+      await highlevelService.current.getConfig();
+      
       // Track booking flow start safely
       try {
         if (trackBookingEvent && typeof trackBookingEvent.flowStart === 'function') {
@@ -121,56 +124,51 @@ export const AppointmentBooking: React.FC<BookingFlowProps> = ({
     try {
       setLoading(true);
       
+      // First ensure config is loaded
+      await highlevelService.current.getConfig();
+      
       const startDate = new Date();
       startDate.setHours(startDate.getHours() + minBookingHours); // Minimum booking time
       
       const endDate = new Date();
       endDate.setDate(endDate.getDate() + maxBookingDays);
 
-      const response = await highlevelService.current.getAvailability({
-        calendarId: highlevelService.current.getCalendarId(),
-        startDate: startDate.getTime().toString(),
-        endDate: endDate.getTime().toString(),
+      // Format dates as YYYY-MM-DD
+      const startDateStr = startDate.toISOString().split('T')[0];
+      const endDateStr = endDate.toISOString().split('T')[0];
+
+      console.log('[AppointmentBooking] Loading availability:', {
+        startDate: startDateStr,
+        endDate: endDateStr,
+        days: maxBookingDays,
         timezone
       });
 
-      // Debug: Log the raw response
-      console.log('AppointmentBooking - Raw API response:', {
-        slotsLength: response.slots?.length || 0,
-        firstSlot: response.slots?.[0],
-        allSlots: response.slots
+      // Use the new optimized range method
+      const availabilityData = await highlevelService.current.getAvailabilityRange({
+        startDate: startDateStr,
+        endDate: endDateStr,
+        timezone
       });
 
-      // Group slots by date
+      console.log('[AppointmentBooking] Availability data received:', {
+        datesWithSlots: availabilityData.length,
+        totalSlots: availabilityData.reduce((sum, d) => sum + d.slots.length, 0)
+      });
+
+      // Store all slots and build date map
+      const allSlots: AvailableSlot[] = [];
       const dateSlotMap = new Map<string, AvailableSlot[]>();
-      const validSlots: AvailableSlot[] = [];
       
-      response.slots.forEach((slot: AvailableSlot, index: number) => {
-        console.log(`Processing slot ${index}:`, slot);
-        
-        if (!slot.time) {
-          console.warn(`Slot ${index} has no time property`, slot);
-          return;
+      availabilityData.forEach(({ date, slots }) => {
+        if (slots.length > 0) {
+          dateSlotMap.set(date, slots);
+          allSlots.push(...slots);
         }
-        
-        const slotDate = new Date(slot.time);
-        if (isNaN(slotDate.getTime())) {
-          console.warn(`Slot ${index} has invalid time:`, slot.time);
-          return;
-        }
-        
-        validSlots.push(slot);
-        const dateKey = slotDate.toISOString().split('T')[0];
-        
-        if (!dateSlotMap.has(dateKey)) {
-          dateSlotMap.set(dateKey, []);
-        }
-        dateSlotMap.get(dateKey)!.push(slot);
       });
 
-      console.log('Date grouping results:', {
-        totalSlots: response.slots.length,
-        validSlots: validSlots.length,
+      console.log('[AppointmentBooking] Availability summary:', {
+        totalSlots: allSlots.length,
         uniqueDates: dateSlotMap.size,
         dateKeys: Array.from(dateSlotMap.keys())
       });
@@ -188,15 +186,15 @@ export const AppointmentBooking: React.FC<BookingFlowProps> = ({
       
       try {
         if (trackBookingEvent && typeof trackBookingEvent.availabilityLoaded === 'function') {
-          trackBookingEvent.availabilityLoaded(duration, response.slots.length, response.cached || false);
+          trackBookingEvent.availabilityLoaded(duration, allSlots.length, false);
         }
       } catch (e) {
         console.error('Analytics error:', e);
       }
 
-      console.log('Final available dates:', dates);
+      console.log('[AppointmentBooking] Final available dates:', dates);
     } catch (error) {
-      console.error('Error loading availability:', error);
+      console.error('[AppointmentBooking] Error loading availability:', error);
       handleError(error as BookingError);
     } finally {
       setLoading(false);
@@ -207,21 +205,19 @@ export const AppointmentBooking: React.FC<BookingFlowProps> = ({
     try {
       setLoading(true);
       
-      // Create start of day and end of day timestamps
-      const startOfDay = new Date(date);
-      startOfDay.setHours(0, 0, 0, 0);
-      
-      const endOfDay = new Date(date);
-      endOfDay.setHours(23, 59, 59, 999);
+      const dateString = date.toISOString().split('T')[0];
+      console.log(`[AppointmentBooking] Loading slots for ${dateString}`);
       
       const response = await highlevelService.current.getAvailability({
-        calendarId: highlevelService.current.getCalendarId(),
-        startDate: startOfDay.getTime().toString(),
-        endDate: endOfDay.getTime().toString(),
+        date: dateString,
         timezone
       });
 
-      const dateSlots = response.slots.filter((slot: AvailableSlot) => {
+      console.log(`[AppointmentBooking] Received ${response.length} slots for ${dateString}`);
+
+      // Filter slots to ensure they're for the selected date
+      const dateSlots = response.filter((slot: AvailableSlot) => {
+        if (!slot.time) return false;
         const slotDate = new Date(slot.time);
         return slotDate.toDateString() === date.toDateString();
       });
@@ -229,11 +225,9 @@ export const AppointmentBooking: React.FC<BookingFlowProps> = ({
       setAvailableSlots(dateSlots);
       setCurrentStep('selecting-time');
 
-      if (debugMode) {
-        console.log('Loaded slots for date:', date, dateSlots);
-      }
+      console.log(`[AppointmentBooking] Filtered to ${dateSlots.length} slots for selected date`);
     } catch (error) {
-      console.error('Error loading slots:', error);
+      console.error('[AppointmentBooking] Error loading slots:', error);
       handleError(error as BookingError);
     } finally {
       setLoading(false);
