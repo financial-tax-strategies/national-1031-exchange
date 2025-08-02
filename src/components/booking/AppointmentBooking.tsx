@@ -851,14 +851,18 @@ export const AppointmentBooking: React.FC<BookingFlowProps> = ({
         <div className="bg-green-50 p-6 rounded-lg text-left space-y-3">
           <h4 className="font-semibold text-green-900">Appointment Details</h4>
           <div className="text-green-800">
-            <p><strong>Date:</strong> {appointment.appointmentDate.toLocaleDateString()}</p>
-            <p><strong>Time:</strong> {appointment.appointmentTime}</p>
-            {appointment.assignedSpecialistName && (
-              <p><strong>Specialist:</strong> {appointment.assignedSpecialistName}</p>
+            <p><strong>Date:</strong> {
+              appointment.appointment_date || appointment.appointmentDate ? 
+                new Date(appointment.appointment_date || appointment.appointmentDate).toLocaleDateString() : 
+                'Date TBD'
+            }</p>
+            <p><strong>Time:</strong> {appointment.appointment_time || appointment.appointmentTime || 'Time TBD'}</p>
+            {(appointment.assigned_specialist_name || appointment.assignedSpecialistName) && (
+              <p><strong>Specialist:</strong> {appointment.assigned_specialist_name || appointment.assignedSpecialistName}</p>
             )}
-            {appointment.meetingLocation && (
+            {(appointment.meeting_location || appointment.meetingLocation) && (
               <p><strong>Meeting Link:</strong> 
-                <a href={appointment.meetingLocation} target="_blank" rel="noopener noreferrer" 
+                <a href={appointment.meeting_location || appointment.meetingLocation} target="_blank" rel="noopener noreferrer" 
                    className="text-blue-600 hover:underline ml-1">
                   Click to join
                 </a>
