@@ -95,6 +95,89 @@ export class DatabaseService {
   }
   
   /**
+   * Create appointment in database
+   */
+  public async createAppointment(appointmentData: any): Promise<any> {
+    try {
+      console.log('[DatabaseService] Creating appointment with data:', appointmentData);
+      
+      // Map HighLevel appointment data to database schema
+      const dbAppointment = {
+        highlevel_appointment_id: appointmentData.highlevelAppointmentId,
+        highlevel_contact_id: appointmentData.highlevelContactId,
+        appointment_date: appointmentData.appointmentDate?.toISOString?.() || appointmentData.appointmentDate,
+        appointment_time: appointmentData.appointmentTime,
+        timezone: appointmentData.timezone || 'America/New_York',
+        duration_minutes: appointmentData.durationMinutes || 30,
+        status: appointmentData.status || 'confirmed',
+        tax_savings_amount: appointmentData.taxSavingsAmount,
+        property_sale_price: appointmentData.propertySalePrice,
+        source_url: appointmentData.sourceUrl,
+        form_data: appointmentData.formData || {},
+        polling_attempts: 0,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
+      };
+      
+      console.log('[DatabaseService] Mapped appointment data:', dbAppointment);
+      
+      const { data, error } = await this.supabase
+        .from('appointments')
+        .insert(dbAppointment)
+        .select()
+        .single();
+      
+      if (error) {
+        console.error('[DatabaseService] Error creating appointment:', error);
+        throw this.handleError(error, 'createAppointment');
+      }
+      
+      console.log('[DatabaseService] Appointment created successfully:', data);
+      return data;
+      
+    } catch (error) {
+      console.error('[DatabaseService] Error in createAppointment:', error);
+      throw error;
+    }
+  }
+  
+  /**
+   * Subscribe to appointment updates
+   */
+  public subscribeToAppointment(
+    appointmentId: string,
+    callback: (appointment: any) => void
+  ): any {
+    try {
+      console.log('[DatabaseService] Setting up subscription for appointment:', appointmentId);
+      
+      const subscription = this.supabase
+        .channel(`appointment-${appointmentId}`)
+        .on(
+          'postgres_changes',
+          {
+            event: 'UPDATE',
+            schema: 'public',
+            table: 'appointments',
+            filter: `id=eq.${appointmentId}`
+          },
+          (payload) => {
+            console.log('[DatabaseService] Appointment updated:', payload.new);
+            callback(payload.new);
+          }
+        )
+        .subscribe();
+      
+      console.log('[DatabaseService] Subscription created for appointment:', appointmentId);
+      return subscription;
+      
+    } catch (error) {
+      console.error('[DatabaseService] Error setting up appointment subscription:', error);
+      throw error;
+    }
+  }
+
+  /**
    * Handle database errors with consistent formatting
    */
   public handleError(error: any, context: string): Error {
