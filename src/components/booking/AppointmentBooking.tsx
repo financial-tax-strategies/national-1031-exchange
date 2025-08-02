@@ -216,10 +216,17 @@ export const AppointmentBooking: React.FC<BookingFlowProps> = ({
       console.log(`[AppointmentBooking] Received ${response.length} slots for ${dateString}`);
 
       // Filter slots to ensure they're for the selected date
+      // Extract just the date part from the slot time to avoid timezone issues
       const dateSlots = response.filter((slot: AvailableSlot) => {
         if (!slot.time) return false;
-        const slotDate = new Date(slot.time);
-        return slotDate.toDateString() === date.toDateString();
+        
+        // Extract YYYY-MM-DD from the slot time string
+        const slotDateStr = slot.time.split('T')[0];
+        const selectedDateStr = date.toISOString().split('T')[0];
+        
+        console.log(`[AppointmentBooking] Comparing dates: slot=${slotDateStr}, selected=${selectedDateStr}`);
+        
+        return slotDateStr === selectedDateStr;
       });
 
       setAvailableSlots(dateSlots);
