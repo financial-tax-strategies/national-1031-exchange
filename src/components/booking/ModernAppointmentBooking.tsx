@@ -373,7 +373,8 @@ export const ModernAppointmentBooking: React.FC<BookingFlowProps> = ({
             appointmentDate: new Date(updatedAppointment.appointment_date || updatedAppointment.appointmentDate),
             appointmentTime: updatedAppointment.appointment_time || updatedAppointment.appointmentTime,
             assignedSpecialistName: updatedAppointment.assigned_specialist_name || updatedAppointment.assignedSpecialistName,
-            meetingLocation: updatedAppointment.meeting_location || updatedAppointment.meetingLocation
+            meetingLocation: updatedAppointment.meeting_location || updatedAppointment.meetingLocation,
+            highlevelAppointmentId: updatedAppointment.highlevel_appointment_id || updatedAppointment.highlevelAppointmentId
           };
           
           setAppointment(formattedUpdated);
@@ -399,7 +400,7 @@ export const ModernAppointmentBooking: React.FC<BookingFlowProps> = ({
             
             try {
               if (onSuccess && typeof onSuccess === 'function') {
-                onSuccess(updatedAppointment);
+                onSuccess(formattedUpdated);
               }
             } catch (e) {
               console.error('Error in parent success handler:', e);
@@ -440,7 +441,8 @@ export const ModernAppointmentBooking: React.FC<BookingFlowProps> = ({
           appointmentDate: new Date(updatedAppointment.appointment_date || updatedAppointment.appointmentDate),
           appointmentTime: updatedAppointment.appointment_time || updatedAppointment.appointmentTime,
           assignedSpecialistName: updatedAppointment.assigned_specialist_name || updatedAppointment.assignedSpecialistName,
-          meetingLocation: updatedAppointment.meeting_location || updatedAppointment.meetingLocation
+          meetingLocation: updatedAppointment.meeting_location || updatedAppointment.meetingLocation,
+          highlevelAppointmentId: updatedAppointment.highlevel_appointment_id || updatedAppointment.highlevelAppointmentId
         };
         
         setAppointment(formattedUpdated);
@@ -454,7 +456,7 @@ export const ModernAppointmentBooking: React.FC<BookingFlowProps> = ({
           
           try {
             if (onSuccess && typeof onSuccess === 'function') {
-              onSuccess(updatedAppointment);
+              onSuccess(formattedUpdated);
             }
           } catch (e) {
             console.error('Error in parent success handler:', e);
