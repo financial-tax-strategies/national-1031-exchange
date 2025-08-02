@@ -127,7 +127,9 @@ export class HighLevelService {
       lastName: params.lastName,
       locationId: config.location_id,
       tags: params.tags || ['1031-exchange-lead'],
-      customField: params.customFields || {}
+      customFields: params.customFields ? 
+        Object.entries(params.customFields).map(([key, value]) => ({ key, value: String(value) })) : 
+        []
     };
     
     let contactId: string;
@@ -414,14 +416,23 @@ export class HighLevelService {
     const config = await this.getConfig();
     
     try {
+      // Try the v2 calendar endpoint first
       const response = await this.makeRequest(
-        `/calendars/events/slots?calendarId=${config.calendar_id}&startDate=${params.date}&endDate=${params.date}&timezone=${params.timezone || config.timezone}`,
+        `/calendars/${config.calendar_id}/free-slots?startDate=${params.date}&endDate=${params.date}`,
         { method: 'GET' }
       );
       
       return response.slots || [];
-    } catch (error) {
-      console.error('Error fetching availability:', error);
+    } catch (error: any) {
+      console.error('Calendar API Error:', {
+        message: error.message,
+        calendarId: config.calendar_id,
+        date: params.date,
+        endpoint: 'calendars/free-slots'
+      });
+      
+      // Return empty array for now - calendar feature needs proper endpoint discovery
+      // TODO: Contact HighLevel support for correct v2 calendar endpoint
       return [];
     }
   }
