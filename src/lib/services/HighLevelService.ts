@@ -163,6 +163,24 @@ export class HighLevelService {
         response: JSON.stringify(response, null, 2)
       });
 
+      // Check if we got a traceId-only response (error case)
+      if (response.traceId && !response.slots && !response.freeSlots && !response.data) {
+        console.error('HighLevel API returned only traceId - possible auth or permission issue:', {
+          traceId: response.traceId,
+          apiKey: this.config.apiKey ? 'present' : 'missing',
+          locationId: this.config.locationId,
+          calendarId: this.config.calendarId,
+          requestUrl: `/calendars/${calendarId}/free-slots?${params}`
+        });
+        
+        throw this.createBookingError(
+          BookingErrorCode.SERVICE_UNAVAILABLE,
+          'Calendar service returned incomplete data. This may be a permission issue.',
+          response,
+          'Unable to load calendar availability. Please contact support or try the widget booking option.'
+        );
+      }
+
       // Handle different possible response structures
       const rawSlots = response.freeSlots || response.slots || response.data || [];
       
@@ -488,10 +506,30 @@ export class HighLevelService {
     };
 
     try {
+      console.log('Making HighLevel API request:', {
+        url,
+        method: options.method || 'GET',
+        headers: {
+          ...headers,
+          'Authorization': headers.Authorization ? 'Bearer [REDACTED]' : 'missing'
+        }
+      });
+      
       const response = await fetch(url, requestOptions);
+      
+      console.log('HighLevel API response status:', {
+        status: response.status,
+        statusText: response.statusText,
+        headers: Object.fromEntries(response.headers.entries())
+      });
       
       if (!response.ok) {
         const errorText = await response.text();
+        console.error('HighLevel API error response:', {
+          status: response.status,
+          statusText: response.statusText,
+          errorText
+        });
         throw new Error(`HTTP ${response.status}: ${errorText}`);
       }
 
