@@ -225,11 +225,17 @@ export class HighLevelService {
   }): Promise<string> {
     const config = await this.getConfig();
     
+    // Convert ISO date strings to Unix timestamps in seconds (HighLevel requirement)
+    const startDate = new Date(params.startTime);
+    const endDate = new Date(params.endTime);
+    const startTimestamp = Math.floor(startDate.getTime() / 1000);
+    const endTimestamp = Math.floor(endDate.getTime() / 1000);
+    
     const payload = {
       calendarId: config.calendar_id,
       contactId: params.contactId,
-      startTime: params.startTime,
-      endTime: params.endTime,
+      startTime: startTimestamp,
+      endTime: endTimestamp,
       title: params.title || '1031 Exchange Consultation',
       appointmentStatus: params.appointmentStatus || 'new'
     };
@@ -416,9 +422,13 @@ export class HighLevelService {
     const config = await this.getConfig();
     
     try {
-      // Try the v2 calendar endpoint first
+      // Convert ISO date to Unix timestamp in seconds (HighLevel requirement)
+      const dateObj = new Date(params.date);
+      const startTimestamp = Math.floor(dateObj.getTime() / 1000);
+      const endTimestamp = startTimestamp + 86400; // Add 24 hours
+      
       const response = await this.makeRequest(
-        `/calendars/${config.calendar_id}/free-slots?startDate=${params.date}&endDate=${params.date}`,
+        `/calendars/${config.calendar_id}/free-slots?startDate=${startTimestamp}&endDate=${endTimestamp}`,
         { method: 'GET' }
       );
       
