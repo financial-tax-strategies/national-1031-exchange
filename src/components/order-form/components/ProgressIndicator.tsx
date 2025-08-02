@@ -142,8 +142,8 @@ export const ProgressIndicator: React.FC<ProgressIndicatorProps> = ({
                       >
                         {stepLabels[step]}
                       </div>
-                      <div className="text-xs text-gray-500 mt-0.5">
-                        {stepDescriptions[step]}
+                      <div className="text-xs text-gray-500 mt-0.5 h-8 flex items-start justify-center">
+                        <span>{stepDescriptions[step]}</span>
                       </div>
                     </div>
                   </div>
