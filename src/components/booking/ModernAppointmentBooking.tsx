@@ -97,6 +97,9 @@ export const ModernAppointmentBooking: React.FC<BookingFlowProps> = ({
   const databaseService = useRef<any>(null);
   const subscriptionRef = useRef<any>(null);
   const pollerRef = useRef<any>(null);
+  
+  // UI refs
+  const headerRef = useRef<HTMLDivElement>(null);
 
   // Options with defaults
   const {
@@ -125,10 +128,10 @@ export const ModernAppointmentBooking: React.FC<BookingFlowProps> = ({
     };
   }, [currentWizardStep]);
 
-  // Scroll to top when wizard step changes
+  // Scroll to header when wizard step changes
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (typeof window !== 'undefined' && headerRef.current) {
+      headerRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   }, [currentWizardStep]);
 
@@ -556,11 +559,39 @@ export const ModernAppointmentBooking: React.FC<BookingFlowProps> = ({
   };
 
   // ============================================
+  // Helper Functions
+  // ============================================
+
+  const formatPhoneNumber = (value: string): string => {
+    // Remove all non-digits
+    const phoneNumber = value.replace(/\D/g, '');
+    
+    // Limit to 10 digits
+    const truncated = phoneNumber.slice(0, 10);
+    
+    // Apply formatting
+    if (truncated.length === 0) {
+      return '';
+    } else if (truncated.length <= 3) {
+      return truncated;
+    } else if (truncated.length <= 6) {
+      return `(${truncated.slice(0, 3)}) ${truncated.slice(3)}`;
+    } else {
+      return `(${truncated.slice(0, 3)}) ${truncated.slice(3, 6)}-${truncated.slice(6)}`;
+    }
+  };
+
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formatted = formatPhoneNumber(e.target.value);
+    setContactInfo({...contactInfo, phone: formatted});
+  };
+
+  // ============================================
   // New Modern Render Methods
   // ============================================
 
   const renderHeader = () => (
-    <div className="bg-[#1B3BA7] text-white py-8 px-6 mb-8">
+    <div ref={headerRef} className="bg-[#1B3BA7] text-white py-8 px-6 mb-8">
       <div className="max-w-4xl mx-auto text-center">
         <h1 className="text-3xl font-bold mb-2">Select Your Preferred Time</h1>
         <p className="text-gray-300">Choose a time that works best for your schedule</p>
@@ -618,10 +649,12 @@ export const ModernAppointmentBooking: React.FC<BookingFlowProps> = ({
           <input
             type="tel"
             value={contactInfo.phone}
-            onChange={(e) => setContactInfo({...contactInfo, phone: e.target.value})}
+            onChange={handlePhoneChange}
             className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
             placeholder="(321) 626-9791"
+            maxLength={14}
             required
+            suppressHydrationWarning
           />
         </div>
 
