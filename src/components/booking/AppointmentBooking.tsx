@@ -233,8 +233,14 @@ export const AppointmentBooking: React.FC<BookingFlowProps> = ({
     setSelectedDate(date);
     setSelectedSlot(null);
     
-    // Track date selection
-    trackBookingEvent.dateSelected(date, availableDates);
+    // Track date selection safely
+    try {
+      if (trackBookingEvent && typeof trackBookingEvent.dateSelected === 'function') {
+        trackBookingEvent.dateSelected(date, availableDates);
+      }
+    } catch (e) {
+      console.error('Analytics error:', e);
+    }
     
     loadSlotsForDate(date);
   };
@@ -242,8 +248,14 @@ export const AppointmentBooking: React.FC<BookingFlowProps> = ({
   const handleSlotSelect = (slot: AvailableSlot) => {
     setSelectedSlot(slot);
     
-    // Track time selection
-    trackBookingEvent.timeSelected(slot, availableSlots);
+    // Track time selection safely
+    try {
+      if (trackBookingEvent && typeof trackBookingEvent.timeSelected === 'function') {
+        trackBookingEvent.timeSelected(slot, availableSlots);
+      }
+    } catch (e) {
+      console.error('Analytics error:', e);
+    }
     
     setCurrentStep('confirming-details');
   };
