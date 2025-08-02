@@ -502,6 +502,196 @@ export class HighLevelService {
   }
   
   /**
+   * Book appointment with contact creation - matches AppointmentBooking component parameters
+   */
+  async bookAppointment(params: {
+    email: string;
+    phone: string;
+    firstName: string;
+    lastName: string;
+    appointmentDate: string; // ISO date string of selected slot
+    timezone: string;
+    taxSavingsAmount?: number;
+    propertySalePrice?: number;
+    sourceUrl?: string;
+    formData?: any;
+  }): Promise<any> {
+    const config = await this.getConfig();
+    
+    console.log('[HighLevelService] bookAppointment called with:', {
+      email: params.email,
+      firstName: params.firstName,
+      lastName: params.lastName,
+      appointmentDate: params.appointmentDate,
+      timezone: params.timezone
+    });
+    
+    let contactId: string;
+    
+    try {
+      // First, search for existing contact by email
+      console.log('[HighLevelService] Searching for existing contact with email:', params.email);
+      
+      try {
+        const searchResponse = await this.makeRequest(
+          `/contacts/search/duplicate?email=${encodeURIComponent(params.email)}&locationId=${config.location_id}`,
+          { method: 'GET' }
+        );
+        
+        if (searchResponse.contact && searchResponse.contact.id) {
+          console.log('[HighLevelService] Found existing contact:', searchResponse.contact.id);
+          contactId = searchResponse.contact.id;
+        } else {
+          // Create new contact
+          contactId = await this.createNewContact(params, config);
+        }
+      } catch (searchError) {
+        console.log('[HighLevelService] Contact search failed, creating new contact');
+        contactId = await this.createNewContact(params, config);
+      }
+      
+      // Now book the appointment
+      const startTime = params.appointmentDate;
+      const startDate = new Date(startTime);
+      const endTime = new Date(startDate.getTime() + 30 * 60000).toISOString(); // 30 minutes later
+      
+      const appointmentData = {
+        calendarId: config.calendar_id,
+        locationId: config.location_id,
+        contactId,
+        startTime,
+        endTime,
+        title: '1031 Exchange Consultation',
+        appointmentStatus: 'confirmed'
+      };
+      
+      console.log('[HighLevelService] Booking appointment with round-robin:', appointmentData);
+      
+      const appointmentResponse = await this.makeRequest('/calendars/events/appointments', {
+        method: 'POST',
+        body: JSON.stringify(appointmentData)
+      });
+      
+      console.log('[HighLevelService] Appointment booked successfully:', appointmentResponse);
+      
+      await this.logIntegration({
+        integrationType: 'appointment_create',
+        payloadSent: appointmentData,
+        responseReceived: appointmentResponse,
+        success: true,
+        highlevelEntityId: appointmentResponse.id
+      });
+      
+      // Return appointment data in the format expected by AppointmentBooking
+      return {
+        id: appointmentResponse.id,
+        highlevelAppointmentId: appointmentResponse.id,
+        highlevelContactId: contactId,
+        status: 'confirmed',
+        appointmentDate: startDate,
+        appointmentTime: startTime,
+        timezone: params.timezone,
+        durationMinutes: 30,
+        contactEmail: params.email,
+        contactPhone: params.phone,
+        contactFirstName: params.firstName,
+        contactLastName: params.lastName,
+        taxSavingsAmount: params.taxSavingsAmount,
+        propertySalePrice: params.propertySalePrice,
+        sourceUrl: params.sourceUrl,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      };
+      
+    } catch (error: any) {
+      console.error('[HighLevelService] Error booking appointment:', error);
+      
+      await this.logIntegration({
+        integrationType: 'appointment_create',
+        payloadSent: {
+          email: params.email,
+          appointmentDate: params.appointmentDate,
+          timezone: params.timezone
+        },
+        success: false,
+        errorMessage: error.message
+      });
+      
+      throw error;
+    }
+  }
+  
+  /**
+   * Create new contact helper method
+   */
+  private async createNewContact(params: {
+    email: string;
+    phone: string;
+    firstName: string;
+    lastName: string;
+    taxSavingsAmount?: number;
+    propertySalePrice?: number;
+  }, config: any): Promise<string> {
+    console.log('[HighLevelService] Creating new contact');
+    
+    const contactData = {
+      firstName: params.firstName,
+      lastName: params.lastName,
+      email: params.email,
+      phone: params.phone || '',
+      locationId: config.location_id,
+      tags: ['1031-exchange-lead'],
+      customFields: [
+        params.taxSavingsAmount ? { key: 'tax_savings_amount', field_value: params.taxSavingsAmount.toString() } : null,
+        params.propertySalePrice ? { key: 'property_sale_price', field_value: params.propertySalePrice.toString() } : null
+      ].filter(Boolean)
+    };
+    
+    try {
+      const contactResponse = await this.makeRequest('/contacts/', {
+        method: 'POST',
+        body: JSON.stringify(contactData)
+      });
+      
+      console.log('[HighLevelService] Contact created successfully:', contactResponse);
+      
+      await this.logIntegration({
+        integrationType: 'contact_create',
+        payloadSent: contactData,
+        responseReceived: contactResponse,
+        success: true,
+        highlevelEntityId: contactResponse.contact.id
+      });
+      
+      return contactResponse.contact.id;
+    } catch (error: any) {
+      // If contact already exists, try to get the ID from error response
+      if (error.message?.includes('already exists') || error.message?.includes('Duplicate')) {
+        try {
+          // Try to parse contact ID from error response
+          const errorMessage = error.message;
+          const contactIdMatch = errorMessage.match(/contactId['":\s]+([a-zA-Z0-9-]+)/);
+          if (contactIdMatch) {
+            console.log('[HighLevelService] Using existing contact ID from error:', contactIdMatch[1]);
+            return contactIdMatch[1];
+          }
+        } catch (parseError) {
+          console.error('[HighLevelService] Failed to parse contact ID from error');
+        }
+      }
+      
+      await this.logIntegration({
+        integrationType: 'contact_create',
+        payloadSent: contactData,
+        success: false,
+        errorMessage: error.message
+      });
+      
+      throw error;
+    }
+  }
+
+  /**
    * Get calendar availability for a date range
    */
   async getAvailabilityRange(params: {

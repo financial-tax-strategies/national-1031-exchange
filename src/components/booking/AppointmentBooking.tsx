@@ -350,7 +350,7 @@ export const AppointmentBooking: React.FC<BookingFlowProps> = ({
         formData: leadData.propertyDetails
       };
 
-      const newAppointment = await highlevelService.current.createAppointment(appointmentRequest);
+      const newAppointment = await highlevelService.current.bookAppointment(appointmentRequest);
       
       // Save to our database
       const savedAppointment = await databaseService.current.createAppointment(newAppointment);
