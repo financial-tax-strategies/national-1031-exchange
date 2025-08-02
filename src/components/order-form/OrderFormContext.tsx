@@ -337,7 +337,32 @@ export const OrderFormProvider: React.FC<OrderFormProviderProps> = ({
     // Can't proceed if we're on the last step
     if (formState.currentStep >= 6) return false;
     
-    // Always validate current step fields - let the schema handle what's required
+    // Custom validation logic for better UX during form filling
+    const data = formState.data;
+    
+    if (formState.currentStep === 2) {
+      // Step 2: Property Details - Check if user has filled required fields
+      const hasAddress = data['1031x_property_address'] && data['1031x_property_address'].length >= 5;
+      const hasCity = data['1031x_property_city'] && data['1031x_property_city'].length >= 2;
+      const hasState = data['1031x_property_state'] && data['1031x_property_state'].length === 2;
+      const hasZip = data['1031x_property_zip'] && /^\d{5}(-\d{4})?$/.test(data['1031x_property_zip']);
+      const hasType = data['1031x_property_type'] && data['1031x_property_type'] !== '';
+      const hasPrice = data['1031x_sale_price'] && data['1031x_sale_price'] >= 10000;
+      
+      console.log('Step 2 validation check:', {
+        hasAddress, hasCity, hasState, hasZip, hasType, hasPrice,
+        address: data['1031x_property_address'],
+        city: data['1031x_property_city'],
+        state: data['1031x_property_state'],
+        zip: data['1031x_property_zip'],
+        type: data['1031x_property_type'],
+        price: data['1031x_sale_price']
+      });
+      
+      return hasAddress && hasCity && hasState && hasZip && hasType && hasPrice;
+    }
+    
+    // For other steps, use the original validation
     try {
       const result = validateStep(formState.currentStep, formState.data);
       return result.success;

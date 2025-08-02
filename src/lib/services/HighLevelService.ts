@@ -74,12 +74,12 @@ export class HighLevelService {
         lastName: contactData.lastName,
         source: contactData.source || '1031 Tax Calculator',
         tags: ['1031-exchange-lead', 'tax-calculator'],
-        customFields: {
-          'tax_savings_amount': contactData.taxSavingsAmount?.toString(),
-          'property_sale_price': contactData.propertySalePrice?.toString(),
-          'lead_source': 'National 1031 Center Website',
-          'calculator_completed': 'true'
-        }
+        customFields: [
+          ...(contactData.taxSavingsAmount ? [{ key: 'tax_savings_amount', field_value: contactData.taxSavingsAmount.toString() }] : []),
+          ...(contactData.propertySalePrice ? [{ key: 'property_sale_price', field_value: contactData.propertySalePrice.toString() }] : []),
+          { key: 'lead_source', field_value: 'National 1031 Center Website' },
+          { key: 'calculator_completed', field_value: 'true' }
+        ]
       };
 
       const response = await this.makeRequest('/contacts/', {
@@ -108,6 +108,12 @@ export class HighLevelService {
    */
   async getContactByEmail(email: string): Promise<string | null> {
     try {
+      // Validate email parameter
+      if (!email || email.trim() === '') {
+        console.warn('getContactByEmail called with empty email');
+        return null;
+      }
+
       const response = await this.makeRequest(`/contacts/search?email=${encodeURIComponent(email)}`, {
         method: 'GET'
       });

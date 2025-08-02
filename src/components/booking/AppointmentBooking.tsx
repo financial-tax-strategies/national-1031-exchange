@@ -37,6 +37,14 @@ export const AppointmentBooking: React.FC<BookingFlowProps> = ({
   const [appointment, setAppointment] = useState<Appointment | null>(null);
   const [error, setError] = useState<BookingError | null>(null);
   const [loading, setLoading] = useState(false);
+  
+  // Contact information state (for cases where leadData is incomplete)
+  const [contactInfo, setContactInfo] = useState({
+    firstName: leadData.firstName || '',
+    lastName: leadData.lastName || '',
+    email: leadData.email || '',
+    phone: leadData.phone || ''
+  });
 
   // Services
   const highlevelService = useRef<any>(null);
@@ -264,7 +272,27 @@ export const AppointmentBooking: React.FC<BookingFlowProps> = ({
       console.error('Analytics error:', e);
     }
     
-    setCurrentStep('confirming-details');
+    // Check if we need to collect contact information
+    if (isContactInfoComplete()) {
+      setCurrentStep('confirming-details');
+    } else {
+      setCurrentStep('collecting-contact');
+    }
+  };
+
+  // Helper function to check if contact information is complete
+  const isContactInfoComplete = () => {
+    return contactInfo.firstName.trim() !== '' &&
+           contactInfo.lastName.trim() !== '' &&
+           contactInfo.email.trim() !== '' &&
+           contactInfo.phone.trim() !== '';
+  };
+
+  // Handle contact information submission
+  const handleContactSubmit = () => {
+    if (isContactInfoComplete()) {
+      setCurrentStep('confirming-details');
+    }
   };
 
   const handleConfirmBooking = async () => {
@@ -286,10 +314,10 @@ export const AppointmentBooking: React.FC<BookingFlowProps> = ({
         appointmentTime: selectedSlot.time,
         timezone,
         durationMinutes: 30,
-        contactEmail: leadData.email,
-        contactPhone: leadData.phone,
-        contactFirstName: leadData.firstName,
-        contactLastName: leadData.lastName,
+        contactEmail: contactInfo.email,
+        contactPhone: contactInfo.phone,
+        contactFirstName: contactInfo.firstName,
+        contactLastName: contactInfo.lastName,
         taxSavingsAmount: leadData.taxSavingsAmount,
         propertySalePrice: leadData.propertySalePrice,
         sourceUrl: window.location.href,
@@ -309,10 +337,10 @@ export const AppointmentBooking: React.FC<BookingFlowProps> = ({
 
       // Create appointment in HighLevel
       const appointmentRequest = {
-        email: leadData.email,
-        phone: leadData.phone,
-        firstName: leadData.firstName,
-        lastName: leadData.lastName,
+        email: contactInfo.email,
+        phone: contactInfo.phone,
+        firstName: contactInfo.firstName,
+        lastName: contactInfo.lastName,
         appointmentDate: selectedSlot.time,
         timezone,
         taxSavingsAmount: leadData.taxSavingsAmount,
@@ -581,6 +609,94 @@ export const AppointmentBooking: React.FC<BookingFlowProps> = ({
     </div>
   );
 
+  const renderContactCollection = () => (
+    <div className="space-y-6">
+      <div className="text-center">
+        <h3 className="text-2xl font-bold text-gray-900 mb-2">
+          Contact Information
+        </h3>
+        <p className="text-gray-600">
+          Please provide your contact information to complete your appointment booking.
+        </p>
+      </div>
+
+      <div className="bg-white p-6 rounded-lg border border-gray-200 space-y-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              First Name *
+            </label>
+            <input
+              type="text"
+              value={contactInfo.firstName}
+              onChange={(e) => setContactInfo({...contactInfo, firstName: e.target.value})}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              placeholder="Enter your first name"
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Last Name *
+            </label>
+            <input
+              type="text"
+              value={contactInfo.lastName}
+              onChange={(e) => setContactInfo({...contactInfo, lastName: e.target.value})}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              placeholder="Enter your last name"
+              required
+            />
+          </div>
+        </div>
+        
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Email Address *
+          </label>
+          <input
+            type="email"
+            value={contactInfo.email}
+            onChange={(e) => setContactInfo({...contactInfo, email: e.target.value})}
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            placeholder="your.email@example.com"
+            required
+          />
+        </div>
+        
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Phone Number *
+          </label>
+          <input
+            type="tel"
+            value={contactInfo.phone}
+            onChange={(e) => setContactInfo({...contactInfo, phone: e.target.value})}
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            placeholder="(555) 123-4567"
+            required
+          />
+        </div>
+      </div>
+
+      <div className="flex justify-between">
+        <button
+          onClick={() => setCurrentStep('selecting-time')}
+          className="px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+        >
+          Back to Times
+        </button>
+        <button
+          onClick={handleContactSubmit}
+          disabled={!isContactInfoComplete()}
+          className="px-8 py-2 bg-blue-900 text-white rounded-lg hover:bg-blue-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          Continue to Confirmation
+        </button>
+      </div>
+    </div>
+  );
+
   const renderTimeSelection = () => (
     <div className="space-y-6">
       <div className="text-center">
@@ -639,9 +755,9 @@ export const AppointmentBooking: React.FC<BookingFlowProps> = ({
         <div>
           <h4 className="font-semibold text-gray-900">Contact Information</h4>
           <p className="text-gray-600">
-            {leadData.firstName} {leadData.lastName}<br />
-            {leadData.email}<br />
-            {leadData.phone}
+            {contactInfo.firstName} {contactInfo.lastName}<br />
+            {contactInfo.email}<br />
+            {contactInfo.phone}
           </p>
         </div>
 
@@ -845,6 +961,7 @@ export const AppointmentBooking: React.FC<BookingFlowProps> = ({
       {currentStep === 'loading-availability' && renderLoadingState()}
       {currentStep === 'selecting-date' && renderDateSelection()}
       {currentStep === 'selecting-time' && renderTimeSelection()}
+      {currentStep === 'collecting-contact' && renderContactCollection()}
       {currentStep === 'confirming-details' && renderBookingConfirmation()}
       {currentStep === 'creating-appointment' && renderLoadingState()}
       {currentStep === 'pending-assignment' && renderPendingAssignment()}

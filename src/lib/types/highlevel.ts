@@ -299,6 +299,7 @@ export type BookingState =
   | 'loading-availability'    // Fetching available slots
   | 'selecting-date'          // User selecting date
   | 'selecting-time'          // User selecting time slot
+  | 'collecting-contact'      // Collecting contact information
   | 'confirming-details'      // Showing booking summary
   | 'creating-appointment'    // Creating appointment
   | 'pending-assignment'      // Waiting for specialist assignment
