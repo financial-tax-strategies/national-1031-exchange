@@ -94,8 +94,13 @@ export const propertyDetailsSchema = z.object({
     .min(0, 'Mortgage balance cannot be negative')
     .optional()
     .refine((val, ctx) => {
+      // Safety check for ctx.parent
+      if (!ctx.parent || !val) {
+        return true; // Skip validation if no parent context or no value
+      }
+      
       const salePrice = ctx.parent['1031x_sale_price'];
-      if (val && salePrice && val > salePrice) {
+      if (salePrice && val > salePrice) {
         return false;
       }
       return true;

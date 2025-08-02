@@ -349,16 +349,6 @@ export const OrderFormProvider: React.FC<OrderFormProviderProps> = ({
       const hasType = data['1031x_property_type'] && data['1031x_property_type'] !== '';
       const hasPrice = data['1031x_sale_price'] && data['1031x_sale_price'] >= 10000;
       
-      console.log('Step 2 validation check:', {
-        hasAddress, hasCity, hasState, hasZip, hasType, hasPrice,
-        address: data['1031x_property_address'],
-        city: data['1031x_property_city'],
-        state: data['1031x_property_state'],
-        zip: data['1031x_property_zip'],
-        type: data['1031x_property_type'],
-        price: data['1031x_sale_price']
-      });
-      
       return hasAddress && hasCity && hasState && hasZip && hasType && hasPrice;
     }
     
