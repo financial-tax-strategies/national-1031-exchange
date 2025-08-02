@@ -37,7 +37,7 @@ export const COMPANY = {
   // Business Information
   founded: "2024",
   licenseStates: 50,
-  fidelityBond: "$100 million",
+  fidelityBond: "Bonded & Insured",
   exchanges: "10,000+",
   
   // Hours

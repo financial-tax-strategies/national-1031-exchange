@@ -690,7 +690,7 @@ export const ModernAppointmentBooking: React.FC<BookingFlowProps> = ({
               <p className="text-xs text-gray-500 mt-1">
                 I agree to receive Automated Reminders and Service Based messages from {COMPANY.name}, at 
                 the phone number provided above. This agreement isn't a condition of any purchase. Msg & data 
-                rates may apply, message frequencies vary. Text HELP to (602) 541-8585 for assistance, reply 
+                rates may apply, message frequencies vary. Text HELP to {COMPANY.phone.main} for assistance, reply 
                 STOP or OUT to opt out or unsubscribe at any time.
               </p>
             </div>
@@ -712,7 +712,7 @@ export const ModernAppointmentBooking: React.FC<BookingFlowProps> = ({
               <p className="text-xs text-gray-500 mt-1">
                 I agree to receive Marketing messages from {COMPANY.name} at the phone 
                 number provided above. This agreement isn't a condition of any purchase. Msg & data rates may 
-                apply, message frequencies vary. Text HELP to (602) 541-8585 for assistance, reply STOP or OUT 
+                apply, message frequencies vary. Text HELP to {COMPANY.phone.main} for assistance, reply STOP or OUT 
                 to opt out or to unsubscribe at any time.
               </p>
             </div>
