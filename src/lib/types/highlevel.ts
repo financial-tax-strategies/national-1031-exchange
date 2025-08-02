@@ -165,12 +165,18 @@ export interface HighLevelContact {
 
 export interface HighLevelAppointmentRequest {
   calendarId: string;
+  locationId: string; // Required by HighLevel v2 API
   contactId: string;
   startTime: string; // ISO timestamp
   endTime: string;   // ISO timestamp
   timezone: string;
   title?: string;
   appointmentStatus?: string;
+  // Contact info (required by HighLevel for appointment creation)
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  phone?: string;
 }
 
 export interface HighLevelAppointmentResponse {

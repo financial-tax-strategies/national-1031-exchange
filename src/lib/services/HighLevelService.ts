@@ -329,12 +329,18 @@ export class HighLevelService {
 
       const appointmentRequest: HighLevelAppointmentRequest = {
         calendarId: this.config.calendarId,
+        locationId: this.config.locationId, // Required for HighLevel v2 API
         contactId,
         startTime: appointmentDate.toISOString(),
         endTime: endDate.toISOString(),
         timezone: appointmentData.timezone,
         title: '1031 Exchange Consultation',
-        appointmentStatus: 'confirmed'
+        appointmentStatus: 'confirmed',
+        // Include contact info for the appointment (HighLevel requirement)
+        firstName: appointmentData.firstName,
+        lastName: appointmentData.lastName,
+        email: appointmentData.email,
+        phone: appointmentData.phone
       };
 
       const response = await this.makeRequest('/calendars/events/appointments', {
