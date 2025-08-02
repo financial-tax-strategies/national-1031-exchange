@@ -222,6 +222,33 @@ export class DatabaseService {
   }
   
   /**
+   * Get appointment by ID
+   */
+  public async getAppointment(appointmentId: string): Promise<any> {
+    try {
+      console.log('[DatabaseService] Getting appointment:', appointmentId);
+      
+      const { data, error } = await this.supabase
+        .from('appointments')
+        .select('*')
+        .eq('id', appointmentId)
+        .single();
+      
+      if (error) {
+        console.error('[DatabaseService] Error getting appointment:', error);
+        throw this.handleError(error, 'getAppointment');
+      }
+      
+      console.log('[DatabaseService] Appointment retrieved:', data);
+      return data;
+      
+    } catch (error) {
+      console.error('[DatabaseService] Error in getAppointment:', error);
+      throw error;
+    }
+  }
+
+  /**
    * Subscribe to appointment updates
    */
   public subscribeToAppointment(
