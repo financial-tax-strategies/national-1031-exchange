@@ -1,6 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import AppointmentBooking from '../components/booking/AppointmentBooking';
+import ModernAppointmentBooking from '../components/booking/ModernAppointmentBooking';
 import { COMPANY, getPhoneLink, getEmailLink } from '../config/company';
 ---
 
@@ -74,71 +74,57 @@ import { COMPANY, getPhoneLink, getEmailLink } from '../config/company';
     </div>
   </section>
 
-  <!-- Booking Component -->
-  <section class="py-16 bg-white">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center mb-8">
-        <h2 class="text-3xl font-bold text-gray-900 mb-4">Book Your Appointment</h2>
-        <p class="text-lg text-gray-600">
-          Choose a convenient time to speak with one of our certified exchange specialists.
-        </p>
-      </div>
-      
-      <!-- Appointment Booking Component -->
-      <div class="bg-white rounded-xl shadow-lg p-8">
-        <AppointmentBooking 
-          client:load
-          leadData={{
-            email: '',
-            phone: '',
-            firstName: '',
-            lastName: '',
-            taxSavingsAmount: 0,
-            propertySalePrice: 0,
-            propertyDetails: null
-          }}
-          onSuccess={(appointment) => {
-            console.log('Appointment booked successfully:', appointment);
-            // Track successful booking
-            if (typeof window !== 'undefined') {
-              if (window.trackContentEngagement) {
-                window.trackContentEngagement('appointment_booked', 'schedule_page_direct');
-              }
-              if (window.trackHighLevelEvent) {
-                window.trackHighLevelEvent('appointment_booked', {
-                  source: 'Schedule Page Direct',
-                  appointmentId: appointment.highlevelAppointmentId,
-                  type: 'consultation_booking'
-                });
-              }
-            }
-          }}
-          onError={(error) => {
-            console.error('Booking error:', error);
-            // Track booking error
-            if (typeof window !== 'undefined' && window.trackContentEngagement) {
-              window.trackContentEngagement('booking_error', 'schedule_page_direct');
-            }
-          }}
-          onCancel={() => {
-            console.log('Booking cancelled by user');
-            // Track booking abandonment
-            if (typeof window !== 'undefined' && window.trackContentEngagement) {
-              window.trackContentEngagement('booking_cancelled', 'schedule_page_direct');
-            }
-          }}
-          options={{
-            timezone: 'America/New_York',
-            prefetchDays: 21,
-            minBookingHours: 2,
-            maxBookingDays: 30,
-            showConsultationType: true,
-            debugMode: true
-          }}
-        />
-      </div>
-    </div>
-  </section>
+  <!-- Modern Booking Component -->
+  <ModernAppointmentBooking 
+    client:load
+    leadData={{
+      email: '',
+      phone: '',
+      firstName: '',
+      lastName: '',
+      taxSavingsAmount: 0,
+      propertySalePrice: 0,
+      propertyDetails: null
+    }}
+    onSuccess={(appointment) => {
+      console.log('Appointment booked successfully:', appointment);
+      // Track successful booking
+      if (typeof window !== 'undefined') {
+        if (window.trackContentEngagement) {
+          window.trackContentEngagement('appointment_booked', 'schedule_page_direct');
+        }
+        if (window.trackHighLevelEvent) {
+          window.trackHighLevelEvent('appointment_booked', {
+            source: 'Schedule Page Direct',
+            appointmentId: appointment.highlevelAppointmentId,
+            type: 'consultation_booking'
+          });
+        }
+      }
+    }}
+    onError={(error) => {
+      console.error('Booking error:', error);
+      // Track booking error
+      if (typeof window !== 'undefined' && window.trackContentEngagement) {
+        window.trackContentEngagement('booking_error', 'schedule_page_direct');
+      }
+    }}
+    onCancel={() => {
+      console.log('Booking cancelled by user');
+      // Track booking abandonment
+      if (typeof window !== 'undefined' && window.trackContentEngagement) {
+        window.trackContentEngagement('booking_cancelled', 'schedule_page_direct');
+      }
+    }}
+    options={{
+      timezone: 'America/New_York',
+      prefetchDays: 21,
+      minBookingHours: 2,
+      maxBookingDays: 30,
+      showConsultationType: true,
+      debugMode: true
+    }}
+  />
 
   <!-- Why Choose Us -->
   <section class="py-16 bg-gray-50">
