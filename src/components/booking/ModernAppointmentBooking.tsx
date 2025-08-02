@@ -80,6 +80,7 @@ export const ModernAppointmentBooking: React.FC<BookingFlowProps> = ({
   const [appointment, setAppointment] = useState<Appointment | null>(null);
   const [error, setError] = useState<BookingError | null>(null);
   const [loading, setLoading] = useState(false);
+  const [slotsCache, setSlotsCache] = useState<Map<string, AvailableSlot[]>>(new Map());
   
   // Contact information state
   const [contactInfo, setContactInfo] = useState({
@@ -239,6 +240,7 @@ export const ModernAppointmentBooking: React.FC<BookingFlowProps> = ({
         .sort((a, b) => a.getTime() - b.getTime());
 
       setAvailableDates(dates);
+      setSlotsCache(dateSlotMap); // Cache all slot data for instant access
       setCurrentStep('selecting-date');
 
       const duration = performance.now() - startTime;
@@ -250,6 +252,8 @@ export const ModernAppointmentBooking: React.FC<BookingFlowProps> = ({
       } catch (e) {
         console.error('Analytics error:', e);
       }
+      
+      console.log(`[ModernAppointmentBooking] Cached ${dateSlotMap.size} days of slot data`)
 
     } catch (error) {
       console.error('[ModernAppointmentBooking] Error loading availability:', error);
@@ -266,6 +270,19 @@ export const ModernAppointmentBooking: React.FC<BookingFlowProps> = ({
       const dateString = date.toISOString().split('T')[0];
       console.log(`[ModernAppointmentBooking] Loading slots for ${dateString}`);
       
+      // Check cache first for instant loading
+      const cachedSlots = slotsCache.get(dateString);
+      
+      if (cachedSlots) {
+        console.log(`[ModernAppointmentBooking] Using cached slots for ${dateString}: ${cachedSlots.length} slots`);
+        setAvailableSlots(cachedSlots);
+        setLoading(false);
+        return;
+      }
+      
+      // Fallback to API call if not cached (shouldn't happen with proper caching)
+      console.log(`[ModernAppointmentBooking] No cached slots for ${dateString}, fetching from API`);
+      
       const response = await highlevelService.current.getAvailability({
         date: dateString,
         timezone
@@ -279,7 +296,13 @@ export const ModernAppointmentBooking: React.FC<BookingFlowProps> = ({
       });
 
       setAvailableSlots(dateSlots);
-      console.log(`[ModernAppointmentBooking] Filtered to ${dateSlots.length} slots for selected date`);
+      
+      // Update cache with new data
+      const newCache = new Map(slotsCache);
+      newCache.set(dateString, dateSlots);
+      setSlotsCache(newCache);
+      
+      console.log(`[ModernAppointmentBooking] Fetched and cached ${dateSlots.length} slots for selected date`);
     } catch (error) {
       console.error('[ModernAppointmentBooking] Error loading slots:', error);
       handleError(error as BookingError);
@@ -554,6 +577,7 @@ export const ModernAppointmentBooking: React.FC<BookingFlowProps> = ({
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
               placeholder="Matt"
               required
+              suppressHydrationWarning
             />
           </div>
           <div>
@@ -565,6 +589,7 @@ export const ModernAppointmentBooking: React.FC<BookingFlowProps> = ({
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
               placeholder="Nye"
               required
+              suppressHydrationWarning
             />
           </div>
         </div>
@@ -575,7 +600,7 @@ export const ModernAppointmentBooking: React.FC<BookingFlowProps> = ({
             type="email"
             value={contactInfo.email}
             onChange={(e) => setContactInfo({...contactInfo, email: e.target.value})}
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500"
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
             placeholder="matt.nye@nyecorp.com"
             required
           />
@@ -587,7 +612,7 @@ export const ModernAppointmentBooking: React.FC<BookingFlowProps> = ({
             type="tel"
             value={contactInfo.phone}
             onChange={(e) => setContactInfo({...contactInfo, phone: e.target.value})}
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500"
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
             placeholder="(321) 626-9791"
             required
           />
@@ -602,6 +627,7 @@ export const ModernAppointmentBooking: React.FC<BookingFlowProps> = ({
               checked={contactInfo.serviceConsent}
               onChange={(e) => setContactInfo({...contactInfo, serviceConsent: e.target.checked})}
               className="w-5 h-5 text-yellow-400 border-gray-300 rounded focus:ring-yellow-400"
+              suppressHydrationWarning
             />
             <div>
               <label htmlFor="serviceConsent" className="text-sm font-medium text-gray-700">
@@ -623,6 +649,7 @@ export const ModernAppointmentBooking: React.FC<BookingFlowProps> = ({
               checked={contactInfo.marketingConsent}
               onChange={(e) => setContactInfo({...contactInfo, marketingConsent: e.target.checked})}
               className="w-5 h-5 text-yellow-400 border-gray-300 rounded focus:ring-yellow-400"
+              suppressHydrationWarning
             />
             <div>
               <label htmlFor="marketingConsent" className="text-sm font-medium text-gray-700">
@@ -642,6 +669,7 @@ export const ModernAppointmentBooking: React.FC<BookingFlowProps> = ({
           onClick={() => setCurrentWizardStep('datetime')}
           disabled={!contactInfo.firstName || !contactInfo.lastName || !contactInfo.email || !contactInfo.phone}
           className="w-full py-4 bg-yellow-400 text-blue-900 font-semibold rounded-lg hover:bg-yellow-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          suppressHydrationWarning
         >
           Continue to Date Selection →
         </button>
