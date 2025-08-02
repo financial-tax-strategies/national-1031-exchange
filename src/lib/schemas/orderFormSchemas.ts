@@ -93,18 +93,17 @@ export const propertyDetailsSchema = z.object({
   '1031x_mortgage_balance': z.number()
     .min(0, 'Mortgage balance cannot be negative')
     .optional()
-    .refine((val, ctx) => {
-      // Safety check for ctx.parent
-      if (!ctx.parent || !val) {
-        return true; // Skip validation if no parent context or no value
-      }
-      
-      const salePrice = ctx.parent['1031x_sale_price'];
-      if (salePrice && val > salePrice) {
-        return false;
-      }
-      return true;
-    }, 'Mortgage balance cannot exceed sale price')
+}).superRefine((data, ctx) => {
+  // Cross-field validation: mortgage balance should not exceed sale price
+  if (data['1031x_mortgage_balance'] && data['1031x_sale_price']) {
+    if (data['1031x_mortgage_balance'] > data['1031x_sale_price']) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'Mortgage balance cannot exceed sale price',
+        path: ['1031x_mortgage_balance']
+      });
+    }
+  }
 });
 
 // ============================================
@@ -121,16 +120,7 @@ export const timelineSchema = z.object({
   
   '1031x_closing_date': z.string()
     .optional()
-    .refine((val, ctx) => {
-      // Safety check for ctx.parent
-      if (!ctx.parent) {
-        return true;
-      }
-      
-      const status = ctx.parent['1031x_contract_status'];
-      if ((status === 'in_escrow' || status === 'closing_scheduled') && !val) {
-        return false;
-      }
+    .refine((val) => {
       if (val) {
         const closingDate = new Date(val);
         const today = new Date();
@@ -142,16 +132,7 @@ export const timelineSchema = z.object({
   
   '1031x_expected_listing_date': z.string()
     .optional()
-    .refine((val, ctx) => {
-      // Safety check for ctx.parent
-      if (!ctx.parent) {
-        return true;
-      }
-      
-      const status = ctx.parent['1031x_contract_status'];
-      if (status === 'not_listed' && !val) {
-        return false;
-      }
+    .refine((val) => {
       if (val) {
         const listingDate = new Date(val);
         const today = new Date();
@@ -167,6 +148,25 @@ export const timelineSchema = z.object({
     'time_sensitive_1',
     'urgent_2_weeks'
   ])
+}).superRefine((data, ctx) => {
+  // Cross-field validation: closing date required for certain statuses
+  const status = data['1031x_contract_status'];
+  if ((status === 'in_escrow' || status === 'closing_scheduled') && !data['1031x_closing_date']) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: 'Closing date is required when property is in escrow or closing is scheduled',
+      path: ['1031x_closing_date']
+    });
+  }
+  
+  // Cross-field validation: expected listing date required when not listed
+  if (status === 'not_listed' && !data['1031x_expected_listing_date']) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: 'Expected listing date is required when property is not yet listed',
+      path: ['1031x_expected_listing_date']
+    });
+  }
 });
 
 // ============================================
@@ -210,34 +210,12 @@ export const professionalTeamSchema = z.object({
   '1031x_has_cpa': z.enum(['yes', 'need_referral', 'will_find']),
   
   '1031x_cpa_name': z.string()
-    .optional()
-    .refine((val, ctx) => {
-      // Safety check for ctx.parent
-      if (!ctx.parent) {
-        return true;
-      }
-      
-      const hasCPA = ctx.parent['1031x_has_cpa'];
-      if (hasCPA === 'yes' && !val) {
-        return false;
-      }
-      return true;
-    }, 'Please provide your CPA\'s name'),
+    .optional(),
   
   '1031x_cpa_email': z.string()
+    .email('Please enter a valid email address')
     .optional()
-    .refine((val, ctx) => {
-      // Safety check for ctx.parent
-      if (!ctx.parent) {
-        return true;
-      }
-      
-      const hasCPA = ctx.parent['1031x_has_cpa'];
-      if (hasCPA === 'yes' && val && !z.string().email().safeParse(val).success) {
-        return false;
-      }
-      return true;
-    }, 'Please enter a valid email address'),
+    .or(z.literal('')),
   
   '1031x_realtor_name': z.string()
     .max(100, 'Name is too long')
@@ -247,6 +225,15 @@ export const professionalTeamSchema = z.object({
     .email('Please enter a valid email address')
     .optional()
     .or(z.literal(''))
+}).superRefine((data, ctx) => {
+  // Cross-field validation: CPA name required if has CPA
+  if (data['1031x_has_cpa'] === 'yes' && !data['1031x_cpa_name']) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: 'Please provide your CPA\'s name',
+      path: ['1031x_cpa_name']
+    });
+  }
 });
 
 // ============================================

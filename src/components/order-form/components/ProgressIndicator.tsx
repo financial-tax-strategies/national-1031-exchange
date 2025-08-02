@@ -81,8 +81,9 @@ export const ProgressIndicator: React.FC<ProgressIndicatorProps> = ({
       
       {/* Desktop Step Indicators */}
       <div className="hidden md:block">
-        <div className="flex justify-between mb-8">
-          {steps.map((step) => {
+        <div className="flex justify-center mb-8">
+          <div className="flex justify-between max-w-4xl w-full">
+            {steps.map((step) => {
             const status = getStepStatus(step);
             const clickable = isClickable(step);
             
@@ -151,6 +152,7 @@ export const ProgressIndicator: React.FC<ProgressIndicatorProps> = ({
               </div>
             );
           })}
+          </div>
         </div>
       </div>
       

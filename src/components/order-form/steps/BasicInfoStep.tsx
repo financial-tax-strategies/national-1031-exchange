@@ -79,6 +79,7 @@ export const BasicInfoStep: React.FC = () => {
             placeholder="John"
             aria-describedby={formState.errors['1031x_first_name'] ? 'first-name-error' : undefined}
             aria-invalid={!!formState.errors['1031x_first_name']}
+            suppressHydrationWarning
           />
           <FieldError 
             error={formState.errors['1031x_first_name']} 
