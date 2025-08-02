@@ -38,7 +38,7 @@ async function testCalendarFormats() {
   console.log(`endDate: ${endTimestampSeconds}`);
   
   try {
-    const url1 = `${baseUrl}/calendars/${CALENDAR_ID}/free-slots?startDate=${timestampSeconds}&endDate=${endTimestampSeconds}`;
+    const url1 = `${baseUrl}/api/v2/calendars/${CALENDAR_ID}/free-slots?startDate=${timestampSeconds}&endDate=${endTimestampSeconds}`;
     const response1 = await fetch(url1, { method: 'GET', headers });
     const data1 = await response1.json();
     
@@ -64,7 +64,7 @@ async function testCalendarFormats() {
   console.log(`endDate: ${endTimestampMs}`);
   
   try {
-    const url2 = `${baseUrl}/calendars/${CALENDAR_ID}/free-slots?startDate=${timestampMs}&endDate=${endTimestampMs}`;
+    const url2 = `${baseUrl}/api/v2/calendars/${CALENDAR_ID}/free-slots?startDate=${timestampMs}&endDate=${endTimestampMs}`;
     const response2 = await fetch(url2, { method: 'GET', headers });
     const data2 = await response2.json();
     
@@ -90,7 +90,7 @@ async function testCalendarFormats() {
   console.log(`endDate: ${endIsoDate}`);
   
   try {
-    const url3 = `${baseUrl}/calendars/${CALENDAR_ID}/free-slots?startDate=${isoDate}&endDate=${endIsoDate}`;
+    const url3 = `${baseUrl}/api/v2/calendars/${CALENDAR_ID}/free-slots?startDate=${isoDate}&endDate=${endIsoDate}`;
     const response3 = await fetch(url3, { method: 'GET', headers });
     const data3 = await response3.json();
     
@@ -126,7 +126,7 @@ async function testContactCreation() {
   console.log('Payload:', JSON.stringify(minimalContact, null, 2));
   
   try {
-    const response1 = await fetch(`${baseUrl}/contacts/`, {
+    const response1 = await fetch(`${baseUrl}/api/v2/contacts/`, {
       method: 'POST',
       headers,
       body: JSON.stringify(minimalContact)
@@ -164,7 +164,7 @@ async function testContactCreation() {
   console.log('Payload:', JSON.stringify(fullContact, null, 2));
   
   try {
-    const response2 = await fetch(`${baseUrl}/contacts/`, {
+    const response2 = await fetch(`${baseUrl}/api/v2/contacts/`, {
       method: 'POST',
       headers,
       body: JSON.stringify(fullContact)
@@ -186,7 +186,7 @@ async function testContactCreation() {
           { key: 'source', value: 'api-test' }
         ];
         
-        const response3 = await fetch(`${baseUrl}/contacts/`, {
+        const response3 = await fetch(`${baseUrl}/api/v2/contacts/`, {
           method: 'POST',
           headers,
           body: JSON.stringify({

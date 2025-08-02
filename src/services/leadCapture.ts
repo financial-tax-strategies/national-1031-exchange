@@ -32,12 +32,13 @@ class LeadCaptureService {
 
       // Then sync to HighLevel
       try {
-        await this.highLevel.createOrUpdateContact({
+        await this.highLevel.syncContact({
+          leadId: leadId,
           email: input.email,
-          firstName: input.firstName,
-          lastName: input.lastName,
-          phone: input.phone,
-          customField: {
+          firstName: input.firstName || undefined,
+          lastName: input.lastName || undefined,
+          phone: input.phone || undefined,
+          customFields: {
             lead_source: input.leadSource,
             ...input.metadata
           }
