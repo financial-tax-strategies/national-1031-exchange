@@ -47,7 +47,7 @@ async function testAPI() {
   };
 
   try {
-    const response = await fetch(`${baseUrl}/api/v2/contacts/`, {
+    const response = await fetch(`${baseUrl}/contacts/`, {
       method: 'POST',
       headers,
       body: JSON.stringify(contactData)
@@ -70,7 +70,7 @@ async function testAPI() {
   console.log('\n2️⃣ Testing Calendar Availability...\n');
   
   const today = new Date().toISOString().split('T')[0];
-  const calendarUrl = `${baseUrl}/api/v2/calendars/events/slots?calendarId=${CALENDAR_ID}&startDate=${today}&endDate=${today}&timezone=America/New_York`;
+  const calendarUrl = `${baseUrl}/calendars/events/slots?calendarId=${CALENDAR_ID}&startDate=${today}&endDate=${today}&timezone=America/New_York`;
   
   console.log(`URL: ${calendarUrl}\n`);
   
@@ -90,7 +90,7 @@ async function testAPI() {
       console.log('\n3️⃣ Trying alternative calendar endpoints...\n');
       
       // Try with location in path
-      const altUrl1 = `${baseUrl}/api/v2/locations/${LOCATION_ID}/calendars/${CALENDAR_ID}/free-slots?startDate=${today}&endDate=${today}`;
+      const altUrl1 = `${baseUrl}/locations/${LOCATION_ID}/calendars/${CALENDAR_ID}/free-slots?startDate=${today}&endDate=${today}`;
       console.log(`Trying: ${altUrl1}`);
       
       const altResponse1 = await fetch(altUrl1, { method: 'GET', headers });
@@ -101,7 +101,7 @@ async function testAPI() {
       }
       
       // Try v1 style endpoint
-      const altUrl2 = `${baseUrl}/api/v2/calendars/${CALENDAR_ID}/free-slots?startDate=${today}&endDate=${today}`;
+      const altUrl2 = `${baseUrl}/calendars/${CALENDAR_ID}/free-slots?startDate=${today}&endDate=${today}`;
       console.log(`\nTrying: ${altUrl2}`);
       
       const altResponse2 = await fetch(altUrl2, { method: 'GET', headers });
@@ -112,7 +112,7 @@ async function testAPI() {
       }
       
       // Try appointments endpoint
-      const altUrl3 = `${baseUrl}/api/v2/appointments/slots?calendarId=${CALENDAR_ID}&startDate=${today}&endDate=${today}&locationId=${LOCATION_ID}`;
+      const altUrl3 = `${baseUrl}/appointments/slots?calendarId=${CALENDAR_ID}&startDate=${today}&endDate=${today}&locationId=${LOCATION_ID}`;
       console.log(`\nTrying: ${altUrl3}`);
       
       const altResponse3 = await fetch(altUrl3, { method: 'GET', headers });
@@ -135,7 +135,7 @@ async function testAPI() {
   console.log('\n4️⃣ Testing Location Access...\n');
   
   try {
-    const response = await fetch(`${baseUrl}/api/v2/locations/${LOCATION_ID}`, {
+    const response = await fetch(`${baseUrl}/locations/${LOCATION_ID}`, {
       method: 'GET',
       headers
     });

@@ -21,7 +21,7 @@ interface LeadData {
 // Replace with your actual HighLevel API credentials and endpoint
 const HIGHLEVEL_API_KEY = process.env.HIGHLEVEL_API_KEY;
 const HIGHLEVEL_LOCATION_ID = process.env.HIGHLEVEL_LOCATION_ID;
-const HIGHLEVEL_API_URL = 'https://api.gohighlevel.com/v1';
+const HIGHLEVEL_API_URL = 'https://services.leadconnectorhq.com';
 
 const handler: Handler = async (event: HandlerEvent, context: HandlerContext) => {
   // Only allow POST requests

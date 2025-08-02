@@ -36,7 +36,7 @@ async function test() {
   };
 
   console.log('Test 1: customFields as array [{key, value}]');
-  const res1 = await fetch(`${baseUrl}/api/v2/contacts/`, {
+  const res1 = await fetch(`${baseUrl}/contacts/`, {
     method: 'POST',
     headers,
     body: JSON.stringify(contact1)
@@ -46,7 +46,7 @@ async function test() {
   if (\!res1.ok) console.log(data1.message);
 
   console.log('\nTest 2: customFields as object {key: value}');
-  const res2 = await fetch(`${baseUrl}/api/v2/contacts/`, {
+  const res2 = await fetch(`${baseUrl}/contacts/`, {
     method: 'POST',
     headers,
     body: JSON.stringify(contact2)

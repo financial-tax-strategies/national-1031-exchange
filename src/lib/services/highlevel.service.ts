@@ -136,7 +136,7 @@ export class HighLevelService {
     
     try {
       // Try to create contact
-      const response = await this.makeRequest('/api/v2/contacts/', {
+      const response = await this.makeRequest('/contacts/', {
         method: 'POST',
         body: JSON.stringify(payload)
       });
@@ -157,7 +157,7 @@ export class HighLevelService {
         try {
           // Search for contact by email
           const searchResponse = await this.makeRequest(
-            `/api/v2/contacts/lookup?email=${encodeURIComponent(params.email)}`,
+            `/contacts/lookup?email=${encodeURIComponent(params.email)}`,
             { method: 'GET' }
           );
           
@@ -166,7 +166,7 @@ export class HighLevelService {
           if (contactId) {
             // Update existing contact
             const updateResponse = await this.makeRequest(
-              `/api/v2/contacts/${contactId}`,
+              `/contacts/${contactId}`,
               {
                 method: 'PUT',
                 body: JSON.stringify(payload)
@@ -241,7 +241,7 @@ export class HighLevelService {
     };
     
     try {
-      const response = await this.makeRequest('/api/v2/appointments/', {
+      const response = await this.makeRequest('/appointments/', {
         method: 'POST',
         body: JSON.stringify(payload)
       });
@@ -428,7 +428,7 @@ export class HighLevelService {
       const endTimestamp = startTimestamp + 86400; // Add 24 hours
       
       const response = await this.makeRequest(
-        `/api/v2/calendars/${config.calendar_id}/free-slots?startDate=${startTimestamp}&endDate=${endTimestamp}`,
+        `/calendars/${config.calendar_id}/free-slots?startDate=${startTimestamp}&endDate=${endTimestamp}`,
         { method: 'GET' }
       );
       
