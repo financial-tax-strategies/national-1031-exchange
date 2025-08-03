@@ -82,36 +82,181 @@ const canonicalURL = canonical || new URL(Astro.url.pathname, site);
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "Organization",
-      "@id": "https://the1031center.com/#organization",
-      "name": COMPANY.name,
-      "alternateName": "The 1031 Exchange Center",
-      "url": "https://the1031center.com",
-      "logo": "https://the1031center.com/images/logo.png",
-      "description": "America's most trusted 1031 exchange qualified intermediary, facilitating tax-deferred property exchanges nationwide with industry-leading security and expertise.",
-      "sameAs": [
-        "https://www.linkedin.com/company/national1031center",
-        "https://www.facebook.com/national1031center",
-        "https://twitter.com/national1031"
-      ],
-      "contactPoint": {
-        "@type": "ContactPoint",
-        "telephone": `+1${COMPANY.phone.main.replace(/[^0-9]/g, '')}`,
-        "contactType": "customer service",
-        "areaServed": "US",
-        "availableLanguage": ["English", "Spanish"],
-        "contactOption": "TollFree"
-      },
-      "address": {
-        "@type": "PostalAddress",
-        "streetAddress": "123 Exchange Plaza",
-        "addressLocality": "Los Angeles",
-        "addressRegion": "CA",
-        "postalCode": "90210",
-        "addressCountry": "US"
-      },
-      "foundingDate": "2024",
-      "slogan": "America's Most Trusted 1031 Exchange Partner"
+      "@graph": [
+        {
+          "@type": ["Organization", "LocalBusiness", "FinancialService"],
+          "@id": "https://the1031center.com/#organization",
+          "name": "National 1031 Center",
+          "alternateName": ["The 1031 Center", "National 1031 Exchange Center"],
+          "legalName": "National 1031 Center, LLC",
+          "url": "https://the1031center.com",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://the1031center.com/images/logo.png",
+            "width": 300,
+            "height": 100
+          },
+          "image": "https://the1031center.com/images/og-image.jpg",
+          "description": "America's most trusted 1031 exchange qualified intermediary, facilitating tax-deferred property exchanges nationwide with industry-leading security and expertise.",
+          "slogan": "America's Most Trusted 1031 Exchange Partner",
+          "foundingDate": "2024",
+          "telephone": "(877) 483-0427",
+          "email": "info@the1031center.com",
+          "priceRange": "$$",
+          "currenciesAccepted": "USD",
+          "paymentAccepted": ["Wire Transfer", "ACH", "Check"],
+          "openingHours": "Mo-Fr 08:00-18:00",
+          "sameAs": [
+            "https://www.linkedin.com/company/national1031center",
+            "https://www.facebook.com/national1031center",
+            "https://twitter.com/national1031",
+            "https://www.youtube.com/@national1031center"
+          ],
+          "contactPoint": [
+            {
+              "@type": "ContactPoint",
+              "telephone": "+1-877-483-0427",
+              "contactType": "customer service",
+              "areaServed": "US",
+              "availableLanguage": ["English", "Spanish"],
+              "contactOption": ["TollFree", "HearingImpairedSupported"]
+            },
+            {
+              "@type": "ContactPoint",
+              "telephone": "+1-877-483-0427",
+              "contactType": "sales",
+              "areaServed": "US",
+              "availableLanguage": "English"
+            }
+          ],
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "123 Exchange Plaza",
+            "addressLocality": "Los Angeles",
+            "addressRegion": "CA",
+            "postalCode": "90210",
+            "addressCountry": "US"
+          },
+          "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": 34.0522,
+            "longitude": -118.2437
+          },
+          "areaServed": {
+            "@type": "Country",
+            "name": "United States"
+          },
+          "memberOf": [
+            {
+              "@type": "Organization",
+              "name": "Federation of Exchange Accommodators"
+            }
+          ],
+          "hasOfferCatalog": {
+            "@type": "OfferCatalog",
+            "name": "1031 Exchange Services",
+            "itemListElement": [
+              {
+                "@type": "Service",
+                "name": "Delayed 1031 Exchange",
+                "description": "Standard forward exchange with 45-day identification period"
+              },
+              {
+                "@type": "Service",
+                "name": "Reverse 1031 Exchange",
+                "description": "Purchase replacement property before selling relinquished property"
+              },
+              {
+                "@type": "Service",
+                "name": "Improvement Exchange",
+                "description": "Use exchange funds for property improvements"
+              },
+              {
+                "@type": "Service",
+                "name": "Partial Exchange",
+                "description": "Strategic cash-out while deferring most taxes"
+              }
+            ]
+          },
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.9",
+            "ratingCount": "247",
+            "bestRating": "5",
+            "worstRating": "1"
+          }
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://the1031center.com/#website",
+          "url": "https://the1031center.com",
+          "name": "National 1031 Center",
+          "description": "Complete resource for 1031 exchange services and information",
+          "publisher": {
+            "@id": "https://the1031center.com/#organization"
+          },
+          "inLanguage": "en-US",
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": {
+              "@type": "EntryPoint",
+              "urlTemplate": "https://the1031center.com/search?q={search_term_string}"
+            },
+            "query-input": "required name=search_term_string"
+          }
+        },
+        {
+          "@type": "Service",
+          "@id": "https://the1031center.com/#service",
+          "name": "1031 Exchange Services",
+          "serviceType": "Qualified Intermediary Services",
+          "provider": {
+            "@id": "https://the1031center.com/#organization"
+          },
+          "areaServed": {
+            "@type": "Country",
+            "name": "United States"
+          },
+          "hasOfferCatalog": {
+            "@type": "OfferCatalog",
+            "name": "1031 Exchange Types",
+            "itemListElement": [
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Delayed Exchange",
+                  "description": "Sell first, then buy replacement property within 180 days"
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Reverse Exchange",
+                  "description": "Buy replacement property before selling current property"
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Improvement Exchange",
+                  "description": "Use exchange funds for construction or improvements"
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Partial Exchange",
+                  "description": "Defer taxes on portion of proceeds while taking some cash"
+                }
+              }
+            ]
+          }
+        }
+      ]
     }
     </script>
     

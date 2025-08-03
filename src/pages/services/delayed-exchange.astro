@@ -1,5 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import { COMPANY, getPhoneLink } from '../../config/company';
 ---
 
@@ -12,13 +13,14 @@ import { COMPANY, getPhoneLink } from '../../config/company';
   <section class="bg-gradient-to-r from-blue-900 via-blue-800 to-blue-900 text-white py-16">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="max-w-4xl">
-        <div class="flex items-center text-blue-200 mb-4">
-          <a href="/" class="hover:text-white transition-colors">Home</a>
-          <span class="mx-2">/</span>
-          <a href="/services" class="hover:text-white transition-colors">Services</a>
-          <span class="mx-2">/</span>
-          <span>Delayed Exchange</span>
-        </div>
+        <Breadcrumbs 
+          items={[
+            { name: 'Home', url: '/' },
+            { name: 'Services', url: '/types-of-1031-exchanges' },
+            { name: 'Delayed Exchange' }
+          ]}
+          class="text-blue-200 mb-4 [&_a]:text-blue-200 [&_a:hover]:text-white [&_span]:text-white"
+        />
         
         <h1 class="text-4xl md:text-5xl font-bold mb-6">
           Delayed 1031 Exchange Services

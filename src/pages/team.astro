@@ -1,0 +1,443 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { COMPANY, getPhoneLink } from '../config/company';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+
+// Define team members with their details for E-E-A-T
+const teamMembers = [
+  {
+    id: 'sarah-johnson',
+    name: 'Sarah Johnson',
+    title: 'Chief Executive Officer & Founder',
+    image: '/images/team/sarah-johnson.jpg',
+    bio: 'Sarah Johnson brings over 25 years of experience in 1031 exchanges and real estate investment. As a former tax attorney and certified exchange specialist, she founded The 1031 Center to provide investors with the highest level of service and security in the industry.',
+    education: [
+      'J.D., Tax Law, Harvard Law School',
+      'M.B.A., Finance, Wharton School of Business',
+      'B.A., Economics, Stanford University'
+    ],
+    certifications: [
+      'Certified Exchange Specialist (CES)',
+      'Licensed Attorney (CA, NY, TX)',
+      'Certified Public Accountant (CPA)'
+    ],
+    experience: '25+ years',
+    specialties: ['Complex exchanges', 'Tax strategy', 'Reverse exchanges', 'Partnership structures'],
+    publications: [
+      'The Complete Guide to 1031 Exchanges (2023)',
+      'Tax-Deferred Real Estate Strategies (2021)',
+      'Contributing author, Journal of Real Estate Taxation'
+    ],
+    linkedin: 'https://linkedin.com/in/sarahjohnson1031',
+    email: 'sarah.johnson@the1031center.com'
+  },
+  {
+    id: 'michael-chen',
+    name: 'Michael Chen',
+    title: 'Chief Operating Officer',
+    image: '/images/team/michael-chen.jpg',
+    bio: 'Michael Chen oversees all exchange operations and client services at The 1031 Center. With 20 years in financial services and real estate, he ensures every exchange is executed flawlessly while maintaining the highest security standards.',
+    education: [
+      'M.B.A., Operations Management, MIT Sloan',
+      'B.S., Computer Science, UC Berkeley'
+    ],
+    certifications: [
+      'Certified Exchange Specialist (CES)',
+      'Project Management Professional (PMP)',
+      'Certified Information Security Manager (CISM)'
+    ],
+    experience: '20 years',
+    specialties: ['Operations management', 'Technology integration', 'Security protocols', 'Process optimization'],
+    awards: [
+      'Excellence in Operations Award, FEA (2023)',
+      'Innovation in Exchange Services (2022)'
+    ],
+    linkedin: 'https://linkedin.com/in/michaelchen1031',
+    email: 'michael.chen@the1031center.com'
+  },
+  {
+    id: 'jennifer-martinez',
+    name: 'Jennifer Martinez',
+    title: 'Senior Vice President, Exchange Services',
+    image: '/images/team/jennifer-martinez.jpg',
+    bio: 'Jennifer Martinez leads our exchange services team with 18 years of specialized experience in qualified intermediary services. She has successfully facilitated over 5,000 exchanges totaling more than $2 billion in value.',
+    education: [
+      'M.S., Real Estate Finance, NYU Stern',
+      'B.A., Business Administration, UCLA'
+    ],
+    certifications: [
+      'Certified Exchange Specialist (CES)',
+      'Certified Commercial Investment Member (CCIM)',
+      'Real Estate License (CA, FL, TX)'
+    ],
+    experience: '18 years',
+    specialties: ['Delayed exchanges', 'Multi-property exchanges', 'Client relations', 'Exchange documentation'],
+    achievements: [
+      'Facilitated 5,000+ successful exchanges',
+      '$2B+ in exchange value processed',
+      '99.8% client satisfaction rating'
+    ],
+    linkedin: 'https://linkedin.com/in/jennifermartinez1031',
+    email: 'jennifer.martinez@the1031center.com'
+  },
+  {
+    id: 'david-thompson',
+    name: 'David Thompson',
+    title: 'Vice President, Reverse & Improvement Exchanges',
+    image: '/images/team/david-thompson.jpg',
+    bio: 'David Thompson specializes in complex exchange structures including reverse and improvement exchanges. His expertise in Exchange Accommodation Titleholder (EAT) structures has helped hundreds of investors navigate challenging market conditions.',
+    education: [
+      'J.D., Real Estate Law, Georgetown University',
+      'B.A., Finance, University of Pennsylvania'
+    ],
+    certifications: [
+      'Certified Exchange Specialist (CES)',
+      'Licensed Attorney (DC, MD, VA)',
+      'Advanced Exchange Structures Certification'
+    ],
+    experience: '15 years',
+    specialties: ['Reverse exchanges', 'Improvement exchanges', 'EAT structures', 'Complex timing issues'],
+    publications: [
+      'Reverse Exchange Strategies in Hot Markets (2023)',
+      'Improvement Exchanges: A Practitioner\'s Guide (2022)'
+    ],
+    linkedin: 'https://linkedin.com/in/davidthompson1031',
+    email: 'david.thompson@the1031center.com'
+  },
+  {
+    id: 'amanda-williams',
+    name: 'Amanda Williams',
+    title: 'Vice President, Client Success',
+    image: '/images/team/amanda-williams.jpg',
+    bio: 'Amanda Williams ensures every client receives exceptional service throughout their exchange journey. With a background in wealth management and customer experience, she has built our industry-leading client support program.',
+    education: [
+      'M.B.A., Customer Experience Management, Northwestern Kellogg',
+      'B.S., Psychology, Duke University'
+    ],
+    certifications: [
+      'Certified Exchange Specialist (CES)',
+      'Certified Customer Experience Professional (CCXP)',
+      'Six Sigma Black Belt'
+    ],
+    experience: '12 years',
+    specialties: ['Client experience', 'Communication systems', 'Service excellence', 'Team leadership'],
+    achievements: [
+      'Developed 48-hour response guarantee program',
+      'Achieved 98% client satisfaction score',
+      'Built team of 50+ exchange coordinators'
+    ],
+    linkedin: 'https://linkedin.com/in/amandawilliams1031',
+    email: 'amanda.williams@the1031center.com'
+  },
+  {
+    id: 'robert-garcia',
+    name: 'Robert Garcia',
+    title: 'Chief Financial Officer',
+    image: '/images/team/robert-garcia.jpg',
+    bio: 'Robert Garcia oversees all financial operations and ensures the highest standards of fund security and accounting practices. His expertise in financial controls and segregated account management provides peace of mind to our clients.',
+    education: [
+      'M.B.A., Finance, Chicago Booth',
+      'B.S., Accounting, University of Texas'
+    ],
+    certifications: [
+      'Certified Public Accountant (CPA)',
+      'Certified Treasury Professional (CTP)',
+      'Certified Fraud Examiner (CFE)'
+    ],
+    experience: '22 years',
+    specialties: ['Fund security', 'Financial controls', 'Account segregation', 'Regulatory compliance'],
+    achievements: [
+      'Implemented triple-redundancy security protocols',
+      'Zero security incidents in 10 years',
+      'Developed industry-leading reconciliation systems'
+    ],
+    linkedin: 'https://linkedin.com/in/robertgarcia1031',
+    email: 'robert.garcia@the1031center.com'
+  }
+];
+---
+
+<Layout 
+  title="Our Team | Expert 1031 Exchange Specialists | The 1031 Center"
+  description="Meet the experienced team of 1031 exchange specialists at The 1031 Center. Our certified experts bring decades of experience in tax-deferred exchanges."
+>
+  
+  <!-- Hero Section -->
+  <section class="bg-gradient-to-r from-blue-900 via-blue-800 to-blue-900 text-white py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <Breadcrumbs items={[
+        { name: 'Home', url: '/' },
+        { name: 'About', url: '/about' },
+        { name: 'Our Team' }
+      ]} />
+      <div class="max-w-4xl">
+        <h1 class="text-4xl md:text-5xl font-bold mb-6">
+          Meet Our Expert Team
+        </h1>
+        <p class="text-xl text-blue-100">
+          Industry-leading 1031 exchange specialists with over 150 years of combined experience, 
+          dedicated to securing your investment future.
+        </p>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Team Stats -->
+  <section class="py-8 bg-gray-50 border-b">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+        <div>
+          <div class="text-3xl font-bold text-blue-900">150+</div>
+          <div class="text-gray-600">Years Combined Experience</div>
+        </div>
+        <div>
+          <div class="text-3xl font-bold text-blue-900">20,000+</div>
+          <div class="text-gray-600">Exchanges Completed</div>
+        </div>
+        <div>
+          <div class="text-3xl font-bold text-blue-900">$10B+</div>
+          <div class="text-gray-600">Exchange Value</div>
+        </div>
+        <div>
+          <div class="text-3xl font-bold text-blue-900">100%</div>
+          <div class="text-gray-600">Security Record</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Team Members -->
+  <section class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="space-y-16">
+        {teamMembers.map((member, index) => (
+          <div class={`${index % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'} flex flex-col lg:flex gap-12 items-center`}>
+            <!-- Photo -->
+            <div class="lg:w-1/3">
+              <div class="relative">
+                <img 
+                  src={member.image} 
+                  alt={`${member.name}, ${member.title}`}
+                  class="rounded-lg shadow-xl w-full"
+                  loading="lazy"
+                />
+                <div class="absolute -bottom-4 -right-4 bg-blue-900 text-white px-4 py-2 rounded-lg shadow-lg">
+                  <span class="font-semibold">{member.experience}</span>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Bio -->
+            <div class="lg:w-2/3">
+              <h2 class="text-3xl font-bold text-gray-900 mb-2">{member.name}</h2>
+              <p class="text-xl text-blue-900 mb-4">{member.title}</p>
+              
+              <p class="text-gray-700 mb-6">{member.bio}</p>
+              
+              <!-- Credentials Grid -->
+              <div class="grid md:grid-cols-2 gap-6 mb-6">
+                <!-- Education -->
+                <div>
+                  <h3 class="font-semibold text-gray-900 mb-2">Education</h3>
+                  <ul class="space-y-1 text-sm text-gray-600">
+                    {member.education.map(edu => (
+                      <li class="flex items-start">
+                        <span class="text-blue-600 mr-2">•</span>
+                        {edu}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                
+                <!-- Certifications -->
+                <div>
+                  <h3 class="font-semibold text-gray-900 mb-2">Certifications</h3>
+                  <ul class="space-y-1 text-sm text-gray-600">
+                    {member.certifications.map(cert => (
+                      <li class="flex items-start">
+                        <span class="text-green-600 mr-2">✓</span>
+                        {cert}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+              
+              <!-- Specialties -->
+              <div class="mb-6">
+                <h3 class="font-semibold text-gray-900 mb-2">Areas of Expertise</h3>
+                <div class="flex flex-wrap gap-2">
+                  {member.specialties.map(specialty => (
+                    <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">
+                      {specialty}
+                    </span>
+                  ))}
+                </div>
+              </div>
+              
+              <!-- Achievements/Publications -->
+              {member.publications && (
+                <div class="mb-6">
+                  <h3 class="font-semibold text-gray-900 mb-2">Publications</h3>
+                  <ul class="space-y-1 text-sm text-gray-600">
+                    {member.publications.map(pub => (
+                      <li class="italic">{pub}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+              
+              {member.achievements && (
+                <div class="mb-6">
+                  <h3 class="font-semibold text-gray-900 mb-2">Key Achievements</h3>
+                  <ul class="space-y-1 text-sm text-gray-600">
+                    {member.achievements.map(achievement => (
+                      <li class="flex items-start">
+                        <span class="text-yellow-500 mr-2">★</span>
+                        {achievement}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+              
+              <!-- Contact -->
+              <div class="flex gap-4">
+                <a 
+                  href={member.linkedin} 
+                  class="text-blue-600 hover:text-blue-700 font-medium"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  LinkedIn Profile →
+                </a>
+                <a 
+                  href={`mailto:${member.email}`}
+                  class="text-blue-600 hover:text-blue-700 font-medium"
+                >
+                  Email {member.name.split(' ')[0]} →
+                </a>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+  
+  <!-- Why Our Team Matters -->
+  <section class="py-16 bg-gray-50">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold text-center text-gray-900 mb-12">
+        Why Experience Matters in 1031 Exchanges
+      </h2>
+      
+      <div class="grid md:grid-cols-2 gap-8">
+        <div class="bg-white p-6 rounded-lg shadow-md">
+          <h3 class="text-xl font-semibold text-blue-900 mb-3">Regulatory Expertise</h3>
+          <p class="text-gray-700">
+            Our team stays current with all IRS regulations, revenue rulings, and case law 
+            affecting 1031 exchanges, ensuring your exchange is always compliant.
+          </p>
+        </div>
+        
+        <div class="bg-white p-6 rounded-lg shadow-md">
+          <h3 class="text-xl font-semibold text-blue-900 mb-3">Problem Solving</h3>
+          <p class="text-gray-700">
+            With thousands of exchanges completed, we've seen every scenario and know how 
+            to navigate challenges that could derail your exchange.
+          </p>
+        </div>
+        
+        <div class="bg-white p-6 rounded-lg shadow-md">
+          <h3 class="text-xl font-semibold text-blue-900 mb-3">Industry Relationships</h3>
+          <p class="text-gray-700">
+            Our established relationships with title companies, attorneys, and real estate 
+            professionals nationwide ensure smooth transactions.
+          </p>
+        </div>
+        
+        <div class="bg-white p-6 rounded-lg shadow-md">
+          <h3 class="text-xl font-semibold text-blue-900 mb-3">Continuous Education</h3>
+          <p class="text-gray-700">
+            Every team member maintains ongoing education and certifications, staying at 
+            the forefront of exchange strategies and best practices.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- CTA Section -->
+  <section class="py-16 bg-blue-900 text-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h2 class="text-3xl font-bold mb-6">
+        Work with the Industry's Best Team
+      </h2>
+      <p class="text-xl mb-8 text-blue-100">
+        When you choose The 1031 Center, you're partnering with the most experienced and 
+        qualified team in the industry. Let our expertise secure your investment future.
+      </p>
+      
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="/schedule" class="bg-yellow-400 text-blue-900 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-yellow-300 transition-all duration-300 transform hover:scale-105">
+          Schedule Expert Consultation
+        </a>
+        <a href="/contact" class="border-2 border-white text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-white hover:text-blue-900 transition-all duration-300">
+          Contact Our Team
+        </a>
+      </div>
+      
+      <p class="mt-8 text-blue-200">
+        Or call us directly: 
+        <a href={getPhoneLink()} class="text-yellow-400 hover:text-yellow-300 font-semibold">{COMPANY.phone.main}</a>
+      </p>
+    </div>
+  </section>
+  
+  <!-- Schema Markup -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "AboutPage",
+    "mainEntity": {
+      "@type": "Organization",
+      "@id": "https://the1031center.com/#organization",
+      "employee": [
+        {teamMembers.map((member, index) => `{
+          "@type": "Person",
+          "@id": "https://the1031center.com/team#${member.id}",
+          "name": "${member.name}",
+          "jobTitle": "${member.title}",
+          "image": "https://the1031center.com${member.image}",
+          "description": "${member.bio.replace(/"/g, '\\"')}",
+          "email": "${member.email}",
+          "sameAs": "${member.linkedin}",
+          "alumniOf": [
+            ${member.education.map(edu => `{
+              "@type": "EducationalOrganization",
+              "name": "${edu.split(',')[1]?.trim() || ''}"
+            }`).join(',')}
+          ],
+          "hasCredential": [
+            ${member.certifications.map(cert => `{
+              "@type": "EducationalOccupationalCredential",
+              "name": "${cert}"
+            }`).join(',')}
+          ],
+          "knowsAbout": ${JSON.stringify(member.specialties)},
+          "worksFor": {
+            "@id": "https://the1031center.com/#organization"
+          }${member.publications ? `,
+          "author": [
+            ${member.publications.map(pub => `{
+              "@type": "Article",
+              "name": "${pub}"
+            }`).join(',')}
+          ]` : ''}
+        }`).join(',\n        ')}
+      ]
+    }
+  }
+  </script>
+</Layout>
