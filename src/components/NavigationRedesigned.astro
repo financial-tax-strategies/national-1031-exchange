@@ -1,0 +1,583 @@
+---
+// Redesigned Navigation component with improved UX and fewer top-level items
+import { COMPANY } from '../config/company';
+---
+
+<nav class="bg-white shadow-lg sticky top-0 z-50" role="navigation" aria-label="Main navigation">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center h-16">
+      <!-- Logo -->
+      <div class="flex-shrink-0 flex items-center">
+        <a href="/" class="text-2xl font-bold text-blue-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-md px-2">
+          {COMPANY.name}
+        </a>
+      </div>
+      
+      <!-- Desktop Navigation -->
+      <div class="hidden lg:flex lg:items-center lg:space-x-6">
+        <div class="flex items-baseline space-x-6">
+          <!-- 1031 Services Mega Menu -->
+          <div class="relative group">
+            <button 
+              class="nav-button text-gray-700 hover:text-blue-900 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 flex items-center focus:outline-none focus:ring-2 focus:ring-blue-500"
+              aria-expanded="false"
+              aria-haspopup="true"
+            >
+              1031 Services
+              <svg class="ml-1 h-4 w-4 transition-transform duration-200 group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+              </svg>
+            </button>
+            
+            <!-- Mega Menu Content -->
+            <div class="mega-menu absolute left-0 mt-2 bg-white rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 w-[800px]">
+              <div class="rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 overflow-hidden">
+                <div class="grid grid-cols-3 gap-6 p-8">
+                  <!-- Service Types Column -->
+                  <div>
+                    <h3 class="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">Exchange Types</h3>
+                    <div class="space-y-3">
+                      <a href="/services/delayed-exchange" class="group/link flex items-start">
+                        <span class="flex-shrink-0 w-6 h-6 bg-blue-100 rounded-md flex items-center justify-center mr-3 group-hover/link:bg-blue-200 transition-colors">
+                          <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                          </svg>
+                        </span>
+                        <div>
+                          <p class="text-sm font-medium text-gray-900 group-hover/link:text-blue-900">Delayed Exchange</p>
+                          <p class="text-xs text-gray-500 mt-1">Most common - 45/180 day timeline</p>
+                        </div>
+                      </a>
+                      <a href="/services/reverse-exchange" class="group/link flex items-start">
+                        <span class="flex-shrink-0 w-6 h-6 bg-blue-100 rounded-md flex items-center justify-center mr-3 group-hover/link:bg-blue-200 transition-colors">
+                          <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path>
+                          </svg>
+                        </span>
+                        <div>
+                          <p class="text-sm font-medium text-gray-900 group-hover/link:text-blue-900">Reverse Exchange</p>
+                          <p class="text-xs text-gray-500 mt-1">Buy first, then sell</p>
+                        </div>
+                      </a>
+                      <a href="/services/improvement-exchange" class="group/link flex items-start">
+                        <span class="flex-shrink-0 w-6 h-6 bg-blue-100 rounded-md flex items-center justify-center mr-3 group-hover/link:bg-blue-200 transition-colors">
+                          <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path>
+                          </svg>
+                        </span>
+                        <div>
+                          <p class="text-sm font-medium text-gray-900 group-hover/link:text-blue-900">Improvement Exchange</p>
+                          <p class="text-xs text-gray-500 mt-1">Add value during exchange</p>
+                        </div>
+                      </a>
+                      <a href="/services/partial-exchange" class="group/link flex items-start">
+                        <span class="flex-shrink-0 w-6 h-6 bg-blue-100 rounded-md flex items-center justify-center mr-3 group-hover/link:bg-blue-200 transition-colors">
+                          <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                          </svg>
+                        </span>
+                        <div>
+                          <p class="text-sm font-medium text-gray-900 group-hover/link:text-blue-900">Partial Exchange</p>
+                          <p class="text-xs text-gray-500 mt-1">Exchange with cash out</p>
+                        </div>
+                      </a>
+                    </div>
+                  </div>
+                  
+                  <!-- Getting Started Column -->
+                  <div>
+                    <h3 class="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">Getting Started</h3>
+                    <div class="space-y-3">
+                      <a href="/how-it-works" class="group/link flex items-start">
+                        <span class="flex-shrink-0 w-6 h-6 bg-green-100 rounded-md flex items-center justify-center mr-3 group-hover/link:bg-green-200 transition-colors">
+                          <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                          </svg>
+                        </span>
+                        <div>
+                          <p class="text-sm font-medium text-gray-900 group-hover/link:text-blue-900">How It Works</p>
+                          <p class="text-xs text-gray-500 mt-1">Step-by-step process guide</p>
+                        </div>
+                      </a>
+                      <a href="/1031-exchange-timeline" class="group/link flex items-start">
+                        <span class="flex-shrink-0 w-6 h-6 bg-green-100 rounded-md flex items-center justify-center mr-3 group-hover/link:bg-green-200 transition-colors">
+                          <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                          </svg>
+                        </span>
+                        <div>
+                          <p class="text-sm font-medium text-gray-900 group-hover/link:text-blue-900">Timeline & Deadlines</p>
+                          <p class="text-xs text-gray-500 mt-1">Critical dates calculator</p>
+                        </div>
+                      </a>
+                      
+                      <!-- CTA within menu -->
+                      <div class="pt-4">
+                        <a href="/start-exchange" class="block w-full bg-yellow-400 text-blue-900 px-4 py-2 rounded-md text-sm font-medium hover:bg-yellow-300 transition-colors text-center">
+                          Start Your Exchange →
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <!-- Featured Content Column -->
+                  <div class="bg-gray-50 -m-8 ml-0 p-8 rounded-r-lg">
+                    <h3 class="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">Featured</h3>
+                    <div class="bg-white rounded-lg p-4 shadow-sm">
+                      <p class="text-xs font-semibold text-blue-600 uppercase tracking-wider">New to 1031?</p>
+                      <p class="mt-2 text-sm text-gray-900 font-medium">Complete Guide to 1031 Exchanges</p>
+                      <p class="mt-1 text-xs text-gray-500">Everything you need to know about tax-deferred exchanges</p>
+                      <a href="/complete-guide-1031-exchanges" class="mt-3 text-xs font-medium text-blue-600 hover:text-blue-500 inline-flex items-center">
+                        Read the guide
+                        <svg class="ml-1 w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                      </a>
+                    </div>
+                    
+                    <div class="mt-6">
+                      <p class="text-xs text-gray-500 mb-2">Quick Stats:</p>
+                      <div class="space-y-1">
+                        <div class="flex items-center text-xs">
+                          <span class="text-green-500 mr-1">✓</span>
+                          <span class="text-gray-600">$2B+ in exchanges</span>
+                        </div>
+                        <div class="flex items-center text-xs">
+                          <span class="text-green-500 mr-1">✓</span>
+                          <span class="text-gray-600">50 states covered</span>
+                        </div>
+                        <div class="flex items-center text-xs">
+                          <span class="text-green-500 mr-1">✓</span>
+                          <span class="text-gray-600">20+ years experience</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Resources & Tools Mega Menu -->
+          <div class="relative group">
+            <button 
+              class="nav-button text-gray-700 hover:text-blue-900 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 flex items-center focus:outline-none focus:ring-2 focus:ring-blue-500"
+              aria-expanded="false"
+              aria-haspopup="true"
+            >
+              Resources & Tools
+              <svg class="ml-1 h-4 w-4 transition-transform duration-200 group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+              </svg>
+            </button>
+            
+            <!-- Mega Menu Content -->
+            <div class="mega-menu absolute left-0 mt-2 bg-white rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 w-[900px]">
+              <div class="rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 overflow-hidden">
+                <div class="grid grid-cols-4 gap-6 p-8">
+                  <!-- Learning Center Column -->
+                  <div>
+                    <h3 class="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">Learning Center</h3>
+                    <div class="space-y-2">
+                      <a href="/complete-guide-1031-exchanges" class="block text-sm text-gray-600 hover:text-blue-900 hover:bg-blue-50 px-2 py-1 rounded transition-colors">
+                        Complete Guide
+                      </a>
+                      <a href="/1031-exchange-rules" class="block text-sm text-gray-600 hover:text-blue-900 hover:bg-blue-50 px-2 py-1 rounded transition-colors">
+                        Exchange Rules
+                      </a>
+                      <a href="/types-of-1031-exchanges" class="block text-sm text-gray-600 hover:text-blue-900 hover:bg-blue-50 px-2 py-1 rounded transition-colors">
+                        Types of Exchanges
+                      </a>
+                      <a href="/choosing-qualified-intermediary" class="block text-sm text-gray-600 hover:text-blue-900 hover:bg-blue-50 px-2 py-1 rounded transition-colors">
+                        Choosing a QI
+                      </a>
+                      <a href="/faq" class="block text-sm text-gray-600 hover:text-blue-900 hover:bg-blue-50 px-2 py-1 rounded transition-colors">
+                        FAQ
+                      </a>
+                    </div>
+                  </div>
+                  
+                  <!-- Interactive Tools Column -->
+                  <div>
+                    <h3 class="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">Interactive Tools</h3>
+                    <div class="space-y-2">
+                      <a href="/calculator" class="group/tool block">
+                        <div class="bg-blue-50 rounded-lg p-3 hover:bg-blue-100 transition-colors">
+                          <p class="text-sm font-medium text-gray-900">Tax Savings Calculator</p>
+                          <p class="text-xs text-gray-600 mt-1">Estimate your savings</p>
+                        </div>
+                      </a>
+                      <a href="/timeline-calculator" class="group/tool block">
+                        <div class="bg-green-50 rounded-lg p-3 hover:bg-green-100 transition-colors">
+                          <p class="text-sm font-medium text-gray-900">Timeline Calculator</p>
+                          <p class="text-xs text-gray-600 mt-1">Track your deadlines</p>
+                        </div>
+                      </a>
+                    </div>
+                  </div>
+                  
+                  <!-- Browse By Column -->
+                  <div>
+                    <h3 class="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">Browse By</h3>
+                    <div class="space-y-3">
+                      <a href="/property-types" class="group/browse block">
+                        <div class="flex items-center justify-between">
+                          <span class="text-sm text-gray-600 group-hover/browse:text-blue-900">Property Types</span>
+                          <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">20 types</span>
+                        </div>
+                      </a>
+                      <a href="/scenarios" class="group/browse block">
+                        <div class="flex items-center justify-between">
+                          <span class="text-sm text-gray-600 group-hover/browse:text-blue-900">Common Scenarios</span>
+                          <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">30 scenarios</span>
+                        </div>
+                      </a>
+                    </div>
+                  </div>
+                  
+                  <!-- Quick Actions Column -->
+                  <div class="bg-gray-50 -m-8 ml-0 p-8 rounded-r-lg">
+                    <h3 class="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">Quick Actions</h3>
+                    <div class="space-y-2">
+                      <a href="/schedule" class="block w-full bg-blue-900 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-800 transition-colors text-center">
+                        Schedule Consultation
+                      </a>
+                      <a href="/start-exchange" class="block w-full bg-yellow-400 text-blue-900 px-4 py-2 rounded-md text-sm font-medium hover:bg-yellow-300 transition-colors text-center">
+                        Start Exchange
+                      </a>
+                    </div>
+                    
+                    <div class="mt-6 pt-6 border-t border-gray-200">
+                      <p class="text-xs font-semibold text-gray-900 mb-2">Popular Resources</p>
+                      <div class="space-y-1">
+                        <a href="/1031-exchange-timeline" class="text-xs text-blue-600 hover:text-blue-500 block">→ 45/180 Day Timeline</a>
+                        <a href="/calculator" class="text-xs text-blue-600 hover:text-blue-500 block">→ Calculate Your Savings</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Locations (Simple Dropdown) -->
+          <div class="relative group">
+            <button 
+              class="nav-button text-gray-700 hover:text-blue-900 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 flex items-center focus:outline-none focus:ring-2 focus:ring-blue-500"
+              aria-expanded="false"
+              aria-haspopup="true"
+            >
+              Locations
+              <svg class="ml-1 h-4 w-4 transition-transform duration-200 group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+              </svg>
+            </button>
+            
+            <div class="absolute left-0 mt-2 w-80 bg-white rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+              <div class="py-4 px-6">
+                <h3 class="text-sm font-semibold text-gray-900 mb-3">Service Areas</h3>
+                <p class="text-xs text-gray-500 mb-3">We serve all 50 states</p>
+                <div class="grid grid-cols-2 gap-2 mb-4">
+                  <a href="/locations/california" class="text-sm text-gray-600 hover:text-blue-900 transition-colors">California</a>
+                  <a href="/locations/texas" class="text-sm text-gray-600 hover:text-blue-900 transition-colors">Texas</a>
+                  <a href="/locations/florida" class="text-sm text-gray-600 hover:text-blue-900 transition-colors">Florida</a>
+                  <a href="/locations/new-york" class="text-sm text-gray-600 hover:text-blue-900 transition-colors">New York</a>
+                  <a href="/locations/illinois" class="text-sm text-gray-600 hover:text-blue-900 transition-colors">Illinois</a>
+                  <a href="/locations/arizona" class="text-sm text-gray-600 hover:text-blue-900 transition-colors">Arizona</a>
+                </div>
+                <div class="pt-3 border-t border-gray-200">
+                  <a href="/locations" class="text-sm text-blue-900 hover:text-blue-700 font-medium inline-flex items-center">
+                    View All 50 States
+                    <svg class="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- About (Simple Dropdown) -->
+          <div class="relative group">
+            <button 
+              class="nav-button text-gray-700 hover:text-blue-900 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 flex items-center focus:outline-none focus:ring-2 focus:ring-blue-500"
+              aria-expanded="false"
+              aria-haspopup="true"
+            >
+              About
+              <svg class="ml-1 h-4 w-4 transition-transform duration-200 group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+              </svg>
+            </button>
+            
+            <div class="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+              <div class="py-2">
+                <a href="/about" class="block px-4 py-2 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-900 transition-colors">
+                  About Us
+                </a>
+                <a href="/contact" class="block px-4 py-2 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-900 transition-colors">
+                  Contact
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- CTA Buttons -->
+        <div class="flex items-center space-x-3 ml-8">
+          <a href="/start-exchange" class="bg-yellow-400 text-blue-900 px-6 py-2 rounded-md text-sm font-medium hover:bg-yellow-300 transition-colors duration-200 shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2">
+            Start Your Exchange
+          </a>
+          <a href="/schedule" class="bg-blue-900 text-white px-6 py-2 rounded-md text-sm font-medium hover:bg-blue-800 transition-colors duration-200 shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+            Free Consultation
+          </a>
+        </div>
+      </div>
+      
+      <!-- Mobile menu button -->
+      <div class="lg:hidden">
+        <button 
+          type="button" 
+          class="mobile-menu-button text-gray-700 hover:text-blue-900 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-md p-2"
+          aria-label="Open menu"
+          aria-expanded="false"
+        >
+          <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+    
+    <!-- Mobile Navigation Menu -->
+    <div class="mobile-menu hidden lg:hidden" role="navigation" aria-label="Mobile navigation">
+      <div class="px-2 pt-2 pb-3 space-y-1 bg-gray-50">
+        <!-- Mobile Services Section -->
+        <div class="mobile-section">
+          <button class="mobile-section-button w-full text-left px-3 py-2 text-base font-medium text-gray-900 hover:bg-blue-50 rounded-md flex items-center justify-between">
+            <span>1031 Services</span>
+            <svg class="h-5 w-5 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </button>
+          <div class="mobile-section-content hidden pl-6 space-y-1">
+            <a href="/services/delayed-exchange" class="block px-3 py-2 text-sm text-gray-600 hover:text-blue-900 hover:bg-blue-50 rounded-md">
+              Delayed Exchange
+            </a>
+            <a href="/services/reverse-exchange" class="block px-3 py-2 text-sm text-gray-600 hover:text-blue-900 hover:bg-blue-50 rounded-md">
+              Reverse Exchange
+            </a>
+            <a href="/services/improvement-exchange" class="block px-3 py-2 text-sm text-gray-600 hover:text-blue-900 hover:bg-blue-50 rounded-md">
+              Improvement Exchange
+            </a>
+            <a href="/services/partial-exchange" class="block px-3 py-2 text-sm text-gray-600 hover:text-blue-900 hover:bg-blue-50 rounded-md">
+              Partial Exchange
+            </a>
+            <a href="/how-it-works" class="block px-3 py-2 text-sm text-gray-600 hover:text-blue-900 hover:bg-blue-50 rounded-md">
+              How It Works
+            </a>
+          </div>
+        </div>
+        
+        <!-- Mobile Resources Section -->
+        <div class="mobile-section">
+          <button class="mobile-section-button w-full text-left px-3 py-2 text-base font-medium text-gray-900 hover:bg-blue-50 rounded-md flex items-center justify-between">
+            <span>Resources & Tools</span>
+            <svg class="h-5 w-5 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </button>
+          <div class="mobile-section-content hidden pl-6 space-y-1">
+            <a href="/complete-guide-1031-exchanges" class="block px-3 py-2 text-sm text-gray-600 hover:text-blue-900 hover:bg-blue-50 rounded-md">
+              Complete Guide
+            </a>
+            <a href="/calculator" class="block px-3 py-2 text-sm text-gray-600 hover:text-blue-900 hover:bg-blue-50 rounded-md">
+              Tax Calculator
+            </a>
+            <a href="/timeline-calculator" class="block px-3 py-2 text-sm text-gray-600 hover:text-blue-900 hover:bg-blue-50 rounded-md">
+              Timeline Calculator
+            </a>
+            <a href="/property-types" class="block px-3 py-2 text-sm text-gray-600 hover:text-blue-900 hover:bg-blue-50 rounded-md">
+              Property Types
+            </a>
+            <a href="/scenarios" class="block px-3 py-2 text-sm text-gray-600 hover:text-blue-900 hover:bg-blue-50 rounded-md">
+              Scenarios
+            </a>
+            <a href="/faq" class="block px-3 py-2 text-sm text-gray-600 hover:text-blue-900 hover:bg-blue-50 rounded-md">
+              FAQ
+            </a>
+          </div>
+        </div>
+        
+        <!-- Mobile Direct Links -->
+        <a href="/locations" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-900 hover:bg-blue-50 rounded-md">
+          Locations
+        </a>
+        <a href="/about" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-900 hover:bg-blue-50 rounded-md">
+          About Us
+        </a>
+        <a href="/contact" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-900 hover:bg-blue-50 rounded-md">
+          Contact
+        </a>
+        
+        <!-- Mobile CTAs -->
+        <div class="pt-4 space-y-2">
+          <a href="/start-exchange" class="block px-3 py-2 text-base font-medium bg-yellow-400 text-blue-900 hover:bg-yellow-300 rounded-md text-center">
+            Start Your Exchange
+          </a>
+          <a href="/schedule" class="block px-3 py-2 text-base font-medium bg-blue-900 text-white hover:bg-blue-800 rounded-md text-center">
+            Free Consultation
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<style>
+  /* Enhanced keyboard navigation styles */
+  .nav-button:focus-visible,
+  a:focus-visible {
+    outline: 2px solid #2563eb;
+    outline-offset: 2px;
+  }
+  
+  /* Improved mega menu animations */
+  .mega-menu {
+    transform: translateY(-10px);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .group:hover .mega-menu {
+    transform: translateY(0);
+  }
+  
+  /* Mobile accordion animation */
+  .mobile-section-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+  }
+  
+  .mobile-section-content.show {
+    max-height: 500px;
+  }
+  
+  /* Prevent layout shift */
+  nav {
+    min-height: 64px;
+  }
+  
+  /* Improved focus states for accessibility */
+  button[aria-expanded="true"] {
+    color: #1e40af;
+    background-color: #eff6ff;
+  }
+  
+  /* Better hover states for touch devices */
+  @media (hover: none) {
+    .group:hover .mega-menu {
+      opacity: 0;
+      visibility: hidden;
+    }
+  }
+</style>
+
+<script>
+  // Enhanced mobile menu toggle with accessibility
+  document.addEventListener('DOMContentLoaded', function() {
+    const mobileMenuButton = document.querySelector('.mobile-menu-button');
+    const mobileMenu = document.querySelector('.mobile-menu');
+    const mobileSectionButtons = document.querySelectorAll('.mobile-section-button');
+    const navButtons = document.querySelectorAll('.nav-button');
+    
+    // Mobile menu toggle
+    mobileMenuButton?.addEventListener('click', function() {
+      const isOpen = !mobileMenu?.classList.contains('hidden');
+      mobileMenu?.classList.toggle('hidden');
+      this.setAttribute('aria-expanded', (!isOpen).toString());
+      this.setAttribute('aria-label', isOpen ? 'Open menu' : 'Close menu');
+    });
+    
+    // Mobile accordion sections
+    mobileSectionButtons.forEach(button => {
+      button.addEventListener('click', function() {
+        const content = this.nextElementSibling;
+        const arrow = this.querySelector('svg');
+        const isOpen = !content?.classList.contains('hidden');
+        
+        // Close all other sections
+        mobileSectionButtons.forEach(otherButton => {
+          if (otherButton !== button) {
+            otherButton.nextElementSibling?.classList.add('hidden');
+            otherButton.querySelector('svg')?.classList.remove('rotate-180');
+          }
+        });
+        
+        // Toggle current section
+        content?.classList.toggle('hidden');
+        content?.classList.toggle('show');
+        arrow?.classList.toggle('rotate-180');
+      });
+    });
+    
+    // Desktop dropdown keyboard navigation
+    navButtons.forEach(button => {
+      const dropdown = button.parentElement?.querySelector('.mega-menu, .absolute');
+      
+      // Mouse events
+      button.addEventListener('mouseenter', () => {
+        button.setAttribute('aria-expanded', 'true');
+      });
+      
+      button.parentElement?.addEventListener('mouseleave', () => {
+        button.setAttribute('aria-expanded', 'false');
+      });
+      
+      // Keyboard events
+      button.addEventListener('click', function(e) {
+        e.preventDefault();
+        const isOpen = this.getAttribute('aria-expanded') === 'true';
+        
+        // Close all other dropdowns
+        navButtons.forEach(otherButton => {
+          if (otherButton !== button) {
+            otherButton.setAttribute('aria-expanded', 'false');
+          }
+        });
+        
+        // Toggle current dropdown
+        this.setAttribute('aria-expanded', (!isOpen).toString());
+        
+        if (!isOpen && dropdown) {
+          dropdown.classList.remove('opacity-0', 'invisible');
+          dropdown.classList.add('opacity-100', 'visible');
+        } else if (dropdown) {
+          dropdown.classList.add('opacity-0', 'invisible');
+          dropdown.classList.remove('opacity-100', 'visible');
+        }
+      });
+      
+      // Close on Escape
+      button.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && this.getAttribute('aria-expanded') === 'true') {
+          this.setAttribute('aria-expanded', 'false');
+          dropdown?.classList.add('opacity-0', 'invisible');
+          dropdown?.classList.remove('opacity-100', 'visible');
+        }
+      });
+    });
+    
+    // Close dropdowns when clicking outside
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('nav')) {
+        navButtons.forEach(button => {
+          button.setAttribute('aria-expanded', 'false');
+          const dropdown = button.parentElement?.querySelector('.mega-menu, .absolute');
+          dropdown?.classList.add('opacity-0', 'invisible');
+          dropdown?.classList.remove('opacity-100', 'visible');
+        });
+      }
+    });
+  });
+</script>
