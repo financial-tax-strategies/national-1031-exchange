@@ -1,0 +1,355 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { COMPANY, getPhoneLink } from '../../config/company';
+
+const states = [
+  { slug: 'alabama', name: 'Alabama', abbr: 'AL', topMarket: 'Birmingham' },
+  { slug: 'alaska', name: 'Alaska', abbr: 'AK', topMarket: 'Anchorage' },
+  { slug: 'arizona', name: 'Arizona', abbr: 'AZ', topMarket: 'Phoenix' },
+  { slug: 'arkansas', name: 'Arkansas', abbr: 'AR', topMarket: 'Little Rock' },
+  { slug: 'california', name: 'California', abbr: 'CA', topMarket: 'Los Angeles' },
+  { slug: 'colorado', name: 'Colorado', abbr: 'CO', topMarket: 'Denver' },
+  { slug: 'connecticut', name: 'Connecticut', abbr: 'CT', topMarket: 'Bridgeport' },
+  { slug: 'delaware', name: 'Delaware', abbr: 'DE', topMarket: 'Wilmington' },
+  { slug: 'florida', name: 'Florida', abbr: 'FL', topMarket: 'Miami' },
+  { slug: 'georgia', name: 'Georgia', abbr: 'GA', topMarket: 'Atlanta' },
+  { slug: 'hawaii', name: 'Hawaii', abbr: 'HI', topMarket: 'Honolulu' },
+  { slug: 'idaho', name: 'Idaho', abbr: 'ID', topMarket: 'Boise' },
+  { slug: 'illinois', name: 'Illinois', abbr: 'IL', topMarket: 'Chicago' },
+  { slug: 'indiana', name: 'Indiana', abbr: 'IN', topMarket: 'Indianapolis' },
+  { slug: 'iowa', name: 'Iowa', abbr: 'IA', topMarket: 'Des Moines' },
+  { slug: 'kansas', name: 'Kansas', abbr: 'KS', topMarket: 'Wichita' },
+  { slug: 'kentucky', name: 'Kentucky', abbr: 'KY', topMarket: 'Louisville' },
+  { slug: 'louisiana', name: 'Louisiana', abbr: 'LA', topMarket: 'New Orleans' },
+  { slug: 'maine', name: 'Maine', abbr: 'ME', topMarket: 'Portland' },
+  { slug: 'maryland', name: 'Maryland', abbr: 'MD', topMarket: 'Baltimore' },
+  { slug: 'massachusetts', name: 'Massachusetts', abbr: 'MA', topMarket: 'Boston' },
+  { slug: 'michigan', name: 'Michigan', abbr: 'MI', topMarket: 'Detroit' },
+  { slug: 'minnesota', name: 'Minnesota', abbr: 'MN', topMarket: 'Minneapolis' },
+  { slug: 'mississippi', name: 'Mississippi', abbr: 'MS', topMarket: 'Jackson' },
+  { slug: 'missouri', name: 'Missouri', abbr: 'MO', topMarket: 'Kansas City' },
+  { slug: 'montana', name: 'Montana', abbr: 'MT', topMarket: 'Billings' },
+  { slug: 'nebraska', name: 'Nebraska', abbr: 'NE', topMarket: 'Omaha' },
+  { slug: 'nevada', name: 'Nevada', abbr: 'NV', topMarket: 'Las Vegas' },
+  { slug: 'new-hampshire', name: 'New Hampshire', abbr: 'NH', topMarket: 'Manchester' },
+  { slug: 'new-jersey', name: 'New Jersey', abbr: 'NJ', topMarket: 'Newark' },
+  { slug: 'new-mexico', name: 'New Mexico', abbr: 'NM', topMarket: 'Albuquerque' },
+  { slug: 'new-york', name: 'New York', abbr: 'NY', topMarket: 'New York City' },
+  { slug: 'north-carolina', name: 'North Carolina', abbr: 'NC', topMarket: 'Charlotte' },
+  { slug: 'north-dakota', name: 'North Dakota', abbr: 'ND', topMarket: 'Fargo' },
+  { slug: 'ohio', name: 'Ohio', abbr: 'OH', topMarket: 'Columbus' },
+  { slug: 'oklahoma', name: 'Oklahoma', abbr: 'OK', topMarket: 'Oklahoma City' },
+  { slug: 'oregon', name: 'Oregon', abbr: 'OR', topMarket: 'Portland' },
+  { slug: 'pennsylvania', name: 'Pennsylvania', abbr: 'PA', topMarket: 'Philadelphia' },
+  { slug: 'rhode-island', name: 'Rhode Island', abbr: 'RI', topMarket: 'Providence' },
+  { slug: 'south-carolina', name: 'South Carolina', abbr: 'SC', topMarket: 'Charleston' },
+  { slug: 'south-dakota', name: 'South Dakota', abbr: 'SD', topMarket: 'Sioux Falls' },
+  { slug: 'tennessee', name: 'Tennessee', abbr: 'TN', topMarket: 'Nashville' },
+  { slug: 'texas', name: 'Texas', abbr: 'TX', topMarket: 'Houston' },
+  { slug: 'utah', name: 'Utah', abbr: 'UT', topMarket: 'Salt Lake City' },
+  { slug: 'vermont', name: 'Vermont', abbr: 'VT', topMarket: 'Burlington' },
+  { slug: 'virginia', name: 'Virginia', abbr: 'VA', topMarket: 'Virginia Beach' },
+  { slug: 'washington', name: 'Washington', abbr: 'WA', topMarket: 'Seattle' },
+  { slug: 'west-virginia', name: 'West Virginia', abbr: 'WV', topMarket: 'Charleston' },
+  { slug: 'wisconsin', name: 'Wisconsin', abbr: 'WI', topMarket: 'Milwaukee' },
+  { slug: 'wyoming', name: 'Wyoming', abbr: 'WY', topMarket: 'Cheyenne' }
+];
+
+// Group states by region for better organization
+const regions = {
+  'Northeast': ['CT', 'ME', 'MA', 'NH', 'NJ', 'NY', 'PA', 'RI', 'VT'],
+  'Southeast': ['AL', 'AR', 'DE', 'FL', 'GA', 'KY', 'LA', 'MD', 'MS', 'NC', 'SC', 'TN', 'VA', 'WV'],
+  'Midwest': ['IL', 'IN', 'IA', 'KS', 'MI', 'MN', 'MO', 'NE', 'ND', 'OH', 'SD', 'WI'],
+  'Southwest': ['AZ', 'NM', 'OK', 'TX'],
+  'West': ['AK', 'CA', 'CO', 'HI', 'ID', 'MT', 'NV', 'OR', 'UT', 'WA', 'WY']
+};
+
+function getStatesByRegion(region: string) {
+  return states.filter(state => regions[region].includes(state.abbr));
+}
+---
+
+<Layout 
+  title="1031 Exchange Services by State | All 50 States Covered"
+  description="Find expert 1031 exchange services in your state. National 1031 Center provides qualified intermediary services across all 50 states with local expertise and national resources."
+>
+  
+  <!-- Hero Section -->
+  <section class="bg-gradient-to-b from-blue-50 to-white py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+          1031 Exchange Services Across All 50 States
+        </h1>
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
+          National 1031 Center provides expert qualified intermediary services nationwide. 
+          Find local expertise and state-specific tax guidance for your investment property exchange.
+        </p>
+        
+        <!-- CTA Buttons -->
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="/contact" 
+             class="bg-yellow-400 text-blue-900 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-yellow-300 transition-all duration-300 transform hover:scale-105 shadow-lg">
+            Start Your Exchange
+          </a>
+          <a href="/calculator" 
+             class="border-2 border-blue-600 text-blue-600 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-blue-600 hover:text-white transition-all duration-300">
+            Calculate Your Savings
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Map Visual (Placeholder) -->
+  <section class="py-8 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="bg-white rounded-lg shadow-lg p-8 text-center">
+        <h2 class="text-2xl font-bold text-gray-900 mb-4">
+          Nationwide Coverage with Local Expertise
+        </h2>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mt-8">
+          <div class="text-center">
+            <div class="text-3xl font-bold text-blue-600">50</div>
+            <div class="text-gray-600">States Served</div>
+          </div>
+          <div class="text-center">
+            <div class="text-3xl font-bold text-green-600">10,000+</div>
+            <div class="text-gray-600">Successful Exchanges</div>
+          </div>
+          <div class="text-center">
+            <div class="text-3xl font-bold text-purple-600">48hr</div>
+            <div class="text-gray-600">Response Time</div>
+          </div>
+          <div class="text-center">
+            <div class="text-3xl font-bold text-orange-600">24/7</div>
+            <div class="text-gray-600">Support Available</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- States by Region -->
+  <section class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold text-gray-900 mb-12 text-center">
+        Select Your State for Local 1031 Exchange Information
+      </h2>
+      
+      {Object.entries(regions).map(([region, stateAbbrs]) => (
+        <div class="mb-12">
+          <h3 class="text-2xl font-semibold text-gray-800 mb-6 pb-2 border-b-2 border-gray-200">
+            {region} States
+          </h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            {getStatesByRegion(region).map((state) => (
+              <a href={`/locations/${state.slug}`} 
+                 class="bg-gray-50 hover:bg-blue-50 border border-gray-200 hover:border-blue-300 rounded-lg p-4 transition-all duration-200 group">
+                <div class="flex items-center justify-between">
+                  <div>
+                    <h4 class="font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">
+                      {state.name}
+                    </h4>
+                    <p class="text-sm text-gray-600">
+                      {state.topMarket} & more
+                    </p>
+                  </div>
+                  <svg class="w-5 h-5 text-gray-400 group-hover:text-blue-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                  </svg>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+  
+  <!-- Why State-Specific Expertise Matters -->
+  <section class="py-16 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold text-gray-900 mb-12 text-center">
+        Why State-Specific 1031 Exchange Expertise Matters
+      </h2>
+      
+      <div class="grid lg:grid-cols-3 gap-8">
+        <div class="bg-white p-6 rounded-lg shadow-md">
+          <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
+            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-3">State Tax Laws Vary</h3>
+          <p class="text-gray-600">
+            Each state has different capital gains tax rates and real estate regulations. Our experts understand the specific 
+            tax implications and compliance requirements for your state.
+          </p>
+        </div>
+        
+        <div class="bg-white p-6 rounded-lg shadow-md">
+          <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-4">
+            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-3">Local Market Knowledge</h3>
+          <p class="text-gray-600">
+            We understand each state's real estate markets, from hot urban centers to rural investment opportunities, 
+            helping you identify the best replacement properties.
+          </p>
+        </div>
+        
+        <div class="bg-white p-6 rounded-lg shadow-md">
+          <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
+            <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-3">Regional Partnerships</h3>
+          <p class="text-gray-600">
+            Our network includes local real estate professionals, attorneys, and CPAs in every state, ensuring 
+            you have the complete team needed for a successful exchange.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Popular States Section -->
+  <section class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold text-gray-900 mb-12 text-center">
+        Most Popular States for 1031 Exchanges
+      </h2>
+      
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- California -->
+        <a href="/locations/california" class="bg-gradient-to-br from-blue-50 to-blue-100 p-6 rounded-lg hover:shadow-lg transition-shadow duration-300">
+          <h3 class="text-xl font-semibold text-gray-900 mb-2">California</h3>
+          <p class="text-gray-600 mb-3">
+            High property values and 13.3% state tax rate make 1031 exchanges especially valuable for California investors.
+          </p>
+          <span class="text-blue-600 font-semibold hover:text-blue-700">
+            Learn about CA exchanges →
+          </span>
+        </a>
+        
+        <!-- Texas -->
+        <a href="/locations/texas" class="bg-gradient-to-br from-green-50 to-green-100 p-6 rounded-lg hover:shadow-lg transition-shadow duration-300">
+          <h3 class="text-xl font-semibold text-gray-900 mb-2">Texas</h3>
+          <p class="text-gray-600 mb-3">
+            No state income tax but strong real estate markets make Texas a popular destination for exchange properties.
+          </p>
+          <span class="text-green-600 font-semibold hover:text-green-700">
+            Learn about TX exchanges →
+          </span>
+        </a>
+        
+        <!-- Florida -->
+        <a href="/locations/florida" class="bg-gradient-to-br from-orange-50 to-orange-100 p-6 rounded-lg hover:shadow-lg transition-shadow duration-300">
+          <h3 class="text-xl font-semibold text-gray-900 mb-2">Florida</h3>
+          <p class="text-gray-600 mb-3">
+            No state income tax and growing markets attract investors nationwide for 1031 exchange opportunities.
+          </p>
+          <span class="text-orange-600 font-semibold hover:text-orange-700">
+            Learn about FL exchanges →
+          </span>
+        </a>
+        
+        <!-- New York -->
+        <a href="/locations/new-york" class="bg-gradient-to-br from-purple-50 to-purple-100 p-6 rounded-lg hover:shadow-lg transition-shadow duration-300">
+          <h3 class="text-xl font-semibold text-gray-900 mb-2">New York</h3>
+          <p class="text-gray-600 mb-3">
+            High property values and 10.9% state tax rate create significant tax deferral opportunities.
+          </p>
+          <span class="text-purple-600 font-semibold hover:text-purple-700">
+            Learn about NY exchanges →
+          </span>
+        </a>
+        
+        <!-- Arizona -->
+        <a href="/locations/arizona" class="bg-gradient-to-br from-red-50 to-red-100 p-6 rounded-lg hover:shadow-lg transition-shadow duration-300">
+          <h3 class="text-xl font-semibold text-gray-900 mb-2">Arizona</h3>
+          <p class="text-gray-600 mb-3">
+            Growing markets and favorable tax rates make Arizona attractive for both selling and buying exchange properties.
+          </p>
+          <span class="text-red-600 font-semibold hover:text-red-700">
+            Learn about AZ exchanges →
+          </span>
+        </a>
+        
+        <!-- Colorado -->
+        <a href="/locations/colorado" class="bg-gradient-to-br from-indigo-50 to-indigo-100 p-6 rounded-lg hover:shadow-lg transition-shadow duration-300">
+          <h3 class="text-xl font-semibold text-gray-900 mb-2">Colorado</h3>
+          <p class="text-gray-600 mb-3">
+            Strong appreciation and diverse property types from urban to mountain properties offer unique opportunities.
+          </p>
+          <span class="text-indigo-600 font-semibold hover:text-indigo-700">
+            Learn about CO exchanges →
+          </span>
+        </a>
+      </div>
+    </div>
+  </section>
+  
+  <!-- CTA Section -->
+  <section class="py-16 bg-blue-900 text-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h2 class="text-3xl font-bold mb-6">
+        Ready to Start Your 1031 Exchange?
+      </h2>
+      <p class="text-xl mb-8 text-blue-100">
+        Whether you're exchanging within your state or across state lines, our experts are ready to guide you through every step.
+      </p>
+      
+      <div class="flex flex-col sm:flex-row gap-4 justify-center mb-8">
+        <a href="/contact" 
+           class="bg-yellow-400 text-blue-900 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-yellow-300 transition-all duration-300 transform hover:scale-105">
+          Get Started Today
+        </a>
+        <a href="/calculator" 
+           class="border-2 border-white text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-white hover:text-blue-900 transition-all duration-300">
+          Calculate Your Savings
+        </a>
+      </div>
+      
+      <p class="text-blue-200">
+        Questions? Call our nationwide team: 
+        <a href={getPhoneLink()} class="text-yellow-400 hover:text-yellow-300 font-semibold">{COMPANY.phone.main}</a>
+      </p>
+    </div>
+  </section>
+  
+  <!-- Schema Markup -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": "1031 Exchange Services by State",
+    "description": "Complete list of states where National 1031 Center provides qualified intermediary services",
+    "numberOfItems": 50,
+    "itemListElement": [
+      ...states.map((state, index) => ({
+        "@type": "ListItem",
+        "position": index + 1,
+        "item": {
+          "@type": "Service",
+          "name": `${state.name} 1031 Exchange Services`,
+          "url": `https://the1031center.com/locations/${state.slug}`,
+          "provider": {
+            "@type": "Organization",
+            "name": "National 1031 Center"
+          },
+          "areaServed": {
+            "@type": "State",
+            "name": state.name,
+            "alternateName": state.abbr
+          }
+        }
+      }))
+    ]
+  }
+  </script>
+</Layout>

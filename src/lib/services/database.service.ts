@@ -14,8 +14,17 @@ export class DatabaseService {
     const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL;
     const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY;
     
+    // During build time, we might not have environment variables
+    // This allows the build to complete successfully
     if (!supabaseUrl || !supabaseAnonKey) {
-      throw new Error('Supabase URL and Anon Key must be provided');
+      if (import.meta.env.MODE === 'production' && typeof window !== 'undefined') {
+        // Only throw error in production when running in browser
+        throw new Error('Supabase URL and Anon Key must be provided');
+      }
+      // For build time or development, create a dummy client
+      // This will fail if actually used, but allows static build to complete
+      this.supabase = {} as SupabaseClient<Database>;
+      return;
     }
     
     this.supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
