@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import type { ContactFormData } from '../services/types/common';
 import { leadCaptureService } from '../services/leadCapture';
-import { highlevelService } from '../services/highlevel';
 
 export default function HighLevelContactForm() {
   const [formData, setFormData] = useState<ContactFormData>({
@@ -36,7 +35,7 @@ export default function HighLevelContactForm() {
       }
 
       // Create or update lead in database and HighLevel
-      const lead = await leadCaptureService.createLead({
+      await leadCaptureService.createLead({
         email: formData.email,
         phone: formData.phone || null,
         firstName: formData.firstName,

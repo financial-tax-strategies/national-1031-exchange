@@ -64,8 +64,8 @@ export default function TestIntegrationComponent() {
         });
         
         updateTestResult(2, true, `HighLevel contact synced: ${contactId}`);
-      } catch (error: any) {
-        updateTestResult(2, false, `HighLevel sync failed: ${error.message}`);
+      } catch (error) {
+        updateTestResult(2, false, `HighLevel sync failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
       }
       
       // Step 4: Create test appointment
@@ -102,8 +102,8 @@ export default function TestIntegrationComponent() {
           });
           
           updateTestResult(4, true, `HighLevel appointment created: ${hlAppointmentId}`);
-        } catch (error: any) {
-          updateTestResult(4, false, `HighLevel appointment sync failed: ${error.message}`);
+        } catch (error) {
+          updateTestResult(4, false, `HighLevel appointment sync failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
         }
       }
       
@@ -112,7 +112,7 @@ export default function TestIntegrationComponent() {
       
       try {
         const testDate = tomorrow.toISOString().split('T')[0];
-        console.log('[TestIntegration] Testing calendar availability for:', testDate);
+        console.warn('[TestIntegration] Testing calendar availability for:', testDate);
         
         const startTime = performance.now();
         const slots = await highLevelService.getAvailability({
@@ -133,12 +133,12 @@ export default function TestIntegrationComponent() {
         } else {
           updateTestResult(5, true, `Found ${slots.length} available slots for ${testDate} (took ${duration.toFixed(0)}ms)`);
         }
-      } catch (error: any) {
+      } catch (error) {
         console.error('[TestIntegration] Calendar availability error:', error);
         updateTestResult(5, false, `Availability check failed: ${error.message}`);
       }
       
-    } catch (error: any) {
+    } catch (error) {
       console.error('Integration test error:', error);
       addTestResult('Unexpected error', false, error.message);
     } finally {

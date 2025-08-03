@@ -2,144 +2,64 @@
 import Layout from '../layouts/Layout.astro';
 import { COMPANY, getPhoneLink } from '../config/company';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { supabase, isSupabaseConfigured } from '../lib/supabase';
 
-// Define team members with their details for E-E-A-T
-const teamMembers = [
-  {
-    id: 'ruth-benjamin',
-    name: 'Ruth Benjamin',
-    title: 'Chief Client Success Officer',
-    image: '/images/team/ruth-benjamin.jpg',
-    bio: 'Ruth has an extensive background in real estate tax strategy with deep expertise in title, escrow, foreclosures, evictions, bankruptcy, mortgages, and legal matters. Over the past 35 years, she has served as president of two different 1031 Exchange Companies. Recognized throughout the industry as a subject matter expert in 1031 exchanges and tax-deferred cash-out strategies, Ruth\'s approach is distinctive—she listens first, thinks creatively, and delivers elegant solutions to her clients.',
-    experience: '35+ years',
-    specialties: ['1031 exchanges', 'Tax-deferred strategies', 'Real estate tax strategy', 'Client success', 'Creative problem solving'],
-    linkedin: 'https://linkedin.com/in/ruthbenjamin1031',
-    email: 'ruth.benjamin@the1031center.com'
-  },
-  {
-    id: 'michael-chen',
-    name: 'Michael Chen',
-    title: 'Chief Operating Officer',
-    image: '/images/team/michael-chen.jpg',
-    bio: 'Michael Chen oversees all exchange operations and client services at The 1031 Center. With 20 years in financial services and real estate, he ensures every exchange is executed flawlessly while maintaining the highest security standards.',
-    education: [
-      'M.B.A., Operations Management, MIT Sloan',
-      'B.S., Computer Science, UC Berkeley'
-    ],
-    certifications: [
-      'Certified Exchange Specialist (CES)',
-      'Project Management Professional (PMP)',
-      'Certified Information Security Manager (CISM)'
-    ],
-    experience: '20 years',
-    specialties: ['Operations management', 'Technology integration', 'Security protocols', 'Process optimization'],
-    awards: [
-      'Excellence in Operations Award, FEA (2023)',
-      'Innovation in Exchange Services (2022)'
-    ],
-    linkedin: 'https://linkedin.com/in/michaelchen1031',
-    email: 'michael.chen@the1031center.com'
-  },
-  {
-    id: 'jennifer-martinez',
-    name: 'Jennifer Martinez',
-    title: 'Senior Vice President, Exchange Services',
-    image: '/images/team/jennifer-martinez.jpg',
-    bio: 'Jennifer Martinez leads our exchange services team with 18 years of specialized experience in qualified intermediary services. She has successfully facilitated over 5,000 exchanges totaling more than $2 billion in value.',
-    education: [
-      'M.S., Real Estate Finance, NYU Stern',
-      'B.A., Business Administration, UCLA'
-    ],
-    certifications: [
-      'Certified Exchange Specialist (CES)',
-      'Certified Commercial Investment Member (CCIM)',
-      'Real Estate License (CA, FL, TX)'
-    ],
-    experience: '18 years',
-    specialties: ['Delayed exchanges', 'Multi-property exchanges', 'Client relations', 'Exchange documentation'],
-    achievements: [
-      'Facilitated 5,000+ successful exchanges',
-      '$2B+ in exchange value processed',
-      '99.8% client satisfaction rating'
-    ],
-    linkedin: 'https://linkedin.com/in/jennifermartinez1031',
-    email: 'jennifer.martinez@the1031center.com'
-  },
-  {
-    id: 'david-thompson',
-    name: 'David Thompson',
-    title: 'Vice President, Reverse & Improvement Exchanges',
-    image: '/images/team/david-thompson.jpg',
-    bio: 'David Thompson specializes in complex exchange structures including reverse and improvement exchanges. His expertise in Exchange Accommodation Titleholder (EAT) structures has helped hundreds of investors navigate challenging market conditions.',
-    education: [
-      'J.D., Real Estate Law, Georgetown University',
-      'B.A., Finance, University of Pennsylvania'
-    ],
-    certifications: [
-      'Certified Exchange Specialist (CES)',
-      'Licensed Attorney (DC, MD, VA)',
-      'Advanced Exchange Structures Certification'
-    ],
-    experience: '15 years',
-    specialties: ['Reverse exchanges', 'Improvement exchanges', 'EAT structures', 'Complex timing issues'],
-    publications: [
-      'Reverse Exchange Strategies in Hot Markets (2023)',
-      'Improvement Exchanges: A Practitioner\'s Guide (2022)'
-    ],
-    linkedin: 'https://linkedin.com/in/davidthompson1031',
-    email: 'david.thompson@the1031center.com'
-  },
-  {
-    id: 'amanda-williams',
-    name: 'Amanda Williams',
-    title: 'Vice President, Client Success',
-    image: '/images/team/amanda-williams.jpg',
-    bio: 'Amanda Williams ensures every client receives exceptional service throughout their exchange journey. With a background in wealth management and customer experience, she has built our industry-leading client support program.',
-    education: [
-      'M.B.A., Customer Experience Management, Northwestern Kellogg',
-      'B.S., Psychology, Duke University'
-    ],
-    certifications: [
-      'Certified Exchange Specialist (CES)',
-      'Certified Customer Experience Professional (CCXP)',
-      'Six Sigma Black Belt'
-    ],
-    experience: '12 years',
-    specialties: ['Client experience', 'Communication systems', 'Service excellence', 'Team leadership'],
-    achievements: [
-      'Developed 48-hour response guarantee program',
-      'Achieved 98% client satisfaction score',
-      'Built team of 50+ exchange coordinators'
-    ],
-    linkedin: 'https://linkedin.com/in/amandawilliams1031',
-    email: 'amanda.williams@the1031center.com'
-  },
-  {
-    id: 'robert-garcia',
-    name: 'Robert Garcia',
-    title: 'Chief Financial Officer',
-    image: '/images/team/robert-garcia.jpg',
-    bio: 'Robert Garcia oversees all financial operations and ensures the highest standards of fund security and accounting practices. His expertise in financial controls and segregated account management provides peace of mind to our clients.',
-    education: [
-      'M.B.A., Finance, Chicago Booth',
-      'B.S., Accounting, University of Texas'
-    ],
-    certifications: [
-      'Certified Public Accountant (CPA)',
-      'Certified Treasury Professional (CTP)',
-      'Certified Fraud Examiner (CFE)'
-    ],
-    experience: '22 years',
-    specialties: ['Fund security', 'Financial controls', 'Account segregation', 'Regulatory compliance'],
-    achievements: [
-      'Implemented triple-redundancy security protocols',
-      'Zero security incidents in 10 years',
-      'Developed industry-leading reconciliation systems'
-    ],
-    linkedin: 'https://linkedin.com/in/robertgarcia1031',
-    email: 'robert.garcia@the1031center.com'
+// Fetch team members from database
+let teamMembers = [];
+let error = null;
+
+if (isSupabaseConfigured()) {
+  try {
+    const { data, error: fetchError } = await supabase
+      .from('team_members_public')
+      .select('*')
+      .order('display_order', { ascending: true })
+      .order('name', { ascending: true });
+    
+    if (fetchError) {
+      error = fetchError.message;
+    } else {
+      teamMembers = data || [];
+    }
+  } catch (e) {
+    error = 'Failed to fetch team members';
+    console.error(e);
   }
-];
+} else {
+  // Fallback to hardcoded data if database is not configured
+  teamMembers = [
+    {
+      id: 'ruth-benjamin',
+      slug: 'ruth-benjamin',
+      name: 'Ruth Benjamin',
+      job_title: 'Chief Client Success Officer',
+      image: '/images/team/ruth-benjamin.jpg',
+      description: 'Ruth has an extensive background in real estate tax strategy with deep expertise in title, escrow, foreclosures, evictions, bankruptcy, mortgages, and legal matters. Over the past 35 years, she has served as president of two different 1031 Exchange Companies. Recognized throughout the industry as a subject matter expert in 1031 exchanges and tax-deferred cash-out strategies, Ruth\'s approach is distinctive—she listens first, thinks creatively, and delivers elegant solutions to her clients.',
+      years_experience: 35,
+      knows_about: ['1031 exchanges', 'Tax-deferred strategies', 'Real estate tax strategy', 'Client success', 'Creative problem solving'],
+      same_as: ['https://linkedin.com/in/ruthbenjamin1031'],
+      email: 'ruth.benjamin@the1031center.com'
+    }
+  ];
+}
+
+// Transform database data to match existing template structure
+const transformedTeamMembers = teamMembers.map(member => ({
+  id: member.slug || member.id,
+  name: member.name,
+  title: member.job_title,
+  image: member.primary_image_url || member.image,
+  bio: member.description,
+  experience: member.years_experience ? `${member.years_experience}+ years` : undefined,
+  specialties: member.knows_about || member.specializations || [],
+  linkedin: member.same_as?.[0],
+  email: member.email,
+  education: member.alumni_of,
+  certifications: member.certifications,
+  awards: member.awards,
+  publications: member.publications,
+  achievements: member.specializations // Using specializations for achievements if no specific field
+}));
 ---
 
 <Layout 
@@ -196,8 +116,14 @@ const teamMembers = [
   <!-- Team Members -->
   <section class="py-16 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {error ? (
+        <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-8">
+          <p class="text-yellow-800">Unable to load team members from database. Showing default team member.</p>
+        </div>
+      ) : null}
+      
       <div class="space-y-16">
-        {teamMembers.map((member, index) => (
+        {transformedTeamMembers.map((member, index) => (
           <div class={`${index % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'} flex flex-col lg:flex gap-12 items-center`}>
             <!-- Photo -->
             <div class="lg:w-1/3">
@@ -208,9 +134,11 @@ const teamMembers = [
                   class="rounded-lg shadow-xl w-full"
                   loading="lazy"
                 />
-                <div class="absolute -bottom-4 -right-4 bg-blue-900 text-white px-4 py-2 rounded-lg shadow-lg">
-                  <span class="font-semibold">{member.experience}</span>
-                </div>
+                {member.experience && (
+                  <div class="absolute -bottom-4 -right-4 bg-blue-900 text-white px-4 py-2 rounded-lg shadow-lg">
+                    <span class="font-semibold">{member.experience}</span>
+                  </div>
+                )}
               </div>
             </div>
             
@@ -257,16 +185,18 @@ const teamMembers = [
               )}
               
               <!-- Specialties -->
-              <div class="mb-6">
-                <h3 class="font-semibold text-gray-900 mb-2">Areas of Expertise</h3>
-                <div class="flex flex-wrap gap-2">
-                  {member.specialties.map(specialty => (
-                    <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">
-                      {specialty}
-                    </span>
-                  ))}
+              {member.specialties && member.specialties.length > 0 && (
+                <div class="mb-6">
+                  <h3 class="font-semibold text-gray-900 mb-2">Areas of Expertise</h3>
+                  <div class="flex flex-wrap gap-2">
+                    {member.specialties.map(specialty => (
+                      <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">
+                        {specialty}
+                      </span>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
               
               <!-- Achievements/Publications -->
               {member.publications && (
@@ -280,7 +210,7 @@ const teamMembers = [
                 </div>
               )}
               
-              {member.achievements && (
+              {member.achievements && member.achievements.length > 0 && (
                 <div class="mb-6">
                   <h3 class="font-semibold text-gray-900 mb-2">Key Achievements</h3>
                   <ul class="space-y-1 text-sm text-gray-600">
@@ -294,22 +224,40 @@ const teamMembers = [
                 </div>
               )}
               
+              {member.awards && (
+                <div class="mb-6">
+                  <h3 class="font-semibold text-gray-900 mb-2">Awards & Recognition</h3>
+                  <ul class="space-y-1 text-sm text-gray-600">
+                    {member.awards.map(award => (
+                      <li class="flex items-start">
+                        <span class="text-yellow-500 mr-2">🏆</span>
+                        {award}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+              
               <!-- Contact -->
               <div class="flex gap-4">
-                <a 
-                  href={member.linkedin} 
-                  class="text-blue-600 hover:text-blue-700 font-medium"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  LinkedIn Profile →
-                </a>
-                <a 
-                  href={`mailto:${member.email}`}
-                  class="text-blue-600 hover:text-blue-700 font-medium"
-                >
-                  Email {member.name.split(' ')[0]} →
-                </a>
+                {member.linkedin && (
+                  <a 
+                    href={member.linkedin} 
+                    class="text-blue-600 hover:text-blue-700 font-medium"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    LinkedIn Profile →
+                  </a>
+                )}
+                {member.email && (
+                  <a 
+                    href={`mailto:${member.email}`}
+                    class="text-blue-600 hover:text-blue-700 font-medium"
+                  >
+                    Email {member.name.split(' ')[0]} →
+                  </a>
+                )}
               </div>
             </div>
           </div>
@@ -397,15 +345,15 @@ const teamMembers = [
       "@type": "Organization",
       "@id": "https://the1031center.com/#organization",
       "employee": [
-        {teamMembers.map((member, index) => `{
+        {transformedTeamMembers.map((member, index) => `{
           "@type": "Person",
           "@id": "https://the1031center.com/team#${member.id}",
           "name": "${member.name}",
           "jobTitle": "${member.title}",
           "image": "https://the1031center.com${member.image}",
-          "description": "${member.bio.replace(/"/g, '\\"')}",
-          "email": "${member.email}",
-          "sameAs": "${member.linkedin}",
+          "description": "${member.bio?.replace(/"/g, '\\"') || ''}",
+          "email": "${member.email || ''}",
+          "sameAs": "${member.linkedin || ''}",
           "alumniOf": [
             ${member.education ? member.education.map(edu => `{
               "@type": "EducationalOrganization",
@@ -418,7 +366,7 @@ const teamMembers = [
               "name": "${cert}"
             }`).join(',') : ''}
           ],
-          "knowsAbout": ${JSON.stringify(member.specialties)},
+          "knowsAbout": ${JSON.stringify(member.specialties || [])},
           "worksFor": {
             "@id": "https://the1031center.com/#organization"
           }${member.publications ? `,

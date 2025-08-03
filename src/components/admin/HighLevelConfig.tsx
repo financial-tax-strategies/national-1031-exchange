@@ -22,11 +22,11 @@ export default function HighLevelConfigComponent() {
   
   useEffect(() => {
     loadConfig();
-  }, []);
+  }, [db]);
   
   async function loadConfig() {
     try {
-      const { data, error } = await db.getTable('highlevel_config')
+      const { data } = await db.getTable('highlevel_config')
         .select('*')
         .eq('is_active', true)
         .single();
@@ -81,8 +81,8 @@ export default function HighLevelConfigComponent() {
       }
       
       setTestResult({ success: true, message: 'Configuration saved successfully!' });
-    } catch (error: any) {
-      setTestResult({ success: false, message: error.message });
+    } catch (error) {
+      setTestResult({ success: false, message: error instanceof Error ? error.message : 'Unknown error' });
     } finally {
       setSaving(false);
     }
@@ -94,7 +94,7 @@ export default function HighLevelConfigComponent() {
     
     try {
       // Save config first
-      await saveConfig(new Event('submit') as any);
+      await saveConfig(new Event('submit') as React.FormEvent);
       
       if (!testResult?.success) return;
       
@@ -106,10 +106,10 @@ export default function HighLevelConfigComponent() {
         success: true, 
         message: `Connection successful! Found ${slots.length} available slots for today.` 
       });
-    } catch (error: any) {
+    } catch (error) {
       setTestResult({ 
         success: false, 
-        message: `Connection failed: ${error.message}` 
+        message: `Connection failed: ${error instanceof Error ? error.message : 'Unknown error'}` 
       });
     } finally {
       setTesting(false);
