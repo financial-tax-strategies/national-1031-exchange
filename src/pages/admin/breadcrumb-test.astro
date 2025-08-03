@@ -1,0 +1,84 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+---
+
+<Layout title="Breadcrumb Test | The 1031 Center">
+  
+  <!-- Example 1: Dark theme on blue background -->
+  <section class="bg-gradient-to-r from-blue-900 via-blue-800 to-blue-900 text-white py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-2xl font-bold mb-4">Dark Theme Breadcrumbs (Good Contrast)</h2>
+      <Breadcrumbs 
+        theme="dark"
+        items={[
+          { name: 'Home', url: '/' },
+          { name: 'About', url: '/about' },
+          { name: 'Our Team' }
+        ]} 
+      />
+    </div>
+  </section>
+
+  <!-- Example 2: Light theme on white background -->
+  <section class="bg-white py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-2xl font-bold mb-4 text-gray-900">Light Theme Breadcrumbs (Default)</h2>
+      <Breadcrumbs 
+        items={[
+          { name: 'Home', url: '/' },
+          { name: 'Services', url: '/services' },
+          { name: 'Delayed Exchange' }
+        ]} 
+      />
+    </div>
+  </section>
+
+  <!-- Example 3: Custom Tailwind classes approach -->
+  <section class="bg-gradient-to-r from-blue-900 via-blue-800 to-blue-900 text-white py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-2xl font-bold mb-4">Custom Tailwind Classes Approach</h2>
+      <Breadcrumbs 
+        items={[
+          { name: 'Home', url: '/' },
+          { name: 'Resources', url: '/resources' },
+          { name: 'FAQ' }
+        ]}
+        class="[&_a]:text-blue-200 [&_a:hover]:text-white [&_span]:text-white [&_svg]:text-white/60"
+      />
+    </div>
+  </section>
+
+  <!-- Example 4: Comparison of old vs new -->
+  <section class="bg-gradient-to-r from-blue-900 via-blue-800 to-blue-900 text-white py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-2xl font-bold mb-4">Before/After Comparison</h2>
+      <div class="space-y-4">
+        <div>
+          <p class="text-sm text-blue-200 mb-2">❌ Before (Poor Contrast - Hard to Read):</p>
+          <nav class="text-sm">
+            <ol class="flex items-center space-x-2">
+              <li><a href="/" class="text-gray-600">Home</a></li>
+              <li class="text-gray-400">›</li>
+              <li><a href="/about" class="text-gray-600">About</a></li>
+              <li class="text-gray-400">›</li>
+              <li><span class="text-gray-900">Our Team</span></li>
+            </ol>
+          </nav>
+        </div>
+        <div>
+          <p class="text-sm text-blue-200 mb-2">✅ After (Good Contrast - Easy to Read):</p>
+          <Breadcrumbs 
+            theme="dark"
+            items={[
+              { name: 'Home', url: '/' },
+              { name: 'About', url: '/about' },
+              { name: 'Our Team' }
+            ]} 
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+</Layout>
