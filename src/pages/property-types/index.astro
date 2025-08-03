@@ -1,0 +1,426 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { COMPANY, getPhoneLink } from '../../config/company';
+
+const propertyCategories = [
+  {
+    name: 'Residential Investment Properties',
+    description: 'Rental homes, multi-family, and residential income properties',
+    types: [
+      { slug: 'residential-rental', name: 'Residential Rentals', icon: '🏠' },
+      { slug: 'multi-family', name: 'Multi-Family Properties', icon: '🏢' },
+      { slug: 'vacation-rentals', name: 'Vacation Rentals', icon: '🏖️' },
+      { slug: 'student-housing', name: 'Student Housing', icon: '🎓' }
+    ]
+  },
+  {
+    name: 'Commercial Properties',
+    description: 'Office, retail, and business-focused real estate',
+    types: [
+      { slug: 'commercial-real-estate', name: 'Commercial Real Estate', icon: '🏪' },
+      { slug: 'office-buildings', name: 'Office Buildings', icon: '🏢' },
+      { slug: 'retail-properties', name: 'Retail Properties', icon: '🛍️' },
+      { slug: 'mixed-use', name: 'Mixed-Use Properties', icon: '🏙️' }
+    ]
+  },
+  {
+    name: 'Industrial & Specialized',
+    description: 'Warehouses, storage, and specialized property types',
+    types: [
+      { slug: 'industrial-properties', name: 'Industrial Properties', icon: '🏭' },
+      { slug: 'self-storage', name: 'Self-Storage Facilities', icon: '📦' },
+      { slug: 'data-centers', name: 'Data Centers', icon: '💾' },
+      { slug: 'parking-facilities', name: 'Parking Facilities', icon: '🅿️' }
+    ]
+  },
+  {
+    name: 'Land & Development',
+    description: 'Raw land, agricultural, and development opportunities',
+    types: [
+      { slug: 'land-investments', name: 'Land Investments', icon: '🌄' },
+      { slug: 'agricultural', name: 'Agricultural Properties', icon: '🌾' },
+      { slug: 'manufactured-housing', name: 'Manufactured Housing', icon: '🏘️' },
+      { slug: 'mobile-home-parks', name: 'Mobile Home Parks', icon: '🚐' }
+    ]
+  },
+  {
+    name: 'Specialized Real Estate',
+    description: 'Healthcare, hospitality, and unique property types',
+    types: [
+      { slug: 'medical-properties', name: 'Medical Properties', icon: '🏥' },
+      { slug: 'senior-housing', name: 'Senior Housing', icon: '👴' },
+      { slug: 'hospitality-properties', name: 'Hospitality Properties', icon: '🏨' },
+      { slug: 'specialty-properties', name: 'Specialty Properties', icon: '🎯' }
+    ]
+  }
+];
+
+const popularTypes = [
+  { slug: 'residential-rental', name: 'Residential Rentals', avgValue: '$450,000', taxSavings: '$112,500' },
+  { slug: 'commercial-real-estate', name: 'Commercial Properties', avgValue: '$2,500,000', taxSavings: '$625,000' },
+  { slug: 'multi-family', name: 'Multi-Family', avgValue: '$3,000,000', taxSavings: '$750,000' },
+  { slug: 'land-investments', name: 'Land Investments', avgValue: '$500,000', taxSavings: '$125,000' }
+];
+---
+
+<Layout 
+  title="1031 Exchange by Property Type | Complete Property Type Guide"
+  description="Learn how to use 1031 exchanges for different property types. From residential rentals to commercial real estate, get expert guidance for your specific investment property type."
+>
+  
+  <!-- Hero Section -->
+  <section class="bg-gradient-to-b from-blue-50 to-white py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+          1031 Exchanges by Property Type
+        </h1>
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
+          Every property type has unique considerations for 1031 exchanges. Whether you're exchanging residential rentals, 
+          commercial buildings, or raw land, our experts provide specialized guidance for your specific investment type.
+        </p>
+        
+        <!-- CTA Buttons -->
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="/start-my-exchange" 
+             class="bg-yellow-400 text-blue-900 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-yellow-300 transition-all duration-300 transform hover:scale-105 shadow-lg">
+            Start Your Exchange
+          </a>
+          <a href="/types-of-1031-exchanges" 
+             class="border-2 border-blue-600 text-blue-600 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-blue-600 hover:text-white transition-all duration-300">
+            Compare Exchange Types
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Key Benefits -->
+  <section class="py-8 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="bg-white rounded-lg shadow-lg p-8">
+        <h2 class="text-2xl font-bold text-gray-900 mb-6 text-center">
+          Why Property Type Matters in 1031 Exchanges
+        </h2>
+        <div class="grid md:grid-cols-4 gap-6">
+          <div class="text-center">
+            <div class="bg-blue-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+              <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+              </svg>
+            </div>
+            <h3 class="font-semibold text-gray-900">Unique Rules</h3>
+            <p class="text-gray-600 text-sm">Each property type has specific considerations</p>
+          </div>
+          <div class="text-center">
+            <div class="bg-green-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+              <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+            </div>
+            <h3 class="font-semibold text-gray-900">Tax Strategies</h3>
+            <p class="text-gray-600 text-sm">Optimize based on property characteristics</p>
+          </div>
+          <div class="text-center">
+            <div class="bg-purple-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+              <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+              </svg>
+            </div>
+            <h3 class="font-semibold text-gray-900">Market Timing</h3>
+            <p class="text-gray-600 text-sm">Different sectors have different cycles</p>
+          </div>
+          <div class="text-center">
+            <div class="bg-orange-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+              <svg class="w-8 h-8 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path>
+              </svg>
+            </div>
+            <h3 class="font-semibold text-gray-900">Exchange Options</h3>
+            <p class="text-gray-600 text-sm">Flexibility to change property types</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Popular Property Types -->
+  <section class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold text-gray-900 mb-12 text-center">
+        Most Popular Property Types for 1031 Exchanges
+      </h2>
+      
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+        {popularTypes.map((type) => (
+          <a href={`/property-types/${type.slug}`} 
+             class="bg-gradient-to-br from-blue-50 to-blue-100 p-6 rounded-lg hover:shadow-lg transition-all duration-300 group">
+            <h3 class="text-xl font-semibold text-gray-900 mb-3 group-hover:text-blue-600">{type.name}</h3>
+            <div class="space-y-2 text-sm">
+              <div class="flex justify-between">
+                <span class="text-gray-600">Avg Value:</span>
+                <span class="font-semibold text-gray-900">{type.avgValue}</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-gray-600">Tax Savings:</span>
+                <span class="font-semibold text-green-600">{type.taxSavings}</span>
+              </div>
+            </div>
+            <div class="mt-4 text-blue-600 font-semibold group-hover:text-blue-700">
+              Learn More →
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+  
+  <!-- Property Categories -->
+  <section class="py-16 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold text-gray-900 mb-12 text-center">
+        Browse All Property Types
+      </h2>
+      
+      {propertyCategories.map((category) => (
+        <div class="mb-12">
+          <h3 class="text-2xl font-semibold text-gray-800 mb-2">{category.name}</h3>
+          <p class="text-gray-600 mb-6">{category.description}</p>
+          
+          <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {category.types.map((type) => (
+              <a href={`/property-types/${type.slug}`} 
+                 class="bg-white hover:bg-blue-50 border border-gray-200 hover:border-blue-300 rounded-lg p-4 transition-all duration-200 group">
+                <div class="flex items-center">
+                  <span class="text-2xl mr-3">{type.icon}</span>
+                  <span class="font-medium text-gray-900 group-hover:text-blue-600 transition-colors">
+                    {type.name}
+                  </span>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+  
+  <!-- Like-Kind Exchange Flexibility -->
+  <section class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold text-gray-900 mb-12 text-center">
+        The Power of "Like-Kind" Flexibility
+      </h2>
+      
+      <div class="max-w-4xl mx-auto">
+        <div class="bg-blue-50 border-l-4 border-blue-400 p-6 rounded-lg mb-8">
+          <h3 class="text-lg font-semibold text-gray-900 mb-2">Important: You Can Exchange Between Property Types</h3>
+          <p class="text-gray-700">
+            "Like-kind" in real estate is interpreted very broadly. You can exchange any investment property for any other 
+            investment property. For example, you can exchange raw land for an apartment building, or a retail center for 
+            a warehouse. This flexibility allows you to adapt your portfolio to changing markets and investment goals.
+          </p>
+        </div>
+        
+        <div class="grid md:grid-cols-2 gap-8">
+          <div>
+            <h3 class="text-xl font-semibold text-gray-900 mb-4">Common Exchange Scenarios</h3>
+            <ul class="space-y-3">
+              <li class="flex items-start">
+                <svg class="w-5 h-5 text-green-500 mt-1 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                </svg>
+                <span class="text-gray-700">Residential rental → Commercial property</span>
+              </li>
+              <li class="flex items-start">
+                <svg class="w-5 h-5 text-green-500 mt-1 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                </svg>
+                <span class="text-gray-700">Raw land → Income-producing property</span>
+              </li>
+              <li class="flex items-start">
+                <svg class="w-5 h-5 text-green-500 mt-1 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                </svg>
+                <span class="text-gray-700">Single property → Multiple properties</span>
+              </li>
+              <li class="flex items-start">
+                <svg class="w-5 h-5 text-green-500 mt-1 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                </svg>
+                <span class="text-gray-700">Active management → Passive DST investment</span>
+              </li>
+            </ul>
+          </div>
+          
+          <div>
+            <h3 class="text-xl font-semibold text-gray-900 mb-4">Strategic Benefits</h3>
+            <ul class="space-y-3">
+              <li class="flex items-start">
+                <svg class="w-5 h-5 text-blue-500 mt-1 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                </svg>
+                <span class="text-gray-700">Diversify your portfolio</span>
+              </li>
+              <li class="flex items-start">
+                <svg class="w-5 h-5 text-blue-500 mt-1 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                </svg>
+                <span class="text-gray-700">Adapt to market changes</span>
+              </li>
+              <li class="flex items-start">
+                <svg class="w-5 h-5 text-blue-500 mt-1 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                </svg>
+                <span class="text-gray-700">Reduce management burden</span>
+              </li>
+              <li class="flex items-start">
+                <svg class="w-5 h-5 text-blue-500 mt-1 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                </svg>
+                <span class="text-gray-700">Access better opportunities</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Resources Section -->
+  <section class="py-16 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold text-gray-900 mb-12 text-center">
+        Resources for Every Property Type
+      </h2>
+      
+      <div class="grid md:grid-cols-3 gap-8">
+        <div class="bg-white p-6 rounded-lg shadow-md">
+          <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
+            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-3">Tax Savings Calculator</h3>
+          <p class="text-gray-600 mb-4">
+            Calculate your potential tax savings based on your specific property type and value.
+          </p>
+          <a href="/calculator" class="text-blue-600 font-semibold hover:text-blue-700">
+            Calculate Savings →
+          </a>
+        </div>
+        
+        <div class="bg-white p-6 rounded-lg shadow-md">
+          <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-4">
+            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-3">Property Type Guide</h3>
+          <p class="text-gray-600 mb-4">
+            Download our comprehensive guide covering all property types and exchange strategies.
+          </p>
+          <a href="/resources" class="text-blue-600 font-semibold hover:text-blue-700">
+            Get Free Guide →
+          </a>
+        </div>
+        
+        <div class="bg-white p-6 rounded-lg shadow-md">
+          <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
+            <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-3">Expert Consultation</h3>
+          <p class="text-gray-600 mb-4">
+            Speak with a specialist about your specific property type and exchange goals.
+          </p>
+          <a href="/contact" class="text-blue-600 font-semibold hover:text-blue-700">
+            Schedule Call →
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- CTA Section -->
+  <section class="py-16 bg-blue-900 text-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h2 class="text-3xl font-bold mb-6">
+        Ready to Exchange Your Investment Property?
+      </h2>
+      <p class="text-xl mb-8 text-blue-100">
+        No matter what type of property you own or want to acquire, our experts will guide you through a successful 
+        tax-deferred exchange.
+      </p>
+      
+      <div class="flex flex-col sm:flex-row gap-4 justify-center mb-8">
+        <a href="/start-my-exchange" 
+           class="bg-yellow-400 text-blue-900 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-yellow-300 transition-all duration-300 transform hover:scale-105">
+          Start Your Exchange
+        </a>
+        <a href="/calculator" 
+           class="border-2 border-white text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-white hover:text-blue-900 transition-all duration-300">
+          Calculate Your Savings
+        </a>
+      </div>
+      
+      <p class="text-blue-200">
+        Questions about your property type? Call us: 
+        <a href={getPhoneLink()} class="text-yellow-400 hover:text-yellow-300 font-semibold">{COMPANY.phone.main}</a>
+      </p>
+    </div>
+  </section>
+  
+  <!-- Schema Markup -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "1031 Exchange Property Types",
+    "description": "Complete guide to 1031 exchanges for different property types including residential, commercial, industrial, and land investments.",
+    "url": "https://the1031center.com/property-types",
+    "mainEntity": {
+      "@type": "ItemList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "item": {
+            "@type": "Service",
+            "name": "Residential Rental 1031 Exchange",
+            "url": "https://the1031center.com/property-types/residential-rental"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "item": {
+            "@type": "Service",
+            "name": "Commercial Real Estate 1031 Exchange",
+            "url": "https://the1031center.com/property-types/commercial-real-estate"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "item": {
+            "@type": "Service",
+            "name": "Multi-Family Property 1031 Exchange",
+            "url": "https://the1031center.com/property-types/multi-family"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "item": {
+            "@type": "Service",
+            "name": "Land Investment 1031 Exchange",
+            "url": "https://the1031center.com/property-types/land-investments"
+          }
+        }
+      ]
+    }
+  }
+  </script>
+</Layout>

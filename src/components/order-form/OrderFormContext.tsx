@@ -11,7 +11,7 @@ import type {
   OrderFormData 
 } from '../../lib/types/orderForm';
 import { validateStep } from '../../lib/schemas/orderFormSchemas';
-import { HighLevelService } from '../../lib/services/highlevel.service';
+import { OrderFormService } from '../../lib/services/orderForm.service';
 import { generateSessionId } from '../../lib/utils/sessionId';
 import { saveSecureData, loadSecureData, clearSecureData, isEncryptionSupported } from '../../lib/utils/encryption';
 
@@ -287,13 +287,21 @@ export const OrderFormProvider: React.FC<OrderFormProviderProps> = ({
       if (typeof window !== 'undefined' && window.trackOrderFormEvent) {
         window.trackOrderFormEvent('form_submitted', {
           sessionId,
-          urgencyLevel: formState.data['1031x_urgency_level']
+          urgencyLevel: formState.data['1031x_order_urgency_level']
         });
       }
       
-      // Submit to HighLevel
-      const highlevelService = new HighLevelService();
-      const contactId = await highlevelService.createOrderFormLead(formState.data as OrderFormData);
+      // Submit using comprehensive OrderFormService
+      const orderFormService = new OrderFormService();
+      const submissionId = await orderFormService.submitOrderForm(
+        formState.data as OrderFormData,
+        {
+          sessionId,
+          userAgent: typeof window !== 'undefined' ? window.navigator.userAgent : undefined,
+          ipAddress: undefined, // Would need to get from server
+          formCompletionTime: undefined // Could track this if needed
+        }
+      );
       
       // Clear saved progress on successful submission
       if (isEncryptionSupported()) {
@@ -303,9 +311,9 @@ export const OrderFormProvider: React.FC<OrderFormProviderProps> = ({
       }
       sessionStorage.removeItem(SESSION_KEY);
       
-      // Call success callback
+      // Call success callback with submission ID
       if (onSuccess) {
-        onSuccess(contactId);
+        onSuccess(submissionId);
       }
       
     } catch (err) {
@@ -342,12 +350,12 @@ export const OrderFormProvider: React.FC<OrderFormProviderProps> = ({
     
     if (formState.currentStep === 2) {
       // Step 2: Property Details - Check if user has filled required fields
-      const hasAddress = data['1031x_property_address'] && data['1031x_property_address'].length >= 5;
-      const hasCity = data['1031x_property_city'] && data['1031x_property_city'].length >= 2;
-      const hasState = data['1031x_property_state'] && data['1031x_property_state'].length === 2;
-      const hasZip = data['1031x_property_zip'] && /^\d{5}(-\d{4})?$/.test(data['1031x_property_zip']);
-      const hasType = data['1031x_property_type'] && data['1031x_property_type'] !== '';
-      const hasPrice = data['1031x_sale_price'] && data['1031x_sale_price'] >= 10000;
+      const hasAddress = data['1031x_order_property_address'] && data['1031x_order_property_address'].length >= 5;
+      const hasCity = data['1031x_order_property_city'] && data['1031x_order_property_city'].length >= 2;
+      const hasState = data['1031x_order_property_state'] && data['1031x_order_property_state'].length === 2;
+      const hasZip = data['1031x_order_property_zip'] && /^\d{5}(-\d{4})?$/.test(data['1031x_order_property_zip']);
+      const hasType = data['1031x_order_property_type'] && data['1031x_order_property_type'] !== '';
+      const hasPrice = data['1031x_order_sale_price'] && data['1031x_order_sale_price'] >= 10000;
       
       return hasAddress && hasCity && hasState && hasZip && hasType && hasPrice;
     }

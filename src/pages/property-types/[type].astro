@@ -1,0 +1,723 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { COMPANY, getPhoneLink } from '../../config/company';
+
+export async function getStaticPaths() {
+  const propertyTypes = [
+    { 
+      slug: 'residential-rental', 
+      name: 'Residential Rental Properties',
+      shortName: 'Residential Rentals',
+      description: 'Single-family homes, condos, and small multi-family properties held for rental income',
+      examples: ['Single-family rental homes', 'Condominiums', 'Duplexes and triplexes', 'Vacation rentals', 'Student housing'],
+      avgValue: '$450,000',
+      commonChallenges: ['Tenant management', 'Property maintenance', 'Market appreciation timing', 'Cash flow optimization'],
+      benefits: ['Stable rental income', 'Long-term appreciation', 'Tax advantages', 'Portfolio diversification']
+    },
+    { 
+      slug: 'commercial-real-estate', 
+      name: 'Commercial Real Estate',
+      shortName: 'Commercial Properties',
+      description: 'Office buildings, retail centers, and business properties generating commercial income',
+      examples: ['Office buildings', 'Retail shopping centers', 'Medical offices', 'Mixed-use properties', 'Business parks'],
+      avgValue: '$2,500,000',
+      commonChallenges: ['Higher down payments', 'Complex financing', 'Tenant creditworthiness', 'Market cycles'],
+      benefits: ['Higher income potential', 'Long-term leases', 'Professional tenants', 'Value-add opportunities']
+    },
+    { 
+      slug: 'multi-family', 
+      name: 'Multi-Family Properties',
+      shortName: 'Multi-Family',
+      description: 'Apartment complexes and larger residential properties with multiple units',
+      examples: ['Apartment buildings (5+ units)', 'Garden-style complexes', 'High-rise apartments', 'Senior living facilities', 'Affordable housing'],
+      avgValue: '$3,000,000',
+      commonChallenges: ['Property management complexity', 'Higher maintenance costs', 'Regulatory compliance', 'Financing requirements'],
+      benefits: ['Economies of scale', 'Consistent cash flow', 'Risk diversification', 'Professional management options']
+    },
+    { 
+      slug: 'industrial-properties', 
+      name: 'Industrial Properties',
+      shortName: 'Industrial',
+      description: 'Warehouses, manufacturing facilities, and distribution centers',
+      examples: ['Warehouses', 'Distribution centers', 'Manufacturing facilities', 'Flex spaces', 'Cold storage facilities'],
+      avgValue: '$1,800,000',
+      commonChallenges: ['Location specificity', 'Specialized use', 'Environmental concerns', 'Technology changes'],
+      benefits: ['Long-term stable tenants', 'Triple-net leases', 'E-commerce growth', 'Lower management needs']
+    },
+    { 
+      slug: 'land-investments', 
+      name: 'Land and Development Properties',
+      shortName: 'Land',
+      description: 'Raw land, agricultural properties, and development sites held for investment',
+      examples: ['Raw land', 'Agricultural land', 'Development sites', 'Timber properties', 'Ranch land'],
+      avgValue: '$500,000',
+      commonChallenges: ['No immediate income', 'Development timing', 'Zoning restrictions', 'Market speculation'],
+      benefits: ['Development potential', 'Low maintenance', 'Resource income', 'Long-term appreciation']
+    },
+    { 
+      slug: 'retail-properties', 
+      name: 'Retail Properties',
+      shortName: 'Retail',
+      description: 'Shopping centers, standalone stores, and retail-focused real estate',
+      examples: ['Strip malls', 'Standalone stores', 'Shopping centers', 'Restaurant properties', 'Gas stations'],
+      avgValue: '$1,500,000',
+      commonChallenges: ['E-commerce competition', 'Tenant turnover', 'Location dependency', 'Market trends'],
+      benefits: ['High visibility locations', 'Percentage rent potential', 'Community anchors', 'Redevelopment opportunities']
+    },
+    { 
+      slug: 'hospitality-properties', 
+      name: 'Hospitality and Lodging Properties',
+      shortName: 'Hospitality',
+      description: 'Hotels, motels, and short-term rental properties',
+      examples: ['Hotels', 'Motels', 'Bed & breakfasts', 'Resort properties', 'Extended stay facilities'],
+      avgValue: '$4,000,000',
+      commonChallenges: ['Operational complexity', 'Seasonal fluctuations', 'Brand requirements', 'High management needs'],
+      benefits: ['Revenue potential', 'Market positioning', 'Tourism growth', 'Multiple income streams']
+    },
+    { 
+      slug: 'office-buildings', 
+      name: 'Office Buildings',
+      shortName: 'Office',
+      description: 'Professional office spaces and corporate buildings',
+      examples: ['Class A offices', 'Class B/C offices', 'Medical offices', 'Corporate headquarters', 'Co-working spaces'],
+      avgValue: '$3,500,000',
+      commonChallenges: ['Remote work trends', 'Tenant improvements', 'Parking requirements', 'Technology infrastructure'],
+      benefits: ['Professional tenants', 'Long-term leases', 'Stable income', 'Urban locations']
+    },
+    { 
+      slug: 'self-storage', 
+      name: 'Self-Storage Facilities',
+      shortName: 'Self-Storage',
+      description: 'Storage unit facilities and mini-warehouses',
+      examples: ['Climate-controlled units', 'Drive-up units', 'RV/boat storage', 'Wine storage', 'Business storage'],
+      avgValue: '$2,000,000',
+      commonChallenges: ['Market saturation', 'Security requirements', 'Technology systems', 'Competition'],
+      benefits: ['Recession resistant', 'Low maintenance', 'Scalable income', 'Automated operations']
+    },
+    { 
+      slug: 'mobile-home-parks', 
+      name: 'Mobile Home Parks',
+      shortName: 'Mobile Home Parks',
+      description: 'Manufactured housing communities and RV parks',
+      examples: ['Manufactured home communities', 'RV parks', 'Senior mobile home parks', 'Resort communities', 'Mixed-use parks'],
+      avgValue: '$1,200,000',
+      commonChallenges: ['Infrastructure maintenance', 'Regulatory issues', 'Financing challenges', 'Community management'],
+      benefits: ['Affordable housing demand', 'Stable tenant base', 'Low turnover', 'Recession resilient']
+    },
+    { 
+      slug: 'medical-properties', 
+      name: 'Medical and Healthcare Properties',
+      shortName: 'Medical',
+      description: 'Medical offices, clinics, and healthcare facilities',
+      examples: ['Medical office buildings', 'Outpatient clinics', 'Surgery centers', 'Dental offices', 'Urgent care facilities'],
+      avgValue: '$2,800,000',
+      commonChallenges: ['Specialized build-outs', 'Regulatory compliance', 'Technology requirements', 'Parking needs'],
+      benefits: ['Growing healthcare demand', 'Long-term tenants', 'Recession resistant', 'Stable income']
+    },
+    { 
+      slug: 'mixed-use', 
+      name: 'Mixed-Use Properties',
+      shortName: 'Mixed-Use',
+      description: 'Properties combining residential, commercial, and/or office spaces',
+      examples: ['Live-work spaces', 'Retail with apartments', 'Urban developments', 'Transit-oriented projects', 'Master-planned communities'],
+      avgValue: '$5,000,000',
+      commonChallenges: ['Complex management', 'Mixed tenant needs', 'Zoning requirements', 'Higher costs'],
+      benefits: ['Diversified income', 'Urban demand', 'Risk mitigation', 'Community creation']
+    },
+    { 
+      slug: 'agricultural', 
+      name: 'Agricultural and Farm Properties',
+      shortName: 'Agricultural',
+      description: 'Working farms, ranches, and agricultural land',
+      examples: ['Crop farms', 'Livestock ranches', 'Orchards', 'Vineyards', 'Timber land'],
+      avgValue: '$1,000,000',
+      commonChallenges: ['Weather dependency', 'Commodity prices', 'Water rights', 'Environmental regulations'],
+      benefits: ['Tax advantages', 'Resource income', 'Land appreciation', 'Lifestyle benefits']
+    },
+    { 
+      slug: 'senior-housing', 
+      name: 'Senior Housing Properties',
+      shortName: 'Senior Housing',
+      description: 'Assisted living, memory care, and independent living facilities',
+      examples: ['Assisted living', 'Memory care units', 'Independent living', 'CCRCs', 'Active adult communities'],
+      avgValue: '$6,000,000',
+      commonChallenges: ['Regulatory compliance', 'Operational complexity', 'Staffing needs', 'Healthcare coordination'],
+      benefits: ['Aging demographics', 'Stable occupancy', 'Need-based demand', 'Long-term growth']
+    },
+    { 
+      slug: 'student-housing', 
+      name: 'Student Housing Properties',
+      shortName: 'Student Housing',
+      description: 'Purpose-built student accommodations near colleges and universities',
+      examples: ['On-campus housing', 'Off-campus apartments', 'Greek housing', 'Graduate housing', 'International student housing'],
+      avgValue: '$8,000,000',
+      commonChallenges: ['Seasonal occupancy', 'Property management', 'Parent guarantors', 'Maintenance needs'],
+      benefits: ['Predictable demand', 'Premium rents', 'By-the-bed leasing', 'University partnerships']
+    },
+    { 
+      slug: 'data-centers', 
+      name: 'Data Centers and Technology Properties',
+      shortName: 'Data Centers',
+      description: 'Facilities housing computer systems and telecommunications equipment',
+      examples: ['Colocation facilities', 'Enterprise data centers', 'Edge computing sites', 'Telecom facilities', 'Cloud storage centers'],
+      avgValue: '$10,000,000',
+      commonChallenges: ['High capital requirements', 'Technical expertise', 'Power/cooling needs', 'Security requirements'],
+      benefits: ['Digital economy growth', 'Long-term contracts', 'High barriers to entry', 'Essential infrastructure']
+    },
+    { 
+      slug: 'parking-facilities', 
+      name: 'Parking Facilities and Garages',
+      shortName: 'Parking',
+      description: 'Parking lots, garages, and vehicle storage facilities',
+      examples: ['Parking garages', 'Surface lots', 'Airport parking', 'Event parking', 'Monthly parking facilities'],
+      avgValue: '$3,000,000',
+      commonChallenges: ['Technology changes', 'Ride-sharing impact', 'Maintenance costs', 'Security needs'],
+      benefits: ['Urban demand', 'Low labor costs', 'Automated systems', 'Redevelopment potential']
+    },
+    { 
+      slug: 'manufactured-housing', 
+      name: 'Manufactured Housing Communities',
+      shortName: 'Manufactured Housing',
+      description: 'Communities with manufactured homes and related amenities',
+      examples: ['All-age communities', '55+ communities', 'Resort-style parks', 'Urban infill', 'Workforce housing'],
+      avgValue: '$2,500,000',
+      commonChallenges: ['Financing limitations', 'Stigma issues', 'Infrastructure aging', 'Regulatory changes'],
+      benefits: ['Affordable housing need', 'Stable income', 'Low tenant turnover', 'Value-add potential']
+    },
+    { 
+      slug: 'specialty-properties', 
+      name: 'Specialty and Unique Properties',
+      shortName: 'Specialty',
+      description: 'Unique property types including entertainment, recreation, and special-use facilities',
+      examples: ['Movie theaters', 'Bowling alleys', 'Fitness centers', 'Car washes', 'Marinas'],
+      avgValue: '$2,000,000',
+      commonChallenges: ['Limited buyer pool', 'Specialized knowledge', 'Market changes', 'Conversion costs'],
+      benefits: ['Niche markets', 'Limited competition', 'Unique income streams', 'Community value']
+    },
+    { 
+      slug: 'vacation-rentals', 
+      name: 'Vacation Rental Properties',
+      shortName: 'Vacation Rentals',
+      description: 'Short-term rental properties in vacation destinations',
+      examples: ['Beach houses', 'Mountain cabins', 'Urban vacation rentals', 'Resort condos', 'Luxury villas'],
+      avgValue: '$750,000',
+      commonChallenges: ['Seasonal income', 'Management intensity', 'Local regulations', 'Platform dependence'],
+      benefits: ['High income potential', 'Personal use option', 'Appreciation potential', 'Tax benefits']
+    }
+  ];
+
+  return propertyTypes.map((type) => ({
+    params: { type: type.slug },
+    props: { propertyType: type }
+  }));
+}
+
+const { propertyType } = Astro.props;
+
+// Calculate estimated tax savings
+const avgTaxSavings = Math.round(parseFloat(propertyType.avgValue.replace(/[$,]/g, '')) * 0.25);
+---
+
+<Layout 
+  title={`1031 Exchange for ${propertyType.name} | Complete Guide`}
+  description={`Complete guide to 1031 exchanges for ${propertyType.name.toLowerCase()}. Learn how to defer capital gains taxes when exchanging ${propertyType.shortName.toLowerCase()} investments.`}
+>
+  
+  <!-- Hero Section -->
+  <section class="bg-gradient-to-b from-blue-50 to-white py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+          1031 Exchange for {propertyType.name}
+        </h1>
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
+          {propertyType.description}. Defer capital gains taxes and build wealth through strategic 
+          {propertyType.shortName.toLowerCase()} exchanges with expert guidance from National 1031 Center.
+        </p>
+        
+        <!-- CTA Buttons -->
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="/start-my-exchange" 
+             class="bg-yellow-400 text-blue-900 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-yellow-300 transition-all duration-300 transform hover:scale-105 shadow-lg">
+            Start Your {propertyType.shortName} Exchange
+          </a>
+          <a href="/calculator" 
+             class="border-2 border-blue-600 text-blue-600 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-blue-600 hover:text-white transition-all duration-300">
+            Calculate Your Tax Savings
+          </a>
+        </div>
+      </div>
+      
+      <!-- Quick Stats -->
+      <div class="bg-white rounded-lg shadow-lg p-8 max-w-4xl mx-auto">
+        <div class="grid md:grid-cols-3 gap-6 text-center">
+          <div>
+            <div class="text-3xl font-bold text-blue-600">{propertyType.avgValue}</div>
+            <div class="text-gray-600">Average Property Value</div>
+          </div>
+          <div>
+            <div class="text-3xl font-bold text-green-600">${avgTaxSavings.toLocaleString()}</div>
+            <div class="text-gray-600">Potential Tax Savings</div>
+          </div>
+          <div>
+            <div class="text-3xl font-bold text-purple-600">180</div>
+            <div class="text-gray-600">Days to Complete Exchange</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Property Type Examples -->
+  <section class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold text-gray-900 mb-12 text-center">
+        What {propertyType.shortName} Properties Qualify for 1031 Exchanges?
+      </h2>
+      
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+        {propertyType.examples.map((example) => (
+          <div class="bg-gray-50 p-6 rounded-lg">
+            <div class="flex items-start">
+              <svg class="w-6 h-6 text-green-500 mt-1 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+              </svg>
+              <div>
+                <h3 class="font-semibold text-gray-900 mb-2">{example}</h3>
+                <p class="text-gray-600 text-sm">
+                  Qualifies for tax deferral when held for investment or business use
+                </p>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+      
+      <div class="bg-blue-50 border-l-4 border-blue-400 p-6 rounded-lg">
+        <h3 class="text-lg font-semibold text-gray-900 mb-2">Important Qualification Note</h3>
+        <p class="text-gray-700">
+          To qualify for a 1031 exchange, {propertyType.shortName.toLowerCase()} must be held for investment or business use. 
+          Personal residences and properties held primarily for sale (flip properties) do not qualify. Our experts can help 
+          determine if your specific property meets IRS requirements.
+        </p>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Benefits Section -->
+  <section class="py-16 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold text-gray-900 mb-12 text-center">
+        Benefits of 1031 Exchanges for {propertyType.shortName} Investors
+      </h2>
+      
+      <div class="grid lg:grid-cols-2 gap-8">
+        <div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-6">Tax Benefits</h3>
+          <ul class="space-y-4">
+            <li class="flex items-start">
+              <svg class="w-6 h-6 text-blue-600 mt-1 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+              <div>
+                <h4 class="font-semibold text-gray-900">Defer Capital Gains Taxes</h4>
+                <p class="text-gray-600">Postpone paying 15-20% federal capital gains tax plus state taxes</p>
+              </div>
+            </li>
+            <li class="flex items-start">
+              <svg class="w-6 h-6 text-blue-600 mt-1 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+              </svg>
+              <div>
+                <h4 class="font-semibold text-gray-900">Defer Depreciation Recapture</h4>
+                <p class="text-gray-600">Avoid paying 25% tax on accumulated depreciation</p>
+              </div>
+            </li>
+            <li class="flex items-start">
+              <svg class="w-6 h-6 text-blue-600 mt-1 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path>
+              </svg>
+              <div>
+                <h4 class="font-semibold text-gray-900">Keep More Working Capital</h4>
+                <p class="text-gray-600">Reinvest tax savings into larger or better properties</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+        
+        <div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-6">Investment Benefits</h3>
+          <ul class="space-y-4">
+            {propertyType.benefits.map((benefit) => (
+              <li class="flex items-start">
+                <svg class="w-6 h-6 text-green-600 mt-1 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                </svg>
+                <div>
+                  <h4 class="font-semibold text-gray-900">{benefit}</h4>
+                  <p class="text-gray-600">Strategic advantages specific to {propertyType.shortName.toLowerCase()} investments</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Common Challenges -->
+  <section class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold text-gray-900 mb-12 text-center">
+        Common Challenges When Exchanging {propertyType.shortName}
+      </h2>
+      
+      <div class="grid md:grid-cols-2 gap-8">
+        {propertyType.commonChallenges.map((challenge, index) => (
+          <div class="bg-gray-50 p-6 rounded-lg">
+            <div class="flex items-start">
+              <div class="bg-orange-100 rounded-full p-3 mr-4">
+                <svg class="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                </svg>
+              </div>
+              <div>
+                <h3 class="font-semibold text-gray-900 mb-2">{challenge}</h3>
+                <p class="text-gray-600">
+                  Our experts help navigate this challenge with proven strategies and careful planning throughout your exchange.
+                </p>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+      
+      <div class="mt-12 text-center">
+        <p class="text-lg text-gray-700 mb-6">
+          Don't let these challenges prevent you from maximizing your investment potential.
+        </p>
+        <a href="/contact" 
+           class="bg-blue-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-blue-700 transition-all duration-300 inline-flex items-center">
+          Get Expert Guidance
+          <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Exchange Process -->
+  <section class="py-16 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold text-gray-900 mb-12 text-center">
+        How to Exchange {propertyType.shortName} Step-by-Step
+      </h2>
+      
+      <div class="max-w-4xl mx-auto">
+        <div class="space-y-8">
+          <!-- Step 1 -->
+          <div class="flex items-start">
+            <div class="bg-blue-600 text-white rounded-full w-10 h-10 flex items-center justify-center font-bold flex-shrink-0">
+              1
+            </div>
+            <div class="ml-6">
+              <h3 class="text-xl font-semibold text-gray-900 mb-2">
+                Engage National 1031 Center Before Selling
+              </h3>
+              <p class="text-gray-600">
+                Contact us before closing on your {propertyType.shortName.toLowerCase()} sale. We'll set up your exchange 
+                account and ensure all documentation is properly prepared to meet IRS requirements.
+              </p>
+            </div>
+          </div>
+          
+          <!-- Step 2 -->
+          <div class="flex items-start">
+            <div class="bg-blue-600 text-white rounded-full w-10 h-10 flex items-center justify-center font-bold flex-shrink-0">
+              2
+            </div>
+            <div class="ml-6">
+              <h3 class="text-xl font-semibold text-gray-900 mb-2">
+                Sell Your {propertyType.shortName} Property
+              </h3>
+              <p class="text-gray-600">
+                Complete the sale of your relinquished property. Proceeds go directly to National 1031 Center as your 
+                Qualified Intermediary, protecting your tax deferral eligibility.
+              </p>
+            </div>
+          </div>
+          
+          <!-- Step 3 -->
+          <div class="flex items-start">
+            <div class="bg-blue-600 text-white rounded-full w-10 h-10 flex items-center justify-center font-bold flex-shrink-0">
+              3
+            </div>
+            <div class="ml-6">
+              <h3 class="text-xl font-semibold text-gray-900 mb-2">
+                Identify Replacement Properties (45 Days)
+              </h3>
+              <p class="text-gray-600">
+                You have 45 days from closing to identify up to three potential replacement {propertyType.shortName.toLowerCase()} 
+                properties. We help ensure your identification meets all IRS rules.
+              </p>
+            </div>
+          </div>
+          
+          <!-- Step 4 -->
+          <div class="flex items-start">
+            <div class="bg-blue-600 text-white rounded-full w-10 h-10 flex items-center justify-center font-bold flex-shrink-0">
+              4
+            </div>
+            <div class="ml-6">
+              <h3 class="text-xl font-semibold text-gray-900 mb-2">
+                Complete Your Purchase (180 Days)
+              </h3>
+              <p class="text-gray-600">
+                Close on your replacement property within 180 days of selling. We coordinate with all parties to ensure 
+                a smooth closing and complete your tax-deferred exchange.
+              </p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="mt-12 bg-yellow-50 border-l-4 border-yellow-400 p-6 rounded-lg">
+          <h3 class="text-lg font-semibold text-gray-900 mb-2">Critical Timeline Alert</h3>
+          <p class="text-gray-700">
+            The 45-day and 180-day deadlines are strict with no extensions. Missing these deadlines will disqualify your 
+            exchange and trigger immediate tax liability. Work with our experts to stay on track.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Replacement Property Options -->
+  <section class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold text-gray-900 mb-12 text-center">
+        Replacement Property Options for {propertyType.shortName} Investors
+      </h2>
+      
+      <div class="grid lg:grid-cols-3 gap-8 mb-12">
+        <div class="bg-gray-50 p-6 rounded-lg">
+          <h3 class="text-xl font-semibold text-gray-900 mb-4">Like-Kind Exchange</h3>
+          <p class="text-gray-600 mb-4">
+            Exchange into another {propertyType.shortName.toLowerCase()} property to maintain your investment strategy 
+            and market knowledge.
+          </p>
+          <ul class="text-gray-600 space-y-2">
+            <li>• Maintain sector expertise</li>
+            <li>• Similar management requirements</li>
+            <li>• Comparable market dynamics</li>
+          </ul>
+        </div>
+        
+        <div class="bg-gray-50 p-6 rounded-lg">
+          <h3 class="text-xl font-semibold text-gray-900 mb-4">Diversification Options</h3>
+          <p class="text-gray-600 mb-4">
+            Consider exchanging into different property types to diversify your portfolio and reduce risk.
+          </p>
+          <ul class="text-gray-600 space-y-2">
+            <li>• Geographic diversification</li>
+            <li>• Asset class variety</li>
+            <li>• Risk mitigation</li>
+          </ul>
+        </div>
+        
+        <div class="bg-gray-50 p-6 rounded-lg">
+          <h3 class="text-xl font-semibold text-gray-900 mb-4">DST Investments</h3>
+          <p class="text-gray-600 mb-4">
+            Delaware Statutory Trusts offer passive investment options for investors seeking less management responsibility.
+          </p>
+          <ul class="text-gray-600 space-y-2">
+            <li>• Professional management</li>
+            <li>• Fractional ownership</li>
+            <li>• Estate planning benefits</li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="text-center">
+        <a href="/types-of-1031-exchanges" 
+           class="text-blue-600 font-semibold hover:text-blue-700 text-lg">
+          Explore All Exchange Options →
+        </a>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Case Study -->
+  <section class="py-16 bg-gray-50">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold text-gray-900 mb-12 text-center">
+        Real {propertyType.shortName} Exchange Example
+      </h2>
+      
+      <div class="bg-white rounded-lg shadow-lg p-8">
+        <h3 class="text-xl font-semibold text-gray-900 mb-6">Case Study: Maximizing Returns Through Strategic Exchange</h3>
+        
+        <div class="grid md:grid-cols-2 gap-8 mb-8">
+          <div>
+            <h4 class="font-semibold text-gray-900 mb-4">Relinquished Property</h4>
+            <ul class="space-y-2 text-gray-600">
+              <li><strong>Type:</strong> {propertyType.examples[0]}</li>
+              <li><strong>Sale Price:</strong> {propertyType.avgValue}</li>
+              <li><strong>Original Purchase:</strong> ${Math.round(parseFloat(propertyType.avgValue.replace(/[$,]/g, '')) * 0.6).toLocaleString()}</li>
+              <li><strong>Capital Gain:</strong> ${Math.round(parseFloat(propertyType.avgValue.replace(/[$,]/g, '')) * 0.4).toLocaleString()}</li>
+            </ul>
+          </div>
+          
+          <div>
+            <h4 class="font-semibold text-gray-900 mb-4">Tax Implications</h4>
+            <ul class="space-y-2 text-gray-600">
+              <li><strong>Federal Tax (20%):</strong> ${Math.round(parseFloat(propertyType.avgValue.replace(/[$,]/g, '')) * 0.08).toLocaleString()}</li>
+              <li><strong>State Tax (5%):</strong> ${Math.round(parseFloat(propertyType.avgValue.replace(/[$,]/g, '')) * 0.02).toLocaleString()}</li>
+              <li><strong>Depreciation Recapture:</strong> ${Math.round(parseFloat(propertyType.avgValue.replace(/[$,]/g, '')) * 0.05).toLocaleString()}</li>
+              <li class="text-green-600 font-semibold"><strong>Total Tax Deferred:</strong> ${avgTaxSavings.toLocaleString()}</li>
+            </ul>
+          </div>
+        </div>
+        
+        <div class="bg-green-50 p-6 rounded-lg">
+          <h4 class="font-semibold text-gray-900 mb-2">Exchange Result</h4>
+          <p class="text-gray-700">
+            By completing a 1031 exchange, this investor deferred ${avgTaxSavings.toLocaleString()} in taxes and was able to 
+            purchase a larger replacement property, increasing cash flow and long-term appreciation potential.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- FAQ Section -->
+  <section class="py-16 bg-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold text-gray-900 mb-12 text-center">
+        Frequently Asked Questions About {propertyType.shortName} Exchanges
+      </h2>
+      
+      <div class="space-y-6">
+        <div class="bg-gray-50 rounded-lg p-6">
+          <h3 class="text-lg font-semibold text-gray-900 mb-3">
+            Can I exchange my {propertyType.shortName.toLowerCase()} for a different type of property?
+          </h3>
+          <p class="text-gray-600">
+            Yes! The term "like-kind" is broadly interpreted for real estate. You can exchange any investment property for any 
+            other investment property. For example, you could exchange {propertyType.examples[0].toLowerCase()} for an office 
+            building, retail center, or any other investment real estate.
+          </p>
+        </div>
+        
+        <div class="bg-gray-50 rounded-lg p-6">
+          <h3 class="text-lg font-semibold text-gray-900 mb-3">
+            What are the holding period requirements for {propertyType.shortName.toLowerCase()}?
+          </h3>
+          <p class="text-gray-600">
+            While the IRS doesn't specify exact holding periods, properties should be held for investment purposes. Most tax 
+            advisors recommend holding for at least 12-24 months to clearly establish investment intent, though each situation 
+            is unique.
+          </p>
+        </div>
+        
+        <div class="bg-gray-50 rounded-lg p-6">
+          <h3 class="text-lg font-semibold text-gray-900 mb-3">
+            Can I do a partial exchange and take some cash out?
+          </h3>
+          <p class="text-gray-600">
+            Yes, you can do a partial exchange. However, any cash or debt relief you receive (called "boot") will be taxable. 
+            Many investors strategically take some cash while still deferring the majority of their tax liability.
+          </p>
+        </div>
+        
+        <div class="bg-gray-50 rounded-lg p-6">
+          <h3 class="text-lg font-semibold text-gray-900 mb-3">
+            What happens if I can't find a suitable replacement {propertyType.shortName.toLowerCase()}?
+          </h3>
+          <p class="text-gray-600">
+            If you can't close on a replacement property within 180 days, the exchange fails and taxes become due. That's why 
+            we recommend identifying multiple potential properties and considering backup options like DST investments.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- CTA Section -->
+  <section class="py-16 bg-blue-900 text-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h2 class="text-3xl font-bold mb-6">
+        Ready to Exchange Your {propertyType.shortName}?
+      </h2>
+      <p class="text-xl mb-8 text-blue-100">
+        Don't let taxes erode your investment returns. Our experts specialize in {propertyType.shortName.toLowerCase()} 
+        exchanges and are ready to guide you through every step of the process.
+      </p>
+      
+      <div class="flex flex-col sm:flex-row gap-4 justify-center mb-8">
+        <a href="/start-my-exchange" 
+           class="bg-yellow-400 text-blue-900 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-yellow-300 transition-all duration-300 transform hover:scale-105">
+          Start Your Exchange Today
+        </a>
+        <a href="/calculator" 
+           class="border-2 border-white text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-white hover:text-blue-900 transition-all duration-300">
+          Calculate Your Tax Savings
+        </a>
+      </div>
+      
+      <p class="text-blue-200">
+        Questions about exchanging {propertyType.shortName.toLowerCase()}? Call our specialists: 
+        <a href={getPhoneLink()} class="text-yellow-400 hover:text-yellow-300 font-semibold">{COMPANY.phone.main}</a>
+      </p>
+    </div>
+  </section>
+  
+  <!-- Schema Markup -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FinancialService",
+    "name": `1031 Exchange for ${propertyType.name}`,
+    "description": `Professional 1031 exchange services for ${propertyType.name.toLowerCase()}. ${propertyType.description}.`,
+    "provider": {
+      "@type": "Organization",
+      "@name": "National 1031 Center",
+      "telephone": "${COMPANY.phone.main}"
+    },
+    "areaServed": {
+      "@type": "Country",
+      "name": "United States"
+    },
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "1031 Exchange Services",
+      "itemListElement": [
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Delayed Exchange",
+            "description": "Standard 1031 exchange for ${propertyType.shortName.toLowerCase()}"
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Reverse Exchange",
+            "description": "Buy replacement ${propertyType.shortName.toLowerCase()} before selling"
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Improvement Exchange",
+            "description": "Use funds to improve replacement ${propertyType.shortName.toLowerCase()}"
+          }
+        }
+      ]
+    }
+  }
+  </script>
+</Layout>

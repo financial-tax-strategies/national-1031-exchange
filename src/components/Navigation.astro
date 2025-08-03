@@ -54,6 +54,63 @@ import { COMPANY } from '../config/company';
             How It Works
           </a>
           
+          <!-- Property Types -->
+          <div class="relative group">
+            <button class="text-gray-700 hover:text-blue-900 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 flex items-center">
+              Property Types
+              <svg class="ml-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+              </svg>
+            </button>
+            
+            <div class="absolute left-0 mt-2 w-80 bg-white rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+              <div class="py-4 px-6">
+                <h3 class="text-sm font-semibold text-gray-900 mb-2">Popular Property Types</h3>
+                <div class="grid grid-cols-2 gap-2">
+                  <a href="/property-types/residential-rental" class="text-sm text-gray-600 hover:text-blue-900 transition-colors">Residential Rentals</a>
+                  <a href="/property-types/commercial-real-estate" class="text-sm text-gray-600 hover:text-blue-900 transition-colors">Commercial</a>
+                  <a href="/property-types/multi-family" class="text-sm text-gray-600 hover:text-blue-900 transition-colors">Multi-Family</a>
+                  <a href="/property-types/land-investments" class="text-sm text-gray-600 hover:text-blue-900 transition-colors">Land</a>
+                  <a href="/property-types/industrial-properties" class="text-sm text-gray-600 hover:text-blue-900 transition-colors">Industrial</a>
+                  <a href="/property-types/retail-properties" class="text-sm text-gray-600 hover:text-blue-900 transition-colors">Retail</a>
+                </div>
+                <div class="mt-3 pt-3 border-t border-gray-200">
+                  <a href="/property-types" class="text-sm text-blue-900 hover:text-blue-700 font-medium">
+                    View All Property Types →
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Scenarios -->
+          <div class="relative group">
+            <button class="text-gray-700 hover:text-blue-900 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 flex items-center">
+              Scenarios
+              <svg class="ml-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+              </svg>
+            </button>
+            
+            <div class="absolute left-0 mt-2 w-80 bg-white rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+              <div class="py-4 px-6">
+                <h3 class="text-sm font-semibold text-gray-900 mb-2">Common Scenarios</h3>
+                <div class="grid grid-cols-1 gap-2">
+                  <a href="/scenarios/exchange-multiple-properties" class="text-sm text-gray-600 hover:text-blue-900 transition-colors">Exchange Multiple Properties</a>
+                  <a href="/scenarios/exchange-into-different-state" class="text-sm text-gray-600 hover:text-blue-900 transition-colors">Exchange to Different State</a>
+                  <a href="/scenarios/exchange-with-partners" class="text-sm text-gray-600 hover:text-blue-900 transition-colors">Exchange with Partners</a>
+                  <a href="/scenarios/exchange-before-retirement" class="text-sm text-gray-600 hover:text-blue-900 transition-colors">Pre-Retirement Exchange</a>
+                  <a href="/scenarios/exchange-to-increase-cash-flow" class="text-sm text-gray-600 hover:text-blue-900 transition-colors">Increase Cash Flow</a>
+                </div>
+                <div class="mt-3 pt-3 border-t border-gray-200">
+                  <a href="/scenarios" class="text-sm text-blue-900 hover:text-blue-700 font-medium">
+                    View All 30 Scenarios →
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+          
           <!-- Resources Dropdown -->
           <div class="relative group">
             <button class="text-gray-700 hover:text-blue-900 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 flex items-center">
@@ -67,6 +124,18 @@ import { COMPANY } from '../config/company';
               <div class="py-2">
                 <a href="/complete-guide-1031-exchanges" class="block px-4 py-2 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-900 transition-colors">
                   Complete Guide to 1031 Exchanges
+                </a>
+                <a href="/1031-exchange-timeline" class="block px-4 py-2 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-900 transition-colors">
+                  1031 Exchange Timeline
+                </a>
+                <a href="/types-of-1031-exchanges" class="block px-4 py-2 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-900 transition-colors">
+                  Types of 1031 Exchanges
+                </a>
+                <a href="/1031-exchange-rules" class="block px-4 py-2 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-900 transition-colors">
+                  1031 Exchange Rules
+                </a>
+                <a href="/choosing-qualified-intermediary" class="block px-4 py-2 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-900 transition-colors">
+                  Choosing a QI
                 </a>
                 <a href="/calculator" class="block px-4 py-2 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-900 transition-colors">
                   Tax Savings Calculator
@@ -185,6 +254,12 @@ import { COMPANY } from '../config/company';
         </a>
         <a href="/faq" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-900 hover:bg-blue-50 rounded-md transition-colors">
           FAQ
+        </a>
+        <a href="/property-types" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-900 hover:bg-blue-50 rounded-md transition-colors">
+          Property Types
+        </a>
+        <a href="/scenarios" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-900 hover:bg-blue-50 rounded-md transition-colors">
+          Scenarios
         </a>
         <a href="/locations" class="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-900 hover:bg-blue-50 rounded-md transition-colors">
           Locations

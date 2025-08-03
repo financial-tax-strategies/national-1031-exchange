@@ -42,9 +42,9 @@ export const TimelineStep: React.FC = () => {
   }, [analytics]);
   
   // Determine if date fields should be shown
-  const showClosingDate = formState.data['1031x_contract_status'] === 'in_escrow' || 
-                         formState.data['1031x_contract_status'] === 'closing_scheduled';
-  const showListingDate = formState.data['1031x_contract_status'] === 'not_listed';
+  const showClosingDate = formState.data['1031x_order_contract_status'] === 'in_escrow' || 
+                         formState.data['1031x_order_contract_status'] === 'closing_scheduled';
+  const showListingDate = formState.data['1031x_order_contract_status'] === 'not_listed';
   
   const handleInputChange = (field: keyof typeof formState.data, value: string) => {
     updateField(field, value);
@@ -55,7 +55,7 @@ export const TimelineStep: React.FC = () => {
   
   // Calculate urgency message
   const getUrgencyMessage = () => {
-    const urgencyLevel = formState.data['1031x_urgency_level'];
+    const urgencyLevel = formState.data['1031x_order_urgency_level'];
     switch (urgencyLevel) {
       case 'urgent_2_weeks':
         return {
@@ -105,20 +105,20 @@ export const TimelineStep: React.FC = () => {
         </label>
         <select
           id="contract-status"
-          value={formState.data['1031x_contract_status'] || ''}
-          onChange={(e) => handleInputChange('1031x_contract_status', e.target.value)}
+          value={formState.data['1031x_order_contract_status'] || ''}
+          onChange={(e) => handleInputChange('1031x_order_contract_status', e.target.value)}
           onFocus={() => {
             const sessionId = sessionStorage.getItem('1031_order_form_session') || '';
-            analytics.trackFieldInteraction('1031x_contract_status', 'focus', 3, sessionId);
+            analytics.trackFieldInteraction('1031x_order_contract_status', 'focus', 3, sessionId);
           }}
           className={`
             w-full px-4 py-3 border rounded-lg
             focus:ring-2 focus:ring-blue-500 focus:border-blue-500
             transition-colors duration-200
-            ${formState.errors['1031x_contract_status'] ? 'border-red-500' : 'border-gray-300'}
+            ${formState.errors['1031x_order_contract_status'] ? 'border-red-500' : 'border-gray-300'}
           `}
-          aria-describedby={formState.errors['1031x_contract_status'] ? 'contract-status-error' : undefined}
-          aria-invalid={!!formState.errors['1031x_contract_status']}
+          aria-describedby={formState.errors['1031x_order_contract_status'] ? 'contract-status-error' : undefined}
+          aria-invalid={!!formState.errors['1031x_order_contract_status']}
         >
           <option value="">Select status...</option>
           {contractStatuses.map(status => (
@@ -126,7 +126,7 @@ export const TimelineStep: React.FC = () => {
           ))}
         </select>
         <FieldError 
-          error={formState.errors['1031x_contract_status']} 
+          error={formState.errors['1031x_order_contract_status']} 
           fieldId="contract-status"
         />
       </div>
@@ -143,24 +143,24 @@ export const TimelineStep: React.FC = () => {
           <input
             id="closing-date"
             type="date"
-            value={formState.data['1031x_closing_date'] || ''}
-            onChange={(e) => handleInputChange('1031x_closing_date', e.target.value)}
+            value={formState.data['1031x_order_closing_date'] || ''}
+            onChange={(e) => handleInputChange('1031x_order_closing_date', e.target.value)}
             onFocus={() => {
               const sessionId = sessionStorage.getItem('1031_order_form_session') || '';
-              analytics.trackFieldInteraction('1031x_closing_date', 'focus', 3, sessionId);
+              analytics.trackFieldInteraction('1031x_order_closing_date', 'focus', 3, sessionId);
             }}
             min={today}
             className={`
               w-full px-4 py-3 border rounded-lg
               focus:ring-2 focus:ring-blue-500 focus:border-blue-500
               transition-colors duration-200
-              ${formState.errors['1031x_closing_date'] ? 'border-red-500' : 'border-gray-300'}
+              ${formState.errors['1031x_order_closing_date'] ? 'border-red-500' : 'border-gray-300'}
             `}
-            aria-describedby={formState.errors['1031x_closing_date'] ? 'closing-date-error' : undefined}
-            aria-invalid={!!formState.errors['1031x_closing_date']}
+            aria-describedby={formState.errors['1031x_order_closing_date'] ? 'closing-date-error' : undefined}
+            aria-invalid={!!formState.errors['1031x_order_closing_date']}
           />
           <FieldError 
-            error={formState.errors['1031x_closing_date']} 
+            error={formState.errors['1031x_order_closing_date']} 
             fieldId="closing-date"
           />
           <p className="mt-1 text-sm text-gray-500">
@@ -180,24 +180,24 @@ export const TimelineStep: React.FC = () => {
           <input
             id="listing-date"
             type="date"
-            value={formState.data['1031x_expected_listing_date'] || ''}
-            onChange={(e) => handleInputChange('1031x_expected_listing_date', e.target.value)}
+            value={formState.data['1031x_order_expected_listing_date'] || ''}
+            onChange={(e) => handleInputChange('1031x_order_expected_listing_date', e.target.value)}
             onFocus={() => {
               const sessionId = sessionStorage.getItem('1031_order_form_session') || '';
-              analytics.trackFieldInteraction('1031x_expected_listing_date', 'focus', 3, sessionId);
+              analytics.trackFieldInteraction('1031x_order_expected_listing_date', 'focus', 3, sessionId);
             }}
             min={today}
             className={`
               w-full px-4 py-3 border rounded-lg
               focus:ring-2 focus:ring-blue-500 focus:border-blue-500
               transition-colors duration-200
-              ${formState.errors['1031x_expected_listing_date'] ? 'border-red-500' : 'border-gray-300'}
+              ${formState.errors['1031x_order_expected_listing_date'] ? 'border-red-500' : 'border-gray-300'}
             `}
-            aria-describedby={formState.errors['1031x_expected_listing_date'] ? 'listing-date-error' : undefined}
-            aria-invalid={!!formState.errors['1031x_expected_listing_date']}
+            aria-describedby={formState.errors['1031x_order_expected_listing_date'] ? 'listing-date-error' : undefined}
+            aria-invalid={!!formState.errors['1031x_order_expected_listing_date']}
           />
           <FieldError 
-            error={formState.errors['1031x_expected_listing_date']} 
+            error={formState.errors['1031x_order_expected_listing_date']} 
             fieldId="listing-date"
           />
         </div>
@@ -213,20 +213,20 @@ export const TimelineStep: React.FC = () => {
         </label>
         <select
           id="urgency-level"
-          value={formState.data['1031x_urgency_level'] || ''}
-          onChange={(e) => handleInputChange('1031x_urgency_level', e.target.value)}
+          value={formState.data['1031x_order_urgency_level'] || ''}
+          onChange={(e) => handleInputChange('1031x_order_urgency_level', e.target.value)}
           onFocus={() => {
             const sessionId = sessionStorage.getItem('1031_order_form_session') || '';
-            analytics.trackFieldInteraction('1031x_urgency_level', 'focus', 3, sessionId);
+            analytics.trackFieldInteraction('1031x_order_urgency_level', 'focus', 3, sessionId);
           }}
           className={`
             w-full px-4 py-3 border rounded-lg
             focus:ring-2 focus:ring-blue-500 focus:border-blue-500
             transition-colors duration-200
-            ${formState.errors['1031x_urgency_level'] ? 'border-red-500' : 'border-gray-300'}
+            ${formState.errors['1031x_order_urgency_level'] ? 'border-red-500' : 'border-gray-300'}
           `}
-          aria-describedby={formState.errors['1031x_urgency_level'] ? 'urgency-level-error' : undefined}
-          aria-invalid={!!formState.errors['1031x_urgency_level']}
+          aria-describedby={formState.errors['1031x_order_urgency_level'] ? 'urgency-level-error' : undefined}
+          aria-invalid={!!formState.errors['1031x_order_urgency_level']}
         >
           <option value="">Select timeframe...</option>
           {urgencyLevels.map(level => (
@@ -234,7 +234,7 @@ export const TimelineStep: React.FC = () => {
           ))}
         </select>
         <FieldError 
-          error={formState.errors['1031x_urgency_level']} 
+          error={formState.errors['1031x_order_urgency_level']} 
           fieldId="urgency-level"
         />
       </div>

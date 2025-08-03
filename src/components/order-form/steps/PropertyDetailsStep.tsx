@@ -80,24 +80,24 @@ export const PropertyDetailsStep: React.FC = () => {
         <input
           id="property-address"
           type="text"
-          value={formState.data['1031x_property_address'] || ''}
-          onChange={(e) => handleInputChange('1031x_property_address', e.target.value)}
+          value={formState.data['1031x_order_property_address'] || ''}
+          onChange={(e) => handleInputChange('1031x_order_property_address', e.target.value)}
           onFocus={() => {
             const sessionId = sessionStorage.getItem('1031_order_form_session') || '';
-            analytics.trackFieldInteraction('1031x_property_address', 'focus', 2, sessionId);
+            analytics.trackFieldInteraction('1031x_order_property_address', 'focus', 2, sessionId);
           }}
           className={`
             w-full px-4 py-3 border rounded-lg
             focus:ring-2 focus:ring-blue-500 focus:border-blue-500
             transition-colors duration-200
-            ${formState.errors['1031x_property_address'] ? 'border-red-500' : 'border-gray-300'}
+            ${formState.errors['1031x_order_property_address'] ? 'border-red-500' : 'border-gray-300'}
           `}
           placeholder="123 Main Street"
-          aria-describedby={formState.errors['1031x_property_address'] ? 'property-address-error' : undefined}
-          aria-invalid={!!formState.errors['1031x_property_address']}
+          aria-describedby={formState.errors['1031x_order_property_address'] ? 'property-address-error' : undefined}
+          aria-invalid={!!formState.errors['1031x_order_property_address']}
         />
         <FieldError 
-          error={formState.errors['1031x_property_address']} 
+          error={formState.errors['1031x_order_property_address']} 
           fieldId="property-address"
         />
       </div>
@@ -115,24 +115,24 @@ export const PropertyDetailsStep: React.FC = () => {
           <input
             id="property-city"
             type="text"
-            value={formState.data['1031x_property_city'] || ''}
-            onChange={(e) => handleInputChange('1031x_property_city', e.target.value)}
+            value={formState.data['1031x_order_property_city'] || ''}
+            onChange={(e) => handleInputChange('1031x_order_property_city', e.target.value)}
             onFocus={() => {
               const sessionId = sessionStorage.getItem('1031_order_form_session') || '';
-              analytics.trackFieldInteraction('1031x_property_city', 'focus', 2, sessionId);
+              analytics.trackFieldInteraction('1031x_order_property_city', 'focus', 2, sessionId);
             }}
             className={`
               w-full px-4 py-3 border rounded-lg
               focus:ring-2 focus:ring-blue-500 focus:border-blue-500
               transition-colors duration-200
-              ${formState.errors['1031x_property_city'] ? 'border-red-500' : 'border-gray-300'}
+              ${formState.errors['1031x_order_property_city'] ? 'border-red-500' : 'border-gray-300'}
             `}
             placeholder="San Francisco"
-            aria-describedby={formState.errors['1031x_property_city'] ? 'property-city-error' : undefined}
-            aria-invalid={!!formState.errors['1031x_property_city']}
+            aria-describedby={formState.errors['1031x_order_property_city'] ? 'property-city-error' : undefined}
+            aria-invalid={!!formState.errors['1031x_order_property_city']}
           />
           <FieldError 
-            error={formState.errors['1031x_property_city']} 
+            error={formState.errors['1031x_order_property_city']} 
             fieldId="property-city"
           />
         </div>
@@ -147,20 +147,20 @@ export const PropertyDetailsStep: React.FC = () => {
           </label>
           <select
             id="property-state"
-            value={formState.data['1031x_property_state'] || ''}
-            onChange={(e) => handleInputChange('1031x_property_state', e.target.value)}
+            value={formState.data['1031x_order_property_state'] || ''}
+            onChange={(e) => handleInputChange('1031x_order_property_state', e.target.value)}
             onFocus={() => {
               const sessionId = sessionStorage.getItem('1031_order_form_session') || '';
-              analytics.trackFieldInteraction('1031x_property_state', 'focus', 2, sessionId);
+              analytics.trackFieldInteraction('1031x_order_property_state', 'focus', 2, sessionId);
             }}
             className={`
               w-full px-4 py-3 border rounded-lg
               focus:ring-2 focus:ring-blue-500 focus:border-blue-500
               transition-colors duration-200
-              ${formState.errors['1031x_property_state'] ? 'border-red-500' : 'border-gray-300'}
+              ${formState.errors['1031x_order_property_state'] ? 'border-red-500' : 'border-gray-300'}
             `}
-            aria-describedby={formState.errors['1031x_property_state'] ? 'property-state-error' : undefined}
-            aria-invalid={!!formState.errors['1031x_property_state']}
+            aria-describedby={formState.errors['1031x_order_property_state'] ? 'property-state-error' : undefined}
+            aria-invalid={!!formState.errors['1031x_order_property_state']}
           >
             <option value="">Select state...</option>
             {Object.entries(stateNames).map(([abbr, name]) => (
@@ -168,7 +168,7 @@ export const PropertyDetailsStep: React.FC = () => {
             ))}
           </select>
           <FieldError 
-            error={formState.errors['1031x_property_state']} 
+            error={formState.errors['1031x_order_property_state']} 
             fieldId="property-state"
           />
         </div>
@@ -184,25 +184,25 @@ export const PropertyDetailsStep: React.FC = () => {
           <input
             id="property-zip"
             type="text"
-            value={formState.data['1031x_property_zip'] || ''}
-            onChange={(e) => handleInputChange('1031x_property_zip', e.target.value)}
+            value={formState.data['1031x_order_property_zip'] || ''}
+            onChange={(e) => handleInputChange('1031x_order_property_zip', e.target.value)}
             onFocus={() => {
               const sessionId = sessionStorage.getItem('1031_order_form_session') || '';
-              analytics.trackFieldInteraction('1031x_property_zip', 'focus', 2, sessionId);
+              analytics.trackFieldInteraction('1031x_order_property_zip', 'focus', 2, sessionId);
             }}
             className={`
               w-full px-4 py-3 border rounded-lg
               focus:ring-2 focus:ring-blue-500 focus:border-blue-500
               transition-colors duration-200
-              ${formState.errors['1031x_property_zip'] ? 'border-red-500' : 'border-gray-300'}
+              ${formState.errors['1031x_order_property_zip'] ? 'border-red-500' : 'border-gray-300'}
             `}
             placeholder="94105"
             maxLength={10}
-            aria-describedby={formState.errors['1031x_property_zip'] ? 'property-zip-error' : undefined}
-            aria-invalid={!!formState.errors['1031x_property_zip']}
+            aria-describedby={formState.errors['1031x_order_property_zip'] ? 'property-zip-error' : undefined}
+            aria-invalid={!!formState.errors['1031x_order_property_zip']}
           />
           <FieldError 
-            error={formState.errors['1031x_property_zip']} 
+            error={formState.errors['1031x_order_property_zip']} 
             fieldId="property-zip"
           />
         </div>
@@ -218,20 +218,20 @@ export const PropertyDetailsStep: React.FC = () => {
         </label>
         <select
           id="property-type"
-          value={formState.data['1031x_property_type'] || ''}
-          onChange={(e) => handleInputChange('1031x_property_type', e.target.value)}
+          value={formState.data['1031x_order_property_type'] || ''}
+          onChange={(e) => handleInputChange('1031x_order_property_type', e.target.value)}
           onFocus={() => {
             const sessionId = sessionStorage.getItem('1031_order_form_session') || '';
-            analytics.trackFieldInteraction('1031x_property_type', 'focus', 2, sessionId);
+            analytics.trackFieldInteraction('1031x_order_property_type', 'focus', 2, sessionId);
           }}
           className={`
             w-full px-4 py-3 border rounded-lg
             focus:ring-2 focus:ring-blue-500 focus:border-blue-500
             transition-colors duration-200
-            ${formState.errors['1031x_property_type'] ? 'border-red-500' : 'border-gray-300'}
+            ${formState.errors['1031x_order_property_type'] ? 'border-red-500' : 'border-gray-300'}
           `}
-          aria-describedby={formState.errors['1031x_property_type'] ? 'property-type-error' : undefined}
-          aria-invalid={!!formState.errors['1031x_property_type']}
+          aria-describedby={formState.errors['1031x_order_property_type'] ? 'property-type-error' : undefined}
+          aria-invalid={!!formState.errors['1031x_order_property_type']}
         >
           <option value="">Select property type...</option>
           {propertyTypes.map(type => (
@@ -239,7 +239,7 @@ export const PropertyDetailsStep: React.FC = () => {
           ))}
         </select>
         <FieldError 
-          error={formState.errors['1031x_property_type']} 
+          error={formState.errors['1031x_order_property_type']} 
           fieldId="property-type"
         />
       </div>
@@ -259,25 +259,25 @@ export const PropertyDetailsStep: React.FC = () => {
             <input
               id="sale-price"
               type="text"
-              value={formatCurrency(formState.data['1031x_sale_price'])}
-              onChange={(e) => handleNumberChange('1031x_sale_price', e.target.value)}
+              value={formatCurrency(formState.data['1031x_order_sale_price'])}
+              onChange={(e) => handleNumberChange('1031x_order_sale_price', e.target.value)}
               onFocus={() => {
                 const sessionId = sessionStorage.getItem('1031_order_form_session') || '';
-                analytics.trackFieldInteraction('1031x_sale_price', 'focus', 2, sessionId);
+                analytics.trackFieldInteraction('1031x_order_sale_price', 'focus', 2, sessionId);
               }}
               className={`
                 w-full pl-8 pr-4 py-3 border rounded-lg
                 focus:ring-2 focus:ring-blue-500 focus:border-blue-500
                 transition-colors duration-200
-                ${formState.errors['1031x_sale_price'] ? 'border-red-500' : 'border-gray-300'}
+                ${formState.errors['1031x_order_sale_price'] ? 'border-red-500' : 'border-gray-300'}
               `}
               placeholder="1,000,000"
-              aria-describedby={formState.errors['1031x_sale_price'] ? 'sale-price-error' : undefined}
-              aria-invalid={!!formState.errors['1031x_sale_price']}
+              aria-describedby={formState.errors['1031x_order_sale_price'] ? 'sale-price-error' : undefined}
+              aria-invalid={!!formState.errors['1031x_order_sale_price']}
             />
           </div>
           <FieldError 
-            error={formState.errors['1031x_sale_price']} 
+            error={formState.errors['1031x_order_sale_price']} 
             fieldId="sale-price"
           />
         </div>
@@ -295,25 +295,25 @@ export const PropertyDetailsStep: React.FC = () => {
             <input
               id="mortgage-balance"
               type="text"
-              value={formatCurrency(formState.data['1031x_mortgage_balance'])}
-              onChange={(e) => handleNumberChange('1031x_mortgage_balance', e.target.value)}
+              value={formatCurrency(formState.data['1031x_order_mortgage_balance'])}
+              onChange={(e) => handleNumberChange('1031x_order_mortgage_balance', e.target.value)}
               onFocus={() => {
                 const sessionId = sessionStorage.getItem('1031_order_form_session') || '';
-                analytics.trackFieldInteraction('1031x_mortgage_balance', 'focus', 2, sessionId);
+                analytics.trackFieldInteraction('1031x_order_mortgage_balance', 'focus', 2, sessionId);
               }}
               className={`
                 w-full pl-8 pr-4 py-3 border rounded-lg
                 focus:ring-2 focus:ring-blue-500 focus:border-blue-500
                 transition-colors duration-200
-                ${formState.errors['1031x_mortgage_balance'] ? 'border-red-500' : 'border-gray-300'}
+                ${formState.errors['1031x_order_mortgage_balance'] ? 'border-red-500' : 'border-gray-300'}
               `}
               placeholder="400,000"
-              aria-describedby={formState.errors['1031x_mortgage_balance'] ? 'mortgage-balance-error' : undefined}
-              aria-invalid={!!formState.errors['1031x_mortgage_balance']}
+              aria-describedby={formState.errors['1031x_order_mortgage_balance'] ? 'mortgage-balance-error' : undefined}
+              aria-invalid={!!formState.errors['1031x_order_mortgage_balance']}
             />
           </div>
           <FieldError 
-            error={formState.errors['1031x_mortgage_balance']} 
+            error={formState.errors['1031x_order_mortgage_balance']} 
             fieldId="mortgage-balance"
           />
         </div>

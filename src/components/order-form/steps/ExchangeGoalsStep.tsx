@@ -34,6 +34,13 @@ const cashOutOptions = [
   { value: 'not_sure', label: 'Not sure yet' }
 ];
 
+const dstOptions = [
+  { value: 'interested', label: 'Yes, interested in DST properties' },
+  { value: 'traditional_only', label: 'No, traditional properties only' },
+  { value: 'learn_both', label: 'Want to learn about both options' },
+  { value: 'not_familiar', label: 'Not familiar with DST properties' }
+];
+
 
 // ============================================
 // Component
@@ -74,20 +81,20 @@ export const ExchangeGoalsStep: React.FC = () => {
         </label>
         <select
           id="replacement-identified"
-          value={formState.data['1031x_replacement_identified'] || ''}
-          onChange={(e) => handleInputChange('1031x_replacement_identified', e.target.value)}
+          value={formState.data['1031x_order_replacement_identified'] || ''}
+          onChange={(e) => handleInputChange('1031x_order_replacement_identified', e.target.value)}
           onFocus={() => {
             const sessionId = sessionStorage.getItem('1031_order_form_session') || '';
-            analytics.trackFieldInteraction('1031x_replacement_identified', 'focus', 4, sessionId);
+            analytics.trackFieldInteraction('1031x_order_replacement_identified', 'focus', 4, sessionId);
           }}
           className={`
             w-full px-4 py-3 border rounded-lg
             focus:ring-2 focus:ring-blue-500 focus:border-blue-500
             transition-colors duration-200
-            ${formState.errors['1031x_replacement_identified'] ? 'border-red-500' : 'border-gray-300'}
+            ${formState.errors['1031x_order_replacement_identified'] ? 'border-red-500' : 'border-gray-300'}
           `}
-          aria-describedby={formState.errors['1031x_replacement_identified'] ? 'replacement-identified-error' : undefined}
-          aria-invalid={!!formState.errors['1031x_replacement_identified']}
+          aria-describedby={formState.errors['1031x_order_replacement_identified'] ? 'replacement-identified-error' : undefined}
+          aria-invalid={!!formState.errors['1031x_order_replacement_identified']}
         >
           <option value="">Select status...</option>
           {replacementOptions.map(option => (
@@ -95,7 +102,7 @@ export const ExchangeGoalsStep: React.FC = () => {
           ))}
         </select>
         <FieldError 
-          error={formState.errors['1031x_replacement_identified']} 
+          error={formState.errors['1031x_order_replacement_identified']} 
           fieldId="replacement-identified"
         />
       </div>
@@ -110,20 +117,20 @@ export const ExchangeGoalsStep: React.FC = () => {
         </label>
         <select
           id="exchange-type"
-          value={formState.data['1031x_exchange_type'] || ''}
-          onChange={(e) => handleInputChange('1031x_exchange_type', e.target.value)}
+          value={formState.data['1031x_order_exchange_type'] || ''}
+          onChange={(e) => handleInputChange('1031x_order_exchange_type', e.target.value)}
           onFocus={() => {
             const sessionId = sessionStorage.getItem('1031_order_form_session') || '';
-            analytics.trackFieldInteraction('1031x_exchange_type', 'focus', 4, sessionId);
+            analytics.trackFieldInteraction('1031x_order_exchange_type', 'focus', 4, sessionId);
           }}
           className={`
             w-full px-4 py-3 border rounded-lg
             focus:ring-2 focus:ring-blue-500 focus:border-blue-500
             transition-colors duration-200
-            ${formState.errors['1031x_exchange_type'] ? 'border-red-500' : 'border-gray-300'}
+            ${formState.errors['1031x_order_exchange_type'] ? 'border-red-500' : 'border-gray-300'}
           `}
-          aria-describedby={formState.errors['1031x_exchange_type'] ? 'exchange-type-error' : undefined}
-          aria-invalid={!!formState.errors['1031x_exchange_type']}
+          aria-describedby={formState.errors['1031x_order_exchange_type'] ? 'exchange-type-error' : undefined}
+          aria-invalid={!!formState.errors['1031x_order_exchange_type']}
         >
           <option value="">Select exchange type...</option>
           {exchangeTypes.map(type => (
@@ -131,7 +138,7 @@ export const ExchangeGoalsStep: React.FC = () => {
           ))}
         </select>
         <FieldError 
-          error={formState.errors['1031x_exchange_type']} 
+          error={formState.errors['1031x_order_exchange_type']} 
           fieldId="exchange-type"
         />
         <p className="mt-1 text-sm text-gray-500">
@@ -149,20 +156,20 @@ export const ExchangeGoalsStep: React.FC = () => {
         </label>
         <select
           id="cash-out"
-          value={formState.data['1031x_cash_out_needed'] || ''}
-          onChange={(e) => handleInputChange('1031x_cash_out_needed', e.target.value)}
+          value={formState.data['1031x_order_cash_out_needed'] || ''}
+          onChange={(e) => handleInputChange('1031x_order_cash_out_needed', e.target.value)}
           onFocus={() => {
             const sessionId = sessionStorage.getItem('1031_order_form_session') || '';
-            analytics.trackFieldInteraction('1031x_cash_out_needed', 'focus', 4, sessionId);
+            analytics.trackFieldInteraction('1031x_order_cash_out_needed', 'focus', 4, sessionId);
           }}
           className={`
             w-full px-4 py-3 border rounded-lg
             focus:ring-2 focus:ring-blue-500 focus:border-blue-500
             transition-colors duration-200
-            ${formState.errors['1031x_cash_out_needed'] ? 'border-red-500' : 'border-gray-300'}
+            ${formState.errors['1031x_order_cash_out_needed'] ? 'border-red-500' : 'border-gray-300'}
           `}
-          aria-describedby={formState.errors['1031x_cash_out_needed'] ? 'cash-out-error' : undefined}
-          aria-invalid={!!formState.errors['1031x_cash_out_needed']}
+          aria-describedby={formState.errors['1031x_order_cash_out_needed'] ? 'cash-out-error' : undefined}
+          aria-invalid={!!formState.errors['1031x_order_cash_out_needed']}
         >
           <option value="">Select option...</option>
           {cashOutOptions.map(option => (
@@ -170,7 +177,7 @@ export const ExchangeGoalsStep: React.FC = () => {
           ))}
         </select>
         <FieldError 
-          error={formState.errors['1031x_cash_out_needed']} 
+          error={formState.errors['1031x_order_cash_out_needed']} 
           fieldId="cash-out"
         />
         <p className="mt-1 text-sm text-gray-500">
@@ -178,21 +185,59 @@ export const ExchangeGoalsStep: React.FC = () => {
         </p>
       </div>
       
+      {/* DST Interest */}
+      <div>
+        <label 
+          htmlFor="dst-interest"
+          className="block text-sm font-medium text-gray-700 mb-2"
+        >
+          Are you interested in Delaware Statutory Trust (DST) properties? <span className="text-red-500">*</span>
+        </label>
+        <select
+          id="dst-interest"
+          value={formState.data['1031x_order_dst_interest'] || ''}
+          onChange={(e) => handleInputChange('1031x_order_dst_interest', e.target.value)}
+          onFocus={() => {
+            const sessionId = sessionStorage.getItem('1031_order_form_session') || '';
+            analytics.trackFieldInteraction('1031x_order_dst_interest', 'focus', 4, sessionId);
+          }}
+          className={`
+            w-full px-4 py-3 border rounded-lg
+            focus:ring-2 focus:ring-blue-500 focus:border-blue-500
+            transition-colors duration-200
+            ${formState.errors['1031x_order_dst_interest'] ? 'border-red-500' : 'border-gray-300'}
+          `}
+          aria-describedby={formState.errors['1031x_order_dst_interest'] ? 'dst-interest-error' : undefined}
+          aria-invalid={!!formState.errors['1031x_order_dst_interest']}
+        >
+          <option value="">Select option...</option>
+          {dstOptions.map(option => (
+            <option key={option.value} value={option.value}>{option.label}</option>
+          ))}
+        </select>
+        <FieldError 
+          error={formState.errors['1031x_order_dst_interest']} 
+          fieldId="dst-interest"
+        />
+        <p className="mt-1 text-sm text-gray-500">
+          DST properties offer passive investment with no management responsibilities.
+        </p>
+      </div>
       
       {/* Exchange Type Information */}
-      {formState.data['1031x_exchange_type'] && formState.data['1031x_exchange_type'] !== 'not_sure' && (
+      {formState.data['1031x_order_exchange_type'] && formState.data['1031x_order_exchange_type'] !== 'not_sure' && (
         <div className="bg-gray-50 p-4 rounded-lg">
           <h4 className="font-semibold text-gray-900 mb-2">
-            {exchangeTypes.find(t => t.value === formState.data['1031x_exchange_type'])?.label}
+            {exchangeTypes.find(t => t.value === formState.data['1031x_order_exchange_type'])?.label}
           </h4>
           <div className="text-sm text-gray-700">
-            {formState.data['1031x_exchange_type'] === 'standard_delayed' && (
+            {formState.data['1031x_order_exchange_type'] === 'standard_delayed' && (
               <p>The most common type. You sell first, then have 45 days to identify and 180 days to purchase replacement property.</p>
             )}
-            {formState.data['1031x_exchange_type'] === 'reverse' && (
+            {formState.data['1031x_order_exchange_type'] === 'reverse' && (
               <p>Purchase your replacement property before selling. Requires special financing and parking arrangements.</p>
             )}
-            {formState.data['1031x_exchange_type'] === 'improvement' && (
+            {formState.data['1031x_order_exchange_type'] === 'improvement' && (
               <p>Use exchange funds to improve replacement property. Complex but allows property upgrades within the exchange.</p>
             )}
           </div>

@@ -37,7 +37,7 @@ export const ProfessionalTeamStep: React.FC = () => {
   };
   
   // Show CPA fields only if user has a CPA
-  const showCPAFields = formState.data['1031x_has_cpa'] === 'yes';
+  const showCPAFields = formState.data['1031x_order_has_cpa'] === 'yes';
   
   return (
     <div className="space-y-6">
@@ -60,20 +60,20 @@ export const ProfessionalTeamStep: React.FC = () => {
         </label>
         <select
           id="has-cpa"
-          value={formState.data['1031x_has_cpa'] || ''}
-          onChange={(e) => handleInputChange('1031x_has_cpa', e.target.value)}
+          value={formState.data['1031x_order_has_cpa'] || ''}
+          onChange={(e) => handleInputChange('1031x_order_has_cpa', e.target.value)}
           onFocus={() => {
             const sessionId = sessionStorage.getItem('1031_order_form_session') || '';
-            analytics.trackFieldInteraction('1031x_has_cpa', 'focus', 5, sessionId);
+            analytics.trackFieldInteraction('1031x_order_has_cpa', 'focus', 5, sessionId);
           }}
           className={`
             w-full px-4 py-3 border rounded-lg
             focus:ring-2 focus:ring-blue-500 focus:border-blue-500
             transition-colors duration-200
-            ${formState.errors['1031x_has_cpa'] ? 'border-red-500' : 'border-gray-300'}
+            ${formState.errors['1031x_order_has_cpa'] ? 'border-red-500' : 'border-gray-300'}
           `}
-          aria-describedby={formState.errors['1031x_has_cpa'] ? 'has-cpa-error' : undefined}
-          aria-invalid={!!formState.errors['1031x_has_cpa']}
+          aria-describedby={formState.errors['1031x_order_has_cpa'] ? 'has-cpa-error' : undefined}
+          aria-invalid={!!formState.errors['1031x_order_has_cpa']}
         >
           <option value="">Select option...</option>
           {cpaOptions.map(option => (
@@ -81,7 +81,7 @@ export const ProfessionalTeamStep: React.FC = () => {
           ))}
         </select>
         <FieldError 
-          error={formState.errors['1031x_has_cpa']} 
+          error={formState.errors['1031x_order_has_cpa']} 
           fieldId="has-cpa"
         />
       </div>
@@ -99,24 +99,24 @@ export const ProfessionalTeamStep: React.FC = () => {
             <input
               id="cpa-name"
               type="text"
-              value={formState.data['1031x_cpa_name'] || ''}
-              onChange={(e) => handleInputChange('1031x_cpa_name', e.target.value)}
+              value={formState.data['1031x_order_cpa_name'] || ''}
+              onChange={(e) => handleInputChange('1031x_order_cpa_name', e.target.value)}
               onFocus={() => {
                 const sessionId = sessionStorage.getItem('1031_order_form_session') || '';
-                analytics.trackFieldInteraction('1031x_cpa_name', 'focus', 5, sessionId);
+                analytics.trackFieldInteraction('1031x_order_cpa_name', 'focus', 5, sessionId);
               }}
               className={`
                 w-full px-4 py-3 border rounded-lg
                 focus:ring-2 focus:ring-blue-500 focus:border-blue-500
                 transition-colors duration-200
-                ${formState.errors['1031x_cpa_name'] ? 'border-red-500' : 'border-gray-300'}
+                ${formState.errors['1031x_order_cpa_name'] ? 'border-red-500' : 'border-gray-300'}
               `}
               placeholder="John Smith, CPA"
-              aria-describedby={formState.errors['1031x_cpa_name'] ? 'cpa-name-error' : undefined}
-              aria-invalid={!!formState.errors['1031x_cpa_name']}
+              aria-describedby={formState.errors['1031x_order_cpa_name'] ? 'cpa-name-error' : undefined}
+              aria-invalid={!!formState.errors['1031x_order_cpa_name']}
             />
             <FieldError 
-              error={formState.errors['1031x_cpa_name']} 
+              error={formState.errors['1031x_order_cpa_name']} 
               fieldId="cpa-name"
             />
           </div>
@@ -131,57 +131,25 @@ export const ProfessionalTeamStep: React.FC = () => {
             <input
               id="cpa-email"
               type="email"
-              value={formState.data['1031x_cpa_email'] || ''}
-              onChange={(e) => handleInputChange('1031x_cpa_email', e.target.value)}
+              value={formState.data['1031x_order_cpa_email'] || ''}
+              onChange={(e) => handleInputChange('1031x_order_cpa_email', e.target.value)}
               onFocus={() => {
                 const sessionId = sessionStorage.getItem('1031_order_form_session') || '';
-                analytics.trackFieldInteraction('1031x_cpa_email', 'focus', 5, sessionId);
+                analytics.trackFieldInteraction('1031x_order_cpa_email', 'focus', 5, sessionId);
               }}
               className={`
                 w-full px-4 py-3 border rounded-lg
                 focus:ring-2 focus:ring-blue-500 focus:border-blue-500
                 transition-colors duration-200
-                ${formState.errors['1031x_cpa_email'] ? 'border-red-500' : 'border-gray-300'}
+                ${formState.errors['1031x_order_cpa_email'] ? 'border-red-500' : 'border-gray-300'}
               `}
               placeholder="john@smithcpa.com"
-              aria-describedby={formState.errors['1031x_cpa_email'] ? 'cpa-email-error' : undefined}
-              aria-invalid={!!formState.errors['1031x_cpa_email']}
+              aria-describedby={formState.errors['1031x_order_cpa_email'] ? 'cpa-email-error' : undefined}
+              aria-invalid={!!formState.errors['1031x_order_cpa_email']}
             />
             <FieldError 
-              error={formState.errors['1031x_cpa_email']} 
+              error={formState.errors['1031x_order_cpa_email']} 
               fieldId="cpa-email"
-            />
-          </div>
-          
-          <div>
-            <label 
-              htmlFor="cpa-phone"
-              className="block text-sm font-medium text-gray-700 mb-2"
-            >
-              CPA Phone (optional)
-            </label>
-            <input
-              id="cpa-phone"
-              type="tel"
-              value={formState.data['1031x_cpa_phone'] || ''}
-              onChange={(e) => handleInputChange('1031x_cpa_phone', e.target.value)}
-              onFocus={() => {
-                const sessionId = sessionStorage.getItem('1031_order_form_session') || '';
-                analytics.trackFieldInteraction('1031x_cpa_phone', 'focus', 5, sessionId);
-              }}
-              className={`
-                w-full px-4 py-3 border rounded-lg
-                focus:ring-2 focus:ring-blue-500 focus:border-blue-500
-                transition-colors duration-200
-                ${formState.errors['1031x_cpa_phone'] ? 'border-red-500' : 'border-gray-300'}
-              `}
-              placeholder="(555) 123-4567"
-              aria-describedby={formState.errors['1031x_cpa_phone'] ? 'cpa-phone-error' : undefined}
-              aria-invalid={!!formState.errors['1031x_cpa_phone']}
-            />
-            <FieldError 
-              error={formState.errors['1031x_cpa_phone']} 
-              fieldId="cpa-phone"
             />
             <p className="mt-1 text-sm text-gray-500">
               We can coordinate with your CPA to ensure proper tax planning
@@ -191,7 +159,7 @@ export const ProfessionalTeamStep: React.FC = () => {
       )}
       
       {/* CPA Referral Message */}
-      {formState.data['1031x_has_cpa'] === 'need_referral' && (
+      {formState.data['1031x_order_has_cpa'] === 'need_referral' && (
         <div className="bg-blue-50 p-4 rounded-lg">
           <h4 className="font-semibold text-blue-900 mb-2">CPA Referral Available</h4>
           <p className="text-sm text-blue-800">
@@ -217,24 +185,24 @@ export const ProfessionalTeamStep: React.FC = () => {
           <input
             id="realtor-name"
             type="text"
-            value={formState.data['1031x_realtor_name'] || ''}
-            onChange={(e) => handleInputChange('1031x_realtor_name', e.target.value)}
+            value={formState.data['1031x_order_realtor_name'] || ''}
+            onChange={(e) => handleInputChange('1031x_order_realtor_name', e.target.value)}
             onFocus={() => {
               const sessionId = sessionStorage.getItem('1031_order_form_session') || '';
-              analytics.trackFieldInteraction('1031x_realtor_name', 'focus', 5, sessionId);
+              analytics.trackFieldInteraction('1031x_order_realtor_name', 'focus', 5, sessionId);
             }}
             className={`
               w-full px-4 py-3 border rounded-lg
               focus:ring-2 focus:ring-blue-500 focus:border-blue-500
               transition-colors duration-200
-              ${formState.errors['1031x_realtor_name'] ? 'border-red-500' : 'border-gray-300'}
+              ${formState.errors['1031x_order_realtor_name'] ? 'border-red-500' : 'border-gray-300'}
             `}
             placeholder="Jane Doe, Realtor"
-            aria-describedby={formState.errors['1031x_realtor_name'] ? 'realtor-name-error' : undefined}
-            aria-invalid={!!formState.errors['1031x_realtor_name']}
+            aria-describedby={formState.errors['1031x_order_realtor_name'] ? 'realtor-name-error' : undefined}
+            aria-invalid={!!formState.errors['1031x_order_realtor_name']}
           />
           <FieldError 
-            error={formState.errors['1031x_realtor_name']} 
+            error={formState.errors['1031x_order_realtor_name']} 
             fieldId="realtor-name"
           />
         </div>
@@ -249,24 +217,24 @@ export const ProfessionalTeamStep: React.FC = () => {
           <input
             id="realtor-email"
             type="email"
-            value={formState.data['1031x_realtor_email'] || ''}
-            onChange={(e) => handleInputChange('1031x_realtor_email', e.target.value)}
+            value={formState.data['1031x_order_realtor_email'] || ''}
+            onChange={(e) => handleInputChange('1031x_order_realtor_email', e.target.value)}
             onFocus={() => {
               const sessionId = sessionStorage.getItem('1031_order_form_session') || '';
-              analytics.trackFieldInteraction('1031x_realtor_email', 'focus', 5, sessionId);
+              analytics.trackFieldInteraction('1031x_order_realtor_email', 'focus', 5, sessionId);
             }}
             className={`
               w-full px-4 py-3 border rounded-lg
               focus:ring-2 focus:ring-blue-500 focus:border-blue-500
               transition-colors duration-200
-              ${formState.errors['1031x_realtor_email'] ? 'border-red-500' : 'border-gray-300'}
+              ${formState.errors['1031x_order_realtor_email'] ? 'border-red-500' : 'border-gray-300'}
             `}
             placeholder="jane@realty.com"
-            aria-describedby={formState.errors['1031x_realtor_email'] ? 'realtor-email-error' : undefined}
-            aria-invalid={!!formState.errors['1031x_realtor_email']}
+            aria-describedby={formState.errors['1031x_order_realtor_email'] ? 'realtor-email-error' : undefined}
+            aria-invalid={!!formState.errors['1031x_order_realtor_email']}
           />
           <FieldError 
-            error={formState.errors['1031x_realtor_email']} 
+            error={formState.errors['1031x_order_realtor_email']} 
             fieldId="realtor-email"
           />
         </div>

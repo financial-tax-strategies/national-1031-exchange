@@ -38,7 +38,7 @@ export const BasicInfoStep: React.FC = () => {
       formatted = `(${cleaned.slice(0, 3)}) ${cleaned.slice(3)}`;
     }
     
-    updateField('1031x_phone', formatted);
+    updateField('1031x_order_phone', formatted);
   };
   
   return (
@@ -64,25 +64,25 @@ export const BasicInfoStep: React.FC = () => {
           <input
             id="first-name"
             type="text"
-            value={formState.data['1031x_first_name'] || ''}
-            onChange={(e) => handleInputChange('1031x_first_name', e.target.value)}
+            value={formState.data['1031x_order_first_name'] || ''}
+            onChange={(e) => handleInputChange('1031x_order_first_name', e.target.value)}
             onFocus={() => {
               const sessionId = sessionStorage.getItem('1031_order_form_session') || '';
-              analytics.trackFieldInteraction('1031x_first_name', 'focus', 1, sessionId);
+              analytics.trackFieldInteraction('1031x_order_first_name', 'focus', 1, sessionId);
             }}
             className={`
               w-full px-4 py-3 border rounded-lg
               focus:ring-2 focus:ring-blue-500 focus:border-blue-500
               transition-colors duration-200
-              ${formState.errors['1031x_first_name'] ? 'border-red-500' : 'border-gray-300'}
+              ${formState.errors['1031x_order_first_name'] ? 'border-red-500' : 'border-gray-300'}
             `}
             placeholder="John"
-            aria-describedby={formState.errors['1031x_first_name'] ? 'first-name-error' : undefined}
-            aria-invalid={!!formState.errors['1031x_first_name']}
+            aria-describedby={formState.errors['1031x_order_first_name'] ? 'first-name-error' : undefined}
+            aria-invalid={!!formState.errors['1031x_order_first_name']}
             suppressHydrationWarning
           />
           <FieldError 
-            error={formState.errors['1031x_first_name']} 
+            error={formState.errors['1031x_order_first_name']} 
             fieldId="first-name"
           />
         </div>
@@ -98,24 +98,24 @@ export const BasicInfoStep: React.FC = () => {
           <input
             id="last-name"
             type="text"
-            value={formState.data['1031x_last_name'] || ''}
-            onChange={(e) => handleInputChange('1031x_last_name', e.target.value)}
+            value={formState.data['1031x_order_last_name'] || ''}
+            onChange={(e) => handleInputChange('1031x_order_last_name', e.target.value)}
             onFocus={() => {
               const sessionId = sessionStorage.getItem('1031_order_form_session') || '';
-              analytics.trackFieldInteraction('1031x_last_name', 'focus', 1, sessionId);
+              analytics.trackFieldInteraction('1031x_order_last_name', 'focus', 1, sessionId);
             }}
             className={`
               w-full px-4 py-3 border rounded-lg
               focus:ring-2 focus:ring-blue-500 focus:border-blue-500
               transition-colors duration-200
-              ${formState.errors['1031x_last_name'] ? 'border-red-500' : 'border-gray-300'}
+              ${formState.errors['1031x_order_last_name'] ? 'border-red-500' : 'border-gray-300'}
             `}
             placeholder="Smith"
-            aria-describedby={formState.errors['1031x_last_name'] ? 'last-name-error' : undefined}
-            aria-invalid={!!formState.errors['1031x_last_name']}
+            aria-describedby={formState.errors['1031x_order_last_name'] ? 'last-name-error' : undefined}
+            aria-invalid={!!formState.errors['1031x_order_last_name']}
           />
           <FieldError 
-            error={formState.errors['1031x_last_name']} 
+            error={formState.errors['1031x_order_last_name']} 
             fieldId="last-name"
           />
         </div>
@@ -132,24 +132,24 @@ export const BasicInfoStep: React.FC = () => {
         <input
           id="email"
           type="email"
-          value={formState.data['1031x_email'] || ''}
-          onChange={(e) => handleInputChange('1031x_email', e.target.value)}
+          value={formState.data['1031x_order_email'] || ''}
+          onChange={(e) => handleInputChange('1031x_order_email', e.target.value)}
           onFocus={() => {
             const sessionId = sessionStorage.getItem('1031_order_form_session') || '';
-            analytics.trackFieldInteraction('1031x_email', 'focus', 1, sessionId);
+            analytics.trackFieldInteraction('1031x_order_email', 'focus', 1, sessionId);
           }}
           className={`
             w-full px-4 py-3 border rounded-lg
             focus:ring-2 focus:ring-blue-500 focus:border-blue-500
             transition-colors duration-200
-            ${formState.errors['1031x_email'] ? 'border-red-500' : 'border-gray-300'}
+            ${formState.errors['1031x_order_email'] ? 'border-red-500' : 'border-gray-300'}
           `}
           placeholder="john@example.com"
-          aria-describedby={formState.errors['1031x_email'] ? 'email-error' : undefined}
-          aria-invalid={!!formState.errors['1031x_email']}
+          aria-describedby={formState.errors['1031x_order_email'] ? 'email-error' : undefined}
+          aria-invalid={!!formState.errors['1031x_order_email']}
         />
         <FieldError 
-          error={formState.errors['1031x_email']} 
+          error={formState.errors['1031x_order_email']} 
           fieldId="email"
         />
       </div>
@@ -165,25 +165,25 @@ export const BasicInfoStep: React.FC = () => {
         <input
           id="phone"
           type="tel"
-          value={formState.data['1031x_phone'] || ''}
+          value={formState.data['1031x_order_phone'] || ''}
           onChange={(e) => handlePhoneChange(e.target.value)}
           onFocus={() => {
             const sessionId = sessionStorage.getItem('1031_order_form_session') || '';
-            analytics.trackFieldInteraction('1031x_phone', 'focus', 1, sessionId);
+            analytics.trackFieldInteraction('1031x_order_phone', 'focus', 1, sessionId);
           }}
           className={`
             w-full px-4 py-3 border rounded-lg
             focus:ring-2 focus:ring-blue-500 focus:border-blue-500
             transition-colors duration-200
-            ${formState.errors['1031x_phone'] ? 'border-red-500' : 'border-gray-300'}
+            ${formState.errors['1031x_order_phone'] ? 'border-red-500' : 'border-gray-300'}
           `}
           placeholder="(555) 123-4567"
           maxLength={14}
-          aria-describedby={formState.errors['1031x_phone'] ? 'phone-error' : undefined}
-          aria-invalid={!!formState.errors['1031x_phone']}
+          aria-describedby={formState.errors['1031x_order_phone'] ? 'phone-error' : undefined}
+          aria-invalid={!!formState.errors['1031x_order_phone']}
         />
         <FieldError 
-          error={formState.errors['1031x_phone']} 
+          error={formState.errors['1031x_order_phone']} 
           fieldId="phone"
         />
       </div>
@@ -198,20 +198,20 @@ export const BasicInfoStep: React.FC = () => {
         </label>
         <select
           id="contact-preference"
-          value={formState.data['1031x_preferred_contact'] || ''}
-          onChange={(e) => handleInputChange('1031x_preferred_contact', e.target.value)}
+          value={formState.data['1031x_order_preferred_contact'] || ''}
+          onChange={(e) => handleInputChange('1031x_order_preferred_contact', e.target.value)}
           onFocus={() => {
             const sessionId = sessionStorage.getItem('1031_order_form_session') || '';
-            analytics.trackFieldInteraction('1031x_preferred_contact', 'focus', 1, sessionId);
+            analytics.trackFieldInteraction('1031x_order_preferred_contact', 'focus', 1, sessionId);
           }}
           className={`
             w-full px-4 py-3 border rounded-lg
             focus:ring-2 focus:ring-blue-500 focus:border-blue-500
             transition-colors duration-200
-            ${formState.errors['1031x_preferred_contact'] ? 'border-red-500' : 'border-gray-300'}
+            ${formState.errors['1031x_order_preferred_contact'] ? 'border-red-500' : 'border-gray-300'}
           `}
-          aria-describedby={formState.errors['1031x_preferred_contact'] ? 'contact-preference-error' : undefined}
-          aria-invalid={!!formState.errors['1031x_preferred_contact']}
+          aria-describedby={formState.errors['1031x_order_preferred_contact'] ? 'contact-preference-error' : undefined}
+          aria-invalid={!!formState.errors['1031x_order_preferred_contact']}
         >
           <option value="">Select preference...</option>
           <option value="phone">Phone</option>
@@ -220,7 +220,7 @@ export const BasicInfoStep: React.FC = () => {
           <option value="no_preference">No Preference</option>
         </select>
         <FieldError 
-          error={formState.errors['1031x_preferred_contact']} 
+          error={formState.errors['1031x_order_preferred_contact']} 
           fieldId="contact-preference"
         />
       </div>

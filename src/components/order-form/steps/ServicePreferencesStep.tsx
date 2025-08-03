@@ -15,12 +15,13 @@ import { useOrderFormAnalytics } from '../../../lib/analytics/orderFormAnalytics
 const contractPreferences = [
   { value: 'electronic', label: 'Yes, use electronic contracts (recommended)' },
   { value: 'mail', label: 'Prefer traditional mail' },
-  { value: 'sign_at_closing', label: 'Sign at the closing' }
+  { value: 'in_person', label: 'Sign in person' }
 ];
 
 const consultationPreferences = [
   { value: 'phone', label: 'Phone consultation' },
   { value: 'video', label: 'Video call (Zoom)' },
+  { value: 'in_person', label: 'In-person meeting' },
   { value: 'email_only', label: 'Email only' }
 ];
 
@@ -58,7 +59,7 @@ export const ServicePreferencesStep: React.FC = () => {
     }
   };
   
-  const remainingChars = 500 - (formState.data['1031x_additional_notes']?.length || 0);
+  const remainingChars = 500 - (formState.data['1031x_order_additional_notes']?.length || 0);
   
   return (
     <div className="space-y-6">
@@ -81,20 +82,20 @@ export const ServicePreferencesStep: React.FC = () => {
         </label>
         <select
           id="contract-preference"
-          value={formState.data['1031x_contract_preference'] || ''}
-          onChange={(e) => handleInputChange('1031x_contract_preference', e.target.value)}
+          value={formState.data['1031x_order_contract_preference'] || ''}
+          onChange={(e) => handleInputChange('1031x_order_contract_preference', e.target.value)}
           onFocus={() => {
             const sessionId = sessionStorage.getItem('1031_order_form_session') || '';
-            analytics.trackFieldInteraction('1031x_contract_preference', 'focus', 6, sessionId);
+            analytics.trackFieldInteraction('1031x_order_contract_preference', 'focus', 6, sessionId);
           }}
           className={`
             w-full px-4 py-3 border rounded-lg
             focus:ring-2 focus:ring-blue-500 focus:border-blue-500
             transition-colors duration-200
-            ${formState.errors['1031x_contract_preference'] ? 'border-red-500' : 'border-gray-300'}
+            ${formState.errors['1031x_order_contract_preference'] ? 'border-red-500' : 'border-gray-300'}
           `}
-          aria-describedby={formState.errors['1031x_contract_preference'] ? 'contract-preference-error' : undefined}
-          aria-invalid={!!formState.errors['1031x_contract_preference']}
+          aria-describedby={formState.errors['1031x_order_contract_preference'] ? 'contract-preference-error' : undefined}
+          aria-invalid={!!formState.errors['1031x_order_contract_preference']}
         >
           <option value="">Select preference...</option>
           {contractPreferences.map(option => (
@@ -102,13 +103,13 @@ export const ServicePreferencesStep: React.FC = () => {
           ))}
         </select>
         <FieldError 
-          error={formState.errors['1031x_contract_preference']} 
+          error={formState.errors['1031x_order_contract_preference']} 
           fieldId="contract-preference"
         />
       </div>
       
       {/* Electronic Signature Benefits */}
-      {formState.data['1031x_contract_preference'] === 'electronic' && (
+      {formState.data['1031x_order_contract_preference'] === 'electronic' && (
         <div className="bg-green-50 p-4 rounded-lg">
           <h4 className="font-semibold text-green-900 mb-2">Benefits of Electronic Contracts</h4>
           <ul className="text-sm text-green-800 space-y-1">
@@ -138,20 +139,20 @@ export const ServicePreferencesStep: React.FC = () => {
         </label>
         <select
           id="consultation-preference"
-          value={formState.data['1031x_consultation_preference'] || ''}
-          onChange={(e) => handleInputChange('1031x_consultation_preference', e.target.value)}
+          value={formState.data['1031x_order_consultation_preference'] || ''}
+          onChange={(e) => handleInputChange('1031x_order_consultation_preference', e.target.value)}
           onFocus={() => {
             const sessionId = sessionStorage.getItem('1031_order_form_session') || '';
-            analytics.trackFieldInteraction('1031x_consultation_preference', 'focus', 6, sessionId);
+            analytics.trackFieldInteraction('1031x_order_consultation_preference', 'focus', 6, sessionId);
           }}
           className={`
             w-full px-4 py-3 border rounded-lg
             focus:ring-2 focus:ring-blue-500 focus:border-blue-500
             transition-colors duration-200
-            ${formState.errors['1031x_consultation_preference'] ? 'border-red-500' : 'border-gray-300'}
+            ${formState.errors['1031x_order_consultation_preference'] ? 'border-red-500' : 'border-gray-300'}
           `}
-          aria-describedby={formState.errors['1031x_consultation_preference'] ? 'consultation-preference-error' : undefined}
-          aria-invalid={!!formState.errors['1031x_consultation_preference']}
+          aria-describedby={formState.errors['1031x_order_consultation_preference'] ? 'consultation-preference-error' : undefined}
+          aria-invalid={!!formState.errors['1031x_order_consultation_preference']}
         >
           <option value="">Select preference...</option>
           {consultationPreferences.map(option => (
@@ -159,7 +160,7 @@ export const ServicePreferencesStep: React.FC = () => {
           ))}
         </select>
         <FieldError 
-          error={formState.errors['1031x_consultation_preference']} 
+          error={formState.errors['1031x_order_consultation_preference']} 
           fieldId="consultation-preference"
         />
       </div>
@@ -174,20 +175,20 @@ export const ServicePreferencesStep: React.FC = () => {
         </label>
         <select
           id="how-heard"
-          value={formState.data['1031x_how_heard'] || ''}
-          onChange={(e) => handleInputChange('1031x_how_heard', e.target.value)}
+          value={formState.data['1031x_order_how_heard'] || ''}
+          onChange={(e) => handleInputChange('1031x_order_how_heard', e.target.value)}
           onFocus={() => {
             const sessionId = sessionStorage.getItem('1031_order_form_session') || '';
-            analytics.trackFieldInteraction('1031x_how_heard', 'focus', 6, sessionId);
+            analytics.trackFieldInteraction('1031x_order_how_heard', 'focus', 6, sessionId);
           }}
           className={`
             w-full px-4 py-3 border rounded-lg
             focus:ring-2 focus:ring-blue-500 focus:border-blue-500
             transition-colors duration-200
-            ${formState.errors['1031x_how_heard'] ? 'border-red-500' : 'border-gray-300'}
+            ${formState.errors['1031x_order_how_heard'] ? 'border-red-500' : 'border-gray-300'}
           `}
-          aria-describedby={formState.errors['1031x_how_heard'] ? 'how-heard-error' : undefined}
-          aria-invalid={!!formState.errors['1031x_how_heard']}
+          aria-describedby={formState.errors['1031x_order_how_heard'] ? 'how-heard-error' : undefined}
+          aria-invalid={!!formState.errors['1031x_order_how_heard']}
         >
           <option value="">Select source...</option>
           {referralSources.map(source => (
@@ -195,7 +196,7 @@ export const ServicePreferencesStep: React.FC = () => {
           ))}
         </select>
         <FieldError 
-          error={formState.errors['1031x_how_heard']} 
+          error={formState.errors['1031x_order_how_heard']} 
           fieldId="how-heard"
         />
       </div>
@@ -210,26 +211,26 @@ export const ServicePreferencesStep: React.FC = () => {
         </label>
         <textarea
           id="additional-notes"
-          value={formState.data['1031x_additional_notes'] || ''}
-          onChange={(e) => handleTextAreaChange('1031x_additional_notes', e.target.value)}
+          value={formState.data['1031x_order_additional_notes'] || ''}
+          onChange={(e) => handleTextAreaChange('1031x_order_additional_notes', e.target.value)}
           onFocus={() => {
             const sessionId = sessionStorage.getItem('1031_order_form_session') || '';
-            analytics.trackFieldInteraction('1031x_additional_notes', 'focus', 6, sessionId);
+            analytics.trackFieldInteraction('1031x_order_additional_notes', 'focus', 6, sessionId);
           }}
           rows={4}
           className={`
             w-full px-4 py-3 border rounded-lg
             focus:ring-2 focus:ring-blue-500 focus:border-blue-500
             transition-colors duration-200
-            ${formState.errors['1031x_additional_notes'] ? 'border-red-500' : 'border-gray-300'}
+            ${formState.errors['1031x_order_additional_notes'] ? 'border-red-500' : 'border-gray-300'}
           `}
           placeholder="Tell us about any unique aspects of your exchange or questions you have..."
-          aria-describedby={formState.errors['1031x_additional_notes'] ? 'additional-notes-error' : undefined}
-          aria-invalid={!!formState.errors['1031x_additional_notes']}
+          aria-describedby={formState.errors['1031x_order_additional_notes'] ? 'additional-notes-error' : undefined}
+          aria-invalid={!!formState.errors['1031x_order_additional_notes']}
         />
         <div className="flex justify-between items-center mt-1">
           <FieldError 
-            error={formState.errors['1031x_additional_notes']} 
+            error={formState.errors['1031x_order_additional_notes']} 
             fieldId="additional-notes"
           />
           <span className={`text-sm ${remainingChars < 50 ? 'text-red-600' : 'text-gray-500'}`}>
