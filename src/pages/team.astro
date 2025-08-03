@@ -6,30 +6,15 @@ import Breadcrumbs from '../components/Breadcrumbs.astro';
 // Define team members with their details for E-E-A-T
 const teamMembers = [
   {
-    id: 'sarah-johnson',
-    name: 'Sarah Johnson',
-    title: 'Chief Executive Officer & Founder',
-    image: '/images/team/sarah-johnson.jpg',
-    bio: 'Sarah Johnson brings over 25 years of experience in 1031 exchanges and real estate investment. As a former tax attorney and certified exchange specialist, she founded The 1031 Center to provide investors with the highest level of service and security in the industry.',
-    education: [
-      'J.D., Tax Law, Harvard Law School',
-      'M.B.A., Finance, Wharton School of Business',
-      'B.A., Economics, Stanford University'
-    ],
-    certifications: [
-      'Certified Exchange Specialist (CES)',
-      'Licensed Attorney (CA, NY, TX)',
-      'Certified Public Accountant (CPA)'
-    ],
-    experience: '25+ years',
-    specialties: ['Complex exchanges', 'Tax strategy', 'Reverse exchanges', 'Partnership structures'],
-    publications: [
-      'The Complete Guide to 1031 Exchanges (2023)',
-      'Tax-Deferred Real Estate Strategies (2021)',
-      'Contributing author, Journal of Real Estate Taxation'
-    ],
-    linkedin: 'https://linkedin.com/in/sarahjohnson1031',
-    email: 'sarah.johnson@the1031center.com'
+    id: 'ruth-benjamin',
+    name: 'Ruth Benjamin',
+    title: 'Chief Client Success Officer',
+    image: '/images/team/ruth-benjamin.jpg',
+    bio: 'Ruth has an extensive background in real estate tax strategy with deep expertise in title, escrow, foreclosures, evictions, bankruptcy, mortgages, and legal matters. Over the past 35 years, she has served as president of two different 1031 Exchange Companies. Recognized throughout the industry as a subject matter expert in 1031 exchanges and tax-deferred cash-out strategies, Ruth\'s approach is distinctive—she listens first, thinks creatively, and delivers elegant solutions to her clients.',
+    experience: '35+ years',
+    specialties: ['1031 exchanges', 'Tax-deferred strategies', 'Real estate tax strategy', 'Client success', 'Creative problem solving'],
+    linkedin: 'https://linkedin.com/in/ruthbenjamin1031',
+    email: 'ruth.benjamin@the1031center.com'
   },
   {
     id: 'michael-chen',
@@ -237,33 +222,39 @@ const teamMembers = [
               <p class="text-gray-700 mb-6">{member.bio}</p>
               
               <!-- Credentials Grid -->
-              <div class="grid md:grid-cols-2 gap-6 mb-6">
-                <!-- Education -->
-                <div>
-                  <h3 class="font-semibold text-gray-900 mb-2">Education</h3>
-                  <ul class="space-y-1 text-sm text-gray-600">
-                    {member.education.map(edu => (
-                      <li class="flex items-start">
-                        <span class="text-blue-600 mr-2">•</span>
-                        {edu}
-                      </li>
-                    ))}
-                  </ul>
+              {(member.education || member.certifications) && (
+                <div class="grid md:grid-cols-2 gap-6 mb-6">
+                  <!-- Education -->
+                  {member.education && (
+                    <div>
+                      <h3 class="font-semibold text-gray-900 mb-2">Education</h3>
+                      <ul class="space-y-1 text-sm text-gray-600">
+                        {member.education.map(edu => (
+                          <li class="flex items-start">
+                            <span class="text-blue-600 mr-2">•</span>
+                            {edu}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                  
+                  <!-- Certifications -->
+                  {member.certifications && (
+                    <div>
+                      <h3 class="font-semibold text-gray-900 mb-2">Certifications</h3>
+                      <ul class="space-y-1 text-sm text-gray-600">
+                        {member.certifications.map(cert => (
+                          <li class="flex items-start">
+                            <span class="text-green-600 mr-2">✓</span>
+                            {cert}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
                 </div>
-                
-                <!-- Certifications -->
-                <div>
-                  <h3 class="font-semibold text-gray-900 mb-2">Certifications</h3>
-                  <ul class="space-y-1 text-sm text-gray-600">
-                    {member.certifications.map(cert => (
-                      <li class="flex items-start">
-                        <span class="text-green-600 mr-2">✓</span>
-                        {cert}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
+              )}
               
               <!-- Specialties -->
               <div class="mb-6">
@@ -416,16 +407,16 @@ const teamMembers = [
           "email": "${member.email}",
           "sameAs": "${member.linkedin}",
           "alumniOf": [
-            ${member.education.map(edu => `{
+            ${member.education ? member.education.map(edu => `{
               "@type": "EducationalOrganization",
               "name": "${edu.split(',')[1]?.trim() || ''}"
-            }`).join(',')}
+            }`).join(',') : ''}
           ],
           "hasCredential": [
-            ${member.certifications.map(cert => `{
+            ${member.certifications ? member.certifications.map(cert => `{
               "@type": "EducationalOccupationalCredential",
               "name": "${cert}"
-            }`).join(',')}
+            }`).join(',') : ''}
           ],
           "knowsAbout": ${JSON.stringify(member.specialties)},
           "worksFor": {
