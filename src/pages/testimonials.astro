@@ -2,6 +2,12 @@
 import Layout from '../layouts/Layout.astro';
 import { COMPANY, getPhoneLink } from '../config/company';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { 
+  generateJsonLdScript, 
+  createRatingSchema, 
+  createReviewSchema,
+  wrapInWebPageSchema 
+} from '../utils/schema-utils';
 
 // Define testimonials with structured data
 const testimonials = [
@@ -332,51 +338,26 @@ const averageRating = testimonials.reduce((sum, t) => sum + t.rating, 0) / total
   </section>
   
   <!-- Schema Markup -->
-  <script type="application/ld+json">
-  {
+  <script type="application/ld+json" set:html={generateJsonLdScript({
     "@context": "https://schema.org",
-    "@type": "TestimonialPage",
-    "name": "1031 Exchange Client Testimonials",
-    "description": "Real client testimonials and success stories from 1031 exchange investors",
-    "url": "https://the1031center.com/testimonials",
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "${averageRating.toFixed(1)}",
-      "reviewCount": "${totalReviews}",
-      "bestRating": "5",
-      "worstRating": "1"
-    },
-    "review": [
-      {testimonials.map((testimonial) => `{
-        "@type": "Review",
-        "@id": "https://the1031center.com/testimonials#${testimonial.id}",
-        "datePublished": "${testimonial.date}",
-        "author": {
-          "@type": "Person",
-          "name": "${testimonial.author}",
-          "address": {
-            "@type": "PostalAddress",
-            "addressLocality": "${testimonial.location.split(', ')[0]}",
-            "addressRegion": "${testimonial.location.split(', ')[1]}"
-          }
-        },
-        "reviewRating": {
-          "@type": "Rating",
-          "ratingValue": "${testimonial.rating}",
-          "bestRating": "5",
-          "worstRating": "1"
-        },
-        "name": "${testimonial.headline}",
-        "reviewBody": "${testimonial.review.replace(/"/g, '\\"')}",
-        "itemReviewed": {
-          "@type": "Service",
-          "name": "${testimonial.exchangeType} - ${testimonial.propertyType}",
-          "provider": {
-            "@id": "https://the1031center.com/#organization"
-          }
+    "@graph": [
+      wrapInWebPageSchema(
+        "https://the1031center.com/testimonials",
+        "1031 Exchange Client Testimonials",
+        "Real client testimonials and success stories from 1031 exchange investors",
+        {
+          "@type": "TestimonialPage",
+          "@id": "https://the1031center.com/testimonials#main",
+          "name": "1031 Exchange Client Testimonials",
+          "description": "Real client testimonials and success stories from 1031 exchange investors",
+          "aggregateRating": createRatingSchema(
+            Number(averageRating.toFixed(1)), 
+            'AggregateRating', 
+            totalReviews
+          ),
+          "review": testimonials.map(testimonial => createReviewSchema(testimonial))
         }
-      }`).join(',\n      ')}
+      )
     ]
-  }
-  </script>
+  })} />
 </Layout>

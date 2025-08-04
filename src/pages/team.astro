@@ -3,6 +3,11 @@ import Layout from '../layouts/Layout.astro';
 import { COMPANY, getPhoneLink } from '../config/company';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
 import { supabase, isSupabaseConfigured } from '../lib/supabase';
+import { 
+  generateJsonLdScript, 
+  createPersonSchema,
+  wrapInWebPageSchema 
+} from '../utils/schema-utils';
 
 // Fetch team members from database
 let teamMembers = [];
@@ -337,48 +342,35 @@ const transformedTeamMembers = teamMembers.map(member => ({
   </section>
   
   <!-- Schema Markup -->
-  <script type="application/ld+json">
-  {
+  <script type="application/ld+json" set:html={generateJsonLdScript({
     "@context": "https://schema.org",
-    "@type": "AboutPage",
-    "mainEntity": {
-      "@type": "Organization",
-      "@id": "https://the1031center.com/#organization",
-      "employee": [
-        {transformedTeamMembers.map((member, index) => `{
-          "@type": "Person",
-          "@id": "https://the1031center.com/team#${member.id}",
-          "name": "${member.name}",
-          "jobTitle": "${member.title}",
-          "image": "https://the1031center.com${member.image}",
-          "description": "${member.bio?.replace(/"/g, '\\"') || ''}",
-          "email": "${member.email || ''}",
-          "sameAs": "${member.linkedin || ''}",
-          "alumniOf": [
-            ${member.education ? member.education.map(edu => `{
-              "@type": "EducationalOrganization",
-              "name": "${edu.split(',')[1]?.trim() || ''}"
-            }`).join(',') : ''}
-          ],
-          "hasCredential": [
-            ${member.certifications ? member.certifications.map(cert => `{
-              "@type": "EducationalOccupationalCredential",
-              "name": "${cert}"
-            }`).join(',') : ''}
-          ],
-          "knowsAbout": ${JSON.stringify(member.specialties || [])},
-          "worksFor": {
-            "@id": "https://the1031center.com/#organization"
-          }${member.publications ? `,
-          "author": [
-            ${member.publications.map(pub => `{
-              "@type": "Article",
-              "name": "${pub}"
-            }`).join(',')}
-          ]` : ''}
-        }`).join(',\n        ')}
-      ]
-    }
-  }
-  </script>
+    "@graph": [
+      wrapInWebPageSchema(
+        "https://the1031center.com/team",
+        "Our Team | Expert 1031 Exchange Specialists",
+        "Meet the experienced team of 1031 exchange specialists at The 1031 Center.",
+        {
+          "@type": "AboutPage",
+          "@id": "https://the1031center.com/team#aboutpage",
+          "mainEntity": {
+            "@type": "Organization",
+            "@id": "https://the1031center.com/#organization",
+            "employee": transformedTeamMembers.map(member => createPersonSchema({
+              id: member.id,
+              name: member.name,
+              title: member.title,
+              image: member.image,
+              bio: member.bio,
+              email: member.email,
+              linkedin: member.linkedin,
+              education: member.education,
+              certifications: member.certifications,
+              specialties: member.specialties,
+              publications: member.publications
+            }))
+          }
+        }
+      )
+    ]
+  })} />
 </Layout>

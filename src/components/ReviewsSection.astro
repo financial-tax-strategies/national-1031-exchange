@@ -1,4 +1,10 @@
 ---
+import { 
+  generateJsonLdScript, 
+  createRatingSchema, 
+  createReviewSchema 
+} from '../utils/schema-utils';
+
 export interface Props {
   limit?: number;
   showSummary?: boolean;
@@ -144,51 +150,38 @@ if (error && reviews.length === 0) {
 </section>
 
 <!-- Review Schema Markup -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "AggregateRating",
-  "itemReviewed": {
-    "@type": "Service",
-    "name": "1031 Exchange Services",
-    "provider": {
-      "@type": "Organization",
-      "name": "The 1031 Center"
-    }
-  },
-  "ratingValue": ${summary?.average_rating || 5},
-  "bestRating": "5",
-  "worstRating": "1",
-  "ratingCount": ${summary?.total_reviews || reviews.length}
-}
-</script>
-
-{reviews.map(review => (
-  <script type="application/ld+json">
-  {
+{showSummary && summary && (
+  <script type="application/ld+json" set:html={generateJsonLdScript({
     "@context": "https://schema.org",
-    "@type": "Review",
+    "@type": "AggregateRating",
     "itemReviewed": {
       "@type": "Service",
-      "name": "1031 Exchange Services"
+      "name": "1031 Exchange Services",
+      "provider": {
+        "@type": "Organization",
+        "name": "The 1031 Center",
+        "@id": "https://the1031center.com/#organization"
+      }
     },
-    "reviewRating": {
-      "@type": "Rating",
-      "ratingValue": ${review.review_rating_value},
-      "bestRating": "5",
-      "worstRating": "1"
-    },
-    "author": {
-      "@type": "Person",
-      "name": "${review.author_name}"${review.author_location ? `,
-      "address": {
-        "@type": "PostalAddress",
-        "addressLocality": "${review.author_location}"
-      }` : ''}
-    },
-    "datePublished": "${review.date_published}",
-    "headline": "${review.headline || ''}",
-    "reviewBody": "${review.review_body?.replace(/"/g, '\\"') || ''}"
-  }
-  </script>
+    ...createRatingSchema(
+      summary.average_rating || 5,
+      'AggregateRating',
+      summary.total_reviews || reviews.length
+    )
+  })} />
+)}
+
+{reviews.map(review => (
+  <script type="application/ld+json" set:html={generateJsonLdScript(
+    createReviewSchema({
+      id: review.id,
+      author: review.author_name,
+      location: review.author_location,
+      date: review.date_published,
+      rating: review.review_rating_value,
+      headline: review.headline || 'Client Review',
+      review: review.review_body || '',
+      exchangeType: '1031 Exchange Services'
+    })
+  )} />
 ))}
