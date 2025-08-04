@@ -351,16 +351,36 @@ if (isSupabaseAdminConfigured() && isAuthenticated) {
 </AdminLayout>
 
 <script>
-  // Modal handling
-  const modal = document.getElementById('memberModal');
-  const modalTitle = document.getElementById('modalTitle');
-  const form = document.getElementById('memberForm') as HTMLFormElement;
-  const memberIdInput = document.getElementById('memberId') as HTMLInputElement;
-  const addBtn = document.getElementById('addMemberBtn');
-  const cancelBtn = document.getElementById('cancelBtn');
+  // Immediate logging to verify script is running
+  console.log('[DEBUG] Script starting...');
   
-  // Show modal for adding
-  addBtn?.addEventListener('click', () => {
+  // Global error handler to catch any issues
+  window.addEventListener('error', (event) => {
+    console.error('[DEBUG] JavaScript error:', event.error);
+  });
+  
+  // Wait for DOM to be ready
+  document.addEventListener('DOMContentLoaded', () => {
+    try {
+      console.log('[DEBUG] DOM loaded, initializing team members debug page...');
+    
+    // Modal handling
+    const modal = document.getElementById('memberModal');
+    const modalTitle = document.getElementById('modalTitle');
+    const form = document.getElementById('memberForm') as HTMLFormElement;
+    const memberIdInput = document.getElementById('memberId') as HTMLInputElement;
+    const addBtn = document.getElementById('addMemberBtn');
+    const cancelBtn = document.getElementById('cancelBtn');
+    
+    console.log('[DEBUG] Elements found:', {
+      modal: !!modal,
+      form: !!form,
+      addBtn: !!addBtn,
+      cancelBtn: !!cancelBtn
+    });
+    
+    // Show modal for adding
+    addBtn?.addEventListener('click', () => {
     modalTitle!.textContent = 'Add Team Member';
     form.reset();
     memberIdInput.value = '';
@@ -596,5 +616,9 @@ if (isSupabaseAdminConfigured() && isAuthenticated) {
     });
   });
   
-  console.log('[DEBUG] Team members management page loaded');
+      console.log('[DEBUG] Team members management page loaded');
+    } catch (error) {
+      console.error('[DEBUG] Error during initialization:', error);
+    }
+  }); // End of DOMContentLoaded
 </script>
