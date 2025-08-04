@@ -42,9 +42,7 @@ Allow: /
 Crawl-delay: 1
 
 # Sitemap location
-Sitemap: https://the1031center.com/sitemap.xml
-Sitemap: https://the1031center.com/sitemap-pages.xml
-Sitemap: https://the1031center.com/sitemap-locations.xml
+Sitemap: https://the1031center.com/sitemap-index.xml
 
 # Cache policy hint
 Cache-Control: public, max-age=86400
