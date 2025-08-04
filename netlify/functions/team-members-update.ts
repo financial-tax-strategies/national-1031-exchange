@@ -1,5 +1,4 @@
 import type { Handler } from '@netlify/functions';
-import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl = process.env.PUBLIC_SUPABASE_URL || '';
 const supabaseAnonKey = process.env.PUBLIC_SUPABASE_ANON_KEY || '';
@@ -38,32 +37,36 @@ export const handler: Handler = async (event, context) => {
       };
     }
     
-    // Create Supabase client
-    const supabase = createClient(supabaseUrl, supabaseAnonKey);
+    // Use Supabase REST API directly
+    const response = await fetch(`${supabaseUrl}/rest/v1/team_members?id=eq.${id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': supabaseAnonKey,
+        'Authorization': `Bearer ${supabaseAnonKey}`,
+        'Prefer': 'return=representation'
+      },
+      body: JSON.stringify(updateData)
+    });
     
-    // Update team member
-    const { data, error } = await supabase
-      .from('team_members')
-      .update(updateData)
-      .eq('id', id)
-      .select()
-      .single();
-    
-    if (error) {
-      console.error('Error updating team member:', error);
+    if (!response.ok) {
+      const error = await response.text();
+      console.error('Supabase error:', error);
       return {
-        statusCode: 500,
+        statusCode: response.status,
         body: JSON.stringify({ 
           error: 'Failed to update team member',
-          details: error.message 
+          details: error 
         }),
         headers: { 'Content-Type': 'application/json' },
       };
     }
     
+    const data = await response.json();
+    
     return {
       statusCode: 200,
-      body: JSON.stringify({ data }),
+      body: JSON.stringify({ data: data[0] || null }),
       headers: { 'Content-Type': 'application/json' },
     };
   } catch (error) {
