@@ -1,0 +1,286 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import { COMPANY, getPhoneLink } from '../../config/company';
+
+const competitors = [
+  { slug: 'ipx1031', name: 'IPX1031', description: 'Large national QI with extensive history' },
+  { slug: 'exeter-1031', name: 'Exeter 1031', description: 'Established intermediary with multiple offices' },
+  { slug: 'asset-preservation', name: 'Asset Preservation', description: 'Stewart Title-backed exchange services' },
+  { slug: 'first-american-exchange', name: 'First American Exchange', description: 'Title company integrated QI services' },
+  { slug: 'chicago-deferred-exchange', name: 'Chicago Deferred Exchange', description: 'Regional QI with local expertise' },
+  { slug: 'realty-exchange-corporation', name: 'Realty Exchange Corporation', description: 'Specialized 1031 exchange services' },
+  { slug: 'accruit', name: 'Accruit', description: 'Technology-focused QI platform' },
+  { slug: 'starker-services', name: 'Starker Services', description: 'Pioneer in 1031 exchange industry' },
+  { slug: 'equity-advantage', name: 'Equity Advantage', description: 'Regional leader with educational focus' },
+  { slug: 'madison-1031', name: 'Madison 1031', description: 'Midwest-based QI services' },
+  { slug: 'republic-exchange', name: 'Republic Exchange', description: 'Professional exchange services' },
+  { slug: 'orion-exchange', name: 'Orion Exchange', description: 'Specialized QI with focused expertise' },
+  { slug: 'vantage-point', name: 'Vantage Point 1031', description: 'Strategic exchange solutions' },
+  { slug: 'strategic-property-exchanges', name: 'Strategic Property Exchanges', description: 'Professional QI services' },
+  { slug: 'independence-title', name: 'Independence Title', description: 'Title-integrated exchange services' }
+];
+---
+
+<Layout 
+  title="Compare 1031 Exchange Companies | QI Comparisons"
+  description="Compare National 1031 Center with other qualified intermediaries. See detailed comparisons of services, security, technology, and client experiences."
+>
+  <!-- Hero Section -->
+  <section class="bg-gradient-to-r from-blue-900 via-blue-800 to-blue-900 text-white py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-4xl">
+        <Breadcrumbs 
+          items={[
+            { name: 'Home', url: '/' },
+            { name: 'QI Comparisons' }
+          ]}
+          class="text-blue-200 mb-4 [&_a]:text-blue-200 [&_a:hover]:text-white [&_span]:text-white"
+        />
+        
+        <h1 class="text-4xl md:text-5xl font-bold mb-6">
+          Compare 1031 Exchange Companies
+        </h1>
+        <p class="text-xl text-blue-100 mb-8">
+          Make an informed decision by comparing National 1031 Center with other qualified 
+          intermediaries. See why thousands choose us for their exchanges.
+        </p>
+        
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="/start-exchange" class="bg-yellow-400 text-blue-900 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-yellow-300 transition-all duration-300 transform hover:scale-105 text-center">
+            Start Your Exchange
+          </a>
+          <a href="/calculator" class="border-2 border-white text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-white hover:text-blue-900 transition-all duration-300 text-center">
+            Calculate Savings
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why Compare Section -->
+  <section class="py-16 bg-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold text-gray-900 text-center mb-8">
+        Why Compare Qualified Intermediaries?
+      </h2>
+      <p class="text-lg text-gray-700 leading-relaxed mb-6">
+        Choosing the right qualified intermediary is crucial for a successful 1031 exchange. 
+        Your QI will hold your funds, guide you through complex regulations, and help ensure 
+        IRS compliance. The wrong choice could jeopardize your entire exchange.
+      </p>
+      <p class="text-lg text-gray-700 leading-relaxed">
+        We've created detailed comparisons to help you understand the differences between 
+        National 1031 Center and other QIs. Each comparison covers service quality, technology, 
+        security measures, pricing transparency, and client experiences.
+      </p>
+    </div>
+  </section>
+
+  <!-- Key Differentiators -->
+  <section class="py-16 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold text-gray-900 text-center mb-12">
+        What Sets National 1031 Center Apart
+      </h2>
+      
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div class="bg-white rounded-lg p-6 shadow-md">
+          <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
+            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-2">48-Hour Response</h3>
+          <p class="text-gray-600">
+            Guaranteed response time that most competitors can't match
+          </p>
+        </div>
+        
+        <div class="bg-white rounded-lg p-6 shadow-md">
+          <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-4">
+            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-2">Bonded & Insured</h3>
+          <p class="text-gray-600">
+            Superior fund protection with segregated accounts
+          </p>
+        </div>
+        
+        <div class="bg-white rounded-lg p-6 shadow-md">
+          <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
+            <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-2">Dedicated Specialist</h3>
+          <p class="text-gray-600">
+            One expert guides you from start to finish
+          </p>
+        </div>
+        
+        <div class="bg-white rounded-lg p-6 shadow-md">
+          <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center mb-4">
+            <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-2">24/7 Portal Access</h3>
+          <p class="text-gray-600">
+            Modern technology that many competitors lack
+          </p>
+        </div>
+        
+        <div class="bg-white rounded-lg p-6 shadow-md">
+          <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center mb-4">
+            <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-2">Transparent Pricing</h3>
+          <p class="text-gray-600">
+            No hidden fees or surprise charges
+          </p>
+        </div>
+        
+        <div class="bg-white rounded-lg p-6 shadow-md">
+          <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mb-4">
+            <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path>
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-2">Proven Excellence</h3>
+          <p class="text-gray-600">
+            10,000+ successful exchanges completed
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Competitor Comparisons -->
+  <section class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold text-gray-900 text-center mb-12">
+        Detailed QI Comparisons
+      </h2>
+      
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {competitors.map((competitor) => (
+          <a href={`/comparisons/${competitor.slug}`} class="bg-gray-50 rounded-lg p-6 shadow-md hover:shadow-lg transition-shadow duration-300 group">
+            <h3 class="text-xl font-semibold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
+              National 1031 vs {competitor.name}
+            </h3>
+            <p class="text-gray-600 mb-4">
+              {competitor.description}
+            </p>
+            <span class="text-blue-600 font-medium group-hover:underline">
+              View Comparison →
+            </span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- What to Look For -->
+  <section class="py-16 bg-gray-50">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold text-gray-900 text-center mb-12">
+        What to Look for in a Qualified Intermediary
+      </h2>
+      
+      <div class="space-y-8">
+        <div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-3">1. Security & Protection</h3>
+          <p class="text-gray-700">
+            Your QI will hold significant funds during your exchange. Look for bonding, insurance, 
+            segregated accounts, and a track record of secure fund management. Ask about their 
+            security measures and any claims history.
+          </p>
+        </div>
+        
+        <div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-3">2. Experience & Expertise</h3>
+          <p class="text-gray-700">
+            Choose a QI with proven experience in your type of exchange. They should have 
+            Certified Exchange Specialists on staff and access to legal and tax professionals 
+            who understand complex exchange scenarios.
+          </p>
+        </div>
+        
+        <div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-3">3. Service & Responsiveness</h3>
+          <p class="text-gray-700">
+            During critical exchange deadlines, you need prompt responses. Look for guaranteed 
+            response times, dedicated specialists (not call centers), and availability when you 
+            need them most.
+          </p>
+        </div>
+        
+        <div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-3">4. Technology & Transparency</h3>
+          <p class="text-gray-700">
+            Modern QIs should offer online portals, document management, and real-time tracking 
+            of your exchange. Pricing should be transparent with no hidden fees or surprise charges.
+          </p>
+        </div>
+        
+        <div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-3">5. Reputation & References</h3>
+          <p class="text-gray-700">
+            Check reviews, ask for references, and verify their standing with industry associations. 
+            A reputable QI will gladly provide references and demonstrate their track record.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="py-16 bg-blue-900">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h2 class="text-3xl font-bold text-white mb-4">
+        Ready to Work with the Best?
+      </h2>
+      <p class="text-xl text-blue-100 mb-8">
+        See why more investors choose National 1031 Center for their exchanges. 
+        Experience the difference that superior service, technology, and security make.
+      </p>
+      
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="/start-exchange" class="bg-yellow-400 text-blue-900 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-yellow-300 transition-all duration-300 transform hover:scale-105">
+          Start Your Exchange
+        </a>
+        <a href="/schedule" class="border-2 border-white text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-white hover:text-blue-900 transition-all duration-300">
+          Schedule a Consultation
+        </a>
+      </div>
+      
+      <p class="mt-8 text-blue-200">
+        Questions? Call <a href={getPhoneLink()} class="text-yellow-400 hover:text-yellow-300 font-semibold">{COMPANY.phone.main}</a>
+      </p>
+    </div>
+  </section>
+
+  <!-- Schema Markup -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": "1031 Exchange Company Comparisons",
+    "description": "Detailed comparisons between National 1031 Center and other qualified intermediaries",
+    "numberOfItems": 15,
+    "itemListElement": [
+      {competitors.map((competitor, index) => `{
+        "@type": "ListItem",
+        "position": ${index + 1},
+        "url": "https://the1031center.com/comparisons/${competitor.slug}",
+        "name": "National 1031 Center vs ${competitor.name}"
+      }`).join(',')}
+    ]
+  }
+  </script>
+</Layout>

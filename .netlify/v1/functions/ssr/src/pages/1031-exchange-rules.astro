@@ -1,0 +1,811 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { COMPANY, getPhoneLink } from '../config/company';
+import { createArticleSchema, generateJsonLdScript } from '../utils/schema-utils';
+
+// Create comprehensive Article schema with all required fields
+const articleSchema = createArticleSchema({
+  type: 'Article',
+  headline: '1031 Exchange Rules & Regulations: Complete IRS Guidelines 2024',
+  description: 'Comprehensive guide to all 1031 exchange rules and IRS regulations including timing requirements, identification procedures, qualifying properties, and compliance guidelines.',
+  image: [
+    '/images/guides/1031-exchange-rules.jpg',
+    '/images/guides/irs-regulations.jpg',
+    '/images/guides/exchange-timeline.jpg'
+  ],
+  author: 'National 1031 Center Tax Team',
+  datePublished: '2024-01-01',
+  dateModified: new Date().toISOString().split('T')[0],
+  url: '/1031-exchange-rules',
+  wordCount: 3892, // Approximately 3892 words based on content
+  articleSection: 'Tax Guide',
+  keywords: '1031 exchange rules, IRS regulations, like-kind property, 45-day rule, 180-day rule, identification rules, qualified intermediary requirements, tax deferral'
+});
+---
+
+<Layout 
+  title="1031 Exchange Rules & Regulations | Complete IRS Guidelines 2024"
+  description="Master all 1031 exchange rules and IRS regulations. Learn about like-kind property requirements, timing rules, identification procedures, and compliance requirements."
+>
+  
+  <!-- Hero Section -->
+  <section class="bg-gradient-to-b from-blue-50 to-white py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+          1031 Exchange Rules & IRS Regulations
+        </h1>
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
+          Navigate the complete framework of 1031 exchange regulations with confidence. 
+          From Section 1031 requirements to specific timing rules, we break down every 
+          regulation you need to know for a successful tax-deferred exchange.
+        </p>
+        
+        <!-- CTA Buttons -->
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="/start-exchange" 
+             class="bg-yellow-400 text-blue-900 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-yellow-300 transition-all duration-300 transform hover:scale-105 shadow-lg">
+            Start Your Compliant Exchange
+          </a>
+          <a href="/contact" 
+             class="border-2 border-blue-600 text-blue-600 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-blue-600 hover:text-white transition-all duration-300">
+            Get Expert Guidance
+          </a>
+        </div>
+      </div>
+      
+      <!-- Quick Reference Card -->
+      <div class="bg-white rounded-lg shadow-lg p-8 max-w-4xl mx-auto">
+        <h2 class="text-xl font-semibold text-gray-900 mb-4 text-center">Quick Rule Reference</h2>
+        <div class="grid md:grid-cols-4 gap-4 text-center">
+          <div>
+            <div class="text-3xl font-bold text-blue-600">45</div>
+            <div class="text-gray-600">Days to Identify</div>
+          </div>
+          <div>
+            <div class="text-3xl font-bold text-green-600">180</div>
+            <div class="text-gray-600">Days to Close</div>
+          </div>
+          <div>
+            <div class="text-3xl font-bold text-purple-600">3</div>
+            <div class="text-gray-600">Property Limit</div>
+          </div>
+          <div>
+            <div class="text-3xl font-bold text-orange-600">95%</div>
+            <div class="text-gray-600">Reinvestment Rule</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Table of Contents -->
+  <section class="py-8 bg-gray-50">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="bg-white rounded-lg shadow-md p-6">
+        <h2 class="text-lg font-semibold text-gray-900 mb-4">Table of Contents</h2>
+        <nav class="space-y-2">
+          <a href="#section-1031" class="block text-blue-600 hover:text-blue-700">1. Understanding Section 1031</a>
+          <a href="#qualifying-properties" class="block text-blue-600 hover:text-blue-700">2. Qualifying Properties</a>
+          <a href="#timing-rules" class="block text-blue-600 hover:text-blue-700">3. Critical Timing Rules</a>
+          <a href="#identification-rules" class="block text-blue-600 hover:text-blue-700">4. Identification Rules</a>
+          <a href="#exchange-requirements" class="block text-blue-600 hover:text-blue-700">5. Exchange Requirements</a>
+          <a href="#prohibited-transactions" class="block text-blue-600 hover:text-blue-700">6. Prohibited Transactions</a>
+          <a href="#qualified-intermediary" class="block text-blue-600 hover:text-blue-700">7. Qualified Intermediary Rules</a>
+          <a href="#reporting-compliance" class="block text-blue-600 hover:text-blue-700">8. Reporting & Compliance</a>
+        </nav>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Section 1: Understanding Section 1031 -->
+  <section id="section-1031" class="py-16 bg-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold text-gray-900 mb-8">Understanding Section 1031 of the Tax Code</h2>
+      
+      <div class="prose prose-lg max-w-none text-gray-600">
+        <p class="mb-6">
+          Section 1031 of the Internal Revenue Code provides one of the most powerful tax deferral strategies 
+          available to real estate investors. Established in 1921, this provision allows property owners to 
+          defer capital gains taxes when exchanging investment or business property for "like-kind" property.
+        </p>
+        
+        <div class="bg-blue-50 border-l-4 border-blue-400 p-6 rounded-lg mb-8">
+          <h3 class="text-lg font-semibold text-gray-900 mb-2">The Legal Foundation</h3>
+          <p class="text-gray-700 italic">
+            "No gain or loss shall be recognized on the exchange of real property held for productive use in a 
+            trade or business or for investment if such real property is exchanged solely for real property of 
+            like kind which is to be held either for productive use in a trade or business or for investment."
+          </p>
+          <p class="text-sm text-gray-600 mt-2">- IRC Section 1031(a)(1)</p>
+        </div>
+        
+        <h3 class="text-2xl font-semibold text-gray-900 mb-4">Key Principles</h3>
+        
+        <div class="space-y-6">
+          <div>
+            <h4 class="text-xl font-semibold text-gray-900 mb-2">Tax Deferral, Not Tax Elimination</h4>
+            <p>
+              A 1031 exchange defers taxes rather than eliminating them. The deferred gain reduces your basis 
+              in the replacement property. When you eventually sell without doing another exchange, you'll pay 
+              taxes on the accumulated gain.
+            </p>
+          </div>
+          
+          <div>
+            <h4 class="text-xl font-semibold text-gray-900 mb-2">Investment Intent Required</h4>
+            <p>
+              Both the relinquished and replacement properties must be held for investment or productive use 
+              in a trade or business. Personal residences and property held primarily for sale do not qualify.
+            </p>
+          </div>
+          
+          <div>
+            <h4 class="text-xl font-semibold text-gray-900 mb-2">Equal or Greater Value Rule</h4>
+            <p>
+              To defer all taxes, you must reinvest the full net proceeds and acquire replacement property 
+              of equal or greater value. Any cash or debt relief received (boot) is taxable.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Section 2: Qualifying Properties -->
+  <section id="qualifying-properties" class="py-16 bg-gray-50">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold text-gray-900 mb-8">Properties That Qualify for 1031 Exchanges</h2>
+      
+      <div class="grid md:grid-cols-2 gap-8 mb-8">
+        <div class="bg-white p-6 rounded-lg shadow-md">
+          <h3 class="text-xl font-semibold text-gray-900 mb-4 text-green-600">✓ Qualifying Properties</h3>
+          <ul class="space-y-3">
+            <li class="flex items-start">
+              <svg class="w-5 h-5 text-green-500 mt-1 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+              </svg>
+              <span>Rental properties (residential or commercial)</span>
+            </li>
+            <li class="flex items-start">
+              <svg class="w-5 h-5 text-green-500 mt-1 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+              </svg>
+              <span>Office buildings</span>
+            </li>
+            <li class="flex items-start">
+              <svg class="w-5 h-5 text-green-500 mt-1 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+              </svg>
+              <span>Retail properties</span>
+            </li>
+            <li class="flex items-start">
+              <svg class="w-5 h-5 text-green-500 mt-1 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+              </svg>
+              <span>Industrial properties</span>
+            </li>
+            <li class="flex items-start">
+              <svg class="w-5 h-5 text-green-500 mt-1 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+              </svg>
+              <span>Raw land held for investment</span>
+            </li>
+            <li class="flex items-start">
+              <svg class="w-5 h-5 text-green-500 mt-1 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+              </svg>
+              <span>Vacation rentals (with restrictions)</span>
+            </li>
+            <li class="flex items-start">
+              <svg class="w-5 h-5 text-green-500 mt-1 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+              </svg>
+              <span>Tenant-in-common interests</span>
+            </li>
+            <li class="flex items-start">
+              <svg class="w-5 h-5 text-green-500 mt-1 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+              </svg>
+              <span>Delaware Statutory Trusts (DSTs)</span>
+            </li>
+          </ul>
+        </div>
+        
+        <div class="bg-white p-6 rounded-lg shadow-md">
+          <h3 class="text-xl font-semibold text-gray-900 mb-4 text-red-600">✗ Non-Qualifying Properties</h3>
+          <ul class="space-y-3">
+            <li class="flex items-start">
+              <svg class="w-5 h-5 text-red-500 mt-1 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+              </svg>
+              <span>Primary residences</span>
+            </li>
+            <li class="flex items-start">
+              <svg class="w-5 h-5 text-red-500 mt-1 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+              </svg>
+              <span>Fix-and-flip properties</span>
+            </li>
+            <li class="flex items-start">
+              <svg class="w-5 h-5 text-red-500 mt-1 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+              </svg>
+              <span>Inventory (developer property)</span>
+            </li>
+            <li class="flex items-start">
+              <svg class="w-5 h-5 text-red-500 mt-1 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+              </svg>
+              <span>Stocks, bonds, or securities</span>
+            </li>
+            <li class="flex items-start">
+              <svg class="w-5 h-5 text-red-500 mt-1 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+              </svg>
+              <span>Partnership interests</span>
+            </li>
+            <li class="flex items-start">
+              <svg class="w-5 h-5 text-red-500 mt-1 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+              </svg>
+              <span>Foreign real estate (with exceptions)</span>
+            </li>
+            <li class="flex items-start">
+              <svg class="w-5 h-5 text-red-500 mt-1 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+              </svg>
+              <span>Machinery and equipment</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="bg-yellow-50 border-l-4 border-yellow-400 p-6 rounded-lg">
+        <h3 class="text-lg font-semibold text-gray-900 mb-2">Important: "Like-Kind" Definition</h3>
+        <p class="text-gray-700">
+          For real estate, "like-kind" is interpreted very broadly. You can exchange any type of investment 
+          real estate for any other type. For example, you can exchange raw land for a rental property, or 
+          an office building for a retail center. The key is that both properties must be held for investment 
+          or business use.
+        </p>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Section 3: Timing Rules -->
+  <section id="timing-rules" class="py-16 bg-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold text-gray-900 mb-8">Critical Timing Rules</h2>
+      
+      <div class="space-y-8">
+        <!-- 45-Day Rule -->
+        <div class="bg-gray-50 p-8 rounded-lg">
+          <div class="flex items-center mb-4">
+            <div class="bg-blue-600 text-white text-2xl font-bold rounded-full w-12 h-12 flex items-center justify-center mr-4">
+              45
+            </div>
+            <h3 class="text-2xl font-semibold text-gray-900">45-Day Identification Period</h3>
+          </div>
+          
+          <p class="text-gray-600 mb-4">
+            You have exactly 45 calendar days from the date you close on your relinquished property to identify 
+            potential replacement properties. This deadline is absolute with no extensions, even if it falls on 
+            a weekend or holiday.
+          </p>
+          
+          <div class="bg-white p-4 rounded-lg border border-gray-200">
+            <h4 class="font-semibold text-gray-900 mb-2">Identification Requirements:</h4>
+            <ul class="space-y-2 text-gray-600">
+              <li>• Must be in writing and signed</li>
+              <li>• Must clearly describe each property (address or legal description)</li>
+              <li>• Must be delivered to your Qualified Intermediary</li>
+              <li>• Cannot be revoked after the 45th day</li>
+            </ul>
+          </div>
+        </div>
+        
+        <!-- 180-Day Rule -->
+        <div class="bg-gray-50 p-8 rounded-lg">
+          <div class="flex items-center mb-4">
+            <div class="bg-green-600 text-white text-2xl font-bold rounded-full w-12 h-12 flex items-center justify-center mr-4">
+              180
+            </div>
+            <h3 class="text-2xl font-semibold text-gray-900">180-Day Exchange Period</h3>
+          </div>
+          
+          <p class="text-gray-600 mb-4">
+            You must close on your replacement property within 180 calendar days of selling your relinquished 
+            property OR by your tax return due date (including extensions), whichever comes first.
+          </p>
+          
+          <div class="bg-white p-4 rounded-lg border border-gray-200">
+            <h4 class="font-semibold text-gray-900 mb-2">Critical Points:</h4>
+            <ul class="space-y-2 text-gray-600">
+              <li>• No extensions available for any reason</li>
+              <li>• Must acquire property that was properly identified</li>
+              <li>• All closings must be complete within the period</li>
+              <li>• Tax filing deadline can shorten the 180-day period</li>
+            </ul>
+          </div>
+        </div>
+        
+        <!-- Simultaneous Closing -->
+        <div class="bg-gray-50 p-8 rounded-lg">
+          <h3 class="text-2xl font-semibold text-gray-900 mb-4">Same-Day Exchanges</h3>
+          <p class="text-gray-600 mb-4">
+            In a simultaneous exchange, both properties close on the same day. While this eliminates timing 
+            concerns, a Qualified Intermediary is still required to ensure the exchange qualifies under Section 1031.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Section 4: Identification Rules -->
+  <section id="identification-rules" class="py-16 bg-gray-50">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold text-gray-900 mb-8">Property Identification Rules</h2>
+      
+      <p class="text-lg text-gray-600 mb-8">
+        The IRS provides three ways to identify replacement properties. You must follow at least one of these 
+        rules to have a valid exchange:
+      </p>
+      
+      <div class="space-y-6">
+        <!-- Three Property Rule -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+          <div class="flex items-start">
+            <div class="bg-blue-100 rounded-full p-3 mr-4">
+              <span class="text-2xl font-bold text-blue-600">3</span>
+            </div>
+            <div>
+              <h3 class="text-xl font-semibold text-gray-900 mb-2">Three-Property Rule</h3>
+              <p class="text-gray-600 mb-3">
+                You may identify up to three properties regardless of their value. This is the most commonly 
+                used identification rule.
+              </p>
+              <div class="bg-blue-50 p-4 rounded-lg">
+                <p class="text-sm text-gray-700">
+                  <strong>Example:</strong> You can identify three $10 million properties even if you're only 
+                  selling a property for $500,000. You don't have to purchase all identified properties.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 200% Rule -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+          <div class="flex items-start">
+            <div class="bg-green-100 rounded-full p-3 mr-4">
+              <span class="text-xl font-bold text-green-600">200%</span>
+            </div>
+            <div>
+              <h3 class="text-xl font-semibold text-gray-900 mb-2">200% Rule</h3>
+              <p class="text-gray-600 mb-3">
+                You may identify any number of properties as long as their combined value doesn't exceed 200% 
+                of the value of your relinquished property.
+              </p>
+              <div class="bg-green-50 p-4 rounded-lg">
+                <p class="text-sm text-gray-700">
+                  <strong>Example:</strong> If you sell a property for $1 million, you can identify any number 
+                  of properties as long as their total value doesn't exceed $2 million.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 95% Rule -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+          <div class="flex items-start">
+            <div class="bg-purple-100 rounded-full p-3 mr-4">
+              <span class="text-xl font-bold text-purple-600">95%</span>
+            </div>
+            <div>
+              <h3 class="text-xl font-semibold text-gray-900 mb-2">95% Rule</h3>
+              <p class="text-gray-600 mb-3">
+                You may identify any number of properties of any value, but you must acquire at least 95% of 
+                the total value of all properties identified.
+              </p>
+              <div class="bg-purple-50 p-4 rounded-lg">
+                <p class="text-sm text-gray-700">
+                  <strong>Warning:</strong> This rule is risky because if you fail to acquire 95% of the 
+                  identified properties, your entire exchange fails. Use with extreme caution.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="mt-8 bg-yellow-50 border-l-4 border-yellow-400 p-6 rounded-lg">
+        <h3 class="text-lg font-semibold text-gray-900 mb-2">Pro Tip: Always Have Backup Properties</h3>
+        <p class="text-gray-700">
+          Most investors use the three-property rule and identify three properties even if they only intend 
+          to purchase one. This provides backup options if your first choice falls through.
+        </p>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Section 5: Exchange Requirements -->
+  <section id="exchange-requirements" class="py-16 bg-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold text-gray-900 mb-8">Essential Exchange Requirements</h2>
+      
+      <div class="grid md:grid-cols-2 gap-8">
+        <div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-4">To Defer All Taxes</h3>
+          <div class="space-y-4">
+            <div class="bg-gray-50 p-4 rounded-lg">
+              <h4 class="font-semibold text-gray-900 mb-2">Equal or Greater Value</h4>
+              <p class="text-gray-600">
+                Purchase replacement property of equal or greater value than the net selling price of your 
+                relinquished property.
+              </p>
+            </div>
+            <div class="bg-gray-50 p-4 rounded-lg">
+              <h4 class="font-semibold text-gray-900 mb-2">Reinvest All Proceeds</h4>
+              <p class="text-gray-600">
+                Use all net proceeds from the sale. Any cash received (boot) will be taxable.
+              </p>
+            </div>
+            <div class="bg-gray-50 p-4 rounded-lg">
+              <h4 class="font-semibold text-gray-900 mb-2">Equal or Greater Debt</h4>
+              <p class="text-gray-600">
+                Replace all debt or use additional cash. Debt relief is treated as taxable boot.
+              </p>
+            </div>
+          </div>
+        </div>
+        
+        <div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-4">Title Requirements</h3>
+          <div class="space-y-4">
+            <div class="bg-gray-50 p-4 rounded-lg">
+              <h4 class="font-semibold text-gray-900 mb-2">Same Taxpayer Rule</h4>
+              <p class="text-gray-600">
+                The same taxpayer who sells must buy. If John Doe sells, John Doe must buy (not John Doe LLC).
+              </p>
+            </div>
+            <div class="bg-gray-50 p-4 rounded-lg">
+              <h4 class="font-semibold text-gray-900 mb-2">Disregarded Entities OK</h4>
+              <p class="text-gray-600">
+                Single-member LLCs are acceptable as they're disregarded for tax purposes.
+              </p>
+            </div>
+            <div class="bg-gray-50 p-4 rounded-lg">
+              <h4 class="font-semibold text-gray-900 mb-2">Partnership Considerations</h4>
+              <p class="text-gray-600">
+                Partnerships can do exchanges, but special rules apply. Individual partners cannot exchange 
+                their partnership interests.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="mt-8 bg-red-50 border-l-4 border-red-400 p-6 rounded-lg">
+        <h3 class="text-lg font-semibold text-gray-900 mb-2">Critical: Boot Rules</h3>
+        <p class="text-gray-700">
+          "Boot" is any value received that's not like-kind property. This includes:
+        </p>
+        <ul class="mt-2 space-y-1 text-gray-700">
+          <li>• Cash proceeds not reinvested</li>
+          <li>• Debt reduction (mortgage boot)</li>
+          <li>• Personal property received</li>
+          <li>• Non-qualifying property</li>
+        </ul>
+        <p class="mt-2 text-gray-700 font-semibold">
+          All boot is taxable in the year of the exchange and cannot be deferred.
+        </p>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Section 6: Prohibited Transactions -->
+  <section id="prohibited-transactions" class="py-16 bg-gray-50">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold text-gray-900 mb-8">Prohibited Transactions & Related Party Rules</h2>
+      
+      <div class="bg-white rounded-lg shadow-lg p-8 mb-8">
+        <h3 class="text-xl font-semibold text-gray-900 mb-4">Receipt of Exchange Funds</h3>
+        <p class="text-gray-600 mb-4">
+          The most critical rule: You cannot receive, control, or have constructive receipt of the exchange 
+          funds between the sale and purchase. This is why a Qualified Intermediary is essential.
+        </p>
+        
+        <div class="bg-red-50 p-4 rounded-lg">
+          <p class="text-red-800">
+            <strong>Warning:</strong> Even touching the funds for one moment disqualifies the entire exchange. 
+            The funds must go directly from the closing to your QI.
+          </p>
+        </div>
+      </div>
+      
+      <div class="grid md:grid-cols-2 gap-8">
+        <div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-4">Related Party Transactions</h3>
+          <p class="text-gray-600 mb-4">
+            Exchanges with related parties are allowed but subject to special rules:
+          </p>
+          <ul class="space-y-2 text-gray-600">
+            <li class="flex items-start">
+              <span class="text-red-500 mr-2">•</span>
+              <span>2-year holding requirement for both parties</span>
+            </li>
+            <li class="flex items-start">
+              <span class="text-red-500 mr-2">•</span>
+              <span>Family members include spouse, children, parents, siblings</span>
+            </li>
+            <li class="flex items-start">
+              <span class="text-red-500 mr-2">•</span>
+              <span>Entities you control are related parties</span>
+            </li>
+            <li class="flex items-start">
+              <span class="text-red-500 mr-2">•</span>
+              <span>Cannot be used to shift basis between parties</span>
+            </li>
+          </ul>
+        </div>
+        
+        <div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-4">Disqualifying Events</h3>
+          <p class="text-gray-600 mb-4">
+            These actions will disqualify your exchange:
+          </p>
+          <ul class="space-y-2 text-gray-600">
+            <li class="flex items-start">
+              <span class="text-red-500 mr-2">✗</span>
+              <span>Using property as personal residence within 2 years</span>
+            </li>
+            <li class="flex items-start">
+              <span class="text-red-500 mr-2">✗</span>
+              <span>Predetermined arrangement to sell to specific buyer</span>
+            </li>
+            <li class="flex items-start">
+              <span class="text-red-500 mr-2">✗</span>
+              <span>Receiving exchange funds directly</span>
+            </li>
+            <li class="flex items-start">
+              <span class="text-red-500 mr-2">✗</span>
+              <span>Violating the held for investment requirement</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Section 7: Qualified Intermediary Rules -->
+  <section id="qualified-intermediary" class="py-16 bg-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold text-gray-900 mb-8">Qualified Intermediary Requirements</h2>
+      
+      <div class="prose prose-lg max-w-none text-gray-600">
+        <p class="mb-6">
+          A Qualified Intermediary (QI), also known as an Exchange Accommodator, is essential for all delayed 
+          exchanges. The QI holds your funds and facilitates the exchange to ensure you never have actual or 
+          constructive receipt of the proceeds.
+        </p>
+        
+        <div class="bg-blue-50 rounded-lg p-6 mb-8">
+          <h3 class="text-xl font-semibold text-gray-900 mb-4">Who Can Serve as a QI</h3>
+          <p class="mb-4">Any person or entity can serve as a QI except:</p>
+          <ul class="space-y-2">
+            <li>• You or your spouse</li>
+            <li>• Your attorney, accountant, or real estate agent</li>
+            <li>• Anyone who has provided services to you in the past 2 years</li>
+            <li>• Any entity in which you have more than 10% ownership</li>
+            <li>• Family members or related parties</li>
+          </ul>
+        </div>
+        
+        <h3 class="text-2xl font-semibold text-gray-900 mb-4">QI Responsibilities</h3>
+        
+        <div class="grid md:grid-cols-2 gap-6 mb-8">
+          <div class="bg-gray-50 p-6 rounded-lg">
+            <h4 class="text-lg font-semibold text-gray-900 mb-3">Documentation</h4>
+            <ul class="space-y-2 text-gray-600">
+              <li>• Prepare exchange agreements</li>
+              <li>• Document property identification</li>
+              <li>• Maintain exchange records</li>
+              <li>• Provide tax reporting documents</li>
+            </ul>
+          </div>
+          
+          <div class="bg-gray-50 p-6 rounded-lg">
+            <h4 class="text-lg font-semibold text-gray-900 mb-3">Fund Management</h4>
+            <ul class="space-y-2 text-gray-600">
+              <li>• Receive sale proceeds</li>
+              <li>• Hold funds in secure accounts</li>
+              <li>• Disburse for replacement property</li>
+              <li>• Maintain separate accounting</li>
+            </ul>
+          </div>
+        </div>
+        
+        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-6 rounded-lg">
+          <h3 class="text-lg font-semibold text-gray-900 mb-2">Choosing a QI: What to Look For</h3>
+          <ul class="space-y-2 text-gray-700">
+            <li>• Fidelity bond and insurance coverage</li>
+            <li>• Segregated client accounts</li>
+            <li>• Experience and track record</li>
+            <li>• Clear fee structure</li>
+            <li>• Strong financial backing</li>
+            <li>• Professional certifications</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Section 8: Reporting & Compliance -->
+  <section id="reporting-compliance" class="py-16 bg-gray-50">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold text-gray-900 mb-8">Reporting Requirements & Tax Compliance</h2>
+      
+      <div class="space-y-8">
+        <div class="bg-white rounded-lg shadow-md p-6">
+          <h3 class="text-xl font-semibold text-gray-900 mb-4">Form 8824 - Like-Kind Exchanges</h3>
+          <p class="text-gray-600 mb-4">
+            You must file Form 8824 with your tax return for the year of the exchange. This form reports:
+          </p>
+          <ul class="space-y-2 text-gray-600">
+            <li>• Description of properties exchanged</li>
+            <li>• Dates of identification and transfer</li>
+            <li>• Relationship of parties (if applicable)</li>
+            <li>• Value of like-kind and other property</li>
+            <li>• Adjusted basis calculations</li>
+            <li>• Realized and recognized gain</li>
+          </ul>
+        </div>
+        
+        <div class="bg-white rounded-lg shadow-md p-6">
+          <h3 class="text-xl font-semibold text-gray-900 mb-4">Basis Calculations</h3>
+          <p class="text-gray-600 mb-4">
+            Your basis in the replacement property equals:
+          </p>
+          <div class="bg-gray-50 p-4 rounded-lg font-mono text-sm">
+            <p>Basis of Relinquished Property</p>
+            <p>- Cash Received (Boot)</p>
+            <p>+ Cash Paid</p>
+            <p>+ Gain Recognized</p>
+            <p>- Loss Recognized</p>
+            <p>= Basis in Replacement Property</p>
+          </div>
+        </div>
+        
+        <div class="bg-white rounded-lg shadow-md p-6">
+          <h3 class="text-xl font-semibold text-gray-900 mb-4">Record Keeping Requirements</h3>
+          <p class="text-gray-600 mb-4">
+            Maintain these records indefinitely:
+          </p>
+          <div class="grid md:grid-cols-2 gap-4">
+            <ul class="space-y-2 text-gray-600">
+              <li>• Exchange agreement with QI</li>
+              <li>• Property identification notices</li>
+              <li>• Closing statements (HUD-1s)</li>
+              <li>• Form 8824 and tax returns</li>
+            </ul>
+            <ul class="space-y-2 text-gray-600">
+              <li>• Basis calculations</li>
+              <li>• Depreciation schedules</li>
+              <li>• All correspondence</li>
+              <li>• Evidence of investment intent</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      
+      <div class="mt-8 bg-blue-50 border-l-4 border-blue-400 p-6 rounded-lg">
+        <h3 class="text-lg font-semibold text-gray-900 mb-2">State Tax Considerations</h3>
+        <p class="text-gray-700">
+          While most states follow federal 1031 rules, some have additional requirements:
+        </p>
+        <ul class="mt-2 space-y-1 text-gray-700">
+          <li>• California requires filing Form 3840</li>
+          <li>• Some states don't recognize out-of-state exchanges</li>
+          <li>• State depreciation recapture rules may differ</li>
+          <li>• Consult state-specific tax advisors</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Common Mistakes Section -->
+  <section class="py-16 bg-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold text-gray-900 mb-8">Common Mistakes to Avoid</h2>
+      
+      <div class="grid md:grid-cols-2 gap-6">
+        <div class="bg-red-50 p-6 rounded-lg border border-red-200">
+          <h3 class="text-lg font-semibold text-red-900 mb-3">Missing Deadlines</h3>
+          <p class="text-red-800">
+            The 45 and 180-day deadlines are absolute. Missing them by even one day disqualifies your exchange.
+          </p>
+        </div>
+        
+        <div class="bg-red-50 p-6 rounded-lg border border-red-200">
+          <h3 class="text-lg font-semibold text-red-900 mb-3">Improper Identification</h3>
+          <p class="text-red-800">
+            Vague descriptions or informal identifications don't count. Follow the rules precisely.
+          </p>
+        </div>
+        
+        <div class="bg-red-50 p-6 rounded-lg border border-red-200">
+          <h3 class="text-lg font-semibold text-red-900 mb-3">Taking Possession of Funds</h3>
+          <p class="text-red-800">
+            Never let exchange funds touch your hands or accounts, even temporarily.
+          </p>
+        </div>
+        
+        <div class="bg-red-50 p-6 rounded-lg border border-red-200">
+          <h3 class="text-lg font-semibold text-red-900 mb-3">Changing Taxpayer</h3>
+          <p class="text-red-800">
+            The same tax entity that sells must buy. Don't change from personal to LLC ownership.
+          </p>
+        </div>
+        
+        <div class="bg-red-50 p-6 rounded-lg border border-red-200">
+          <h3 class="text-lg font-semibold text-red-900 mb-3">Inadequate Investment Intent</h3>
+          <p class="text-red-800">
+            Converting to personal use too quickly can retroactively disqualify your exchange.
+          </p>
+        </div>
+        
+        <div class="bg-red-50 p-6 rounded-lg border border-red-200">
+          <h3 class="text-lg font-semibold text-red-900 mb-3">Not Using a QI</h3>
+          <p class="text-red-800">
+            Trying to do an exchange without a Qualified Intermediary will fail IRS scrutiny.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- CTA Section -->
+  <section class="py-16 bg-blue-900 text-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h2 class="text-3xl font-bold mb-6">
+        Navigate 1031 Rules with Confidence
+      </h2>
+      <p class="text-xl mb-8 text-blue-100">
+        Don't risk your exchange on technicalities. Our experts ensure every rule is followed perfectly, 
+        protecting your tax deferral and maximizing your investment potential.
+      </p>
+      
+      <div class="flex flex-col sm:flex-row gap-4 justify-center mb-8">
+        <a href="/start-exchange" 
+           class="bg-yellow-400 text-blue-900 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-yellow-300 transition-all duration-300 transform hover:scale-105">
+          Start Your Compliant Exchange
+        </a>
+        <a href="/contact" 
+           class="border-2 border-white text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-white hover:text-blue-900 transition-all duration-300">
+          Get Expert Guidance
+        </a>
+      </div>
+      
+      <p class="text-blue-200">
+        Questions about 1031 rules? Call our experts: 
+        <a href={getPhoneLink()} class="text-yellow-400 hover:text-yellow-300 font-semibold">{COMPANY.phone.main}</a>
+      </p>
+    </div>
+  </section>
+  
+  <!-- Disclaimer -->
+  <section class="py-8 bg-gray-100">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <p class="text-sm text-gray-600 text-center">
+        This information is provided for educational purposes only and should not be considered tax or legal 
+        advice. Tax laws are complex and subject to change. Always consult with qualified tax and legal 
+        professionals before proceeding with a 1031 exchange.
+      </p>
+    </div>
+  </section>
+  
+  <!-- Article Schema Markup -->
+  <script type="application/ld+json" set:html={generateJsonLdScript(articleSchema)}></script>
+</Layout>

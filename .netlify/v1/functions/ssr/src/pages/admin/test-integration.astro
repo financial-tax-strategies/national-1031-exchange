@@ -1,0 +1,32 @@
+---
+import AdminLayout from '../../layouts/AdminLayout.astro';
+import TestIntegrationComponent from '../../components/admin/TestIntegration';
+
+// In production, add authentication check here
+// const session = await getSession(Astro.request);
+// if (!session || !session.user.isAdmin) {
+//   return Astro.redirect('/login');
+// }
+---
+
+<AdminLayout title="Test Integration - Admin">
+  <main class="container mx-auto px-4 py-8">
+    <div class="max-w-4xl mx-auto">
+      <h1 class="text-3xl font-bold mb-8">Integration Testing</h1>
+      
+      <div class="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+        <p class="text-sm text-blue-700">
+          Test the complete integration flow: Lead creation → HighLevel sync → Appointment booking
+        </p>
+      </div>
+      
+      <TestIntegrationComponent client:load />
+    </div>
+  </main>
+</AdminLayout>
+
+<style>
+  main {
+    min-height: calc(100vh - 200px);
+  }
+</style>

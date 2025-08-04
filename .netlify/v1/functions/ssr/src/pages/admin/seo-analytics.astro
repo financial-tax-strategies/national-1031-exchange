@@ -1,0 +1,506 @@
+---
+import AdminLayout from '../../layouts/AdminLayout.astro';
+
+// In production, add authentication check here
+---
+
+<AdminLayout title="SEO & Analytics Configuration">
+  <main class="container mx-auto px-4 py-8">
+    <div class="max-w-6xl mx-auto">
+      <div class="flex justify-between items-center mb-8">
+        <h1 class="text-3xl font-bold">SEO & Analytics Configuration</h1>
+        <button 
+          id="saveConfig" 
+          class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+        >
+          Save Configuration
+        </button>
+      </div>
+
+      <!-- Tabs -->
+      <div class="border-b border-gray-200 mb-8">
+        <nav class="-mb-px flex space-x-8">
+          <button class="tab-button active" data-tab="analytics">
+            Analytics IDs
+          </button>
+          <button class="tab-button" data-tab="meta">
+            Meta Defaults
+          </button>
+          <button class="tab-button" data-tab="schema">
+            Schema Settings
+          </button>
+          <button class="tab-button" data-tab="ai-bots">
+            AI Bot Access
+          </button>
+          <button class="tab-button" data-tab="testing">
+            Testing Tools
+          </button>
+        </nav>
+      </div>
+
+      <!-- Tab Content -->
+      <div id="analytics" class="tab-content">
+        <div class="bg-white p-6 rounded-lg shadow">
+          <h2 class="text-xl font-semibold mb-6">Analytics & Tracking IDs</h2>
+          
+          <div class="space-y-6">
+            <!-- Google Analytics -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">
+                Google Analytics 4 Measurement ID
+              </label>
+              <input
+                type="text"
+                id="ga4Id"
+                placeholder="G-XXXXXXXXXX"
+                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              />
+              <p class="text-sm text-gray-500 mt-1">Format: G-XXXXXXXXXX</p>
+            </div>
+
+            <!-- Google Tag Manager -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">
+                Google Tag Manager Container ID
+              </label>
+              <input
+                type="text"
+                id="gtmId"
+                placeholder="GTM-XXXXXXX"
+                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              />
+              <p class="text-sm text-gray-500 mt-1">Format: GTM-XXXXXXX</p>
+            </div>
+
+            <!-- Facebook Pixel -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">
+                Facebook Pixel ID
+              </label>
+              <input
+                type="text"
+                id="fbPixelId"
+                placeholder="XXXXXXXXXXXXXXXX"
+                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              />
+            </div>
+
+            <!-- LinkedIn Insight Tag -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">
+                LinkedIn Insight Tag Partner ID
+              </label>
+              <input
+                type="text"
+                id="linkedInId"
+                placeholder="XXXXXXX"
+                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              />
+            </div>
+
+            <!-- Twitter Pixel -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">
+                Twitter Pixel ID
+              </label>
+              <input
+                type="text"
+                id="twitterPixelId"
+                placeholder="XXXXX"
+                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              />
+            </div>
+
+            <!-- Microsoft Clarity -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">
+                Microsoft Clarity Project ID
+              </label>
+              <input
+                type="text"
+                id="clarityId"
+                placeholder="XXXXXXXXXX"
+                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              />
+            </div>
+
+            <!-- Hotjar -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">
+                Hotjar Site ID
+              </label>
+              <input
+                type="text"
+                id="hotjarId"
+                placeholder="XXXXXXX"
+                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="meta" class="tab-content hidden">
+        <div class="bg-white p-6 rounded-lg shadow">
+          <h2 class="text-xl font-semibold mb-6">Default Meta Information</h2>
+          
+          <div class="space-y-6">
+            <!-- Default Description -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">
+                Default Meta Description (150-155 characters)
+              </label>
+              <textarea
+                id="defaultDescription"
+                rows="3"
+                maxlength="155"
+                placeholder="America's most trusted 1031 exchange qualified intermediary..."
+                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              ></textarea>
+              <p class="text-sm text-gray-500 mt-1">
+                <span id="descriptionCount">0</span>/155 characters
+              </p>
+            </div>
+
+            <!-- Default Author -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">
+                Default Author Information
+              </label>
+              <input
+                type="text"
+                id="defaultAuthor"
+                placeholder="Ruth Benjamin, Capital Gains Tax Strategist"
+                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              />
+            </div>
+
+            <!-- Default Keywords -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">
+                Default Keywords (comma separated)
+              </label>
+              <input
+                type="text"
+                id="defaultKeywords"
+                placeholder="1031 exchange, capital gains tax deferral, like-kind exchange"
+                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              />
+            </div>
+
+            <!-- Social Media Default Image -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">
+                Default Social Media Image URL
+              </label>
+              <input
+                type="text"
+                id="defaultOgImage"
+                placeholder="/images/og-image.jpg"
+                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="schema" class="tab-content hidden">
+        <div class="bg-white p-6 rounded-lg shadow">
+          <h2 class="text-xl font-semibold mb-6">Schema.org Organization Settings</h2>
+          
+          <div class="space-y-6">
+            <!-- Organization Name -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">
+                Organization Name
+              </label>
+              <input
+                type="text"
+                id="orgName"
+                placeholder="National 1031 Center"
+                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              />
+            </div>
+
+            <!-- Legal Name -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">
+                Legal Name
+              </label>
+              <input
+                type="text"
+                id="orgLegalName"
+                placeholder="National 1031 Center, LLC"
+                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              />
+            </div>
+
+            <!-- Social Media Profiles -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">
+                Social Media Profiles
+              </label>
+              <div class="space-y-2">
+                <input
+                  type="text"
+                  id="socialFacebook"
+                  placeholder="https://facebook.com/national1031center"
+                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                />
+                <input
+                  type="text"
+                  id="socialLinkedIn"
+                  placeholder="https://linkedin.com/company/national1031center"
+                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                />
+                <input
+                  type="text"
+                  id="socialTwitter"
+                  placeholder="https://twitter.com/national1031"
+                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                />
+                <input
+                  type="text"
+                  id="socialYouTube"
+                  placeholder="https://youtube.com/@national1031center"
+                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                />
+              </div>
+            </div>
+
+            <!-- Price Range -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">
+                Price Range
+              </label>
+              <select
+                id="priceRange"
+                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              >
+                <option value="$">$ - Budget</option>
+                <option value="$$" selected>$$ - Moderate</option>
+                <option value="$$$">$$$ - Premium</option>
+                <option value="$$$$">$$$$ - Luxury</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="ai-bots" class="tab-content hidden">
+        <div class="bg-white p-6 rounded-lg shadow">
+          <h2 class="text-xl font-semibold mb-6">AI Bot Access Control</h2>
+          
+          <div class="space-y-4">
+            <!-- Bot toggles -->
+            <div class="flex items-center justify-between">
+              <span class="font-medium">GPTBot (OpenAI)</span>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" id="botGPT" class="sr-only peer" checked>
+                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+              </label>
+            </div>
+
+            <div class="flex items-center justify-between">
+              <span class="font-medium">Claude-Web (Anthropic)</span>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" id="botClaude" class="sr-only peer" checked>
+                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+              </label>
+            </div>
+
+            <div class="flex items-center justify-between">
+              <span class="font-medium">PerplexityBot</span>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" id="botPerplexity" class="sr-only peer" checked>
+                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+              </label>
+            </div>
+
+            <div class="flex items-center justify-between">
+              <span class="font-medium">YouBot</span>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" id="botYou" class="sr-only peer" checked>
+                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+              </label>
+            </div>
+
+            <div class="flex items-center justify-between">
+              <span class="font-medium">Cohere AI</span>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" id="botCohere" class="sr-only peer" checked>
+                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+              </label>
+            </div>
+          </div>
+
+          <div class="mt-8">
+            <h3 class="text-lg font-medium mb-4">llms.txt Content Preview</h3>
+            <div class="bg-gray-50 p-4 rounded-lg">
+              <p class="text-sm text-gray-600">
+                The llms.txt file has been created at <code>/llms.txt</code> and contains comprehensive information about your services for AI understanding.
+              </p>
+              <a href="/llms.txt" target="_blank" class="text-blue-600 hover:text-blue-700 text-sm mt-2 inline-block">
+                View llms.txt →
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="testing" class="tab-content hidden">
+        <div class="bg-white p-6 rounded-lg shadow">
+          <h2 class="text-xl font-semibold mb-6">SEO Testing Tools</h2>
+          
+          <div class="space-y-6">
+            <!-- Schema Validator -->
+            <div>
+              <h3 class="text-lg font-medium mb-3">Schema Markup Validator</h3>
+              <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors">
+                Validate All Schema
+              </button>
+              <div id="schemaResults" class="mt-4"></div>
+            </div>
+
+            <!-- Meta Tag Preview -->
+            <div>
+              <h3 class="text-lg font-medium mb-3">Meta Tag Preview</h3>
+              <select id="pageSelect" class="w-full px-4 py-2 border border-gray-300 rounded-lg mb-4">
+                <option value="/">Homepage</option>
+                <option value="/services/delayed-exchange">Delayed Exchange</option>
+                <option value="/services/reverse-exchange">Reverse Exchange</option>
+                <option value="/calculator">Calculator</option>
+              </select>
+              <div id="metaPreview" class="bg-gray-50 p-4 rounded-lg"></div>
+            </div>
+
+            <!-- Sitemap Status -->
+            <div>
+              <h3 class="text-lg font-medium mb-3">Sitemap Status</h3>
+              <div class="bg-gray-50 p-4 rounded-lg">
+                <p class="text-sm text-gray-600">
+                  Sitemap location: <code>/sitemap-index.xml</code>
+                </p>
+                <a href="/sitemap-index.xml" target="_blank" class="text-blue-600 hover:text-blue-700 text-sm mt-2 inline-block">
+                  View Sitemap →
+                </a>
+              </div>
+            </div>
+
+            <!-- robots.txt Status -->
+            <div>
+              <h3 class="text-lg font-medium mb-3">robots.txt Configuration</h3>
+              <div class="bg-gray-50 p-4 rounded-lg">
+                <p class="text-sm text-gray-600">
+                  All AI bots have been granted access with 0 crawl delay for priority indexing.
+                </p>
+                <a href="/robots.txt" target="_blank" class="text-blue-600 hover:text-blue-700 text-sm mt-2 inline-block">
+                  View robots.txt →
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // Tab switching
+    document.querySelectorAll('.tab-button').forEach(button => {
+      button.addEventListener('click', () => {
+        const tab = button.dataset.tab;
+        
+        // Update active tab
+        document.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
+        button.classList.add('active');
+        
+        // Show corresponding content
+        document.querySelectorAll('.tab-content').forEach(content => {
+          content.classList.add('hidden');
+        });
+        document.getElementById(tab).classList.remove('hidden');
+      });
+    });
+
+    // Character counter for meta description
+    const descriptionInput = document.getElementById('defaultDescription');
+    const descriptionCount = document.getElementById('descriptionCount');
+    
+    if (descriptionInput) {
+      descriptionInput.addEventListener('input', () => {
+        descriptionCount.textContent = descriptionInput.value.length;
+      });
+    }
+
+    // Save configuration
+    document.getElementById('saveConfig').addEventListener('click', async () => {
+      const config = {
+        analytics: {
+          ga4Id: document.getElementById('ga4Id').value,
+          gtmId: document.getElementById('gtmId').value,
+          fbPixelId: document.getElementById('fbPixelId').value,
+          linkedInId: document.getElementById('linkedInId').value,
+          twitterPixelId: document.getElementById('twitterPixelId').value,
+          clarityId: document.getElementById('clarityId').value,
+          hotjarId: document.getElementById('hotjarId').value,
+        },
+        meta: {
+          defaultDescription: document.getElementById('defaultDescription').value,
+          defaultAuthor: document.getElementById('defaultAuthor').value,
+          defaultKeywords: document.getElementById('defaultKeywords').value,
+          defaultOgImage: document.getElementById('defaultOgImage').value,
+        },
+        schema: {
+          orgName: document.getElementById('orgName').value,
+          orgLegalName: document.getElementById('orgLegalName').value,
+          socialFacebook: document.getElementById('socialFacebook').value,
+          socialLinkedIn: document.getElementById('socialLinkedIn').value,
+          socialTwitter: document.getElementById('socialTwitter').value,
+          socialYouTube: document.getElementById('socialYouTube').value,
+          priceRange: document.getElementById('priceRange').value,
+        },
+        aiBots: {
+          gptBot: document.getElementById('botGPT').checked,
+          claudeWeb: document.getElementById('botClaude').checked,
+          perplexityBot: document.getElementById('botPerplexity').checked,
+          youBot: document.getElementById('botYou').checked,
+          cohereAi: document.getElementById('botCohere').checked,
+        }
+      };
+
+      // In a real implementation, this would save to Supabase
+      console.log('Saving configuration:', config);
+      alert('Configuration saved successfully!');
+    });
+  </script>
+
+  <style>
+    .tab-button {
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
+      padding-left: 0.25rem;
+      padding-right: 0.25rem;
+      border-bottom-width: 2px;
+      border-color: transparent;
+      font-weight: 500;
+      font-size: 0.875rem;
+      line-height: 1.25rem;
+      color: rgb(107 114 128);
+      cursor: pointer;
+      transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+      transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+      transition-duration: 150ms;
+    }
+    
+    .tab-button:hover {
+      color: rgb(55 65 81);
+      border-color: rgb(209 213 219);
+    }
+    
+    .tab-button.active {
+      color: rgb(37 99 235);
+      border-color: rgb(37 99 235);
+    }
+  </style>
+</AdminLayout>

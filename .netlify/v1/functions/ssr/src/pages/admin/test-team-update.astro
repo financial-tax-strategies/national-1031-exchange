@@ -1,0 +1,135 @@
+---
+import AdminLayout from '../../layouts/AdminLayout.astro';
+---
+
+<AdminLayout title="Team Update Test">
+  <main class="container mx-auto px-4 py-8">
+    <div class="max-w-4xl mx-auto">
+      <h1 class="text-3xl font-bold mb-8">Team Member Update Test</h1>
+      
+      <div class="bg-white shadow-md rounded-lg p-6 mb-6">
+        <h2 class="text-xl font-semibold mb-4">Test Ruth Benjamin Update</h2>
+        
+        <div class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Job Title</label>
+            <input 
+              type="text" 
+              id="jobTitle"
+              value="Chief Client Success Officer"
+              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+            />
+          </div>
+          
+          <button 
+            id="testUpdate"
+            class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+          >
+            Test Update
+          </button>
+        </div>
+      </div>
+      
+      <div class="bg-gray-50 rounded-lg p-6">
+        <h3 class="text-lg font-semibold mb-2">Test Results</h3>
+        <pre id="results" class="whitespace-pre-wrap text-sm">Ready to test...</pre>
+      </div>
+      
+      <div class="mt-6 bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+        <p class="text-sm text-yellow-800">
+          This test page directly calls the Netlify Function and shows detailed results.
+          Check the browser console for additional logging.
+        </p>
+      </div>
+    </div>
+  </main>
+</AdminLayout>
+
+<script>
+  const resultsEl = document.getElementById('results') as HTMLPreElement;
+  const jobTitleEl = document.getElementById('jobTitle') as HTMLInputElement;
+  const testBtn = document.getElementById('testUpdate') as HTMLButtonElement;
+  
+  function log(message: string) {
+    const timestamp = new Date().toISOString().split('T')[1];
+    resultsEl.textContent += `\n[${timestamp}] ${message}`;
+    console.log(`[Test] ${message}`);
+  }
+  
+  testBtn.addEventListener('click', async () => {
+    resultsEl.textContent = 'Starting test...';
+    
+    const ruthId = 'e1660fc9-b0a7-4863-b690-7a2a33008d82';
+    const newTitle = jobTitleEl.value + ' (Test ' + Date.now() + ')';
+    
+    log(`Testing update for Ruth Benjamin (${ruthId})`);
+    log(`New job title: ${newTitle}`);
+    
+    // First, fetch current data
+    try {
+      log('Fetching current data...');
+      const currentResponse = await fetch('/api/team-members');
+      const currentData = await currentResponse.json();
+      const ruth = currentData.data?.find((m: any) => m.id === ruthId);
+      log(`Current job title: ${ruth?.job_title || 'Not found'}`);
+    } catch (error) {
+      log(`Error fetching current data: ${error}`);
+    }
+    
+    // Test the update
+    try {
+      log('Sending PATCH request to Netlify Function...');
+      
+      const updateData = {
+        id: ruthId,
+        job_title: newTitle
+      };
+      
+      log(`Request body: ${JSON.stringify(updateData, null, 2)}`);
+      
+      const response = await fetch('/.netlify/functions/team-members-update', {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updateData)
+      });
+      
+      log(`Response status: ${response.status}`);
+      log(`Response headers: ${JSON.stringify(Object.fromEntries(response.headers.entries()), null, 2)}`);
+      
+      const responseText = await response.text();
+      log(`Raw response: ${responseText}`);
+      
+      try {
+        const result = JSON.parse(responseText);
+        log(`Parsed response: ${JSON.stringify(result, null, 2)}`);
+        
+        if (result.success) {
+          log('Update reported success!');
+          
+          // Verify the update
+          log('Verifying update by fetching data again...');
+          const verifyResponse = await fetch('/api/team-members');
+          const verifyData = await verifyResponse.json();
+          const updatedRuth = verifyData.data?.find((m: any) => m.id === ruthId);
+          log(`Verified job title: ${updatedRuth?.job_title || 'Not found'}`);
+          
+          if (updatedRuth?.job_title === newTitle) {
+            log('✅ UPDATE VERIFIED - The change was saved!');
+          } else {
+            log('❌ UPDATE FAILED - The change was not saved');
+            log(`Expected: ${newTitle}`);
+            log(`Actual: ${updatedRuth?.job_title}`);
+          }
+        } else {
+          log('❌ Update failed according to response');
+        }
+      } catch (e) {
+        log(`Failed to parse response as JSON: ${e}`);
+      }
+    } catch (error) {
+      log(`Error during update: ${error}`);
+    }
+  });
+</script>

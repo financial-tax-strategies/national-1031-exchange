@@ -1,0 +1,624 @@
+---
+import AdminLayout from '../../layouts/AdminLayout.astro';
+import { supabase, supabaseAdmin, isSupabaseConfigured, isSupabaseAdminConfigured } from '../../lib/supabase';
+import { AuthService } from '../../lib/services/auth.service';
+
+// Authentication check for admin access
+let isAuthenticated = false;
+let authError = null;
+
+// Development bypass: Allow access if NODE_ENV is development
+const isDevelopment = import.meta.env.NODE_ENV === 'development' || import.meta.env.DEV;
+
+if (isDevelopment) {
+  console.log('[Admin] Development mode - bypassing authentication');
+  isAuthenticated = true;
+} else {
+  try {
+    const authService = AuthService.getInstance();
+    const userResponse = await authService.getCurrentUser();
+    
+    if (userResponse.success && userResponse.data && userResponse.data.adminProfile) {
+      isAuthenticated = true;
+    } else {
+      // Redirect to admin login if not authenticated
+      return Astro.redirect('/admin/login');
+    }
+  } catch (e) {
+    console.error('Authentication error:', e);
+    authError = 'Authentication failed';
+    return Astro.redirect('/admin/login');
+  }
+}
+
+let teamMembers = [];
+let error = null;
+
+if (isSupabaseAdminConfigured() && isAuthenticated) {
+  try {
+    // Use admin client with service role key - completely bypasses RLS policies
+    // This allows admins to see ALL team members, including inactive ones
+    const { data, error: fetchError } = await supabaseAdmin
+      .from('team_members')
+      .select('*')
+      .order('display_order', { ascending: true })
+      .order('name', { ascending: true });
+    
+    if (fetchError) {
+      error = fetchError.message;
+      console.error('Database error:', fetchError);
+    } else {
+      teamMembers = data || [];
+      console.log(`[Admin] Loaded ${teamMembers.length} team members (including inactive) via admin client`);
+    }
+  } catch (e) {
+    error = 'Failed to fetch team members';
+    console.error('Fetch error:', e);
+  }
+} else if (!isSupabaseAdminConfigured()) {
+  error = 'Admin database configuration missing (SUPABASE_SERVICE_ROLE_KEY required)';
+} else if (!isSupabaseConfigured()) {
+  error = 'Database not configured';
+}
+---
+
+<AdminLayout title="Team Members Management - DEBUG">
+  <main class="container mx-auto px-4 py-8">
+    <div class="max-w-7xl mx-auto">
+      <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-4">
+        <h2 class="text-lg font-bold text-yellow-800 mb-2">DEBUG MODE</h2>
+        <p class="text-yellow-700">This page includes extensive logging. Open browser console to see detailed information.</p>
+      </div>
+      
+      <div class="flex justify-between items-center mb-8">
+        <h1 class="text-3xl font-bold">Team Members</h1>
+        <button 
+          id="addMemberBtn"
+          class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors"
+        >
+          Add Team Member
+        </button>
+      </div>
+      
+      {!isSupabaseAdminConfigured() ? (
+        <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+          <p class="text-yellow-800">Admin database configuration is missing (SUPABASE_SERVICE_ROLE_KEY required). Team member management is disabled.</p>
+        </div>
+      ) : error ? (
+        <div class="bg-red-50 border border-red-200 rounded-lg p-4">
+          <p class="text-red-800">Error: {error}</p>
+        </div>
+      ) : (
+        <div class="bg-white shadow-md rounded-lg overflow-hidden">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Order
+                </th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Name
+                </th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Title
+                </th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Email
+                </th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Status
+                </th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+              {teamMembers.map((member) => (
+                <tr>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    {member.display_order}
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="flex items-center">
+                      {member.image && (
+                        <img 
+                          src={member.image} 
+                          alt={member.name} 
+                          class="h-10 w-10 rounded-full mr-3"
+                        />
+                      )}
+                      <div>
+                        <div class="text-sm font-medium text-gray-900">
+                          {member.name}
+                        </div>
+                        <div class="text-sm text-gray-500">
+                          /{member.slug}
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    {member.job_title || '-'}
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    {member.email || '-'}
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <span class={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                      member.is_active 
+                        ? 'bg-green-100 text-green-800' 
+                        : 'bg-red-100 text-red-800'
+                    }`}>
+                      {member.is_active ? 'Active' : 'Inactive'}
+                    </span>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                    <button 
+                      class="text-indigo-600 hover:text-indigo-900 mr-3 edit-btn"
+                      data-member={JSON.stringify(member)}
+                    >
+                      Edit
+                    </button>
+                    <button 
+                      class="text-red-600 hover:text-red-900 toggle-btn"
+                      data-id={member.id}
+                      data-active={member.is_active}
+                    >
+                      {member.is_active ? 'Deactivate' : 'Activate'}
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          
+          {teamMembers.length === 0 && (
+            <div class="text-center py-8 text-gray-500">
+              No team members found. Click "Add Team Member" to create one.
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  </main>
+  
+  <!-- Add/Edit Modal -->
+  <div id="memberModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+    <div class="relative top-20 mx-auto p-5 border w-full max-w-2xl shadow-lg rounded-md bg-white">
+      <h3 id="modalTitle" class="text-lg font-bold text-gray-900 mb-4">Add Team Member</h3>
+      
+      <form id="memberForm" class="space-y-4">
+        <input type="hidden" id="memberId" name="id" />
+        
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Name *</label>
+            <input 
+              type="text" 
+              name="name" 
+              required 
+              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+            />
+          </div>
+          
+          <div>
+            <label class="block text-sm font-medium text-gray-700">URL Slug</label>
+            <input 
+              type="text" 
+              name="slug" 
+              id="slugInput"
+              placeholder="auto-generated from name"
+              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+            />
+            <p class="text-xs text-gray-500 mt-1">Leave empty to auto-generate from name</p>
+          </div>
+        </div>
+        
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Job Title</label>
+            <input 
+              type="text" 
+              name="job_title" 
+              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+            />
+          </div>
+          
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Organization</label>
+            <input 
+              type="text" 
+              name="works_for" 
+              value="The 1031 Center"
+              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+            />
+          </div>
+        </div>
+        
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Email</label>
+            <input 
+              type="email" 
+              name="email" 
+              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+            />
+          </div>
+          
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Phone</label>
+            <input 
+              type="tel" 
+              name="telephone" 
+              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+            />
+          </div>
+        </div>
+        
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Bio/Description</label>
+          <textarea 
+            name="description" 
+            rows="3"
+            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+          ></textarea>
+        </div>
+        
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Profile Image URL</label>
+          <input 
+            type="url" 
+            name="image" 
+            placeholder="/images/team/name.jpg"
+            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+          />
+        </div>
+        
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Years Experience</label>
+            <input 
+              type="number" 
+              name="years_experience" 
+              min="0"
+              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+            />
+          </div>
+          
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Display Order</label>
+            <input 
+              type="number" 
+              name="display_order" 
+              value="0"
+              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+            />
+          </div>
+        </div>
+        
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Areas of Expertise (comma-separated)</label>
+          <input 
+            type="text" 
+            name="knows_about" 
+            placeholder="1031 exchanges, Tax strategy, Real estate"
+            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+          />
+        </div>
+        
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Social Media Links (comma-separated)</label>
+          <input 
+            type="text" 
+            name="same_as" 
+            placeholder="https://linkedin.com/in/username"
+            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+          />
+        </div>
+        
+        <div class="flex items-center">
+          <input 
+            type="checkbox" 
+            name="is_active" 
+            id="is_active"
+            checked
+            class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+          />
+          <label for="is_active" class="ml-2 block text-sm text-gray-900">
+            Active
+          </label>
+        </div>
+        
+        <div class="flex justify-end space-x-4 pt-4">
+          <button 
+            type="button" 
+            id="cancelBtn"
+            class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-md"
+          >
+            Cancel
+          </button>
+          <button 
+            type="submit"
+            class="px-4 py-2 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-md"
+          >
+            Save
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</AdminLayout>
+
+<script>
+  // Immediate logging to verify script is running
+  console.log('[DEBUG] Script starting...');
+  
+  // Global error handler to catch any issues
+  window.addEventListener('error', (event) => {
+    console.error('[DEBUG] JavaScript error:', event.error);
+  });
+  
+  // Wait for DOM to be ready
+  document.addEventListener('DOMContentLoaded', () => {
+    try {
+      console.log('[DEBUG] DOM loaded, initializing team members debug page...');
+    
+    // Modal handling
+    const modal = document.getElementById('memberModal');
+    const modalTitle = document.getElementById('modalTitle');
+    const form = document.getElementById('memberForm') as HTMLFormElement;
+    const memberIdInput = document.getElementById('memberId') as HTMLInputElement;
+    const addBtn = document.getElementById('addMemberBtn');
+    const cancelBtn = document.getElementById('cancelBtn');
+    
+    console.log('[DEBUG] Elements found:', {
+      modal: !!modal,
+      form: !!form,
+      addBtn: !!addBtn,
+      cancelBtn: !!cancelBtn
+    });
+    
+    // Show modal for adding
+    addBtn?.addEventListener('click', () => {
+    modalTitle!.textContent = 'Add Team Member';
+    form.reset();
+    memberIdInput.value = '';
+    modal?.classList.remove('hidden');
+  });
+  
+  // Show modal for editing
+  document.querySelectorAll('.edit-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const member = JSON.parse((e.target as HTMLElement).dataset.member || '{}');
+      modalTitle!.textContent = 'Edit Team Member';
+      
+      console.log('[DEBUG] Editing member:', member);
+      
+      // Populate form
+      memberIdInput.value = member.id;
+      (form.elements.namedItem('name') as HTMLInputElement).value = member.name || '';
+      (form.elements.namedItem('slug') as HTMLInputElement).value = member.slug || '';
+      (form.elements.namedItem('job_title') as HTMLInputElement).value = member.job_title || '';
+      (form.elements.namedItem('works_for') as HTMLInputElement).value = member.works_for || 'The 1031 Center';
+      (form.elements.namedItem('email') as HTMLInputElement).value = member.email || '';
+      (form.elements.namedItem('telephone') as HTMLInputElement).value = member.telephone || '';
+      (form.elements.namedItem('description') as HTMLTextAreaElement).value = member.description || '';
+      (form.elements.namedItem('image') as HTMLInputElement).value = member.image || '';
+      (form.elements.namedItem('years_experience') as HTMLInputElement).value = member.years_experience || '';
+      (form.elements.namedItem('display_order') as HTMLInputElement).value = member.display_order || '0';
+      (form.elements.namedItem('knows_about') as HTMLInputElement).value = member.knows_about?.join(', ') || '';
+      (form.elements.namedItem('same_as') as HTMLInputElement).value = member.same_as?.join(', ') || '';
+      (form.elements.namedItem('is_active') as HTMLInputElement).checked = member.is_active;
+      
+      modal?.classList.remove('hidden');
+    });
+  });
+  
+  // Hide modal
+  cancelBtn?.addEventListener('click', () => {
+    modal?.classList.add('hidden');
+  });
+  
+  // Handle form submission
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const formData = new FormData(form);
+    const data: any = Object.fromEntries(formData);
+    
+    console.log('[DEBUG] Raw form data:', data);
+    
+    // Convert checkbox
+    data.is_active = formData.has('is_active');
+    
+    // Convert arrays - ensure they're arrays or null (not empty arrays)
+    if (data.knows_about && data.knows_about.trim()) {
+      data.knows_about = data.knows_about.split(',').map((s: string) => s.trim()).filter(Boolean);
+      if (data.knows_about.length === 0) data.knows_about = null;
+    } else {
+      data.knows_about = null;
+    }
+    
+    if (data.same_as && data.same_as.trim()) {
+      data.same_as = data.same_as.split(',').map((s: string) => s.trim()).filter(Boolean);
+      if (data.same_as.length === 0) data.same_as = null;
+    } else {
+      data.same_as = null;
+    }
+    
+    // Convert numbers - ensure they're numbers or null, never NaN
+    if (data.years_experience && data.years_experience.trim()) {
+      const parsed = parseInt(data.years_experience);
+      data.years_experience = isNaN(parsed) ? null : parsed;
+    } else {
+      data.years_experience = null;
+    }
+    
+    if (data.display_order && data.display_order.trim()) {
+      const parsed = parseInt(data.display_order);
+      data.display_order = isNaN(parsed) ? 0 : parsed;
+    } else {
+      data.display_order = 0; // Default to 0, not null
+    }
+    
+    // Handle required fields - ensure they're never null/empty
+    if (!data.name || !data.name.trim()) {
+      alert('Name is required');
+      return;
+    }
+    data.name = data.name.trim();
+    
+    // Auto-generate slug if empty
+    if (!data.slug || !data.slug.trim()) {
+      data.slug = data.name.toLowerCase()
+        .replace(/[^a-z0-9\s-]/g, '') // Remove special characters
+        .replace(/\s+/g, '-') // Replace spaces with hyphens
+        .replace(/-+/g, '-') // Replace multiple hyphens with single
+        .replace(/^-|-$/g, ''); // Remove leading/trailing hyphens
+      
+      // Ensure slug is not empty after processing
+      if (!data.slug) {
+        data.slug = 'team-member-' + Date.now();
+      }
+    } else {
+      data.slug = data.slug.trim();
+    }
+    
+    // Clean up empty strings - convert to null (except required fields)
+    const requiredFields = ['name', 'slug', 'display_order', 'is_active'];
+    Object.keys(data).forEach(key => {
+      if (data[key] === '' && !requiredFields.includes(key)) {
+        data[key] = null;
+      }
+    });
+    
+    console.log('[DEBUG] Processed form data:', JSON.stringify(data, null, 2));
+    
+    try {
+      const isUpdate = !!data.id;
+      const url = isUpdate ? '/.netlify/functions/team-members-update' : '/api/team-members';
+      const method = isUpdate ? 'PATCH' : 'POST';
+      
+      console.log(`[DEBUG] Sending ${method} to ${url}`);
+      
+      const response = await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      
+      console.log(`[DEBUG] Response status: ${response.status}`);
+      
+      let result;
+      try {
+        result = await response.json();
+        console.log('[DEBUG] Response data:', JSON.stringify(result, null, 2));
+      } catch (e) {
+        console.error('[DEBUG] Failed to parse response as JSON:', e);
+        result = { success: false, error: 'Invalid response from server' };
+      }
+      
+      if (response.ok && result.success) {
+        console.log('[DEBUG] Update successful, waiting before reload...');
+        
+        // Wait longer to ensure database commit
+        await new Promise(resolve => setTimeout(resolve, 500));
+        
+        // Verify the update by fetching the data
+        console.log('[DEBUG] Verifying update...');
+        const verifyResponse = await fetch(`/api/team-members?include_inactive=true`);
+        if (verifyResponse.ok) {
+          const verifyData = await verifyResponse.json();
+          const updatedMember = verifyData.data?.find((m: any) => m.id === (data.id || result.data?.id));
+          console.log('[DEBUG] Verification - found member:', updatedMember);
+        }
+        
+        console.log('[DEBUG] Reloading page...');
+        window.location.reload();
+      } else {
+        console.error('[DEBUG] Update failed:', result);
+        alert('Error: ' + (result.error || result.details || 'Failed to save'));
+      }
+    } catch (error) {
+      alert('Error: Failed to save team member');
+      console.error('[DEBUG] Exception:', error);
+    }
+  });
+  
+  // Real-time slug generation
+  const nameInput = form?.querySelector('input[name="name"]') as HTMLInputElement;
+  const slugInput = form?.querySelector('#slugInput') as HTMLInputElement;
+  
+  function generateSlug(name: string): string {
+    return name.toLowerCase()
+      .replace(/[^a-z0-9\s-]/g, '') // Remove special characters
+      .replace(/\s+/g, '-') // Replace spaces with hyphens
+      .replace(/-+/g, '-') // Replace multiple hyphens with single
+      .replace(/^-|-$/g, ''); // Remove leading/trailing hyphens
+  }
+  
+  nameInput?.addEventListener('input', (e) => {
+    const name = (e.target as HTMLInputElement).value;
+    if (name && (!slugInput.value || slugInput.dataset.autoGenerated === 'true')) {
+      const generatedSlug = generateSlug(name);
+      slugInput.value = generatedSlug;
+      slugInput.dataset.autoGenerated = 'true';
+      slugInput.style.fontStyle = 'italic';
+      slugInput.style.color = '#6b7280'; // gray-500
+    }
+  });
+  
+  slugInput?.addEventListener('input', (e) => {
+    const input = e.target as HTMLInputElement;
+    if (input.value) {
+      input.dataset.autoGenerated = 'false';
+      input.style.fontStyle = 'normal';
+      input.style.color = '';
+    } else {
+      input.dataset.autoGenerated = 'true';
+    }
+  });
+  
+  // Handle activate/deactivate
+  document.querySelectorAll('.toggle-btn').forEach(btn => {
+    btn.addEventListener('click', async (e) => {
+      const target = e.target as HTMLElement;
+      const id = target.dataset.id;
+      const isActive = target.dataset.active === 'true';
+      
+      if (confirm(`Are you sure you want to ${isActive ? 'deactivate' : 'activate'} this team member?`)) {
+        try {
+          console.log('[DEBUG] Toggling status for:', { id, is_active: !isActive });
+          
+          const response = await fetch('/.netlify/functions/team-members-update', {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id, is_active: !isActive })
+          });
+          
+          console.log(`[DEBUG] Toggle response status: ${response.status}`);
+          const result = await response.json();
+          console.log('[DEBUG] Toggle response data:', JSON.stringify(result, null, 2));
+          
+          if (response.ok && result.success) {
+            // Wait before reload
+            await new Promise(resolve => setTimeout(resolve, 500));
+            window.location.reload();
+          } else {
+            alert('Error: ' + (result.error || result.details || 'Failed to update status'));
+          }
+        } catch (error) {
+          alert('Error: Failed to update status');
+          console.error('[DEBUG] Toggle exception:', error);
+        }
+      }
+    });
+  });
+  
+      console.log('[DEBUG] Team members management page loaded');
+    } catch (error) {
+      console.error('[DEBUG] Error during initialization:', error);
+    }
+  }); // End of DOMContentLoaded
+</script>

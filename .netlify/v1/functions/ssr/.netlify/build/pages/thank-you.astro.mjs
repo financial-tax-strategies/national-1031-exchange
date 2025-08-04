@@ -1,0 +1,37 @@
+import { d as createComponent, i as renderComponent, r as renderTemplate, m as maybeRenderHead, f as addAttribute, j as renderScript } from '../chunks/astro/server_DPvkWNif.mjs';
+import 'kleur/colors';
+import { $ as $$Layout, C as COMPANY, g as getPhoneLink } from '../chunks/Layout_NoDNIcv-.mjs';
+export { renderers } from '../renderers.mjs';
+
+const $$ThankYou = createComponent(($$result, $$props, $$slots) => {
+  return renderTemplate`${renderComponent($$result, "Layout", $$Layout, { "title": `Thank You | ${COMPANY.name}`, "description": "Thank you for contacting us. We'll be in touch within 24 hours." }, { "default": ($$result2) => renderTemplate` ${maybeRenderHead()}<section class="py-20 bg-gradient-to-r from-blue-900 via-blue-800 to-blue-900 text-white"> <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center"> <div class="mb-6"> <svg class="w-20 h-20 mx-auto text-green-400" fill="currentColor" viewBox="0 0 20 20"> <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path> </svg> </div> <h1 class="text-4xl md:text-5xl font-bold mb-4">
+Thank You for Contacting Us!
+</h1> <p class="text-xl text-blue-100 mb-8">
+We've received your message and one of our 1031 exchange experts will get back to you within 24 hours.
+</p> <div class="bg-blue-800/50 backdrop-blur rounded-lg p-6 mb-8"> <p class="text-lg mb-2">Need immediate assistance?</p> <p class="text-2xl font-bold"> <a${addAttribute(getPhoneLink(), "href")} class="hover:text-green-400 transition-colors"> ${COMPANY.phone.main} </a> </p> <p class="text-sm mt-2">Available 24/7 for emergency support</p> </div> </div> </section>  <section class="py-16 bg-gray-50"> <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"> <h2 class="text-3xl font-bold text-center text-gray-900 mb-12">
+What Happens Next?
+</h2> <div class="grid md:grid-cols-3 gap-8"> <div class="text-center"> <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4"> <span class="text-2xl font-bold text-blue-600">1</span> </div> <h3 class="text-xl font-semibold mb-2">Review Your Request</h3> <p class="text-gray-600">
+Our team will review your inquiry and match you with the right 1031 exchange specialist.
+</p> </div> <div class="text-center"> <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4"> <span class="text-2xl font-bold text-blue-600">2</span> </div> <h3 class="text-xl font-semibold mb-2">Personal Contact</h3> <p class="text-gray-600">
+An expert will reach out within 24 hours to discuss your specific situation and needs.
+</p> </div> <div class="text-center"> <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4"> <span class="text-2xl font-bold text-blue-600">3</span> </div> <h3 class="text-xl font-semibold mb-2">Custom Strategy</h3> <p class="text-gray-600">
+We'll create a personalized 1031 exchange strategy to maximize your tax savings.
+</p> </div> </div> </div> </section>  <section class="py-16 bg-white"> <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"> <h2 class="text-3xl font-bold text-center text-gray-900 mb-12">
+While You Wait, Explore These Resources
+</h2> <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6"> <a href="/resources/guide" class="bg-gray-50 rounded-lg p-6 hover:shadow-lg transition-shadow"> <div class="text-blue-600 mb-3"> <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path> </svg> </div> <h3 class="font-semibold text-gray-900 mb-2">1031 Exchange Guide</h3> <p class="text-sm text-gray-600">Learn the basics of 1031 exchanges</p> </a> <a href="/resources/tax-calculator" class="bg-gray-50 rounded-lg p-6 hover:shadow-lg transition-shadow"> <div class="text-green-600 mb-3"> <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path> </svg> </div> <h3 class="font-semibold text-gray-900 mb-2">Tax Calculator</h3> <p class="text-sm text-gray-600">Calculate your potential tax savings</p> </a> <a href="/resources/timeline-calculator" class="bg-gray-50 rounded-lg p-6 hover:shadow-lg transition-shadow"> <div class="text-purple-600 mb-3"> <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path> </svg> </div> <h3 class="font-semibold text-gray-900 mb-2">Timeline Calculator</h3> <p class="text-sm text-gray-600">Plan your exchange deadlines</p> </a> <a href="/resources/faq" class="bg-gray-50 rounded-lg p-6 hover:shadow-lg transition-shadow"> <div class="text-yellow-600 mb-3"> <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path> </svg> </div> <h3 class="font-semibold text-gray-900 mb-2">Frequently Asked</h3> <p class="text-sm text-gray-600">Common questions answered</p> </a> </div> </div> </section>  <section class="py-12 bg-blue-900 text-white"> <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center"> <h2 class="text-2xl font-bold mb-4">Need Immediate Assistance?</h2> <p class="text-lg mb-6">Our team is available 24/7 for time-sensitive 1031 exchange matters</p> <a${addAttribute(getPhoneLink(), "href")} class="inline-block bg-white text-blue-900 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
+Call Now: ${COMPANY.phone.main} </a> </div> </section> ${renderScript($$result2, "/Users/matthewdnye/odrive/Google Drive - NYEC50/NYEM50/Developer Projects/Elite Advisor Tools/national-1031-exchange/src/pages/thank-you.astro?astro&type=script&index=0&lang.ts")} ` })}`;
+}, "/Users/matthewdnye/odrive/Google Drive - NYEC50/NYEM50/Developer Projects/Elite Advisor Tools/national-1031-exchange/src/pages/thank-you.astro", void 0);
+
+const $$file = "/Users/matthewdnye/odrive/Google Drive - NYEC50/NYEM50/Developer Projects/Elite Advisor Tools/national-1031-exchange/src/pages/thank-you.astro";
+const $$url = "/thank-you";
+
+const _page = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: $$ThankYou,
+  file: $$file,
+  url: $$url
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const page = () => _page;
+
+export { page };

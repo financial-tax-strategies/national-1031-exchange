@@ -1,0 +1,320 @@
+import { c as createAstro, d as createComponent, i as renderComponent, r as renderTemplate, f as addAttribute, m as maybeRenderHead } from '../../chunks/astro/server_DPvkWNif.mjs';
+import 'kleur/colors';
+import { $ as $$Layout, C as COMPANY, g as getPhoneLink } from '../../chunks/Layout_NoDNIcv-.mjs';
+import { $ as $$Breadcrumbs } from '../../chunks/Breadcrumbs_BLBGUB5A.mjs';
+export { renderers } from '../../renderers.mjs';
+
+var __freeze = Object.freeze;
+var __defProp = Object.defineProperty;
+var __template = (cooked, raw) => __freeze(__defProp(cooked, "raw", { value: __freeze(cooked.slice()) }));
+var _a;
+const $$Astro = createAstro("https://the1031center.com");
+async function getStaticPaths() {
+  const competitors = [
+    {
+      slug: "ipx1031",
+      name: "IPX1031",
+      fullName: "Investment Property Exchange Services, Inc.",
+      strengths: ["Large national presence", "Long history since 1988", "Wide network of offices"],
+      advantages: {
+        personalized: "More personalized service with dedicated exchange specialists",
+        technology: "Modern digital platform with 24/7 client portal access",
+        flexibility: "More flexible exchange structures and creative solutions",
+        response: "48-hour response guarantee vs standard business hours",
+        security: "Enhanced security with bonded & insured protection",
+        transparency: "Clear, upfront pricing with no hidden fees"
+      }
+    },
+    {
+      slug: "exeter-1031",
+      name: "Exeter 1031",
+      fullName: "Exeter 1031 Exchange Services, LLC",
+      strengths: ["Established reputation", "Multiple office locations", "Industry experience"],
+      advantages: {
+        personalized: "Boutique service model with direct partner access",
+        technology: "Advanced digital tools and real-time transaction tracking",
+        flexibility: "Custom exchange solutions for complex transactions",
+        response: "Faster turnaround times with dedicated team",
+        security: "Superior fund protection with segregated accounts",
+        transparency: "Comprehensive fee disclosure and no surprises"
+      }
+    },
+    {
+      slug: "asset-preservation",
+      name: "Asset Preservation",
+      fullName: "Asset Preservation, Inc.",
+      strengths: ["Stewart Title backing", "National footprint", "Institutional support"],
+      advantages: {
+        personalized: "Direct access to exchange experts, not call centers",
+        technology: "Cutting-edge platform with mobile accessibility",
+        flexibility: "Innovative exchange strategies for unique situations",
+        response: "Priority handling with guaranteed response times",
+        security: "Independent security with additional insurance layers",
+        transparency: "Simple, transparent pricing structure"
+      }
+    },
+    {
+      slug: "first-american-exchange",
+      name: "First American Exchange",
+      fullName: "First American Exchange Company",
+      strengths: ["Title company backing", "Integrated services", "Large corporate structure"],
+      advantages: {
+        personalized: "Dedicated exchange coordinator throughout process",
+        technology: "User-friendly portal with document management",
+        flexibility: "Agile approach to complex exchange scenarios",
+        response: "Rapid response with evening and weekend availability",
+        security: "Enhanced protection beyond standard requirements",
+        transparency: "No hidden fees or surprise charges"
+      }
+    },
+    {
+      slug: "chicago-deferred-exchange",
+      name: "Chicago Deferred Exchange",
+      fullName: "Chicago Deferred Exchange Company",
+      strengths: ["Regional expertise", "Local market knowledge", "Established presence"],
+      advantages: {
+        personalized: "National reach with local touch",
+        technology: "Modern tech stack with automated notifications",
+        flexibility: "Creative solutions for challenging exchanges",
+        response: "Same-day response on urgent matters",
+        security: "Bank-level security protocols",
+        transparency: "Clear communication throughout process"
+      }
+    },
+    {
+      slug: "realty-exchange-corporation",
+      name: "Realty Exchange Corporation",
+      fullName: "Realty Exchange Corporation",
+      strengths: ["Specialized expertise", "Professional network", "Industry focus"],
+      advantages: {
+        personalized: "White-glove service for every client",
+        technology: "Streamlined digital experience",
+        flexibility: "Customized strategies for investor goals",
+        response: "Immediate response to client needs",
+        security: "Comprehensive protection measures",
+        transparency: "Full visibility into exchange process"
+      }
+    },
+    {
+      slug: "accruit",
+      name: "Accruit",
+      fullName: "Accruit LLC",
+      strengths: ["Technology platform", "Modern approach", "Digital focus"],
+      advantages: {
+        personalized: "Human expertise with technology efficiency",
+        technology: "Next-generation features and automation",
+        flexibility: "Adaptable solutions for any scenario",
+        response: "Real-time support when you need it",
+        security: "Multi-layered security architecture",
+        transparency: "Complete fee transparency upfront"
+      }
+    },
+    {
+      slug: "starker-services",
+      name: "Starker Services",
+      fullName: "Starker Services, Inc.",
+      strengths: ["Historical significance", "Pioneer in 1031s", "West Coast presence"],
+      advantages: {
+        personalized: "Personalized attention for every exchange",
+        technology: "Modern tools built on proven processes",
+        flexibility: "Innovative approaches to complex situations",
+        response: "Responsive team with quick turnaround",
+        security: "Time-tested security procedures",
+        transparency: "Straightforward pricing model"
+      }
+    },
+    {
+      slug: "equity-advantage",
+      name: "Equity Advantage",
+      fullName: "Equity Advantage, Inc.",
+      strengths: ["Regional leader", "Educational focus", "Community presence"],
+      advantages: {
+        personalized: "Concierge-level service standard",
+        technology: "Intuitive platform with smart features",
+        flexibility: "Creative problem-solving approach",
+        response: "Priority response guarantee",
+        security: "Enhanced security protocols",
+        transparency: "No hidden costs or fees"
+      }
+    },
+    {
+      slug: "madison-1031",
+      name: "Madison 1031",
+      fullName: "Madison 1031 Exchange",
+      strengths: ["Midwest expertise", "Professional team", "Regional knowledge"],
+      advantages: {
+        personalized: "Direct principal involvement",
+        technology: "Efficient digital workflow",
+        flexibility: "Tailored exchange strategies",
+        response: "Immediate attention to requests",
+        security: "Robust protection measures",
+        transparency: "Clear, upfront communication"
+      }
+    },
+    {
+      slug: "republic-exchange",
+      name: "Republic Exchange",
+      fullName: "Republic Exchange Corporation",
+      strengths: ["Industry experience", "Professional network", "Established processes"],
+      advantages: {
+        personalized: "Individual attention to each client",
+        technology: "Streamlined technology platform",
+        flexibility: "Adaptive exchange solutions",
+        response: "Quick response times",
+        security: "Comprehensive security measures",
+        transparency: "Transparent fee structure"
+      }
+    },
+    {
+      slug: "orion-exchange",
+      name: "Orion Exchange",
+      fullName: "Orion 1031 Exchange",
+      strengths: ["Specialized services", "Focused expertise", "Client dedication"],
+      advantages: {
+        personalized: "Boutique service experience",
+        technology: "Modern digital solutions",
+        flexibility: "Creative exchange strategies",
+        response: "Rapid response commitment",
+        security: "Advanced security features",
+        transparency: "Complete process transparency"
+      }
+    },
+    {
+      slug: "vantage-point",
+      name: "Vantage Point",
+      fullName: "Vantage Point 1031 Exchange",
+      strengths: ["Strategic approach", "Market insight", "Professional service"],
+      advantages: {
+        personalized: "Dedicated team approach",
+        technology: "Cutting-edge technology",
+        flexibility: "Flexible exchange options",
+        response: "Priority client support",
+        security: "Enhanced fund protection",
+        transparency: "Clear pricing policy"
+      }
+    },
+    {
+      slug: "strategic-property-exchanges",
+      name: "Strategic Property Exchanges",
+      fullName: "Strategic Property Exchanges, LLC",
+      strengths: ["Strategic focus", "Industry expertise", "Professional standards"],
+      advantages: {
+        personalized: "Customized service delivery",
+        technology: "Advanced exchange platform",
+        flexibility: "Strategic exchange planning",
+        response: "Immediate response capability",
+        security: "Superior security standards",
+        transparency: "Full disclosure approach"
+      }
+    },
+    {
+      slug: "independence-title",
+      name: "Independence Title",
+      fullName: "Independence Title 1031 Exchange",
+      strengths: ["Title integration", "Full service", "Regional presence"],
+      advantages: {
+        personalized: "Personal exchange coordinators",
+        technology: "Integrated technology solutions",
+        flexibility: "Comprehensive exchange options",
+        response: "Fast response guarantee",
+        security: "Multi-level security",
+        transparency: "Open communication policy"
+      }
+    }
+  ];
+  return competitors.map((competitor) => ({
+    params: { competitor: competitor.slug },
+    props: { competitor }
+  }));
+}
+const $$competitor = createComponent(($$result, $$props, $$slots) => {
+  const Astro2 = $$result.createAstro($$Astro, $$props, $$slots);
+  Astro2.self = $$competitor;
+  const { competitor } = Astro2.props;
+  return renderTemplate`${renderComponent($$result, "Layout", $$Layout, { "title": `National 1031 Center vs ${competitor.name} | 1031 Exchange Comparison`, "description": `Compare National 1031 Center with ${competitor.fullName}. See why investors choose our personalized service, advanced technology, and superior security for their 1031 exchanges.` }, { "default": ($$result2) => renderTemplate(_a || (_a = __template(["  ", '<section class="bg-gradient-to-r from-blue-900 via-blue-800 to-blue-900 text-white py-16"> <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"> <div class="max-w-4xl"> ', ' <h1 class="text-4xl md:text-5xl font-bold mb-6">\nNational 1031 Center vs ', ' </h1> <p class="text-xl text-blue-100 mb-8">\nMaking the right choice for your 1031 exchange qualified intermediary\n</p> <div class="flex flex-col sm:flex-row gap-4"> <a href="/start-exchange" class="bg-yellow-400 text-blue-900 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-yellow-300 transition-all duration-300 transform hover:scale-105 text-center">\nChoose National 1031 Center\n</a> <a href="/calculator" class="border-2 border-white text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-white hover:text-blue-900 transition-all duration-300 text-center">\nCalculate Your Savings\n</a> </div> </div> </div> </section>  <section class="py-16 bg-white"> <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8"> <p class="text-lg text-gray-700 leading-relaxed">\nChoosing the right qualified intermediary is one of the most important decisions in your 1031 exchange. \n        While ', " is a ", ', National 1031 Center offers \n        distinct advantages that make us the preferred choice for thousands of investors nationwide.\n</p> </div> </section>  <section class="py-16 bg-gray-50"> <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"> <h2 class="text-3xl font-bold text-gray-900 text-center mb-12">\nQuick Comparison\n</h2> <div class="bg-white rounded-lg shadow-lg overflow-hidden"> <table class="min-w-full divide-y divide-gray-200"> <thead class="bg-gray-50"> <tr> <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">\nFeature\n</th> <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">\nNational 1031 Center\n</th> <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"> ', ' </th> </tr> </thead> <tbody class="bg-white divide-y divide-gray-200"> <tr> <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">\n48-Hour Response Guarantee\n</td> <td class="px-6 py-4 whitespace-nowrap text-center"> <svg class="w-6 h-6 text-green-500 mx-auto" fill="currentColor" viewBox="0 0 20 20"> <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path> </svg> </td> <td class="px-6 py-4 whitespace-nowrap text-center"> <svg class="w-6 h-6 text-gray-300 mx-auto" fill="currentColor" viewBox="0 0 20 20"> <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path> </svg> </td> </tr> <tr class="bg-gray-50"> <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">\n24/7 Client Portal\n</td> <td class="px-6 py-4 whitespace-nowrap text-center"> <svg class="w-6 h-6 text-green-500 mx-auto" fill="currentColor" viewBox="0 0 20 20"> <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path> </svg> </td> <td class="px-6 py-4 whitespace-nowrap text-center"> <span class="text-gray-500">Limited</span> </td> </tr> <tr> <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">\nBonded & Insured\n</td> <td class="px-6 py-4 whitespace-nowrap text-center"> <svg class="w-6 h-6 text-green-500 mx-auto" fill="currentColor" viewBox="0 0 20 20"> <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path> </svg> </td> <td class="px-6 py-4 whitespace-nowrap text-center"> <span class="text-gray-500">Varies</span> </td> </tr> <tr class="bg-gray-50"> <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">\nTransparent Pricing\n</td> <td class="px-6 py-4 whitespace-nowrap text-center"> <svg class="w-6 h-6 text-green-500 mx-auto" fill="currentColor" viewBox="0 0 20 20"> <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path> </svg> </td> <td class="px-6 py-4 whitespace-nowrap text-center"> <span class="text-gray-500">Quote Required</span> </td> </tr> <tr> <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">\nDedicated Exchange Specialist\n</td> <td class="px-6 py-4 whitespace-nowrap text-center"> <svg class="w-6 h-6 text-green-500 mx-auto" fill="currentColor" viewBox="0 0 20 20"> <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path> </svg> </td> <td class="px-6 py-4 whitespace-nowrap text-center"> <span class="text-gray-500">Team-Based</span> </td> </tr> </tbody> </table> </div> </div> </section>  <section class="py-16 bg-white"> <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"> <h2 class="text-3xl font-bold text-gray-900 text-center mb-12">\nWhy Choose National 1031 Center\n</h2> <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8"> <!-- Personalized Service --> <div class="bg-white rounded-lg p-8 shadow-lg border-t-4 border-blue-500"> <div class="w-16 h-16 bg-blue-100 rounded-lg flex items-center justify-center mb-6"> <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path> </svg> </div> <h3 class="text-xl font-semibold text-gray-900 mb-4">Personalized Service</h3> <p class="text-gray-600"> ', `. You'll work with the same specialist from 
+            start to finish, ensuring continuity and deep understanding of your unique situation.
+</p> </div> <!-- Advanced Technology --> <div class="bg-white rounded-lg p-8 shadow-lg border-t-4 border-green-500"> <div class="w-16 h-16 bg-green-100 rounded-lg flex items-center justify-center mb-6"> <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path> </svg> </div> <h3 class="text-xl font-semibold text-gray-900 mb-4">Superior Technology</h3> <p class="text-gray-600"> `, '. Track your exchange progress, access documents, \n            and communicate with your team anytime, anywhere.\n</p> </div> <!-- Flexibility --> <div class="bg-white rounded-lg p-8 shadow-lg border-t-4 border-purple-500"> <div class="w-16 h-16 bg-purple-100 rounded-lg flex items-center justify-center mb-6"> <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path> </svg> </div> <h3 class="text-xl font-semibold text-gray-900 mb-4">Maximum Flexibility</h3> <p class="text-gray-600"> ', `. We don't force you into a one-size-fits-all 
+            approach but tailor our services to your specific needs.
+</p> </div> <!-- Response Time --> <div class="bg-white rounded-lg p-8 shadow-lg border-t-4 border-yellow-500"> <div class="w-16 h-16 bg-yellow-100 rounded-lg flex items-center justify-center mb-6"> <svg class="w-8 h-8 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path> </svg> </div> <h3 class="text-xl font-semibold text-gray-900 mb-4">Guaranteed Response</h3> <p class="text-gray-600"> `, `. Our 48-hour response guarantee means you're never 
+            left waiting during critical exchange periods.
+</p> </div> <!-- Security --> <div class="bg-white rounded-lg p-8 shadow-lg border-t-4 border-red-500"> <div class="w-16 h-16 bg-red-100 rounded-lg flex items-center justify-center mb-6"> <svg class="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path> </svg> </div> <h3 class="text-xl font-semibold text-gray-900 mb-4">Enhanced Security</h3> <p class="text-gray-600"> `, '. Your funds are protected by multiple layers of \n            security, including bonding, insurance, and segregated accounts.\n</p> </div> <!-- Transparency --> <div class="bg-white rounded-lg p-8 shadow-lg border-t-4 border-indigo-500"> <div class="w-16 h-16 bg-indigo-100 rounded-lg flex items-center justify-center mb-6"> <svg class="w-8 h-8 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path> </svg> </div> <h3 class="text-xl font-semibold text-gray-900 mb-4">Complete Transparency</h3> <p class="text-gray-600"> ', `. Know exactly what you're paying for and track 
+            every step of your exchange process.
+</p> </div> </div> </div> </section>  <section class="py-16 bg-gray-50"> <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8"> <h2 class="text-3xl font-bold text-gray-900 mb-8">
+About `, ' </h2> <div class="bg-white rounded-lg p-8 shadow-md"> <p class="text-gray-700 mb-4"> ', " is a qualified intermediary offering 1031 exchange services. \n          They have ", " and provide ", '.\n</p> <h3 class="text-xl font-semibold text-gray-900 mb-4 mt-6">', ' Strengths:</h3> <ul class="space-y-2 text-gray-700"> ', ' </ul> <p class="text-gray-700 mt-6">\nWhile ', ` offers these benefits, many investors find that National 1031 Center's 
+          combination of personalized service, advanced technology, and superior security provides a 
+          more comprehensive solution for their exchange needs.
+</p> </div> </div> </section>  <section class="py-16 bg-white"> <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"> <h2 class="text-3xl font-bold text-gray-900 text-center mb-12">
+What Our Clients Say
+</h2> <div class="grid md:grid-cols-2 gap-8"> <div class="bg-gray-50 rounded-lg p-8"> <div class="flex mb-4"> `, ' </div> <p class="text-gray-700 mb-4">\n"After researching several QIs including ', ', I chose National 1031 Center \n            for their responsiveness and transparency. Best decision I made!"\n</p> <p class="text-sm text-gray-600"> <strong>Sarah M.</strong> - Real Estate Investor, California\n</p> </div> <div class="bg-gray-50 rounded-lg p-8"> <div class="flex mb-4"> ', ` </div> <p class="text-gray-700 mb-4">
+"The personalized service at National 1031 Center made all the difference. Having a 
+            dedicated specialist vs a call center was invaluable during my exchange."
+</p> <p class="text-sm text-gray-600"> <strong>Michael R.</strong> - Property Developer, Texas
+</p> </div> </div> </div> </section>  <section class="py-16 bg-gray-50"> <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8"> <h2 class="text-3xl font-bold text-gray-900 text-center mb-12">
+Important Factors to Consider
+</h2> <div class="space-y-6"> <div class="bg-white rounded-lg p-6 shadow-md"> <h3 class="text-xl font-semibold text-gray-900 mb-3">Experience & Expertise</h3> <p class="text-gray-700">
+While both companies have experience in 1031 exchanges, National 1031 Center's team 
+            includes Certified Exchange Specialists, attorneys, and CPAs who collaborate to ensure 
+            your exchange is structured optimally for your specific situation.
+</p> </div> <div class="bg-white rounded-lg p-6 shadow-md"> <h3 class="text-xl font-semibold text-gray-900 mb-3">Security of Funds</h3> <p class="text-gray-700">
+Your exchange funds represent your investment future. National 1031 Center's bonded 
+            and insured protection, segregated accounts, and daily reconciliation provide peace 
+            of mind that your funds are secure throughout the exchange process.
+</p> </div> <div class="bg-white rounded-lg p-6 shadow-md"> <h3 class="text-xl font-semibold text-gray-900 mb-3">Customer Service</h3> <p class="text-gray-700">
+During the critical 45 and 180-day deadlines, responsive service is essential. Our 
+            48-hour response guarantee and dedicated exchange specialists ensure you're never 
+            left waiting for answers when time is of the essence.
+</p> </div> <div class="bg-white rounded-lg p-6 shadow-md"> <h3 class="text-xl font-semibold text-gray-900 mb-3">Technology & Convenience</h3> <p class="text-gray-700">
+Modern investors expect modern solutions. Our 24/7 client portal, mobile accessibility, 
+            and automated notifications keep you informed and in control throughout your exchange, 
+            something not all QIs can offer.
+</p> </div> </div> </div> </section>  <section class="py-16 bg-white"> <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8"> <h2 class="text-3xl font-bold text-gray-900 text-center mb-12">
+Common Questions When Comparing QIs
+</h2> <div class="space-y-6"> <div class="bg-gray-50 rounded-lg p-6"> <h3 class="text-lg font-semibold text-gray-900 mb-3">
+Should I choose based on price alone?
+</h3> <p class="text-gray-700">
+While price is a factor, the security of your funds, quality of service, and expertise 
+            should be primary considerations. A failed exchange due to poor service costs far more 
+            than any fee difference.
+</p> </div> <div class="bg-gray-50 rounded-lg p-6"> <h3 class="text-lg font-semibold text-gray-900 mb-3">
+How do I switch from `, ` to National 1031 Center?
+</h3> <p class="text-gray-700">
+If you haven't closed your relinquished property yet, switching is simple. Contact us 
+            and we'll handle the transition seamlessly. If you're mid-exchange, we can advise on 
+            your options.
+</p> </div> <div class="bg-gray-50 rounded-lg p-6"> <h3 class="text-lg font-semibold text-gray-900 mb-3">
+What makes National 1031 Center more secure?
+</h3> <p class="text-gray-700">
+We maintain bonding and insurance, use segregated client accounts, perform daily 
+            reconciliation, and have never had a claim against our security measures. Your funds 
+            are protected by multiple layers of security.
+</p> </div> </div> </div> </section>  <section class="py-16 bg-blue-900"> <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center"> <h2 class="text-3xl font-bold text-white mb-4">
+Make the Right Choice for Your Exchange
+</h2> <p class="text-xl text-blue-100 mb-8">
+Join thousands of investors who've chosen National 1031 Center for superior service, 
+        security, and success in their 1031 exchanges.
+</p> <div class="bg-blue-800 bg-opacity-50 rounded-lg p-8 mb-8"> <h3 class="text-2xl font-semibold text-white mb-4">Exclusive Benefits Include:</h3> <div class="grid md:grid-cols-2 gap-4 text-left max-w-2xl mx-auto"> <div class="flex items-start"> <svg class="w-5 h-5 text-yellow-400 mr-2 mt-1" fill="currentColor" viewBox="0 0 20 20"> <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path> </svg> <span class="text-blue-100">48-hour response guarantee</span> </div> <div class="flex items-start"> <svg class="w-5 h-5 text-yellow-400 mr-2 mt-1" fill="currentColor" viewBox="0 0 20 20"> <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path> </svg> <span class="text-blue-100">Dedicated exchange specialist</span> </div> <div class="flex items-start"> <svg class="w-5 h-5 text-yellow-400 mr-2 mt-1" fill="currentColor" viewBox="0 0 20 20"> <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path> </svg> <span class="text-blue-100">24/7 client portal access</span> </div> <div class="flex items-start"> <svg class="w-5 h-5 text-yellow-400 mr-2 mt-1" fill="currentColor" viewBox="0 0 20 20"> <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path> </svg> <span class="text-blue-100">Transparent, competitive pricing</span> </div> </div> </div> <div class="flex flex-col sm:flex-row gap-4 justify-center"> <a href="/start-exchange" class="bg-yellow-400 text-blue-900 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-yellow-300 transition-all duration-300 transform hover:scale-105">
+Start Your Exchange Today
+</a> <a href="/schedule" class="border-2 border-white text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-white hover:text-blue-900 transition-all duration-300">
+Schedule a Consultation
+</a> </div> <p class="mt-8 text-blue-200">
+Questions? Call us at <a`, ' class="text-yellow-400 hover:text-yellow-300 font-semibold">', '</a> </p> </div> </section>  <script type="application/ld+json">\n  {\n    "@context": "https://schema.org",\n    "@type": "ComparisonTable",\n    "about": {\n      "@type": "Thing",\n      "name": "1031 Exchange Qualified Intermediaries"\n    },\n    "itemListElement": [\n      {\n        "@type": "ListItem",\n        "position": 1,\n        "item": {\n          "@type": "Organization",\n          "name": "National 1031 Center",\n          "url": "https://the1031center.com"\n        }\n      },\n      {\n        "@type": "ListItem",\n        "position": 2,\n        "item": {\n          "@type": "Organization",\n          "name": "{competitor.fullName}",\n          "alternateName": "{competitor.name}"\n        }\n      }\n    ]\n  }\n  <\/script> '])), maybeRenderHead(), renderComponent($$result2, "Breadcrumbs", $$Breadcrumbs, { "items": [
+    { name: "Home", url: "/" },
+    { name: "QI Comparisons", url: "/comparisons" },
+    { name: `${competitor.name}` }
+  ], "class": "text-blue-200 mb-4 [&_a]:text-blue-200 [&_a:hover]:text-white [&_span]:text-white" }), competitor.name, competitor.fullName, competitor.strengths[0].toLowerCase(), competitor.name, competitor.advantages.personalized, competitor.advantages.technology, competitor.advantages.flexibility, competitor.advantages.response, competitor.advantages.security, competitor.advantages.transparency, competitor.fullName, competitor.fullName, competitor.strengths[0].toLowerCase(), competitor.strengths[1].toLowerCase(), competitor.name, competitor.strengths.map((strength) => renderTemplate`<li class="flex items-start"> <svg class="w-5 h-5 text-gray-400 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20"> <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path> </svg> ${strength} </li>`), competitor.name, [1, 2, 3, 4, 5].map(() => renderTemplate`<svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"> <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path> </svg>`), competitor.name, [1, 2, 3, 4, 5].map(() => renderTemplate`<svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"> <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path> </svg>`), competitor.name, addAttribute(getPhoneLink(), "href"), COMPANY.phone.main) })}`;
+}, "/Users/matthewdnye/odrive/Google Drive - NYEC50/NYEM50/Developer Projects/Elite Advisor Tools/national-1031-exchange/src/pages/comparisons/[competitor].astro", void 0);
+
+const $$file = "/Users/matthewdnye/odrive/Google Drive - NYEC50/NYEM50/Developer Projects/Elite Advisor Tools/national-1031-exchange/src/pages/comparisons/[competitor].astro";
+const $$url = "/comparisons/[competitor]";
+
+const _page = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: $$competitor,
+  file: $$file,
+  getStaticPaths,
+  url: $$url
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const page = () => _page;
+
+export { page };

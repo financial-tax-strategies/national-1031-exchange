@@ -1,0 +1,410 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { COMPANY, getPhoneLink } from '../config/company';
+---
+
+<Layout title="America's Most Trusted 1031 Exchange Partner | National 1031 Center">
+  
+  <!-- Hero Section -->
+  <section class="relative bg-gradient-to-r from-blue-900 via-blue-800 to-blue-900 text-white overflow-hidden">
+    <div class="absolute inset-0 bg-black opacity-20"></div>
+    
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 lg:py-32">
+      <div class="text-center">
+        <!-- Trust Badge -->
+        <div class="inline-flex items-center bg-blue-800 bg-opacity-50 px-4 py-2 rounded-full text-sm font-medium mb-6">
+          <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+          </svg>
+          Trusted by 10,000+ Investors Nationwide
+        </div>
+        
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
+          Defer Capital Gains Taxes with 
+          <span class="text-yellow-400">America's Most Trusted</span>
+          1031 Exchange Partner
+        </h1>
+        
+        <p class="text-xl lg:text-2xl mb-8 max-w-4xl mx-auto leading-relaxed text-blue-100">
+          Save hundreds of thousands in taxes with our expert 1031 exchange services. 
+          Industry-leading security, nationwide coverage, and 48-hour response guarantee.
+        </p>
+        
+        <!-- CTA Buttons -->
+        <div class="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+          <a href="/start-exchange" 
+             class="bg-yellow-400 text-blue-900 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-yellow-300 transition-all duration-300 transform hover:scale-105 shadow-lg"
+             onclick="if(window.trackContentEngagement) window.trackContentEngagement('cta_click', 'hero_start_exchange');">
+            Start Your Exchange Today
+          </a>
+          <a href="/calculator" 
+             class="border-2 border-white text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-white hover:text-blue-900 transition-all duration-300"
+             onclick="if(window.trackContentEngagement) window.trackContentEngagement('cta_click', 'hero_calculator');">
+            Calculate Your Savings
+          </a>
+        </div>
+        
+        <!-- Trust Indicators -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mt-16">
+          <div class="text-center">
+            <div class="text-2xl font-bold text-yellow-400">Bonded</div>
+            <div class="text-sm text-blue-200">& Insured</div>
+          </div>
+          <div class="text-center">
+            <div class="text-3xl font-bold text-yellow-400">50</div>
+            <div class="text-sm text-blue-200">States Served</div>
+          </div>
+          <div class="text-center">
+            <div class="text-3xl font-bold text-yellow-400">24/7</div>
+            <div class="text-sm text-blue-200">Support</div>
+          </div>
+          <div class="text-center">
+            <div class="text-3xl font-bold text-yellow-400">98%</div>
+            <div class="text-sm text-blue-200">Success Rate</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Services Overview -->
+  <section class="py-20 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16">
+        <h2 class="text-4xl font-bold text-gray-900 mb-4">
+          Complete 1031 Exchange Services
+        </h2>
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+          From simple delayed exchanges to complex reverse and improvement structures, 
+          we handle every type of tax-deferred exchange with unmatched expertise.
+        </p>
+      </div>
+      
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <!-- Delayed Exchange -->
+        <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300">
+          <div class="w-16 h-16 bg-blue-100 rounded-lg flex items-center justify-center mb-6">
+            <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-gray-900 mb-4">Delayed Exchange</h3>
+          <p class="text-gray-600 mb-6">
+            Standard forward exchanges. Sell first, then buy replacement property within 180 days.
+          </p>
+          <a href="/services/delayed-exchange" 
+             class="text-blue-600 font-semibold hover:text-blue-700 transition-colors"
+             onclick="if(window.trackContentEngagement) window.trackContentEngagement('service_click', 'delayed_exchange');">
+            Learn More →
+          </a>
+        </div>
+        
+        <!-- Reverse Exchange -->
+        <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300">
+          <div class="w-16 h-16 bg-green-100 rounded-lg flex items-center justify-center mb-6">
+            <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path>
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-gray-900 mb-4">Reverse Exchange</h3>
+          <p class="text-gray-600 mb-6">
+            Buy first, sell later. Perfect for competitive markets where timing is critical.
+          </p>
+          <a href="/services/reverse-exchange" 
+             class="text-blue-600 font-semibold hover:text-blue-700 transition-colors"
+             onclick="if(window.trackContentEngagement) window.trackContentEngagement('service_click', 'reverse_exchange');">
+            Learn More →
+          </a>
+        </div>
+        
+        <!-- Improvement Exchange -->
+        <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300">
+          <div class="w-16 h-16 bg-purple-100 rounded-lg flex items-center justify-center mb-6">
+            <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-gray-900 mb-4">Improvement Exchange</h3>
+          <p class="text-gray-600 mb-6">
+            Build-to-suit exchanges. Use exchange funds to improve replacement property.
+          </p>
+          <a href="/services/improvement-exchange" 
+             class="text-blue-600 font-semibold hover:text-blue-700 transition-colors"
+             onclick="if(window.trackContentEngagement) window.trackContentEngagement('service_click', 'improvement_exchange');">
+            Learn More →
+          </a>
+        </div>
+        
+        <!-- Partial Exchange -->
+        <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300">
+          <div class="w-16 h-16 bg-orange-100 rounded-lg flex items-center justify-center mb-6">
+            <svg class="w-8 h-8 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0SK00 002 2h2a2 2 0 002-2Z"></path>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 19V5a2 2 0 00-2-2H11a2 2 0 00-2 2v14a2 2 0 002 2h8a2 2 0 002-2Z"></path>
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-gray-900 mb-4">Partial Exchange</h3>
+          <p class="text-gray-600 mb-6">
+            Strategic cash-out while still deferring taxes on the majority of proceeds.
+          </p>
+          <a href="/services/partial-exchange" 
+             class="text-blue-600 font-semibold hover:text-blue-700 transition-colors"
+             onclick="if(window.trackContentEngagement) window.trackContentEngagement('service_click', 'partial_exchange');">
+            Learn More →
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Knowledge Hub -->
+  <section class="py-20 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16">
+        <h2 class="text-4xl font-bold text-gray-900 mb-4">
+          Master Your 1031 Exchange Knowledge
+        </h2>
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+          Get the complete education you need for a successful tax-deferred exchange. 
+          From basic concepts to advanced strategies, we've got you covered.
+        </p>
+      </div>
+      
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Complete Guide -->
+        <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border-l-4 border-blue-500">
+          <div class="flex items-center mb-4">
+            <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
+              <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900">Complete 1031 Guide</h3>
+          </div>
+          <p class="text-gray-600 mb-6">
+            Everything you need to know about 1031 exchanges in one comprehensive resource. 
+            Start here for complete mastery.
+          </p>
+          <a href="/complete-guide-1031-exchanges" class="text-blue-600 font-semibold hover:text-blue-700 inline-flex items-center">
+            Read the Complete Guide
+            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+            </svg>
+          </a>
+        </div>
+
+        <!-- How It Works -->
+        <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border-l-4 border-green-500">
+          <div class="flex items-center mb-4">
+            <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mr-4">
+              <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900">Step-by-Step Process</h3>
+          </div>
+          <p class="text-gray-600 mb-6">
+            Learn the exact 7-step process for executing a successful 1031 exchange, 
+            from start to finish.
+          </p>
+          <a href="/how-it-works" class="text-green-600 font-semibold hover:text-green-700 inline-flex items-center">
+            See How It Works
+            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+            </svg>
+          </a>
+        </div>
+
+        <!-- Critical Timelines -->
+        <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border-l-4 border-purple-500">
+          <div class="flex items-center mb-4">
+            <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mr-4">
+              <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900">Critical Deadlines</h3>
+          </div>
+          <p class="text-gray-600 mb-6">
+            Master the 45-day and 180-day deadlines that make or break your exchange. 
+            Don't let timing kill your tax savings.
+          </p>
+          <a href="/1031-exchange-timeline" class="text-purple-600 font-semibold hover:text-purple-700 inline-flex items-center">
+            Study the Timeline
+            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+            </svg>
+          </a>
+        </div>
+
+        <!-- IRS Rules -->
+        <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border-l-4 border-red-500">
+          <div class="flex items-center mb-4">
+            <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center mr-4">
+              <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900">IRS Rules & Requirements</h3>
+          </div>
+          <p class="text-gray-600 mb-6">
+            Understand the critical IRS regulations that govern 1031 exchanges. 
+            Avoid costly mistakes with proper compliance.
+          </p>
+          <a href="/1031-exchange-rules" class="text-red-600 font-semibold hover:text-red-700 inline-flex items-center">
+            Learn the Rules
+            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+            </svg>
+          </a>
+        </div>
+
+        <!-- Qualified Intermediary -->
+        <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border-l-4 border-orange-500">
+          <div class="flex items-center mb-4">
+            <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center mr-4">
+              <svg class="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.031 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900">Choosing Your QI</h3>
+          </div>
+          <p class="text-gray-600 mb-6">
+            Your qualified intermediary choice is critical. Learn what to look for in 
+            security, experience, and service quality.
+          </p>
+          <a href="/choosing-qualified-intermediary" class="text-orange-600 font-semibold hover:text-orange-700 inline-flex items-center">
+            QI Selection Guide
+            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+            </svg>
+          </a>
+        </div>
+
+        <!-- Calculator -->
+        <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border-l-4 border-yellow-500">
+          <div class="flex items-center mb-4">
+            <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center mr-4">
+              <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900">Tax Savings Calculator</h3>
+          </div>
+          <p class="text-gray-600 mb-6">
+            Calculate your potential tax savings and see the real financial impact 
+            of a 1031 exchange on your investment.
+          </p>
+          <a href="/calculator" class="text-yellow-600 font-semibold hover:text-yellow-700 inline-flex items-center">
+            Calculate Savings
+            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Why Choose Us -->
+  <section class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16">
+        <h2 class="text-4xl font-bold text-gray-900 mb-4">
+          Why 10,000+ Investors Trust National 1031 Center
+        </h2>
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+          When hundreds of thousands in taxes are at stake, you need a qualified intermediary 
+          you can trust completely. Here's why we're America's preferred choice.
+        </p>
+      </div>
+      
+      <div class="grid lg:grid-cols-3 gap-12">
+        <!-- Security First -->
+        <div class="text-center">
+          <div class="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
+            <svg class="w-10 h-10 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.031 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+            </svg>
+          </div>
+          <h3 class="text-2xl font-bold text-gray-900 mb-4">Unmatched Security</h3>
+          <ul class="text-gray-600 space-y-2">
+            <li>Bonded & insured</li>
+            <li>Segregated client accounts</li>
+            <li>Daily reconciliation</li>
+            <li>Parent company guarantee</li>
+            <li>FDIC insured deposits</li>
+          </ul>
+        </div>
+        
+        <!-- Expert Team -->
+        <div class="text-center">
+          <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+            <svg class="w-10 h-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+            </svg>
+          </div>
+          <h3 class="text-2xl font-bold text-gray-900 mb-4">Expert Team</h3>
+          <ul class="text-gray-600 space-y-2">
+            <li>Certified Exchange Specialists</li>
+            <li>Attorneys and CPAs on staff</li>
+            <li>30+ years combined experience</li>
+            <li>All exchange types mastered</li>
+            <li>Continuous education</li>
+          </ul>
+        </div>
+        
+        <!-- Service Excellence -->
+        <div class="text-center">
+          <div class="w-20 h-20 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-6">
+            <svg class="w-10 h-10 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+            </svg>
+          </div>
+          <h3 class="text-2xl font-bold text-gray-900 mb-4">Service Excellence</h3>
+          <ul class="text-gray-600 space-y-2">
+            <li>48-hour response guarantee</li>
+            <li>Dedicated exchange coordinator</li>
+            <li>24/7 emergency support</li>
+            <li>Online portal access</li>
+            <li>White-glove service</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- CTA Section -->
+  <section class="py-20 bg-blue-900 text-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h2 class="text-4xl font-bold mb-6">
+        Ready to Save on Capital Gains Taxes?
+      </h2>
+      <p class="text-xl mb-8 text-blue-200">
+        Don't pay unnecessary taxes. Start your 1031 exchange with America's most trusted QI today.
+      </p>
+      
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="/contact" 
+           class="bg-yellow-400 text-blue-900 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-yellow-300 transition-all duration-300 transform hover:scale-105"
+           onclick="if(window.trackContentEngagement) window.trackContentEngagement('cta_click', 'bottom_consultation');">
+          Get Free Consultation
+        </a>
+        <a href="/calculator" 
+           class="border-2 border-white text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-white hover:text-blue-900 transition-all duration-300"
+           onclick="if(window.trackContentEngagement) window.trackContentEngagement('cta_click', 'bottom_calculator');">
+          Calculate Savings
+        </a>
+      </div>
+      
+      <div class="mt-12 text-center">
+        <p class="text-blue-300 text-sm">
+          Call now: <a href={getPhoneLink()} 
+                      class="text-yellow-400 hover:text-yellow-300 font-semibold"
+                      onclick="if(window.trackPhoneCall) window.trackPhoneCall('bottom_cta');">{COMPANY.phone.main}</a> | 
+          Available 24/7 for emergencies
+        </p>
+      </div>
+    </div>
+  </section>
+</Layout>
