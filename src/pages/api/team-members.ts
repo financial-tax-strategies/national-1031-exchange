@@ -125,7 +125,7 @@ export const POST: APIRoute = async ({ request }) => {
     const body = await request.json();
     
     // Validate required fields
-    if (!body.name) {
+    if (!body.name || !body.name.trim()) {
       return new Response(JSON.stringify({ 
         error: 'Name is required' 
       }), {
@@ -135,6 +135,29 @@ export const POST: APIRoute = async ({ request }) => {
         },
       });
     }
+    
+    // Auto-generate slug if not provided
+    if (!body.slug || !body.slug.trim()) {
+      body.slug = body.name.toLowerCase()
+        .replace(/[^a-z0-9\s-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .replace(/^-|-$/g, '');
+      
+      if (!body.slug) {
+        body.slug = 'team-member-' + Date.now();
+      }
+    }
+    
+    // Ensure required fields have defaults
+    if (typeof body.display_order !== 'number') {
+      body.display_order = 0;
+    }
+    if (typeof body.is_active !== 'boolean') {
+      body.is_active = true;
+    }
+    
+    console.log('[API] Creating team member with data:', body);
     
     // Insert team member
     const { data, error } = await supabase
@@ -213,6 +236,39 @@ export const PATCH: APIRoute = async ({ request }) => {
         },
       });
     }
+    
+    // Validate and clean update data
+    if (updateData.name && !updateData.name.trim()) {
+      return new Response(JSON.stringify({ 
+        error: 'Name cannot be empty' 
+      }), {
+        status: 400,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+    }
+    
+    // Auto-generate slug if name is being updated but slug is empty
+    if (updateData.name && (!updateData.slug || !updateData.slug.trim())) {
+      updateData.slug = updateData.name.toLowerCase()
+        .replace(/[^a-z0-9\s-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .replace(/^-|-$/g, '');
+      
+      if (!updateData.slug) {
+        updateData.slug = 'team-member-' + Date.now();
+      }
+    }
+    
+    // Ensure display_order is a number if provided
+    if (updateData.display_order !== undefined && typeof updateData.display_order !== 'number') {
+      const parsed = parseInt(updateData.display_order);
+      updateData.display_order = isNaN(parsed) ? 0 : parsed;
+    }
+    
+    console.log('[API] Updating team member with data:', { id, updateData });
     
     // Update team member
     const { data, error } = await supabase
