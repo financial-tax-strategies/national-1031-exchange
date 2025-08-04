@@ -149,3 +149,82 @@ export const POST: APIRoute = async ({ request }) => {
     });
   }
 };
+
+// PATCH endpoint for updating team members (admin only)
+export const PATCH: APIRoute = async ({ request }) => {
+  // Check if Supabase is configured
+  if (!isSupabaseConfigured()) {
+    return new Response(JSON.stringify({ 
+      error: 'Database not configured' 
+    }), {
+      status: 503,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+  }
+
+  try {
+    // TODO: Add authentication check here
+    // const session = await getSession(request);
+    // if (!session || !session.user.isAdmin) {
+    //   return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+    //     status: 401,
+    //     headers: { 'Content-Type': 'application/json' },
+    //   });
+    // }
+    
+    const body = await request.json();
+    const { id, ...updateData } = body;
+    
+    if (!id) {
+      return new Response(JSON.stringify({ 
+        error: 'Team member ID is required' 
+      }), {
+        status: 400,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+    }
+    
+    // Update team member
+    const { data, error } = await supabase
+      .from('team_members')
+      .update(updateData)
+      .eq('id', id)
+      .select()
+      .single();
+    
+    if (error) {
+      console.error('Error updating team member:', error);
+      return new Response(JSON.stringify({ 
+        error: 'Failed to update team member',
+        details: error.message 
+      }), {
+        status: 500,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+    }
+    
+    return new Response(JSON.stringify({ data }), {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+  } catch (error) {
+    console.error('Unexpected error:', error);
+    return new Response(JSON.stringify({ 
+      error: 'Internal server error',
+      details: error instanceof Error ? error.message : 'Unknown error'
+    }), {
+      status: 500,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+  }
+};
