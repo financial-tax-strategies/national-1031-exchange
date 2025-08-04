@@ -2,6 +2,55 @@
 import Layout from '../layouts/Layout.astro';
 import { COMPANY, getPhoneLink, getEmailLink, getFullAddress } from '../config/company';
 import HighLevelContactForm from '../components/HighLevelContactForm';
+import { createLocalBusinessSchema, generateJsonLdScript } from '../utils/schema-utils';
+
+// Create LocalBusiness schema with proper data
+const localBusinessSchema = createLocalBusinessSchema({
+  id: "https://the1031center.com/#organization",
+  name: COMPANY.name,
+  alternateName: "The 1031 Exchange Center",
+  description: "America's most trusted 1031 exchange qualified intermediary, facilitating tax-deferred property exchanges nationwide.",
+  url: "https://the1031center.com",
+  logo: "/images/logo.png",
+  image: "/images/office.jpg",
+  telephone: `+1${COMPANY.phone.mainFormatted}`,
+  faxNumber: "+1-800-1031-FAX",
+  email: COMPANY.email.main,
+  address: {
+    street: COMPANY.address.street,
+    city: COMPANY.address.city,
+    state: COMPANY.address.state,
+    zip: COMPANY.address.zip,
+    country: COMPANY.address.country
+  },
+  coordinates: {
+    latitude: 34.0522,
+    longitude: -118.2437
+  },
+  hours: [
+    {
+      days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+      opens: "08:00",
+      closes: "18:00"
+    }
+  ],
+  priceRange: "$$",
+  areaServed: "United States",
+  socialMedia: [
+    "https://www.linkedin.com/company/the1031center",
+    "https://www.facebook.com/the1031center",
+    "https://twitter.com/the1031center"
+  ],
+  contactPoints: [
+    {
+      telephone: `+1${COMPANY.phone.mainFormatted}`,
+      type: "customer service",
+      areaServed: "US",
+      languages: ["English", "Spanish"],
+      options: ["TollFree", "Emergency"]
+    }
+  ]
+});
 ---
 
 <Layout 
@@ -182,61 +231,6 @@ import HighLevelContactForm from '../components/HighLevelContactForm';
     </div>
   </section>
   
-  <!-- Schema Markup -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "LocalBusiness",
-    "name": "${COMPANY.name}",
-    "alternateName": "The 1031 Exchange Center",
-    "description": "America's most trusted 1031 exchange qualified intermediary, facilitating tax-deferred property exchanges nationwide.",
-    "url": "https://the1031center.com",
-    "logo": "https://the1031center.com/images/logo.png",
-    "image": "https://the1031center.com/images/office.jpg",
-    "telephone": "+1${COMPANY.phone.mainFormatted}",
-    "faxNumber": "+1-800-1031-FAX",
-    "email": "${COMPANY.email.main}",
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "${COMPANY.address.street}",
-      "addressLocality": "${COMPANY.address.city}",
-      "addressRegion": "${COMPANY.address.state}",
-      "postalCode": "${COMPANY.address.zip}",
-      "addressCountry": "${COMPANY.address.countryCode}"
-    },
-    "geo": {
-      "@type": "GeoCoordinates",
-      "latitude": 34.0522,
-      "longitude": -118.2437
-    },
-    "openingHoursSpecification": [
-      {
-        "@type": "OpeningHoursSpecification",
-        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-        "opens": "08:00",
-        "closes": "18:00"
-      }
-    ],
-    "priceRange": "$$",
-    "areaServed": {
-      "@type": "Country",
-      "name": "United States"
-    },
-    "sameAs": [
-      "https://www.linkedin.com/company/the1031center",
-      "https://www.facebook.com/the1031center",
-      "https://twitter.com/the1031center"
-    ],
-    "contactPoint": [
-      {
-        "@type": "ContactPoint",
-        "telephone": "+1${COMPANY.phone.mainFormatted}",
-        "contactType": "customer service",
-        "areaServed": "US",
-        "availableLanguage": ["English", "Spanish"],
-        "contactOption": ["TollFree", "Emergency"]
-      }
-    ]
-  }
-  </script>
+  <!-- LocalBusiness Schema -->
+  <script type="application/ld+json" set:html={generateJsonLdScript(localBusinessSchema)}></script>
 </Layout>

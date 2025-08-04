@@ -2,6 +2,49 @@
 import Layout from '../layouts/Layout.astro';
 import ModernAppointmentBooking from '../components/booking/ModernAppointmentBooking';
 import { COMPANY, getPhoneLink, getEmailLink } from '../config/company';
+import { createEventSchema, createServiceSchema, generateJsonLdScript } from '../utils/schema-utils';
+
+// Create Event schema for consultation booking
+const eventSchema = createEventSchema({
+  name: "Free 1031 Exchange Consultation",
+  description: "Schedule a free consultation with certified 1031 exchange specialists to review your investment strategy and calculate potential tax savings.",
+  duration: "PT30M", // 30 minutes in ISO 8601 format
+  attendanceMode: "MixedEventAttendanceMode", // Can be phone, video, or in-person
+  status: "EventScheduled",
+  location: {
+    type: "virtual",
+    url: "https://the1031center.com/schedule"
+  },
+  price: 0,
+  priceCurrency: "USD",
+  availability: "https://schema.org/InStock",
+  validFrom: "2025-01-01",
+  bookingUrl: "https://the1031center.com/schedule",
+  maxCapacity: 1, // One-on-one consultations
+  remainingCapacity: 1
+});
+
+// Create Service schema for consultation service
+const serviceSchema = createServiceSchema({
+  name: "1031 Exchange Consultation Service",
+  description: "Expert consultation service for tax-deferred property exchanges. Our certified specialists provide personalized analysis, tax savings calculations, and strategic guidance for all types of 1031 exchanges.",
+  serviceType: "Consultation",
+  category: "Financial Services",
+  price: 0,
+  priceCurrency: "USD",
+  availability: "https://schema.org/InStock",
+  validFrom: "2025-01-01",
+  serviceUrl: "https://the1031center.com/schedule",
+  areaServed: "United States",
+  audienceType: "Real Estate Investors",
+  hoursAvailable: [
+    {
+      dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+      opens: "08:00",
+      closes: "18:00"
+    }
+  ]
+});
 ---
 
 <Layout 
@@ -333,29 +376,9 @@ import { COMPANY, getPhoneLink, getEmailLink } from '../config/company';
     </div>
   </section>
   
-  <!-- Schema Markup -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Service",
-    "name": "1031 Exchange Consultation",
-    "description": "Free consultation with certified 1031 exchange specialists to review your investment strategy and calculate potential tax savings",
-    "provider": {
-      "@type": "Organization",
-      "name": "${COMPANY.name}",
-      "url": "${COMPANY.url}"
-    },
-    "offers": {
-      "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "USD",
-      "availability": "InStock",
-      "validFrom": "2024-01-01"
-    },
-    "areaServed": {
-      "@type": "Country",
-      "name": "United States"
-    }
-  }
-  </script>
+  <!-- Event Schema for Consultation Booking -->
+  <script type="application/ld+json" set:html={generateJsonLdScript(eventSchema)}></script>
+  
+  <!-- Service Schema for Consultation Service -->
+  <script type="application/ld+json" set:html={generateJsonLdScript(serviceSchema)}></script>
 </Layout>

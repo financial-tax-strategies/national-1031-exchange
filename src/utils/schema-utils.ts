@@ -576,6 +576,443 @@ export function createHowToSchema(howTo: {
 }
 
 /**
+ * Event schema for appointments and consultations
+ */
+export interface EventSchema {
+  '@context': 'https://schema.org';
+  '@type': 'Event';
+  name: string;
+  description: string;
+  startDate?: string;
+  endDate?: string;
+  eventAttendanceMode?: string;
+  eventStatus?: string;
+  location?: {
+    '@type': 'VirtualLocation' | 'Place';
+    name?: string;
+    address?: any;
+    url?: string;
+  };
+  organizer: {
+    '@type': 'Organization';
+    name: string;
+    url?: string;
+    telephone?: string;
+    email?: string;
+  };
+  offers?: {
+    '@type': 'Offer';
+    price: string | number;
+    priceCurrency: string;
+    availability: string;
+    validFrom?: string;
+    url?: string;
+  };
+  performer?: {
+    '@type': 'Organization' | 'Person';
+    name: string;
+  };
+  duration?: string;
+  maximumAttendeeCapacity?: number;
+  remainingAttendeeCapacity?: number;
+}
+
+export function createEventSchema(event: {
+  name: string;
+  description: string;
+  startDate?: string;
+  endDate?: string;
+  duration?: string;
+  attendanceMode?: 'OnlineEventAttendanceMode' | 'OfflineEventAttendanceMode' | 'MixedEventAttendanceMode';
+  status?: 'EventScheduled' | 'EventRescheduled' | 'EventMovedOnline' | 'EventPostponed' | 'EventCancelled';
+  location?: {
+    type: 'virtual' | 'physical';
+    name?: string;
+    address?: string;
+    url?: string;
+  };
+  price?: string | number;
+  priceCurrency?: string;
+  availability?: string;
+  validFrom?: string;
+  bookingUrl?: string;
+  maxCapacity?: number;
+  remainingCapacity?: number;
+}): EventSchema {
+  const schema: EventSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Event',
+    name: safeJsonEncode(event.name) as string,
+    description: safeJsonEncode(event.description) as string,
+    organizer: {
+      '@type': 'Organization',
+      name: 'National 1031 Center',
+      url: 'https://the1031center.com',
+      telephone: '+1-800-555-1031',
+      email: 'info@the1031center.com'
+    }
+  };
+
+  if (event.startDate) {
+    schema.startDate = event.startDate;
+  }
+
+  if (event.endDate) {
+    schema.endDate = event.endDate;
+  }
+
+  if (event.duration) {
+    schema.duration = event.duration; // ISO 8601 format like "PT30M" for 30 minutes
+  }
+
+  if (event.attendanceMode) {
+    schema.eventAttendanceMode = `https://schema.org/${event.attendanceMode}`;
+  }
+
+  if (event.status) {
+    schema.eventStatus = `https://schema.org/${event.status}`;
+  }
+
+  if (event.location) {
+    if (event.location.type === 'virtual') {
+      schema.location = {
+        '@type': 'VirtualLocation',
+        url: event.location.url || 'https://the1031center.com/schedule'
+      };
+    } else {
+      schema.location = {
+        '@type': 'Place',
+        name: event.location.name || 'National 1031 Center',
+        address: event.location.address ? {
+          '@type': 'PostalAddress',
+          streetAddress: event.location.address
+        } : undefined
+      };
+    }
+  }
+
+  if (event.price !== undefined) {
+    schema.offers = {
+      '@type': 'Offer',
+      price: String(event.price),
+      priceCurrency: event.priceCurrency || 'USD',
+      availability: event.availability || 'https://schema.org/InStock',
+      url: event.bookingUrl || 'https://the1031center.com/schedule'
+    };
+
+    if (event.validFrom) {
+      schema.offers.validFrom = event.validFrom;
+    }
+  }
+
+  if (event.maxCapacity) {
+    schema.maximumAttendeeCapacity = event.maxCapacity;
+  }
+
+  if (event.remainingCapacity) {
+    schema.remainingAttendeeCapacity = event.remainingCapacity;
+  }
+
+  schema.performer = {
+    '@type': 'Organization',
+    name: 'National 1031 Center Exchange Specialists'
+  };
+
+  return schema;
+}
+
+/**
+ * Service schema for business services
+ */
+export interface ServiceSchema {
+  '@context': 'https://schema.org';
+  '@type': 'Service';
+  name: string;
+  description: string;
+  provider: {
+    '@type': 'Organization';
+    name: string;
+    url?: string;
+    telephone?: string;
+    email?: string;
+  };
+  serviceType?: string;
+  category?: string;
+  offers?: {
+    '@type': 'Offer';
+    price: string | number;
+    priceCurrency: string;
+    availability: string;
+    validFrom?: string;
+    url?: string;
+  };
+  areaServed?: {
+    '@type': 'Country' | 'Place';
+    name: string;
+  };
+  hoursAvailable?: any[];
+  audience?: {
+    '@type': 'Audience';
+    audienceType: string;
+  };
+}
+
+export function createServiceSchema(service: {
+  name: string;
+  description: string;
+  serviceType?: string;
+  category?: string;
+  price?: string | number;
+  priceCurrency?: string;
+  availability?: string;
+  validFrom?: string;
+  serviceUrl?: string;
+  areaServed?: string;
+  audienceType?: string;
+  hoursAvailable?: Array<{
+    dayOfWeek: string[];
+    opens: string;
+    closes: string;
+  }>;
+}): ServiceSchema {
+  const schema: ServiceSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: safeJsonEncode(service.name) as string,
+    description: safeJsonEncode(service.description) as string,
+    provider: {
+      '@type': 'Organization',
+      name: 'National 1031 Center',
+      url: 'https://the1031center.com',
+      telephone: '+1-800-555-1031',
+      email: 'info@the1031center.com'
+    }
+  };
+
+  if (service.serviceType) {
+    schema.serviceType = service.serviceType;
+  }
+
+  if (service.category) {
+    schema.category = service.category;
+  }
+
+  if (service.price !== undefined) {
+    schema.offers = {
+      '@type': 'Offer',
+      price: String(service.price),
+      priceCurrency: service.priceCurrency || 'USD',
+      availability: service.availability || 'https://schema.org/InStock',
+      url: service.serviceUrl || 'https://the1031center.com'
+    };
+
+    if (service.validFrom) {
+      schema.offers.validFrom = service.validFrom;
+    }
+  }
+
+  if (service.areaServed) {
+    schema.areaServed = {
+      '@type': 'Country',
+      name: service.areaServed
+    };
+  }
+
+  if (service.audienceType) {
+    schema.audience = {
+      '@type': 'Audience',
+      audienceType: service.audienceType
+    };
+  }
+
+  if (service.hoursAvailable && service.hoursAvailable.length > 0) {
+    schema.hoursAvailable = service.hoursAvailable.map(hours => ({
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: hours.dayOfWeek,
+      opens: hours.opens,
+      closes: hours.closes
+    }));
+  }
+
+  return schema;
+}
+
+/**
+ * LocalBusiness schema for business information
+ */
+export interface LocalBusinessSchema {
+  '@context': 'https://schema.org';
+  '@type': 'LocalBusiness';
+  '@id'?: string;
+  name: string;
+  alternateName?: string;
+  description: string;
+  url: string;
+  logo?: string;
+  image?: string | string[];
+  telephone: string;
+  faxNumber?: string;
+  email: string;
+  address: {
+    '@type': 'PostalAddress';
+    streetAddress: string;
+    addressLocality: string;
+    addressRegion: string;
+    postalCode: string;
+    addressCountry: string;
+  };
+  geo?: {
+    '@type': 'GeoCoordinates';
+    latitude: number;
+    longitude: number;
+  };
+  openingHoursSpecification?: Array<{
+    '@type': 'OpeningHoursSpecification';
+    dayOfWeek: string[];
+    opens: string;
+    closes: string;
+  }>;
+  priceRange?: string;
+  areaServed?: {
+    '@type': 'Country' | 'Place';
+    name: string;
+  };
+  sameAs?: string[];
+  contactPoint?: Array<{
+    '@type': 'ContactPoint';
+    telephone: string;
+    contactType: string;
+    areaServed?: string;
+    availableLanguage?: string[];
+    contactOption?: string[];
+  }>;
+}
+
+export function createLocalBusinessSchema(business: {
+  id?: string;
+  name: string;
+  alternateName?: string;
+  description: string;
+  url: string;
+  logo?: string;
+  image?: string | string[];
+  telephone: string;
+  faxNumber?: string;
+  email: string;
+  address: {
+    street: string;
+    city: string;
+    state: string;
+    zip: string;
+    country: string;
+  };
+  coordinates?: {
+    latitude: number;
+    longitude: number;
+  };
+  hours?: Array<{
+    days: string[];
+    opens: string;
+    closes: string;
+  }>;
+  priceRange?: string;
+  areaServed?: string;
+  socialMedia?: string[];
+  contactPoints?: Array<{
+    telephone: string;
+    type: string;
+    areaServed?: string;
+    languages?: string[];
+    options?: string[];
+  }>;
+}): LocalBusinessSchema {
+  const schema: LocalBusinessSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'LocalBusiness',
+    name: business.name,
+    description: safeJsonEncode(business.description) as string,
+    url: business.url,
+    telephone: business.telephone,
+    email: business.email,
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: business.address.street,
+      addressLocality: business.address.city,
+      addressRegion: business.address.state,
+      postalCode: business.address.zip,
+      addressCountry: business.address.country
+    }
+  };
+
+  if (business.id) {
+    schema['@id'] = business.id;
+  }
+
+  if (business.alternateName) {
+    schema.alternateName = business.alternateName;
+  }
+
+  if (business.logo) {
+    schema.logo = business.logo.startsWith('http') ? business.logo : `https://the1031center.com${business.logo}`;
+  }
+
+  if (business.image) {
+    schema.image = Array.isArray(business.image)
+      ? business.image.map(img => img.startsWith('http') ? img : `https://the1031center.com${img}`)
+      : business.image.startsWith('http') ? business.image : `https://the1031center.com${business.image}`;
+  }
+
+  if (business.faxNumber) {
+    schema.faxNumber = business.faxNumber;
+  }
+
+  if (business.coordinates) {
+    schema.geo = {
+      '@type': 'GeoCoordinates',
+      latitude: business.coordinates.latitude,
+      longitude: business.coordinates.longitude
+    };
+  }
+
+  if (business.hours && business.hours.length > 0) {
+    schema.openingHoursSpecification = business.hours.map(hour => ({
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: hour.days,
+      opens: hour.opens,
+      closes: hour.closes
+    }));
+  }
+
+  if (business.priceRange) {
+    schema.priceRange = business.priceRange;
+  }
+
+  if (business.areaServed) {
+    schema.areaServed = {
+      '@type': 'Country',
+      name: business.areaServed
+    };
+  }
+
+  if (business.socialMedia && business.socialMedia.length > 0) {
+    schema.sameAs = business.socialMedia;
+  }
+
+  if (business.contactPoints && business.contactPoints.length > 0) {
+    schema.contactPoint = business.contactPoints.map(contact => ({
+      '@type': 'ContactPoint',
+      telephone: contact.telephone,
+      contactType: contact.type,
+      areaServed: contact.areaServed,
+      availableLanguage: contact.languages,
+      contactOption: contact.options
+    }));
+  }
+
+  return schema;
+}
+
+/**
  * Helper to add WebPage schema wrapper
  */
 export interface WebPageSchema {
