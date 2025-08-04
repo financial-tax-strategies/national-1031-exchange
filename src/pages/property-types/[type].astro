@@ -1,6 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { COMPANY, getPhoneLink } from '../../config/company';
+import { generateJsonLdScript, wrapInWebPageSchema } from '../../utils/schema-utils';
 
 export async function getStaticPaths() {
   const propertyTypes = [
@@ -673,51 +674,60 @@ const avgTaxSavings = Math.round(parseFloat(propertyType.avgValue.replace(/[$,]/
   </section>
   
   <!-- Schema Markup -->
-  <script type="application/ld+json">
-  {
+  <script type="application/ld+json" set:html={generateJsonLdScript({
     "@context": "https://schema.org",
-    "@type": "FinancialService",
-    "name": `1031 Exchange for ${propertyType.name}`,
-    "description": `Professional 1031 exchange services for ${propertyType.name.toLowerCase()}. ${propertyType.description}.`,
-    "provider": {
-      "@type": "Organization",
-      "@name": "National 1031 Center",
-      "telephone": "${COMPANY.phone.main}"
-    },
-    "areaServed": {
-      "@type": "Country",
-      "name": "United States"
-    },
-    "hasOfferCatalog": {
-      "@type": "OfferCatalog",
-      "name": "1031 Exchange Services",
-      "itemListElement": [
+    "@graph": [
+      wrapInWebPageSchema(
+        `https://the1031center.com/property-types/${propertyType.slug}`,
+        `1031 Exchange for ${propertyType.name} | The 1031 Center`,
+        `Professional 1031 exchange services for ${propertyType.name.toLowerCase()}. ${propertyType.description}.`,
         {
-          "@type": "Offer",
-          "itemOffered": {
-            "@type": "Service",
-            "name": "Delayed Exchange",
-            "description": "Standard 1031 exchange for ${propertyType.shortName.toLowerCase()}"
-          }
-        },
-        {
-          "@type": "Offer",
-          "itemOffered": {
-            "@type": "Service",
-            "name": "Reverse Exchange",
-            "description": "Buy replacement ${propertyType.shortName.toLowerCase()} before selling"
-          }
-        },
-        {
-          "@type": "Offer",
-          "itemOffered": {
-            "@type": "Service",
-            "name": "Improvement Exchange",
-            "description": "Use funds to improve replacement ${propertyType.shortName.toLowerCase()}"
+          "@type": "FinancialService",
+          "@id": `https://the1031center.com/property-types/${propertyType.slug}#service`,
+          "name": `1031 Exchange for ${propertyType.name}`,
+          "description": `Professional 1031 exchange services for ${propertyType.name.toLowerCase()}. ${propertyType.description}.`,
+          "provider": {
+            "@type": "Organization",
+            "name": "National 1031 Center",
+            "@id": "https://the1031center.com/#organization",
+            "telephone": COMPANY.phone.main
+          },
+          "areaServed": {
+            "@type": "Country",
+            "name": "United States"
+          },
+          "hasOfferCatalog": {
+            "@type": "OfferCatalog",
+            "name": "1031 Exchange Services",
+            "itemListElement": [
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Delayed Exchange",
+                  "description": `Standard 1031 exchange for ${propertyType.shortName.toLowerCase()}`
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Reverse Exchange",
+                  "description": `Buy replacement ${propertyType.shortName.toLowerCase()} before selling`
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Improvement Exchange",
+                  "description": `Use funds to improve replacement ${propertyType.shortName.toLowerCase()}`
+                }
+              }
+            ]
           }
         }
-      ]
-    }
-  }
-  </script>
+      )
+    ]
+  })} />
 </Layout>

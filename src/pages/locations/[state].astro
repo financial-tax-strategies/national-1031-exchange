@@ -1,6 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { COMPANY, getPhoneLink } from '../../config/company';
+import { generateJsonLdScript, wrapInWebPageSchema } from '../../utils/schema-utils';
 
 export async function getStaticPaths() {
   const states = [
@@ -404,68 +405,77 @@ const potentialSavings = Math.round(1000000 * (stateTaxRate / 100));
   </section>
   
   <!-- Schema Markup -->
-  <script type="application/ld+json">
-  {
+  <script type="application/ld+json" set:html={generateJsonLdScript({
     "@context": "https://schema.org",
-    "@type": "Service",
-    "name": `${state.name} 1031 Exchange Services`,
-    "description": `Professional 1031 exchange services throughout ${state.name}. Expert qualified intermediary helping investors defer capital gains taxes.`,
-    "provider": {
-      "@type": "Organization",
-      "name": "National 1031 Center",
-      "telephone": "${COMPANY.phone.main}",
-      "address": {
-        "@type": "PostalAddress",
-        "addressCountry": "US",
-        "addressRegion": state.abbr
-      }
-    },
-    "areaServed": {
-      "@type": "State",
-      "name": state.name,
-      "containsPlace": state.topCities.map(city => ({
-        "@type": "City",
-        "name": city
-      }))
-    },
-    "hasOfferCatalog": {
-      "@type": "OfferCatalog",
-      "name": "1031 Exchange Types",
-      "itemListElement": [
+    "@graph": [
+      wrapInWebPageSchema(
+        `https://the1031center.com/locations/${state.slug}`,
+        `${state.name} 1031 Exchange Services | The 1031 Center`,
+        `Professional 1031 exchange services throughout ${state.name}. Expert qualified intermediary helping investors defer capital gains taxes.`,
         {
-          "@type": "Offer",
-          "itemOffered": {
-            "@type": "Service",
-            "name": "Delayed Exchange",
-            "description": "Standard 1031 exchange - sell first, then buy"
-          }
-        },
-        {
-          "@type": "Offer",
-          "itemOffered": {
-            "@type": "Service",
-            "name": "Reverse Exchange",
-            "description": "Buy replacement property before selling"
-          }
-        },
-        {
-          "@type": "Offer",
-          "itemOffered": {
-            "@type": "Service",
-            "name": "Improvement Exchange",
-            "description": "Use exchange funds for property improvements"
-          }
-        },
-        {
-          "@type": "Offer",
-          "itemOffered": {
-            "@type": "Service",
-            "name": "Partial Exchange",
-            "description": "Defer taxes while taking some cash out"
+          "@type": "Service",
+          "@id": `https://the1031center.com/locations/${state.slug}#service`,
+          "name": `${state.name} 1031 Exchange Services`,
+          "description": `Professional 1031 exchange services throughout ${state.name}. Expert qualified intermediary helping investors defer capital gains taxes.`,
+          "provider": {
+            "@type": "Organization",
+            "name": "National 1031 Center",
+            "@id": "https://the1031center.com/#organization",
+            "telephone": COMPANY.phone.main,
+            "address": {
+              "@type": "PostalAddress",
+              "addressCountry": "US",
+              "addressRegion": state.abbr
+            }
+          },
+          "areaServed": {
+            "@type": "State",
+            "name": state.name,
+            "containsPlace": state.topCities.map(city => ({
+              "@type": "City",
+              "name": city
+            }))
+          },
+          "hasOfferCatalog": {
+            "@type": "OfferCatalog",
+            "name": "1031 Exchange Types",
+            "itemListElement": [
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Delayed Exchange",
+                  "description": "Standard 1031 exchange - sell first, then buy"
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Reverse Exchange",
+                  "description": "Buy replacement property before selling"
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Improvement Exchange",
+                  "description": "Use exchange funds for property improvements"
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Partial Exchange",
+                  "description": "Defer taxes while taking some cash out"
+                }
+              }
+            ]
           }
         }
-      ]
-    }
-  }
-  </script>
+      )
+    ]
+  })} />
 </Layout>

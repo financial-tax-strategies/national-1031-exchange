@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { COMPANY, getFullAddress } from '../config/company';
+import { generateJsonLdScript, wrapInWebPageSchema } from '../utils/schema-utils';
 ---
 
 <Layout 
@@ -268,53 +269,65 @@ import { COMPANY, getFullAddress } from '../config/company';
   </section>
   
   <!-- Schema Markup -->
-  <script type="application/ld+json">
-  {
+  <script type="application/ld+json" set:html={generateJsonLdScript({
     "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "${COMPANY.name}",
-    "alternateName": "The 1031 Exchange Center",
-    "url": "https://the1031center.com",
-    "logo": "https://the1031center.com/images/logo.png",
-    "description": "America's most trusted 1031 exchange qualified intermediary, facilitating tax-deferred property exchanges nationwide with industry-leading security and expertise.",
-    "foundingDate": "2024",
-    "founder": {
-      "@type": "Person",
-      "name": "John Smith",
-      "jobTitle": "Chief Executive Officer"
-    },
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "${COMPANY.address.street}",
-      "addressLocality": "${COMPANY.address.city}",
-      "addressRegion": "${COMPANY.address.state}",
-      "postalCode": "${COMPANY.address.zip}",
-      "addressCountry": "${COMPANY.address.countryCode}"
-    },
-    "contactPoint": {
-      "@type": "ContactPoint",
-      "telephone": "+1${COMPANY.phone.mainFormatted}",
-      "contactType": "customer service",
-      "areaServed": "US",
-      "availableLanguage": ["English", "Spanish"]
-    },
-    "sameAs": [
-      "https://www.linkedin.com/company/the1031center",
-      "https://www.facebook.com/the1031center",
-      "https://twitter.com/the1031center"
-    ],
-    "numberOfEmployees": {
-      "@type": "QuantitativeValue",
-      "value": 50
-    },
-    "slogan": "America's Most Trusted 1031 Exchange Partner",
-    "areaServed": {
-      "@type": "Country",
-      "name": "United States"
-    },
-    "award": [
-      "Federation of Exchange Accommodators Member"
+    "@graph": [
+      wrapInWebPageSchema(
+        "https://the1031center.com/about",
+        `About ${COMPANY.name} | America's Trusted Exchange Partner`,
+        `Learn about ${COMPANY.name}, America's most trusted 1031 exchange qualified intermediary.`,
+        {
+          "@type": "AboutPage",
+          "@id": "https://the1031center.com/about#aboutpage",
+          "mainEntity": {
+            "@type": "Organization",
+            "@id": "https://the1031center.com/#organization",
+            "name": COMPANY.name,
+            "alternateName": "The 1031 Exchange Center",
+            "url": "https://the1031center.com",
+            "logo": "https://the1031center.com/images/logo.png",
+            "description": "America's most trusted 1031 exchange qualified intermediary, facilitating tax-deferred property exchanges nationwide with industry-leading security and expertise.",
+            "foundingDate": "2024",
+            "founder": {
+              "@type": "Person",
+              "name": "John Smith",
+              "jobTitle": "Chief Executive Officer"
+            },
+            "address": {
+              "@type": "PostalAddress",
+              "streetAddress": COMPANY.address.street,
+              "addressLocality": COMPANY.address.city,
+              "addressRegion": COMPANY.address.state,
+              "postalCode": COMPANY.address.zip,
+              "addressCountry": COMPANY.address.countryCode
+            },
+            "contactPoint": {
+              "@type": "ContactPoint",
+              "telephone": `+1${COMPANY.phone.mainFormatted}`,
+              "contactType": "customer service",
+              "areaServed": "US",
+              "availableLanguage": ["English", "Spanish"]
+            },
+            "sameAs": [
+              "https://www.linkedin.com/company/the1031center",
+              "https://www.facebook.com/the1031center",
+              "https://twitter.com/the1031center"
+            ],
+            "numberOfEmployees": {
+              "@type": "QuantitativeValue",
+              "value": 50
+            },
+            "slogan": "America's Most Trusted 1031 Exchange Partner",
+            "areaServed": {
+              "@type": "Country",
+              "name": "United States"
+            },
+            "award": [
+              "Federation of Exchange Accommodators Member"
+            ]
+          }
+        }
+      )
     ]
-  }
-  </script>
+  })} />
 </Layout>
