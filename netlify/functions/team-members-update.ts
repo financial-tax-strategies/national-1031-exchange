@@ -4,13 +4,30 @@ const supabaseUrl = process.env.PUBLIC_SUPABASE_URL || '';
 const supabaseAnonKey = process.env.PUBLIC_SUPABASE_ANON_KEY || '';
 
 export const handler: Handler = async (event, context) => {
+  // CORS headers
+  const headers = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Headers': 'Content-Type',
+    'Access-Control-Allow-Methods': 'GET, POST, PATCH, OPTIONS',
+    'Content-Type': 'application/json',
+  };
+
+  // Handle preflight requests
+  if (event.httpMethod === 'OPTIONS') {
+    return {
+      statusCode: 200,
+      headers,
+      body: '',
+    };
+  }
+
   // Only handle PATCH requests
   if (event.httpMethod !== 'PATCH') {
     return {
       statusCode: 405,
       body: JSON.stringify({ error: `Method ${event.httpMethod} not allowed` }),
       headers: {
-        'Content-Type': 'application/json',
+        ...headers,
         'Allow': 'PATCH'
       },
     };
@@ -21,7 +38,7 @@ export const handler: Handler = async (event, context) => {
     return {
       statusCode: 503,
       body: JSON.stringify({ error: 'Database not configured' }),
-      headers: { 'Content-Type': 'application/json' },
+      headers,
     };
   }
   
@@ -29,16 +46,29 @@ export const handler: Handler = async (event, context) => {
     const body = JSON.parse(event.body || '{}');
     const { id, ...updateData } = body;
     
+    console.log('[Netlify Function] Received update request:', { id, updateData });
+    
     if (!id) {
       return {
         statusCode: 400,
         body: JSON.stringify({ error: 'Team member ID is required' }),
-        headers: { 'Content-Type': 'application/json' },
+        headers,
       };
     }
     
+    // Clean up empty values
+    Object.keys(updateData).forEach(key => {
+      if (updateData[key] === '' || updateData[key] === null) {
+        updateData[key] = null;
+      }
+    });
+    
+    const url = `${supabaseUrl}/rest/v1/team_members?id=eq.${id}`;
+    console.log('[Netlify Function] Sending PATCH to:', url);
+    console.log('[Netlify Function] Update data:', updateData);
+    
     // Use Supabase REST API directly
-    const response = await fetch(`${supabaseUrl}/rest/v1/team_members?id=eq.${id}`, {
+    const response = await fetch(url, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -49,25 +79,41 @@ export const handler: Handler = async (event, context) => {
       body: JSON.stringify(updateData)
     });
     
+    const responseText = await response.text();
+    console.log('[Netlify Function] Response status:', response.status);
+    console.log('[Netlify Function] Response body:', responseText);
+    
     if (!response.ok) {
-      const error = await response.text();
-      console.error('Supabase error:', error);
+      console.error('[Netlify Function] Supabase error:', responseText);
       return {
         statusCode: response.status,
         body: JSON.stringify({ 
           error: 'Failed to update team member',
-          details: error 
+          details: responseText,
+          url: url.replace(supabaseUrl, 'SUPABASE_URL') // Hide sensitive URL in response
         }),
-        headers: { 'Content-Type': 'application/json' },
+        headers,
       };
     }
     
-    const data = await response.json();
+    let data;
+    try {
+      data = JSON.parse(responseText);
+    } catch (e) {
+      console.error('[Netlify Function] Failed to parse response:', e);
+      data = [];
+    }
+    
+    console.log('[Netlify Function] Update successful:', data);
     
     return {
       statusCode: 200,
-      body: JSON.stringify({ data: data[0] || null }),
-      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ 
+        data: data[0] || null,
+        success: true,
+        message: 'Team member updated successfully'
+      }),
+      headers,
     };
   } catch (error) {
     console.error('Unexpected error:', error);
@@ -77,7 +123,7 @@ export const handler: Handler = async (event, context) => {
         error: 'Internal server error',
         details: error instanceof Error ? error.message : 'Unknown error'
       }),
-      headers: { 'Content-Type': 'application/json' },
+      headers,
     };
   }
 };
