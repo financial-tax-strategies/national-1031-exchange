@@ -46,9 +46,14 @@ export const GET: APIRoute = async ({ url }) => {
     const tenantId = url.searchParams.get('tenant_id');
     const includeInactive = url.searchParams.get('include_inactive') === 'true';
     
+    // Use admin client to access all records when include_inactive is true
+    // Otherwise use the public view which only shows active members
+    const client = includeInactive && isSupabaseAdminConfigured() ? supabaseAdmin : supabase;
+    const tableName = includeInactive && isSupabaseAdminConfigured() ? 'team_members' : 'team_members_public';
+    
     // Build query
-    let query = supabase
-      .from('team_members_public')
+    let query = client
+      .from(tableName)
       .select('*')
       .order('display_order', { ascending: true })
       .order('name', { ascending: true });
