@@ -387,17 +387,24 @@ if (isSupabaseConfigured()) {
       const url = isUpdate ? '/.netlify/functions/team-members-update' : '/api/team-members';
       const method = isUpdate ? 'PATCH' : 'POST';
       
+      console.log(`[Admin] Sending ${method} to ${url}`, data);
+      
       const response = await fetch(url, {
         method,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
       });
       
-      if (response.ok) {
+      console.log(`[Admin] Response status: ${response.status}`);
+      const result = await response.json();
+      console.log('[Admin] Response data:', result);
+      
+      if (response.ok && result.success) {
+        console.log('[Admin] Update successful, reloading page...');
         window.location.reload();
       } else {
-        const error = await response.json();
-        alert('Error: ' + (error.error || 'Failed to save'));
+        console.error('[Admin] Update failed:', result);
+        alert('Error: ' + (result.error || result.details || 'Failed to save'));
       }
     } catch (error) {
       alert('Error: Failed to save team member');
@@ -414,16 +421,22 @@ if (isSupabaseConfigured()) {
       
       if (confirm(`Are you sure you want to ${isActive ? 'deactivate' : 'activate'} this team member?`)) {
         try {
+          console.log('[Admin] Toggling status for:', { id, is_active: !isActive });
+          
           const response = await fetch('/.netlify/functions/team-members-update', {
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ id, is_active: !isActive })
           });
           
-          if (response.ok) {
+          console.log(`[Admin] Toggle response status: ${response.status}`);
+          const result = await response.json();
+          console.log('[Admin] Toggle response data:', result);
+          
+          if (response.ok && result.success) {
             window.location.reload();
           } else {
-            alert('Error: Failed to update status');
+            alert('Error: ' + (result.error || result.details || 'Failed to update status'));
           }
         } catch (error) {
           alert('Error: Failed to update status');

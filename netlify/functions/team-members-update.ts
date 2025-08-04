@@ -2,6 +2,7 @@ import type { Handler } from '@netlify/functions';
 
 const supabaseUrl = process.env.PUBLIC_SUPABASE_URL || '';
 const supabaseAnonKey = process.env.PUBLIC_SUPABASE_ANON_KEY || '';
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
 
 export const handler: Handler = async (event, context) => {
   // CORS headers
@@ -34,13 +35,17 @@ export const handler: Handler = async (event, context) => {
   }
   
   // Check if Supabase is configured
-  if (!supabaseUrl || !supabaseAnonKey) {
+  if (!supabaseUrl || (!supabaseAnonKey && !supabaseServiceKey)) {
     return {
       statusCode: 503,
       body: JSON.stringify({ error: 'Database not configured' }),
       headers,
     };
   }
+  
+  // Use service key if available, otherwise fall back to anon key
+  const authKey = supabaseServiceKey || supabaseAnonKey;
+  console.log('[Netlify Function] Using auth key type:', supabaseServiceKey ? 'service' : 'anon');
   
   try {
     const body = JSON.parse(event.body || '{}');
@@ -72,8 +77,8 @@ export const handler: Handler = async (event, context) => {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
-        'apikey': supabaseAnonKey,
-        'Authorization': `Bearer ${supabaseAnonKey}`,
+        'apikey': authKey,
+        'Authorization': `Bearer ${authKey}`,
         'Prefer': 'return=representation'
       },
       body: JSON.stringify(updateData)
