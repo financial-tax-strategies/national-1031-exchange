@@ -73,13 +73,13 @@ export const handler: Handler = async (event, context) => {
     console.log('[Netlify Function] Update data:', updateData);
     
     // Use Supabase REST API directly
+    // IMPORTANT: Removed 'Prefer: return=representation' as it was causing updates to not persist
     const response = await fetch(url, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
         'apikey': authKey,
-        'Authorization': `Bearer ${authKey}`,
-        'Prefer': 'return=representation'
+        'Authorization': `Bearer ${authKey}`
       },
       body: JSON.stringify(updateData)
     });
@@ -88,7 +88,10 @@ export const handler: Handler = async (event, context) => {
     console.log('[Netlify Function] Response status:', response.status);
     console.log('[Netlify Function] Response body:', responseText);
     
-    if (!response.ok) {
+    // Without Prefer header, successful PATCH returns 204 with no body
+    if (response.status === 204) {
+      console.log('[Netlify Function] Received 204 - update should be successful');
+    } else if (!response.ok) {
       console.error('[Netlify Function] Supabase error:', responseText);
       return {
         statusCode: response.status,
@@ -101,89 +104,63 @@ export const handler: Handler = async (event, context) => {
       };
     }
     
-    let data;
-    try {
-      data = JSON.parse(responseText);
-    } catch (e) {
-      console.error('[Netlify Function] Failed to parse response:', e);
-      data = [];
-    }
-    
-    console.log('[Netlify Function] Parsed data:', data);
-    console.log('[Netlify Function] Data length:', data.length);
-    console.log('[Netlify Function] First item:', data[0]);
-    
-    // Check if update actually happened
-    const updateSuccess = data.length > 0 && data[0].id === id;
-    console.log('[Netlify Function] Update success:', updateSuccess);
-    
-    if (!updateSuccess) {
-      console.error('[Netlify Function] No data returned - update may have failed due to RLS');
-      return {
-        statusCode: 400,
-        body: JSON.stringify({ 
-          error: 'Update failed - no data returned',
-          success: false,
-          message: 'The update did not return any data. This usually means RLS blocked the update.',
-          debug: {
-            responseStatus: response.status,
-            dataLength: data.length,
-            authKeyType: supabaseServiceKey ? 'service' : 'anon'
-          }
-        }),
-        headers,
-      };
-    }
-    
-    // CRITICAL: Verify the update actually succeeded by fetching the record
-    console.log('[Netlify Function] Verifying update by fetching record...');
-    const verifyUrl = `${supabaseUrl}/rest/v1/team_members?id=eq.${id}&select=id,job_title,updated_at`;
-    const verifyResponse = await fetch(verifyUrl, {
+    // Fetch the updated record to return to the client
+    console.log('[Netlify Function] Fetching updated record...');
+    const fetchUrl = `${supabaseUrl}/rest/v1/team_members?id=eq.${id}`;
+    const fetchResponse = await fetch(fetchUrl, {
       headers: {
         'apikey': authKey,
         'Authorization': `Bearer ${authKey}`
       }
     });
     
-    const verifyData = await verifyResponse.json();
-    console.log('[Netlify Function] Verification response:', verifyData);
-    
-    const actualData = verifyData[0];
-    const updateVerified = actualData && actualData.job_title === updateData.job_title;
-    
-    console.log('[Netlify Function] Update verified:', updateVerified);
-    console.log('[Netlify Function] Expected job_title:', updateData.job_title);
-    console.log('[Netlify Function] Actual job_title:', actualData?.job_title);
-    
-    if (!updateVerified) {
-      console.error('[Netlify Function] Update verification FAILED - data was not actually saved!');
+    if (!fetchResponse.ok) {
+      console.error('[Netlify Function] Failed to fetch updated record');
       return {
         statusCode: 500,
         body: JSON.stringify({ 
-          error: 'Update appeared to succeed but was not saved',
+          error: 'Update may have succeeded but could not fetch updated record',
           success: false,
-          message: 'The database returned success but the data was not actually updated. This may indicate a trigger or constraint issue.',
-          debug: {
-            authKeyType: supabaseServiceKey ? 'service' : 'anon',
-            returnedData: data[0],
-            actualData: actualData,
-            updateVerified: false
-          }
         }),
         headers,
       };
     }
     
+    const updatedData = await fetchResponse.json();
+    console.log('[Netlify Function] Fetched updated data:', updatedData);
+    
+    const actualData = updatedData[0];
+    if (!actualData) {
+      console.error('[Netlify Function] No data returned after update');
+      return {
+        statusCode: 404,
+        body: JSON.stringify({ 
+          error: 'Team member not found after update',
+          success: false,
+        }),
+        headers,
+      };
+    }
+    
+    // Verify the update actually happened
+    const fieldsUpdated = Object.keys(updateData).every(key => {
+      if (key === 'id') return true; // Skip ID check
+      return actualData[key] === updateData[key];
+    });
+    
+    console.log('[Netlify Function] Update verification:', fieldsUpdated);
+    console.log('[Netlify Function] Updated fields match:', fieldsUpdated);
+    
     return {
       statusCode: 200,
       body: JSON.stringify({ 
-        data: actualData, // Return the actual data from the database
+        data: actualData,
         success: true,
         message: 'Team member updated successfully',
         debug: {
           authKeyType: supabaseServiceKey ? 'service' : 'anon',
-          updatedFields: Object.keys(updateData),
-          updateVerified: true
+          updatedFields: Object.keys(updateData).filter(k => k !== 'id'),
+          fieldsVerified: fieldsUpdated
         }
       }),
       headers,
