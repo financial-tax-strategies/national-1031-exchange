@@ -1,6 +1,32 @@
 import type { APIRoute } from 'astro';
 import { supabase, isSupabaseConfigured } from '../../lib/supabase';
 
+// Debug handler to catch all methods
+export const ALL: APIRoute = async ({ request }) => {
+  const method = request.method;
+  console.log(`[API Debug] team-members received ${method} request`);
+  
+  // Return debug info for unsupported methods
+  if (!['GET', 'POST', 'PATCH'].includes(method)) {
+    return new Response(JSON.stringify({ 
+      error: `Method ${method} not supported`,
+      supportedMethods: ['GET', 'POST', 'PATCH'],
+      debug: true
+    }), {
+      status: 405,
+      headers: {
+        'Content-Type': 'application/json',
+        'Allow': 'GET, POST, PATCH'
+      },
+    });
+  }
+  
+  // For supported methods, delegate to the appropriate handler
+  if (method === 'GET') return GET({ url: new URL(request.url), request } as any);
+  if (method === 'POST') return POST({ request } as any);
+  if (method === 'PATCH') return PATCH({ request } as any);
+};
+
 export const GET: APIRoute = async ({ url }) => {
   // Check if Supabase is configured
   if (!isSupabaseConfigured()) {
