@@ -68,6 +68,8 @@ if (isSupabaseAdminConfigured() && isAuthenticated) {
       <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-4">
         <h2 class="text-lg font-bold text-yellow-800 mb-2">DEBUG MODE</h2>
         <p class="text-yellow-700">This page includes extensive logging. Open browser console to see detailed information.</p>
+        <p class="text-yellow-700 mt-2">⏰ Page will wait 10 seconds before reloading after save/toggle to allow console inspection.</p>
+        <p class="text-yellow-700 mt-2">💡 Tip: Hold SHIFT when clicking Save/Activate to prevent automatic reload.</p>
       </div>
       
       <div class="flex justify-between items-center mb-8">
@@ -424,6 +426,12 @@ if (isSupabaseAdminConfigured() && isAuthenticated) {
   form?.addEventListener('submit', async (e) => {
     e.preventDefault();
     
+    // Check if SHIFT key is held
+    const preventReload = (e as any).shiftKey;
+    if (preventReload) {
+      console.log('[DEBUG] SHIFT key detected - will prevent automatic reload');
+    }
+    
     const formData = new FormData(form);
     const data: any = Object.fromEntries(formData);
     
@@ -521,6 +529,7 @@ if (isSupabaseAdminConfigured() && isAuthenticated) {
       
       if (response.ok && result.success) {
         console.log('[DEBUG] Update successful, waiting before reload...');
+        console.log('[DEBUG] ⏰ PAUSING FOR 10 SECONDS - Check console now!');
         
         // Wait longer to ensure database commit
         await new Promise(resolve => setTimeout(resolve, 500));
@@ -534,8 +543,17 @@ if (isSupabaseAdminConfigured() && isAuthenticated) {
           console.log('[DEBUG] Verification - found member:', updatedMember);
         }
         
-        console.log('[DEBUG] Reloading page...');
-        window.location.reload();
+        // Give user time to see the console
+        if (!preventReload) {
+          console.log('[DEBUG] ⏰ Waiting 10 seconds before reload to allow console inspection...');
+          await new Promise(resolve => setTimeout(resolve, 10000));
+          
+          console.log('[DEBUG] Reloading page...');
+          window.location.reload();
+        } else {
+          console.log('[DEBUG] ✋ Reload prevented by SHIFT key - check console output above');
+          modal?.classList.add('hidden');
+        }
       } else {
         console.error('[DEBUG] Update failed:', result);
         alert('Error: ' + (result.error || result.details || 'Failed to save'));
@@ -602,8 +620,9 @@ if (isSupabaseAdminConfigured() && isAuthenticated) {
           console.log('[DEBUG] Toggle response data:', JSON.stringify(result, null, 2));
           
           if (response.ok && result.success) {
+            console.log('[DEBUG] ⏰ Toggle successful - waiting 10 seconds before reload...');
             // Wait before reload
-            await new Promise(resolve => setTimeout(resolve, 500));
+            await new Promise(resolve => setTimeout(resolve, 10000));
             window.location.reload();
           } else {
             alert('Error: ' + (result.error || result.details || 'Failed to update status'));
