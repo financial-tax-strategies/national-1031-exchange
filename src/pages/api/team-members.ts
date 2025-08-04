@@ -1,5 +1,5 @@
 import type { APIRoute } from 'astro';
-import { supabase, isSupabaseConfigured } from '../../lib/supabase';
+import { supabase, supabaseAdmin, isSupabaseConfigured, isSupabaseAdminConfigured } from '../../lib/supabase';
 
 // Debug handler to catch all methods
 export const ALL: APIRoute = async ({ request }) => {
@@ -100,10 +100,10 @@ export const GET: APIRoute = async ({ url }) => {
 
 // POST endpoint for creating team members (admin only)
 export const POST: APIRoute = async ({ request }) => {
-  // Check if Supabase is configured
-  if (!isSupabaseConfigured()) {
+  // Check if admin Supabase is configured
+  if (!isSupabaseAdminConfigured()) {
     return new Response(JSON.stringify({ 
-      error: 'Database not configured' 
+      error: 'Admin database configuration missing (SUPABASE_SERVICE_ROLE_KEY required)' 
     }), {
       status: 503,
       headers: {
@@ -159,8 +159,8 @@ export const POST: APIRoute = async ({ request }) => {
     
     console.log('[API] Creating team member with data:', body);
     
-    // Insert team member
-    const { data, error } = await supabase
+    // Insert team member using admin client (bypasses RLS)
+    const { data, error } = await supabaseAdmin
       .from('team_members')
       .insert([body])
       .select()
@@ -201,10 +201,10 @@ export const POST: APIRoute = async ({ request }) => {
 
 // PATCH endpoint for updating team members (admin only)
 export const PATCH: APIRoute = async ({ request }) => {
-  // Check if Supabase is configured
-  if (!isSupabaseConfigured()) {
+  // Check if admin Supabase is configured
+  if (!isSupabaseAdminConfigured()) {
     return new Response(JSON.stringify({ 
-      error: 'Database not configured' 
+      error: 'Admin database configuration missing (SUPABASE_SERVICE_ROLE_KEY required)' 
     }), {
       status: 503,
       headers: {
@@ -270,8 +270,8 @@ export const PATCH: APIRoute = async ({ request }) => {
     
     console.log('[API] Updating team member with data:', { id, updateData });
     
-    // Update team member
-    const { data, error } = await supabase
+    // Update team member using admin client (bypasses RLS)
+    const { data, error } = await supabaseAdmin
       .from('team_members')
       .update(updateData)
       .eq('id', id)
