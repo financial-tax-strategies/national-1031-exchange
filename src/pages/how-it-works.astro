@@ -1,6 +1,69 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { COMPANY, getPhoneLink } from '../config/company';
+import { createHowToSchema, generateJsonLdScript } from '../utils/schema-utils';
+
+// Create comprehensive HowTo schema
+const howToSchema = createHowToSchema({
+  name: 'How to Complete a 1031 Exchange',
+  description: 'Complete step-by-step guide to deferring capital gains taxes through 1031 exchanges',
+  image: [
+    '/images/guides/how-it-works.jpg',
+    '/images/guides/1031-exchange-process.jpg',
+    '/images/guides/exchange-timeline.jpg'
+  ],
+  totalTime: 'PT180D', // 180 days
+  estimatedCost: {
+    currency: 'USD',
+    value: '1500'
+  },
+  supplies: [
+    'Investment Property to Sell',
+    'Qualified Intermediary',
+    'Replacement Property'
+  ],
+  tools: [
+    'Exchange Agreement',
+    'Property Identification Form'
+  ],
+  steps: [
+    {
+      name: 'Decide to Sell Your Property',
+      text: `Contact ${COMPANY.name} before closing on your sale to establish the exchange framework. Early engagement ensures proper planning and documentation.`,
+      url: '/how-it-works#step-1'
+    },
+    {
+      name: 'Sign Exchange Documents',
+      text: 'Complete exchange agreement before closing to establish Qualified Intermediary relationship. This creates the legal framework for your tax-deferred exchange.',
+      url: '/how-it-works#step-2'
+    },
+    {
+      name: 'Close on Your Sale',
+      text: 'Sale proceeds go directly to Qualified Intermediary, starting your 45/180 day timeline. Funds are held in segregated, FDIC-insured accounts.',
+      url: '/how-it-works#step-3'
+    },
+    {
+      name: 'Identify Replacement Properties',
+      text: 'Submit written identification within 45 days using 3-property rule (up to 3 properties), 200% rule (unlimited properties up to 200% of sale value), or 95% rule (any value but must purchase 95%).',
+      url: '/how-it-works#step-4'
+    },
+    {
+      name: 'Shop and Negotiate',
+      text: 'Negotiate purchases, secure financing, and complete due diligence on identified properties within the 180-day exchange period.',
+      url: '/how-it-works#step-5'
+    },
+    {
+      name: 'Purchase Replacement Property',
+      text: 'Complete acquisition within 180 days with Qualified Intermediary coordinating fund transfers and ensuring proper documentation.',
+      url: '/how-it-works#step-6'
+    },
+    {
+      name: 'File Tax Return',
+      text: 'Report exchange on IRS Form 8824 using documentation provided by Qualified Intermediary, including exchange agreements, identification notices, and closing statements.',
+      url: '/how-it-works#step-7'
+    }
+  ]
+});
 ---
 
 <Layout 
@@ -45,7 +108,7 @@ import { COMPANY, getPhoneLink } from '../config/company';
         <div class="space-y-12">
           
           <!-- Step 1 -->
-          <div class="flex items-start">
+          <div id="step-1" class="flex items-start">
             <div class="flex-shrink-0 w-16 h-16 bg-blue-500 text-white rounded-full flex items-center justify-center text-xl font-bold mr-6">
               1
             </div>
@@ -64,7 +127,7 @@ import { COMPANY, getPhoneLink } from '../config/company';
           </div>
 
           <!-- Step 2 -->
-          <div class="flex items-start">
+          <div id="step-2" class="flex items-start">
             <div class="flex-shrink-0 w-16 h-16 bg-blue-500 text-white rounded-full flex items-center justify-center text-xl font-bold mr-6">
               2
             </div>
@@ -83,7 +146,7 @@ import { COMPANY, getPhoneLink } from '../config/company';
           </div>
 
           <!-- Step 3 -->
-          <div class="flex items-start">
+          <div id="step-3" class="flex items-start">
             <div class="flex-shrink-0 w-16 h-16 bg-blue-500 text-white rounded-full flex items-center justify-center text-xl font-bold mr-6">
               3
             </div>
@@ -107,7 +170,7 @@ import { COMPANY, getPhoneLink } from '../config/company';
           </div>
 
           <!-- Step 4 -->
-          <div class="flex items-start">
+          <div id="step-4" class="flex items-start">
             <div class="flex-shrink-0 w-16 h-16 bg-yellow-500 text-white rounded-full flex items-center justify-center text-xl font-bold mr-6">
               4
             </div>
@@ -144,7 +207,7 @@ import { COMPANY, getPhoneLink } from '../config/company';
           </div>
 
           <!-- Step 5 -->
-          <div class="flex items-start">
+          <div id="step-5" class="flex items-start">
             <div class="flex-shrink-0 w-16 h-16 bg-blue-500 text-white rounded-full flex items-center justify-center text-xl font-bold mr-6">
               5
             </div>
@@ -168,7 +231,7 @@ import { COMPANY, getPhoneLink } from '../config/company';
           </div>
 
           <!-- Step 6 -->
-          <div class="flex items-start">
+          <div id="step-6" class="flex items-start">
             <div class="flex-shrink-0 w-16 h-16 bg-green-500 text-white rounded-full flex items-center justify-center text-xl font-bold mr-6">
               6
             </div>
@@ -192,7 +255,7 @@ import { COMPANY, getPhoneLink } from '../config/company';
           </div>
 
           <!-- Step 7 -->
-          <div class="flex items-start">
+          <div id="step-7" class="flex items-start">
             <div class="flex-shrink-0 w-16 h-16 bg-purple-500 text-white rounded-full flex items-center justify-center text-xl font-bold mr-6">
               7
             </div>
@@ -384,81 +447,5 @@ import { COMPANY, getPhoneLink } from '../config/company';
   </section>
   
   <!-- Schema Markup -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "HowTo",
-    "name": "How to Complete a 1031 Exchange",
-    "description": "Complete step-by-step guide to deferring capital gains taxes through 1031 exchanges",
-    "image": "https://the1031center.com/images/how-it-works.jpg",
-    "totalTime": "PT180D",
-    "estimatedCost": {
-      "@type": "MonetaryAmount",
-      "currency": "USD",
-      "value": "1500"
-    },
-    "supply": [
-      {
-        "@type": "HowToSupply",
-        "name": "Investment Property to Sell"
-      },
-      {
-        "@type": "HowToSupply", 
-        "name": "Qualified Intermediary"
-      },
-      {
-        "@type": "HowToSupply",
-        "name": "Replacement Property"
-      }
-    ],
-    "tool": [
-      {
-        "@type": "HowToTool",
-        "name": "Exchange Agreement"
-      },
-      {
-        "@type": "HowToTool",
-        "name": "Property Identification Form"
-      }
-    ],
-    "step": [
-      {
-        "@type": "HowToStep",
-        "name": "Engage Qualified Intermediary",
-        "text": "Contact ${COMPANY.name} before closing on your sale to establish the exchange framework",
-        "url": "https://the1031center.com/how-it-works#step1"
-      },
-      {
-        "@type": "HowToStep", 
-        "name": "Sign Exchange Documents",
-        "text": "Complete exchange agreement before closing to establish QI relationship",
-        "url": "https://the1031center.com/how-it-works#step2"
-      },
-      {
-        "@type": "HowToStep",
-        "name": "Close on Sale",
-        "text": "Proceeds go directly to QI, starting your 45/180 day timeline",
-        "url": "https://the1031center.com/how-it-works#step3"
-      },
-      {
-        "@type": "HowToStep",
-        "name": "Identify Replacement Properties",
-        "text": "Submit written identification within 45 days using 3-property, 200%, or 95% rule",
-        "url": "https://the1031center.com/how-it-works#step4"
-      },
-      {
-        "@type": "HowToStep",
-        "name": "Purchase Replacement Property", 
-        "text": "Complete acquisition within 180 days with QI coordinating fund transfers",
-        "url": "https://the1031center.com/how-it-works#step5"
-      },
-      {
-        "@type": "HowToStep",
-        "name": "File Tax Return",
-        "text": "Report exchange on Form 8824 using documentation provided by QI",
-        "url": "https://the1031center.com/how-it-works#step6"
-      }
-    ]
-  }
-  </script>
+  <script type="application/ld+json" set:html={generateJsonLdScript(howToSchema)}></script>
 </Layout>

@@ -78,6 +78,10 @@ const canonicalURL = canonical || new URL(Astro.url.pathname, site);
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="preconnect" href="https://www.google-analytics.com" />
     
+    <!-- DNS Prefetch for additional domains -->
+    <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+    
     <!-- Schema.org JSON-LD -->
     <script type="application/ld+json">
     {

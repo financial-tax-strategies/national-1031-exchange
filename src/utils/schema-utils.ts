@@ -349,6 +349,233 @@ function checkSchemaTypes(obj: any, errors: string[], path: string = ''): void {
 }
 
 /**
+ * Article schema with all required and optional fields
+ */
+export interface ArticleSchema {
+  '@type': 'Article' | 'BlogPosting' | 'NewsArticle';
+  headline: string;
+  description: string;
+  image: string | string[];
+  author: PersonSchema | { '@type': 'Person'; name: string };
+  publisher: {
+    '@type': 'Organization';
+    name: string;
+    logo: {
+      '@type': 'ImageObject';
+      url: string;
+    };
+  };
+  datePublished: string;
+  dateModified?: string;
+  url?: string;
+  wordCount?: number;
+  articleSection?: string;
+  keywords?: string;
+  mainEntityOfPage?: {
+    '@type': 'WebPage';
+    '@id': string;
+  };
+}
+
+export function createArticleSchema(article: {
+  type?: 'Article' | 'BlogPosting' | 'NewsArticle';
+  headline: string;
+  description: string;
+  image: string | string[];
+  author: string | PersonSchema;
+  datePublished: string;
+  dateModified?: string;
+  url?: string;
+  wordCount?: number;
+  articleSection?: string;
+  keywords?: string;
+}): ArticleSchema {
+  const schema: ArticleSchema = {
+    '@type': article.type || 'Article',
+    headline: safeJsonEncode(article.headline) as string,
+    description: safeJsonEncode(article.description) as string,
+    image: Array.isArray(article.image) 
+      ? article.image.map(img => img.startsWith('http') ? img : `https://the1031center.com${img}`)
+      : article.image.startsWith('http') ? article.image : `https://the1031center.com${article.image}`,
+    author: typeof article.author === 'string' 
+      ? { '@type': 'Person', name: article.author }
+      : article.author,
+    publisher: {
+      '@type': 'Organization',
+      name: 'National 1031 Center',
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://the1031center.com/images/logo.png'
+      }
+    },
+    datePublished: article.datePublished
+  };
+
+  if (article.dateModified) {
+    schema.dateModified = article.dateModified;
+  }
+
+  if (article.url) {
+    schema.url = article.url.startsWith('http') ? article.url : `https://the1031center.com${article.url}`;
+  }
+
+  if (article.wordCount) {
+    schema.wordCount = article.wordCount;
+  }
+
+  if (article.articleSection) {
+    schema.articleSection = article.articleSection;
+  }
+
+  if (article.keywords) {
+    schema.keywords = article.keywords;
+  }
+
+  // Add mainEntityOfPage if URL is provided
+  if (article.url) {
+    schema.mainEntityOfPage = {
+      '@type': 'WebPage',
+      '@id': schema.url
+    };
+  }
+
+  return schema;
+}
+
+/**
+ * FAQPage schema
+ */
+export interface FAQPageSchema {
+  '@context': 'https://schema.org';
+  '@type': 'FAQPage';
+  mainEntity: Array<{
+    '@type': 'Question';
+    name: string;
+    acceptedAnswer: {
+      '@type': 'Answer';
+      text: string;
+    };
+  }>;
+}
+
+export function createFAQPageSchema(faqs: Array<{
+  question: string;
+  answer: string;
+}>): FAQPageSchema {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map(faq => ({
+      '@type': 'Question',
+      name: safeJsonEncode(faq.question) as string,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: safeJsonEncode(faq.answer) as string
+      }
+    }))
+  };
+}
+
+/**
+ * HowTo schema
+ */
+export interface HowToSchema {
+  '@context': 'https://schema.org';
+  '@type': 'HowTo';
+  name: string;
+  description: string;
+  image?: string | string[];
+  totalTime?: string;
+  estimatedCost?: {
+    '@type': 'MonetaryAmount';
+    currency: string;
+    value: string | number;
+  };
+  supply?: Array<{
+    '@type': 'HowToSupply';
+    name: string;
+  }>;
+  tool?: Array<{
+    '@type': 'HowToTool';
+    name: string;
+  }>;
+  step: Array<{
+    '@type': 'HowToStep';
+    name: string;
+    text: string;
+    url?: string;
+    image?: string;
+  }>;
+}
+
+export function createHowToSchema(howTo: {
+  name: string;
+  description: string;
+  image?: string | string[];
+  totalTime?: string;
+  estimatedCost?: {
+    currency: string;
+    value: string | number;
+  };
+  supplies?: string[];
+  tools?: string[];
+  steps: Array<{
+    name: string;
+    text: string;
+    url?: string;
+    image?: string;
+  }>;
+}): HowToSchema {
+  const schema: HowToSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: safeJsonEncode(howTo.name) as string,
+    description: safeJsonEncode(howTo.description) as string,
+    step: howTo.steps.map(step => ({
+      '@type': 'HowToStep',
+      name: safeJsonEncode(step.name) as string,
+      text: safeJsonEncode(step.text) as string,
+      url: step.url ? (step.url.startsWith('http') ? step.url : `https://the1031center.com${step.url}`) : undefined,
+      image: step.image ? (step.image.startsWith('http') ? step.image : `https://the1031center.com${step.image}`) : undefined
+    }))
+  };
+
+  if (howTo.image) {
+    schema.image = Array.isArray(howTo.image) 
+      ? howTo.image.map(img => img.startsWith('http') ? img : `https://the1031center.com${img}`)
+      : howTo.image.startsWith('http') ? howTo.image : `https://the1031center.com${howTo.image}`;
+  }
+
+  if (howTo.totalTime) {
+    schema.totalTime = howTo.totalTime;
+  }
+
+  if (howTo.estimatedCost) {
+    schema.estimatedCost = {
+      '@type': 'MonetaryAmount',
+      currency: howTo.estimatedCost.currency,
+      value: String(howTo.estimatedCost.value)
+    };
+  }
+
+  if (howTo.supplies && howTo.supplies.length > 0) {
+    schema.supply = howTo.supplies.map(supply => ({
+      '@type': 'HowToSupply',
+      name: safeJsonEncode(supply) as string
+    }));
+  }
+
+  if (howTo.tools && howTo.tools.length > 0) {
+    schema.tool = howTo.tools.map(tool => ({
+      '@type': 'HowToTool',
+      name: safeJsonEncode(tool) as string
+    }));
+  }
+
+  return schema;
+}
+
+/**
  * Helper to add WebPage schema wrapper
  */
 export interface WebPageSchema {

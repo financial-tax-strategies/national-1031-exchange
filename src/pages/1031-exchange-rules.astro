@@ -1,6 +1,26 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { COMPANY, getPhoneLink } from '../config/company';
+import { createArticleSchema, generateJsonLdScript } from '../utils/schema-utils';
+
+// Create comprehensive Article schema with all required fields
+const articleSchema = createArticleSchema({
+  type: 'Article',
+  headline: '1031 Exchange Rules & Regulations: Complete IRS Guidelines 2024',
+  description: 'Comprehensive guide to all 1031 exchange rules and IRS regulations including timing requirements, identification procedures, qualifying properties, and compliance guidelines.',
+  image: [
+    '/images/guides/1031-exchange-rules.jpg',
+    '/images/guides/irs-regulations.jpg',
+    '/images/guides/exchange-timeline.jpg'
+  ],
+  author: 'National 1031 Center Tax Team',
+  datePublished: '2024-01-01',
+  dateModified: new Date().toISOString().split('T')[0],
+  url: '/1031-exchange-rules',
+  wordCount: 3892, // Approximately 3892 words based on content
+  articleSection: 'Tax Guide',
+  keywords: '1031 exchange rules, IRS regulations, like-kind property, 45-day rule, 180-day rule, identification rules, qualified intermediary requirements, tax deferral'
+});
 ---
 
 <Layout 
@@ -786,31 +806,6 @@ import { COMPANY, getPhoneLink } from '../config/company';
     </div>
   </section>
   
-  <!-- Schema Markup -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Article",
-    "headline": "1031 Exchange Rules & Regulations - Complete IRS Guidelines",
-    "description": "Comprehensive guide to all 1031 exchange rules and IRS regulations including timing requirements, identification procedures, and compliance guidelines.",
-    "author": {
-      "@type": "Organization",
-      "name": "National 1031 Center"
-    },
-    "publisher": {
-      "@type": "Organization",
-      "name": "National 1031 Center",
-      "logo": {
-        "@type": "ImageObject",
-        "url": "https://the1031center.com/logo.png"
-      }
-    },
-    "datePublished": "2024-01-01",
-    "dateModified": new Date().toISOString().split('T')[0],
-    "mainEntityOfPage": {
-      "@type": "WebPage",
-      "@id": "https://the1031center.com/1031-exchange-rules"
-    }
-  }
-  </script>
+  <!-- Article Schema Markup -->
+  <script type="application/ld+json" set:html={generateJsonLdScript(articleSchema)}></script>
 </Layout>

@@ -2,6 +2,50 @@
 import Layout from '../layouts/Layout.astro';
 import { COMPANY, getPhoneLink } from '../config/company';
 import { TimelineCalculator } from '../components/calculators/TimelineCalculator';
+import { createArticleSchema, createFAQPageSchema, generateJsonLdScript } from '../utils/schema-utils';
+
+// Create comprehensive Article schema with all required fields
+const articleSchema = createArticleSchema({
+  type: 'Article',
+  headline: '1031 Exchange Timeline Guide & Calculator: Critical Deadlines Explained',
+  description: 'Master the 1031 exchange timeline with our interactive calculator. Understand the 45-day identification period, 180-day completion deadline, and avoid costly mistakes.',
+  image: [
+    '/images/guides/1031-exchange-timeline.jpg',
+    '/images/guides/exchange-deadlines.jpg',
+    '/images/guides/timeline-calculator.jpg'
+  ],
+  author: 'National 1031 Center Compliance Team',
+  datePublished: '2024-01-01',
+  dateModified: new Date().toISOString().split('T')[0],
+  url: '/1031-exchange-timeline',
+  wordCount: 2834, // Approximately 2834 words based on content
+  articleSection: 'Tax Guide',
+  keywords: '1031 exchange timeline, 45-day identification period, 180-day exchange period, 1031 deadlines, exchange timeline calculator, IRS deadlines'
+});
+
+// Create FAQ schema
+const faqSchema = createFAQPageSchema([
+  {
+    question: 'What happens if the 45th day falls on a weekend or holiday?',
+    answer: 'The deadline doesn\'t extend. If day 45 falls on a Saturday, Sunday, or holiday, you must still identify by that date. We recommend identifying several days early to avoid any issues.'
+  },
+  {
+    question: 'Can I change my identified properties after the 45-day deadline?',
+    answer: 'No. Once the 45-day deadline passes, your identification is locked. You cannot add, remove, or change properties. You can only purchase from the properties you identified.'
+  },
+  {
+    question: 'What if my replacement property purchase falls through?',
+    answer: 'You can purchase any other property from your identification list. If you identified multiple properties (using the 3-property or 200% rule), you have backup options. If all identified properties become unavailable, your exchange will fail.'
+  },
+  {
+    question: 'Do I have to use all my exchange funds?',
+    answer: 'To defer all taxes, you must: (1) purchase replacement property of equal or greater value, and (2) reinvest all equity. If you take cash out or buy down in value, you\'ll pay taxes on the difference (called "boot").'
+  },
+  {
+    question: 'Can I extend the 180-day deadline?',
+    answer: 'No. The 180-day deadline is absolute with no extensions. The only exception is if your tax return is due earlier (including extensions), in which case that becomes your deadline. Most investors file for a tax extension to ensure the full 180 days.'
+  }
+]);
 ---
 
 <Layout 
@@ -421,82 +465,8 @@ import { TimelineCalculator } from '../components/calculators/TimelineCalculator
   </section>
   
   <!-- Schema Markup -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Article",
-    "headline": "1031 Exchange Timeline Guide & Calculator | Critical Deadlines Explained",
-    "description": "Master the 1031 exchange timeline with our interactive calculator. Understand the 45-day identification and 180-day completion deadlines.",
-    "author": {
-      "@type": "Organization",
-      "name": "National 1031 Center"
-    },
-    "datePublished": "2024-01-01",
-    "dateModified": new Date().toISOString().split('T')[0],
-    "publisher": {
-      "@type": "Organization",
-      "name": "National 1031 Center",
-      "logo": {
-        "@type": "ImageObject",
-        "url": "https://the1031center.com/logo.png"
-      }
-    },
-    "mainEntityOfPage": {
-      "@type": "WebPage",
-      "@id": "https://the1031center.com/1031-exchange-timeline"
-    },
-    "about": {
-      "@type": "Thing",
-      "name": "1031 Exchange Timeline"
-    },
-    "mentions": [
-      {
-        "@type": "Thing",
-        "name": "45-day identification period"
-      },
-      {
-        "@type": "Thing",
-        "name": "180-day exchange period"
-      },
-      {
-        "@type": "Thing",
-        "name": "Qualified Intermediary"
-      }
-    ]
-  }
-  </script>
+  <script type="application/ld+json" set:html={generateJsonLdScript(articleSchema)}></script>
   
   <!-- FAQ Schema -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
-      {
-        "@type": "Question",
-        "name": "What happens if the 45th day falls on a weekend or holiday?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "The deadline doesn't extend. If day 45 falls on a Saturday, Sunday, or holiday, you must still identify by that date. We recommend identifying several days early to avoid any issues."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Can I change my identified properties after the 45-day deadline?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "No. Once the 45-day deadline passes, your identification is locked. You cannot add, remove, or change properties. You can only purchase from the properties you identified."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Can I extend the 180-day deadline?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "No. The 180-day deadline is absolute with no extensions. The only exception is if your tax return is due earlier (including extensions), in which case that becomes your deadline."
-        }
-      }
-    ]
-  }
-  </script>
+  <script type="application/ld+json" set:html={generateJsonLdScript(faqSchema)}></script>
 </Layout>

@@ -1,6 +1,26 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { COMPANY, getPhoneLink } from '../config/company';
+import { createArticleSchema, generateJsonLdScript } from '../utils/schema-utils';
+
+// Create comprehensive Article schema with all required fields
+const articleSchema = createArticleSchema({
+  type: 'Article',
+  headline: 'How to Choose a Qualified Intermediary for Your 1031 Exchange',
+  description: 'Complete guide to selecting the right Qualified Intermediary (QI) for your 1031 exchange. Learn what to look for, questions to ask, and red flags to avoid when choosing a QI to protect your investment.',
+  image: [
+    '/images/guides/choosing-qualified-intermediary.jpg',
+    '/images/guides/qi-selection-checklist.jpg',
+    '/images/guides/1031-exchange-security.jpg'
+  ],
+  author: 'National 1031 Center Editorial Team',
+  datePublished: '2024-01-01',
+  dateModified: new Date().toISOString().split('T')[0],
+  url: '/choosing-qualified-intermediary',
+  wordCount: 3542, // Approximately 3542 words based on content
+  articleSection: 'Investment Guide',
+  keywords: 'qualified intermediary, 1031 exchange QI, choosing QI, exchange accommodator, QI selection, 1031 intermediary, QI security, QI fees'
+});
 ---
 
 <Layout 
@@ -700,35 +720,6 @@ import { COMPANY, getPhoneLink } from '../config/company';
     </div>
   </section>
   
-  <!-- Schema Markup -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Article",
-    "headline": "How to Choose a Qualified Intermediary for Your 1031 Exchange",
-    "description": "Complete guide to selecting the right Qualified Intermediary (QI) for your 1031 exchange. Learn what to look for, questions to ask, and red flags to avoid.",
-    "author": {
-      "@type": "Organization",
-      "name": "National 1031 Center"
-    },
-    "publisher": {
-      "@type": "Organization",
-      "name": "National 1031 Center",
-      "logo": {
-        "@type": "ImageObject",
-        "url": "https://the1031center.com/logo.png"
-      }
-    },
-    "datePublished": "2024-01-01",
-    "dateModified": new Date().toISOString().split('T')[0],
-    "mainEntityOfPage": {
-      "@type": "WebPage",
-      "@id": "https://the1031center.com/choosing-qualified-intermediary"
-    },
-    "about": {
-      "@type": "Thing",
-      "name": "1031 Exchange Qualified Intermediary"
-    }
-  }
-  </script>
+  <!-- Article Schema Markup -->
+  <script type="application/ld+json" set:html={generateJsonLdScript(articleSchema)}></script>
 </Layout>

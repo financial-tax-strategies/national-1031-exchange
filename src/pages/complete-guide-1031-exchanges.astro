@@ -1,6 +1,76 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { COMPANY, getPhoneLink } from '../config/company';
+import { createArticleSchema, createPersonSchema, createFAQPageSchema, generateJsonLdScript } from '../utils/schema-utils';
+
+// Create author schema
+const authorSchema = createPersonSchema({
+  id: 'sarah-johnson',
+  name: 'Sarah Johnson',
+  title: 'Chief Executive Officer & Founder',
+  image: '/images/team/sarah-johnson.jpg',
+  email: 'sarah@the1031center.com',
+  linkedin: 'https://linkedin.com/in/sarahjohnson1031',
+  bio: 'Sarah Johnson is the CEO and founder of National 1031 Center, with over 20 years of experience in 1031 exchanges and real estate investment.',
+  education: ['MBA, Finance, Stanford University', 'BA, Economics, UCLA'],
+  certifications: ['Certified Exchange Specialist (CES)', 'Qualified Intermediary Professional'],
+  specialties: ['1031 Exchanges', 'Real Estate Investment', 'Tax Strategy', 'Asset Protection']
+});
+
+// Create comprehensive Article schema with all required fields
+const articleSchema = createArticleSchema({
+  type: 'Article',
+  headline: 'The Complete Guide to 1031 Exchanges: Everything You Need to Know',
+  description: 'Master 1031 exchanges with our comprehensive guide. Learn exchange types, deadlines, rules, tax benefits, and avoid common mistakes. Expert guidance from America\'s trusted QI.',
+  image: [
+    '/images/guides/1031-exchange-complete-guide.jpg',
+    '/images/guides/1031-exchange-process.jpg',
+    '/images/guides/1031-exchange-timeline.jpg'
+  ],
+  author: authorSchema,
+  datePublished: '2024-01-01',
+  dateModified: '2024-07-31',
+  url: '/complete-guide-1031-exchanges',
+  wordCount: 5847, // Approximately 5847 words based on content
+  articleSection: 'Investment Guide',
+  keywords: '1031 exchange guide, like-kind exchange, tax deferred exchange, 1031 exchange rules, qualified intermediary, replacement property, 1031 timeline, capital gains deferral'
+});
+
+// Create FAQ schema with the questions from the FAQ section
+const faqSchema = createFAQPageSchema([
+  {
+    question: 'Can I do a 1031 exchange on my primary residence?',
+    answer: 'No, 1031 exchanges are only for investment or business properties. However, if you convert your primary residence to a rental property and establish investment intent (typically by renting it for 1-2 years), it may then qualify for a 1031 exchange.'
+  },
+  {
+    question: 'What happens if I can\'t find a replacement property in 45 days?',
+    answer: 'If you don\'t identify replacement properties within 45 days, the exchange fails and becomes a regular sale. You\'ll owe all taxes on the gain. This is why it\'s crucial to start searching early and consider identifying three properties for flexibility.'
+  },
+  {
+    question: 'Can I exchange into multiple properties?',
+    answer: 'Yes! You can exchange one property for multiple properties, or multiple properties for one. The key is that the total value of replacement properties should equal or exceed your relinquished property\'s sale price to defer all taxes.'
+  },
+  {
+    question: 'How much does a 1031 exchange cost?',
+    answer: 'Qualified Intermediary fees typically range from $750-$1,500 for a standard delayed exchange. Reverse and improvement exchanges cost more ($3,000-$5,000+) due to additional complexity. These fees are minimal compared to the tax savings.'
+  },
+  {
+    question: 'Can I use exchange funds for repairs or improvements?',
+    answer: 'In a standard delayed exchange, no. Exchange funds must go toward the purchase price. However, in an improvement exchange, you can use exchange funds for capital improvements to the replacement property, as long as work is completed within the 180-day period.'
+  },
+  {
+    question: 'What is "boot" and how is it taxed?',
+    answer: 'Boot is any value received that\'s not like-kind property, including cash, debt reduction, or personal property. Boot is taxable in the year of the exchange. Common examples include taking cash out or buying a less expensive replacement property.'
+  },
+  {
+    question: 'Can I do a 1031 exchange if I have a mortgage?',
+    answer: 'Yes, but you must replace the debt to avoid taxable boot. If you sell a property with a $500,000 mortgage, your replacement should have at least $500,000 in debt, or you\'ll need to add cash to make up the difference.'
+  },
+  {
+    question: 'When do I eventually pay the taxes?',
+    answer: 'Taxes are deferred, not eliminated. You\'ll pay when you eventually sell without doing another exchange. However, if you hold until death, your heirs receive a stepped-up basis, potentially eliminating the deferred gain entirely.'
+  }
+]);
 ---
 
 <Layout 
@@ -951,77 +1021,9 @@ import { COMPANY, getPhoneLink } from '../config/company';
     </div>
   </article>
   
-  <!-- Schema Markup -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Article",
-    "headline": "The Complete Guide to 1031 Exchanges",
-    "description": "Master 1031 exchanges with our comprehensive guide. Learn exchange types, deadlines, rules, tax benefits, and avoid common mistakes.",
-    "author": {
-      "@type": "Person",
-      "@id": "https://the1031center.com/team#sarah-johnson",
-      "name": "Sarah Johnson",
-      "jobTitle": "Chief Executive Officer & Founder",
-      "url": "https://the1031center.com/team#sarah-johnson",
-      "image": "https://the1031center.com/images/team/sarah-johnson.jpg",
-      "sameAs": "https://linkedin.com/in/sarahjohnson1031"
-    },
-    "publisher": {
-      "@type": "Organization",
-      "name": "National 1031 Center",
-      "logo": {
-        "@type": "ImageObject",
-        "url": "https://the1031center.com/images/logo.png"
-      }
-    },
-    "datePublished": "2024-01-01",
-    "dateModified": "2024-07-31",
-    "mainEntityOfPage": {
-      "@type": "WebPage",
-      "@id": "https://the1031center.com/complete-guide-1031-exchanges"
-    }
-  }
-  </script>
+  <!-- Article Schema Markup -->
+  <script type="application/ld+json" set:html={generateJsonLdScript(articleSchema)}></script>
   
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
-      {
-        "@type": "Question",
-        "name": "Can I do a 1031 exchange on my primary residence?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "No, 1031 exchanges are only for investment or business properties. However, if you convert your primary residence to a rental property and establish investment intent (typically by renting it for 1-2 years), it may then qualify for a 1031 exchange."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "What happens if I can't find a replacement property in 45 days?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "If you don't identify replacement properties within 45 days, the exchange fails and becomes a regular sale. You'll owe all taxes on the gain. This is why it's crucial to start searching early and consider identifying three properties for flexibility."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Can I exchange into multiple properties?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Yes! You can exchange one property for multiple properties, or multiple properties for one. The key is that the total value of replacement properties should equal or exceed your relinquished property's sale price to defer all taxes."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "How much does a 1031 exchange cost?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Qualified Intermediary fees typically range from $750-$1,500 for a standard delayed exchange. Reverse and improvement exchanges cost more ($3,000-$5,000+) due to additional complexity. These fees are minimal compared to the tax savings."
-        }
-      }
-    ]
-  }
-  </script>
+  <!-- FAQ Schema Markup -->
+  <script type="application/ld+json" set:html={generateJsonLdScript(faqSchema)}></script>
 </Layout>
