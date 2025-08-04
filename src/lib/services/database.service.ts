@@ -19,13 +19,16 @@ export class DatabaseService {
     if (!supabaseUrl || !supabaseAnonKey) {
       if (import.meta.env.MODE === 'production' && typeof window !== 'undefined') {
         // Only throw error in production when running in browser
-        throw new Error('Supabase URL and Anon Key must be provided');
+        throw new Error('Supabase configuration missing. Please set PUBLIC_SUPABASE_URL and PUBLIC_SUPABASE_ANON_KEY environment variables.');
       }
       // For build time or development, create a dummy client
       // This will fail if actually used, but allows static build to complete
+      console.warn('Supabase environment variables not found. Database operations will fail.');
       this.supabase = {} as SupabaseClient<Database>;
       return;
     }
+    
+    console.log('Initializing Supabase client with URL:', supabaseUrl);
     
     this.supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
       auth: {

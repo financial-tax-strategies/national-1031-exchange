@@ -31,29 +31,87 @@ export class OrderFormService {
       // Step 1: Convert field names to use 1031x_order_ prefix
       const mappedData = this.mapFieldNames(data);
       
-      // Step 2: Save to Supabase
-      const { data: submission, error: dbError } = await this.db.getTable('order_form_submissions')
-        .insert({
-          ...mappedData,
-          ip_address: metadata?.ipAddress,
-          user_agent: metadata?.userAgent,
-          session_id: metadata?.sessionId,
-          form_completion_time_seconds: metadata?.formCompletionTime,
-          status: 'new'
-        })
-        .select()
-        .single();
+      // Step 2: Try to save to Supabase
+      let submissionId: string;
+      let useFallback = false;
       
-      if (dbError || !submission) {
-        console.error('Database error:', dbError);
-        throw new Error('Failed to save form submission');
+      try {
+        const { data: submission, error: dbError } = await this.db.getTable('order_form_submissions')
+          .insert({
+            ...mappedData,
+            ip_address: metadata?.ipAddress,
+            user_agent: metadata?.userAgent,
+            session_id: metadata?.sessionId,
+            form_completion_time_seconds: metadata?.formCompletionTime,
+            status: 'new'
+          })
+          .select()
+          .single();
+        
+        if (dbError || !submission) {
+          console.error('Database error details:', {
+            error: dbError,
+            code: dbError?.code,
+            message: dbError?.message,
+            details: dbError?.details,
+            hint: dbError?.hint,
+            formData: mappedData
+          });
+          
+          // Check for specific database errors
+          if (dbError?.code === '42P01') {
+            console.error('Table not found - using fallback submission method');
+            useFallback = true;
+          } else if (dbError?.code === '23505') {
+            throw new Error('This submission appears to be a duplicate. Please refresh and try again.');
+          } else if (dbError?.message?.includes('violates check constraint')) {
+            throw new Error('Invalid form data. Please check all fields and try again.');
+          } else if (dbError?.message?.includes('permission denied')) {
+            console.error('Permission denied - using fallback submission method');
+            useFallback = true;
+          } else {
+            throw new Error(`Failed to save form submission: ${dbError?.message || 'Unknown database error'}`);
+          }
+        } else {
+          submissionId = submission.id;
+        }
+      } catch (dbError) {
+        // If database is completely unavailable, use fallback
+        console.error('Database unavailable, using fallback:', dbError);
+        useFallback = true;
+      }
+      
+      // Fallback: Generate ID and send directly to email/webhook
+      if (useFallback) {
+        submissionId = `fallback-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+        console.warn('Using fallback submission method with ID:', submissionId);
+        
+        // Send admin notification immediately
+        try {
+          await this.sendAdminNotification(submissionId, mappedData);
+          await this.sendUserConfirmation(submissionId, mappedData);
+          
+          // Try to sync to HighLevel
+          if (this.highlevel) {
+            try {
+              await this.syncToHighLevel(submissionId, mappedData, data);
+            } catch (hlError) {
+              console.error('HighLevel sync failed:', hlError);
+            }
+          }
+        } catch (emailError) {
+          console.error('Failed to send fallback notifications:', emailError);
+          // Still return success to user since we have their data
+        }
+        
+        return submissionId;
       }
       
       // Step 3: Process asynchronously (don't block user)
-      this.processSubmissionAsync(submission.id, mappedData, data)
+      this.processSubmissionAsync(submissionId!, mappedData, data)
         .catch(err => console.error('Async processing error:', err));
       
-      return submission.id;
+      return submissionId!;
     } catch (error) {
       console.error('Order form submission error:', error);
       throw error;

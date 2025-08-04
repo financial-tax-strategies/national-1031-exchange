@@ -72,6 +72,31 @@ export const OrderFormProvider: React.FC<OrderFormProviderProps> = ({
     }
     setSessionId(savedSessionId);
 
+    // Check database connection health
+    const checkDatabaseConnection = async () => {
+      try {
+        const orderFormService = new OrderFormService();
+        // Test database connection
+        const db = orderFormService['db']; // Access private member for health check
+        const isHealthy = await db.healthCheck();
+        
+        if (!isHealthy) {
+          console.warn('Database health check failed');
+          setError('Database connection issue detected. Form submissions may fail.');
+        } else {
+          console.log('Database connection healthy');
+        }
+      } catch (err) {
+        console.error('Database connection check failed:', err);
+        if (import.meta.env.DEV) {
+          setError('Warning: Database connection could not be verified. Check console for details.');
+        }
+      }
+    };
+    
+    // Run health check
+    checkDatabaseConnection();
+
     // Load saved progress with encryption support
     try {
       if (isEncryptionSupported()) {
@@ -318,17 +343,44 @@ export const OrderFormProvider: React.FC<OrderFormProviderProps> = ({
       
     } catch (err) {
       console.error('Error submitting form:', err);
-      setError('An error occurred while submitting your information. Please try again.');
+      
+      // Provide more specific error messages
+      let errorMessage = 'An error occurred while submitting your information. Please try again.';
+      
+      if (err instanceof Error) {
+        console.error('Detailed error:', {
+          message: err.message,
+          stack: err.stack,
+          formData: formState.data
+        });
+        
+        // Check for specific error types
+        if (err.message.includes('Failed to save form submission')) {
+          errorMessage = 'Unable to save your information. Please check your internet connection and try again.';
+        } else if (err.message.includes('Supabase')) {
+          errorMessage = 'Database connection error. Please try again in a few moments.';
+        } else if (err.message.includes('Network')) {
+          errorMessage = 'Network error. Please check your internet connection.';
+        }
+        
+        // In development, show the actual error
+        if (import.meta.env.DEV) {
+          errorMessage = `Error: ${err.message}`;
+        }
+      }
+      
+      setError(errorMessage);
       
       if (onError) {
         onError(err as Error);
       }
       
-      // Track error
+      // Track error with more detail
       if (typeof window !== 'undefined' && window.trackOrderFormEvent) {
         window.trackOrderFormEvent('error_occurred', {
           step: formState.currentStep,
           error: (err as Error).message,
+          errorType: err instanceof Error ? err.constructor.name : 'Unknown',
           sessionId
         });
       }
