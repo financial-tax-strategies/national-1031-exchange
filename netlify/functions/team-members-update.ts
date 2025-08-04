@@ -109,6 +109,10 @@ export const handler: Handler = async (event, context) => {
       };
     }
     
+    // CRITICAL: Add a small delay to ensure the update is committed
+    // This is necessary because Supabase might not immediately return updated data
+    await new Promise(resolve => setTimeout(resolve, 200));
+    
     // Fetch the updated record to return to the client
     console.log('[Netlify Function] Fetching updated record...');
     const fetchUrl = `${supabaseUrl}/rest/v1/team_members?id=eq.${id}`;
@@ -162,8 +166,7 @@ export const handler: Handler = async (event, context) => {
         message: 'Team member updated successfully',
         debug: {
           authKeyType: supabaseServiceKey ? 'service' : 'anon',
-          updatedFields: Object.keys(updateData).filter(k => k !== 'id'),
-          fieldsVerified: fieldsUpdated
+          updatedFields: Object.keys(updateData).filter(k => k !== 'id')
         }
       }),
       headers,
