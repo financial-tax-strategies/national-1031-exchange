@@ -19,24 +19,41 @@ Disallow: /thank-you
 Disallow: /404
 Disallow: *.json$
 
-# Allow specific AI crawlers
+# Allow specific AI crawlers with priority access
 User-agent: GPTBot
 Allow: /
 Allow: /complete-guide-1031-exchanges
 Allow: /services/
 Allow: /calculator
+Crawl-delay: 0
 
 User-agent: ChatGPT-User
 Allow: /
+Crawl-delay: 0
 
 User-agent: Claude-Web
 Allow: /
+Crawl-delay: 0
 
 User-agent: PerplexityBot
 Allow: /
+Crawl-delay: 0
+
+User-agent: anthropic-ai
+Allow: /
+Crawl-delay: 0
+
+User-agent: cohere-ai
+Allow: /
+Crawl-delay: 0
 
 User-agent: YouBot
 Allow: /
+Crawl-delay: 0
+
+User-agent: CCBot
+Allow: /
+Crawl-delay: 0
 
 # Crawl delay for respect
 Crawl-delay: 1
