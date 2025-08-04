@@ -109,14 +109,42 @@ export const handler: Handler = async (event, context) => {
       data = [];
     }
     
-    console.log('[Netlify Function] Update successful:', data);
+    console.log('[Netlify Function] Parsed data:', data);
+    console.log('[Netlify Function] Data length:', data.length);
+    console.log('[Netlify Function] First item:', data[0]);
+    
+    // Check if update actually happened
+    const updateSuccess = data.length > 0 && data[0].id === id;
+    console.log('[Netlify Function] Update success:', updateSuccess);
+    
+    if (!updateSuccess) {
+      console.error('[Netlify Function] No data returned - update may have failed due to RLS');
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ 
+          error: 'Update failed - no data returned',
+          success: false,
+          message: 'The update did not return any data. This usually means RLS blocked the update.',
+          debug: {
+            responseStatus: response.status,
+            dataLength: data.length,
+            authKeyType: supabaseServiceKey ? 'service' : 'anon'
+          }
+        }),
+        headers,
+      };
+    }
     
     return {
       statusCode: 200,
       body: JSON.stringify({ 
-        data: data[0] || null,
+        data: data[0],
         success: true,
-        message: 'Team member updated successfully'
+        message: 'Team member updated successfully',
+        debug: {
+          authKeyType: supabaseServiceKey ? 'service' : 'anon',
+          updatedFields: Object.keys(updateData)
+        }
       }),
       headers,
     };
