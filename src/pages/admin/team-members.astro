@@ -382,6 +382,15 @@ if (isSupabaseConfigured()) {
     if (data.years_experience) data.years_experience = parseInt(data.years_experience);
     if (data.display_order) data.display_order = parseInt(data.display_order);
     
+    // Clean up empty strings - convert to null
+    Object.keys(data).forEach(key => {
+      if (data[key] === '') {
+        data[key] = null;
+      }
+    });
+    
+    console.log('[Admin] Form data after processing:', data);
+    
     try {
       const isUpdate = !!data.id;
       const url = isUpdate ? '/.netlify/functions/team-members-update' : '/api/team-members';
@@ -396,12 +405,22 @@ if (isSupabaseConfigured()) {
       });
       
       console.log(`[Admin] Response status: ${response.status}`);
-      const result = await response.json();
-      console.log('[Admin] Response data:', result);
+      
+      let result;
+      try {
+        result = await response.json();
+        console.log('[Admin] Response data:', result);
+      } catch (e) {
+        console.error('[Admin] Failed to parse response as JSON:', e);
+        result = { success: false, error: 'Invalid response from server' };
+      }
       
       if (response.ok && result.success) {
         console.log('[Admin] Update successful, reloading page...');
-        window.location.reload();
+        // Add a small delay to ensure the update is committed
+        setTimeout(() => {
+          window.location.reload();
+        }, 100);
       } else {
         console.error('[Admin] Update failed:', result);
         alert('Error: ' + (result.error || result.details || 'Failed to save'));

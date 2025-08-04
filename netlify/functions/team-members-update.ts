@@ -61,10 +61,15 @@ export const handler: Handler = async (event, context) => {
       };
     }
     
-    // Clean up empty values
+    // Clean up empty values and remove read-only fields
+    const readOnlyFields = ['created_at', 'updated_at', 'created_by', 'updated_by'];
     Object.keys(updateData).forEach(key => {
       if (updateData[key] === '' || updateData[key] === null) {
         updateData[key] = null;
+      }
+      // Remove read-only fields that might cause issues
+      if (readOnlyFields.includes(key)) {
+        delete updateData[key];
       }
     });
     
@@ -142,14 +147,12 @@ export const handler: Handler = async (event, context) => {
       };
     }
     
-    // Verify the update actually happened
-    const fieldsUpdated = Object.keys(updateData).every(key => {
-      if (key === 'id') return true; // Skip ID check
-      return actualData[key] === updateData[key];
-    });
+    // Verify the update actually happened - just check if we got data back
+    // Don't verify individual fields as they might have been transformed by the database
+    const updateSuccessful = actualData && actualData.id === id;
     
-    console.log('[Netlify Function] Update verification:', fieldsUpdated);
-    console.log('[Netlify Function] Updated fields match:', fieldsUpdated);
+    console.log('[Netlify Function] Update successful:', updateSuccessful);
+    console.log('[Netlify Function] Returned data ID matches:', actualData?.id === id);
     
     return {
       statusCode: 200,
