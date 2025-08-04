@@ -384,7 +384,7 @@ if (isSupabaseConfigured()) {
     
     try {
       const isUpdate = !!data.id;
-      const url = '/api/team-members';
+      const url = isUpdate ? '/.netlify/functions/team-members-update' : '/api/team-members';
       const method = isUpdate ? 'PATCH' : 'POST';
       
       const response = await fetch(url, {
@@ -414,7 +414,7 @@ if (isSupabaseConfigured()) {
       
       if (confirm(`Are you sure you want to ${isActive ? 'deactivate' : 'activate'} this team member?`)) {
         try {
-          const response = await fetch('/api/team-members', {
+          const response = await fetch('/.netlify/functions/team-members-update', {
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ id, is_active: !isActive })
