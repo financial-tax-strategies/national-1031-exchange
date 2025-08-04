@@ -1,4 +1,5 @@
 ---
+import '../styles/global.css';
 import Navigation from '../components/Navigation.astro';
 import Footer from '../components/Footer.astro';
 import GoogleAnalytics from '../components/analytics/GoogleAnalytics.astro';
@@ -262,11 +263,6 @@ const canonicalURL = canonical || new URL(Astro.url.pathname, site);
     
     <!-- Critical CSS (Inline for Performance) -->
     <style set:html={criticalCSS}></style>
-    
-    <!-- Preload main CSS but load async -->
-    <link rel="preload" href="/src/styles/global.css" as="style">
-    <link rel="stylesheet" href="/src/styles/global.css" media="print" onload="this.media='all'; this.onload=null;">
-    <noscript><link rel="stylesheet" href="/src/styles/global.css"></noscript>
     
     <!-- Analytics -->
     <GoogleTagManager />
