@@ -135,15 +135,55 @@ export const handler: Handler = async (event, context) => {
       };
     }
     
+    // CRITICAL: Verify the update actually succeeded by fetching the record
+    console.log('[Netlify Function] Verifying update by fetching record...');
+    const verifyUrl = `${supabaseUrl}/rest/v1/team_members?id=eq.${id}&select=id,job_title,updated_at`;
+    const verifyResponse = await fetch(verifyUrl, {
+      headers: {
+        'apikey': authKey,
+        'Authorization': `Bearer ${authKey}`
+      }
+    });
+    
+    const verifyData = await verifyResponse.json();
+    console.log('[Netlify Function] Verification response:', verifyData);
+    
+    const actualData = verifyData[0];
+    const updateVerified = actualData && actualData.job_title === updateData.job_title;
+    
+    console.log('[Netlify Function] Update verified:', updateVerified);
+    console.log('[Netlify Function] Expected job_title:', updateData.job_title);
+    console.log('[Netlify Function] Actual job_title:', actualData?.job_title);
+    
+    if (!updateVerified) {
+      console.error('[Netlify Function] Update verification FAILED - data was not actually saved!');
+      return {
+        statusCode: 500,
+        body: JSON.stringify({ 
+          error: 'Update appeared to succeed but was not saved',
+          success: false,
+          message: 'The database returned success but the data was not actually updated. This may indicate a trigger or constraint issue.',
+          debug: {
+            authKeyType: supabaseServiceKey ? 'service' : 'anon',
+            returnedData: data[0],
+            actualData: actualData,
+            updateVerified: false
+          }
+        }),
+        headers,
+      };
+    }
+    
     return {
       statusCode: 200,
       body: JSON.stringify({ 
-        data: data[0],
+        data: actualData, // Return the actual data from the database
         success: true,
         message: 'Team member updated successfully',
         debug: {
           authKeyType: supabaseServiceKey ? 'service' : 'anon',
-          updatedFields: Object.keys(updateData)
+          updatedFields: Object.keys(updateData),
+          updateVerified: true
         }
       }),
       headers,
