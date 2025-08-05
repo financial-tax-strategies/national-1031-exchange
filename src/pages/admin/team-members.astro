@@ -709,10 +709,10 @@ if (isSupabaseAdminConfigured() && isAuthenticated) {
       // Address fields from JSONB
       if (member.address) {
         (form.elements.namedItem('street_address') as HTMLInputElement).value = member.address.streetAddress || '';
-        (form.elements.namedItem('address_locality') as HTMLInputElement).value = member.address.addressLocality || '';
-        (form.elements.namedItem('address_region') as HTMLInputElement).value = member.address.addressRegion || '';
+        (form.elements.namedItem('city') as HTMLInputElement).value = member.address.addressLocality || '';
+        (form.elements.namedItem('state') as HTMLInputElement).value = member.address.addressRegion || '';
         (form.elements.namedItem('postal_code') as HTMLInputElement).value = member.address.postalCode || '';
-        (form.elements.namedItem('address_country') as HTMLInputElement).value = member.address.addressCountry || '';
+        (form.elements.namedItem('country') as HTMLInputElement).value = member.address.addressCountry || '';
       }
       
       // Professional fields

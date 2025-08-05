@@ -62,6 +62,8 @@ const transformedTeamMembers = teamMembers.map(member => {
   return {
     id: member.slug || member.id,
     name: member.name,
+    honorific_prefix: member.honorific_prefix,
+    honorific_suffix: member.honorific_suffix,
     title: member.job_title,
     image: member.primary_image_url || member.image,
     bio: member.description,
@@ -161,7 +163,9 @@ const transformedTeamMembers = teamMembers.map(member => {
             
             <!-- Bio -->
             <div class="lg:w-2/3">
-              <h2 class="text-3xl font-bold text-gray-900 mb-2">{member.name}</h2>
+              <h2 class="text-3xl font-bold text-gray-900 mb-2">
+                {member.honorific_prefix && `${member.honorific_prefix} `}{member.name}{member.honorific_suffix && ` ${member.honorific_suffix}`}
+              </h2>
               <p class="text-xl text-blue-900 mb-4">{member.title}</p>
               
               <p class="text-gray-700 mb-6">{member.bio}</p>
