@@ -370,7 +370,7 @@ if (isSupabaseAdminConfigured() && isAuthenticated) {
                   <label class="block text-sm font-medium text-gray-700">City</label>
                   <input 
                     type="text" 
-                    name="address_locality" 
+                    name="city" 
                     class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                   />
                 </div>
@@ -379,7 +379,7 @@ if (isSupabaseAdminConfigured() && isAuthenticated) {
                   <label class="block text-sm font-medium text-gray-700">State/Region</label>
                   <input 
                     type="text" 
-                    name="address_region" 
+                    name="state" 
                     class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                   />
                 </div>
@@ -399,7 +399,7 @@ if (isSupabaseAdminConfigured() && isAuthenticated) {
                   <label class="block text-sm font-medium text-gray-700">Country</label>
                   <input 
                     type="text" 
-                    name="address_country" 
+                    name="country" 
                     placeholder="United States"
                     class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                   />
@@ -779,6 +779,22 @@ if (isSupabaseAdminConfigured() && isAuthenticated) {
       data.knows_about = null;
     }
     
+    // Process specializations (comma-separated)
+    if (data.specializations && data.specializations.trim()) {
+      data.specializations = data.specializations.split(',').map((s: string) => s.trim()).filter(Boolean);
+      if (data.specializations.length === 0) data.specializations = null;
+    } else {
+      data.specializations = null;
+    }
+    
+    // Process languages_spoken (comma-separated)
+    if (data.languages_spoken && data.languages_spoken.trim()) {
+      data.languages_spoken = data.languages_spoken.split(',').map((s: string) => s.trim()).filter(Boolean);
+      if (data.languages_spoken.length === 0) data.languages_spoken = null;
+    } else {
+      data.languages_spoken = null;
+    }
+    
     // Note: same_as will be handled later when we collect individual social media URLs
     delete data.same_as; // Remove the text field value to avoid conflicts
     
@@ -856,7 +872,8 @@ if (isSupabaseAdminConfigured() && isAuthenticated) {
       street_address: data.street_address?.trim(),
       city: data.city?.trim(),
       state: data.state?.trim(),
-      postal_code: data.postal_code?.trim()
+      postal_code: data.postal_code?.trim(),
+      country: data.country?.trim()
     };
     
     const hasAddress = Object.values(addressFields).some(val => val);
@@ -867,7 +884,7 @@ if (isSupabaseAdminConfigured() && isAuthenticated) {
         addressLocality: addressFields.city || undefined,
         addressRegion: addressFields.state || undefined,
         postalCode: addressFields.postal_code || undefined,
-        addressCountry: 'US'
+        addressCountry: addressFields.country || 'US'
       };
       // Remove undefined values from address
       Object.keys(data.address).forEach(key => {
@@ -880,7 +897,7 @@ if (isSupabaseAdminConfigured() && isAuthenticated) {
     }
     
     // Remove individual address fields from data - ensure they're deleted
-    const addressFieldsToRemove = ['street_address', 'city', 'state', 'postal_code'];
+    const addressFieldsToRemove = ['street_address', 'city', 'state', 'postal_code', 'country'];
     addressFieldsToRemove.forEach(field => {
       if (field in data) {
         delete data[field];
@@ -888,7 +905,7 @@ if (isSupabaseAdminConfigured() && isAuthenticated) {
     });
     
     // Format other array fields from textareas
-    ['certifications', 'awards', 'publications', 'specializations'].forEach(field => {
+    ['certifications', 'awards', 'publications'].forEach(field => {
       const value = data[field]?.trim();
       if (value) {
         data[field] = value.split('\n').filter((line: string) => line.trim());
