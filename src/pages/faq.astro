@@ -1,7 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { COMPANY, getPhoneLink } from '../config/company';
-import { createFAQPageSchema, generateJsonLdScript } from '../utils/schema-utils';
+import { createFAQPageSchema, generateJsonLdScript, wrapInWebPageSchema, createSpeakableSchema } from '../utils/schema-utils';
 
 // Create comprehensive FAQ schema
 const faqSchema = createFAQPageSchema([
@@ -66,6 +66,23 @@ const faqSchema = createFAQPageSchema([
     answer: 'You\'ll report your exchange on IRS Form 8824 with your tax return. Your QI will provide all necessary documentation including exchange agreements, identification notices, closing statements, and 1099-S forms (if applicable).'
   }
 ]);
+
+// Create Speakable schema for voice search
+// Target the answer paragraphs in the FAQ sections
+const speakableSchema = createSpeakableSchema({
+  cssSelector: [
+    '.border-gray-200 p.text-gray-700:first-child' // Target the first paragraph of each answer
+  ]
+});
+
+// Wrap FAQ schema in WebPage with Speakable
+const webPageSchema = wrapInWebPageSchema(
+  'https://the1031center.com/faq',
+  '1031 Exchange FAQ | Common Questions Answered',
+  'Get answers to the most common 1031 exchange questions. Learn about deadlines, rules, property types, and tax benefits from America\'s trusted exchange experts.',
+  faqSchema,
+  speakableSchema
+);
 ---
 
 <Layout 
@@ -529,5 +546,5 @@ const faqSchema = createFAQPageSchema([
   </section>
   
   <!-- Schema Markup -->
-  <script type="application/ld+json" set:html={generateJsonLdScript(faqSchema)}></script>
+  <script type="application/ld+json" set:html={generateJsonLdScript(webPageSchema)}></script>
 </Layout>

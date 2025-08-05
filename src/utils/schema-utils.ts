@@ -1026,6 +1026,42 @@ export function createLocalBusinessSchema(business: {
 }
 
 /**
+ * Speakable schema for voice search optimization
+ */
+export interface SpeakableSpecification {
+  '@type': 'SpeakableSpecification';
+  cssSelector?: string[];
+  xpath?: string[];
+  content?: string[];
+}
+
+export function createSpeakableSchema(
+  selectors: {
+    cssSelector?: string[];
+    xpath?: string[];
+    content?: string[];
+  }
+): SpeakableSpecification {
+  const schema: SpeakableSpecification = {
+    '@type': 'SpeakableSpecification'
+  };
+  
+  if (selectors.cssSelector && selectors.cssSelector.length > 0) {
+    schema.cssSelector = selectors.cssSelector;
+  }
+  
+  if (selectors.xpath && selectors.xpath.length > 0) {
+    schema.xpath = selectors.xpath;
+  }
+  
+  if (selectors.content && selectors.content.length > 0) {
+    schema.content = selectors.content.map(c => safeJsonEncode(c) as string);
+  }
+  
+  return schema;
+}
+
+/**
  * Helper to add WebPage schema wrapper
  */
 export interface WebPageSchema {
@@ -1041,13 +1077,15 @@ export interface WebPageSchema {
   inLanguage?: string;
   potentialAction?: any[];
   mainEntity?: any;
+  speakable?: SpeakableSpecification;
 }
 
 export function wrapInWebPageSchema(
   pageUrl: string,
   pageTitle: string,
   pageDescription?: string,
-  mainEntity?: any
+  mainEntity?: any,
+  speakable?: SpeakableSpecification
 ): WebPageSchema {
   const schema: WebPageSchema = {
     '@type': 'WebPage',
@@ -1064,6 +1102,10 @@ export function wrapInWebPageSchema(
   
   if (mainEntity) {
     schema.mainEntity = mainEntity;
+  }
+  
+  if (speakable) {
+    schema.speakable = speakable;
   }
   
   return schema;
