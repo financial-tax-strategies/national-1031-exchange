@@ -120,10 +120,13 @@ export function createPersonSchema(person: {
   bio?: string;
   email?: string;
   linkedin?: string;
+  facebook?: string;
+  twitter?: string;
   education?: string[];
   certifications?: string[];
   specialties?: string[];
   publications?: string[];
+  awards?: string[];
   location?: string;
 }): PersonSchema {
   const schema: PersonSchema = {
@@ -151,8 +154,14 @@ export function createPersonSchema(person: {
     schema.email = person.email;
   }
   
-  if (person.linkedin) {
-    schema.sameAs = person.linkedin;
+  // Handle multiple social media links
+  const socialLinks = [];
+  if (person.linkedin) socialLinks.push(person.linkedin);
+  if (person.facebook) socialLinks.push(person.facebook);
+  if (person.twitter) socialLinks.push(person.twitter);
+  
+  if (socialLinks.length > 0) {
+    schema.sameAs = socialLinks.length === 1 ? socialLinks[0] : socialLinks;
   }
   
   if (person.education && person.education.length > 0) {
@@ -181,6 +190,10 @@ export function createPersonSchema(person: {
       '@type': 'Article',
       name: pub
     }));
+  }
+  
+  if (person.awards && person.awards.length > 0) {
+    schema.award = person.awards;
   }
   
   if (person.location) {
