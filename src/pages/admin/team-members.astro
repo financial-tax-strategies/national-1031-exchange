@@ -779,12 +779,8 @@ if (isSupabaseAdminConfigured() && isAuthenticated) {
       data.knows_about = null;
     }
     
-    if (data.same_as && data.same_as.trim()) {
-      data.same_as = data.same_as.split(',').map((s: string) => s.trim()).filter(Boolean);
-      if (data.same_as.length === 0) data.same_as = null;
-    } else {
-      data.same_as = null;
-    }
+    // Note: same_as will be handled later when we collect individual social media URLs
+    delete data.same_as; // Remove the text field value to avoid conflicts
     
     // Convert numbers - ensure they're numbers or null, never NaN
     if (data.years_experience && data.years_experience.trim()) {
@@ -834,17 +830,26 @@ if (isSupabaseAdminConfigured() && isAuthenticated) {
     
     // Collect and format social media URLs into same_as array
     const socialUrls = [];
-    ['linkedin_url', 'facebook_url', 'twitter_url', 'instagram_url', 'youtube_url'].forEach(field => {
+    const socialFields = ['linkedin_url', 'facebook_url', 'twitter_url', 'instagram_url', 'youtube_url'];
+    
+    socialFields.forEach(field => {
       const url = data[field]?.trim();
       if (url) {
         socialUrls.push(url);
       }
-      // Remove individual social media fields from data
-      delete data[field];
     });
+    
+    // Set same_as only if we have social URLs
     if (socialUrls.length > 0) {
       data.same_as = socialUrls;
+    } else {
+      data.same_as = null;
     }
+    
+    // Remove individual social media fields from data after processing
+    socialFields.forEach(field => {
+      delete data[field];
+    });
     
     // Format address as JSONB
     const addressFields = {
@@ -874,9 +879,12 @@ if (isSupabaseAdminConfigured() && isAuthenticated) {
       data.address = null;
     }
     
-    // Remove individual address fields from data
-    ['street_address', 'city', 'state', 'postal_code'].forEach(field => {
-      delete data[field];
+    // Remove individual address fields from data - ensure they're deleted
+    const addressFieldsToRemove = ['street_address', 'city', 'state', 'postal_code'];
+    addressFieldsToRemove.forEach(field => {
+      if (field in data) {
+        delete data[field];
+      }
     });
     
     // Format other array fields from textareas
@@ -897,7 +905,33 @@ if (isSupabaseAdminConfigured() && isAuthenticated) {
       }
     });
     
-    console.log('[Admin] Form data after processing:', data);
+    // Debug: Log data before cleanup
+    console.log('[Admin] Form data before cleanup:', JSON.stringify(data, null, 2));
+    
+    // Define allowed fields based on database schema
+    const allowedFields = [
+      'id', 'name', 'slug', 'job_title', 'works_for', 'url', 'image', 
+      'description', 'birth_date', 'nationality', 'address', 'telephone', 
+      'email', 'same_as', 'knows_about', 'alumni_of', 'honorific_prefix', 
+      'honorific_suffix', 'job_title_details', 'awards', 'publications', 
+      'certifications', 'languages_spoken', 'years_experience', 
+      'specializations', 'display_order', 'is_active'
+    ];
+    
+    // Remove any fields not in the allowed list
+    const cleanedData: any = {};
+    Object.keys(data).forEach(key => {
+      if (allowedFields.includes(key) && data[key] !== undefined) {
+        cleanedData[key] = data[key];
+      } else if (!allowedFields.includes(key)) {
+        console.warn(`[Admin] Removing unauthorized field: ${key}`);
+      }
+    });
+    
+    // Replace data with cleaned data
+    data = cleanedData;
+    
+    console.log('[Admin] Form data after cleanup:', JSON.stringify(data, null, 2));
     
     try {
       const isUpdate = !!data.id;
