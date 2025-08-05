@@ -12,9 +12,6 @@
   SECRETS_SCAN_OMIT_PATHS = ".env.example"
 
 # Performance optimizations
-[[plugins]]
-  package = "@netlify/plugin-sitemap"
-
 # Temporarily disabled to fix build issues
 # [[plugins]]
 #   package = "netlify-plugin-checklinks"

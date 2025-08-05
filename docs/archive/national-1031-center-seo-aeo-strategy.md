@@ -1,14 +1,17 @@
 # The 1031 Center - SEO/AEO Domination Strategy
 
 ## Executive Summary
+
 Comprehensive site architecture and content strategy leveraging BRAIN framework to dominate both traditional search and AI engines for 1031 exchange services. This plan synthesizes competitive insights from IPX1031 and Exeter with advanced AEO optimization.
 
 ## 1. BRAIN Framework Implementation
 
 ### B - Brand Representation
+
 **Objective**: Establish The 1031 Center as THE authoritative voice across all platforms
 
 **Actions**:
+
 - Create unified brand messaging: "America's Most Trusted 1031 Exchange Partner"
 - Implement consistent NAP (Name, Address, Phone) across 50+ directories
 - Build presence on: Google Business Profile, LinkedIn Company Page, YouTube Channel
@@ -16,9 +19,11 @@ Comprehensive site architecture and content strategy leveraging BRAIN framework 
 - Design trust signals: BBB accreditation, industry certifications, client testimonials
 
 ### R - Relationships
+
 **Objective**: Build comprehensive entity relationships and knowledge graph connections
 
 **Actions**:
+
 - Schema markup implementation: Organization, LocalBusiness, Service, FAQPage
 - SameAs connections to all social profiles and industry associations
 - Entity relationships with: IRS, Treasury, FEA, major QI companies
@@ -26,9 +31,11 @@ Comprehensive site architecture and content strategy leveraging BRAIN framework 
 - Partnership content with CPAs, real estate attorneys, financial advisors
 
 ### A - Authority
+
 **Objective**: Establish unquestionable expertise in 1031 exchanges
 
 **Actions**:
+
 - Create 100+ pages of deep, expert content covering every exchange scenario
 - Develop proprietary tools: 1031 calculator, boot analyzer, timeline tracker
 - Publish original research: "State of 1031 Exchanges Report"
@@ -36,9 +43,11 @@ Comprehensive site architecture and content strategy leveraging BRAIN framework 
 - Case study library with real transaction examples
 
 ### I - Indexability
+
 **Objective**: Perfect technical optimization for both search engines and AI bots
 
 **Actions**:
+
 - Implement llm.txt file for AI crawler instructions
 - Advanced schema: HowTo, FAQ, FinancialService, ProfessionalService
 - Semantic HTML5 structure optimized for AI parsing
@@ -46,9 +55,11 @@ Comprehensive site architecture and content strategy leveraging BRAIN framework 
 - Core Web Vitals optimization (<2.5s LCP, <100ms FID)
 
 ### N - Nurturing
+
 **Objective**: Continuous improvement and content freshness
 
 **Actions**:
+
 - Weekly content updates based on new IRS rulings
 - Monthly performance reviews and optimizations
 - Quarterly content audits and refreshes
@@ -58,6 +69,7 @@ Comprehensive site architecture and content strategy leveraging BRAIN framework 
 ## 2. Site Architecture
 
 ### Primary Navigation Structure
+
 ```
 Home
 ├── 1031 Exchange Services
@@ -86,6 +98,7 @@ Home
 ### Content Depth Strategy
 
 #### Pillar Pages (3,000+ words each)
+
 1. "Complete Guide to 1031 Exchanges" - Ultimate resource
 2. "1031 Exchange Rules & Regulations" - IRS compliance focus
 3. "Types of 1031 Exchanges" - Comprehensive comparison
@@ -93,6 +106,7 @@ Home
 5. "Choosing a Qualified Intermediary" - Trust-building content
 
 #### Supporting Content Clusters
+
 - 50 location-specific pages: "[State] 1031 Exchange Services"
 - 20 property type pages: "1031 Exchange for [Property Type]"
 - 30 scenario pages: "How to Exchange [Scenario]"
@@ -102,6 +116,7 @@ Home
 ### AI-First Content Optimization
 
 #### Structured Data Implementation
+
 ```json
 {
   "@context": "https://schema.org",
@@ -127,6 +142,7 @@ Home
 ```
 
 #### LLM.txt Configuration
+
 ```
 # National 1031 Center - AI Crawler Instructions
 
@@ -153,6 +169,7 @@ Email: info@the1031center.com
 ## 3. Technical SEO Implementation
 
 ### Performance Optimization
+
 - Static site generation with Astro/Next.js
 - CDN deployment (Cloudflare/Fastly)
 - Image optimization with WebP/AVIF
@@ -160,12 +177,14 @@ Email: info@the1031center.com
 - Lazy loading for below-fold content
 
 ### Mobile Optimization
+
 - Responsive design with mobile-first approach
 - Touch-optimized CTAs
 - Accelerated Mobile Pages (AMP) for key content
 - Progressive Web App capabilities
 
 ### Security & Trust
+
 - SSL certificate with HSTS
 - Security headers implementation
 - Regular security audits
@@ -174,6 +193,7 @@ Email: info@the1031center.com
 ## 4. Content Creation Strategy
 
 ### Phase 1: Foundation (Weeks 1-4)
+
 - Build core service pages with deep content
 - Implement complete schema markup
 - Create 10 high-priority location pages
@@ -181,6 +201,7 @@ Email: info@the1031center.com
 - Set up analytics and tracking
 
 ### Phase 2: Authority Building (Weeks 5-8)
+
 - Develop 30 comprehensive guides
 - Create comparison content vs competitors
 - Build out FAQ section
@@ -188,6 +209,7 @@ Email: info@the1031center.com
 - Implement review collection system
 
 ### Phase 3: Scale & Optimize (Weeks 9-12)
+
 - Complete all 50 state pages
 - Add 20 property-specific pages
 - Create advanced tools and calculators
@@ -195,6 +217,7 @@ Email: info@the1031center.com
 - Launch email nurture campaigns
 
 ### Phase 4: AI Optimization (Ongoing)
+
 - Monitor AI engine visibility
 - Create AI-specific content formats
 - Build YouTube presence (180-day plan)
@@ -204,6 +227,7 @@ Email: info@the1031center.com
 ## 5. Link Building & Authority
 
 ### Tier 1 Targets
+
 - IRS.gov resource mentions
 - State tax authority citations
 - Real estate association partnerships
@@ -211,6 +235,7 @@ Email: info@the1031center.com
 - Financial advisor networks
 
 ### Tier 2 Targets
+
 - Real estate media coverage
 - Industry publication features
 - Podcast guest appearances
@@ -220,6 +245,7 @@ Email: info@the1031center.com
 ## 6. Conversion Optimization
 
 ### Trust Signals
+
 - Client testimonials with photos
 - Transaction volume counter
 - Security badges and certifications
@@ -227,6 +253,7 @@ Email: info@the1031center.com
 - Industry association memberships
 
 ### Conversion Elements
+
 - Floating "Start Your Exchange" CTA
 - Exit-intent offers
 - Live chat with 1031 experts
@@ -236,6 +263,7 @@ Email: info@the1031center.com
 ## 7. Measurement & KPIs
 
 ### Primary Metrics
+
 - Organic traffic growth (target: 300% in 6 months)
 - AI visibility score (target: 80%+ citation rate)
 - Conversion rate (target: 5-7% for qualified traffic)
@@ -243,6 +271,7 @@ Email: info@the1031center.com
 - Brand search volume (target: 500% increase)
 
 ### Monitoring Tools
+
 - Google Analytics 4 with enhanced ecommerce
 - Search Console with API integration
 - AI visibility tracking (custom solution)
@@ -252,6 +281,7 @@ Email: info@the1031center.com
 ## 8. Budget & Resources
 
 ### Month 1-3 Investment
+
 - Technical development: $25,000
 - Content creation: $15,000
 - Schema implementation: $5,000
@@ -259,6 +289,7 @@ Email: info@the1031center.com
 - Marketing/PR: $10,000
 
 ### Ongoing Monthly
+
 - Content updates: $5,000
 - Technical maintenance: $2,000
 - Link building: $3,000
@@ -266,6 +297,7 @@ Email: info@the1031center.com
 - Analytics/optimization: $2,000
 
 ## Implementation Team
+
 - SEO/AEO Orchestrator (lead)
 - Content Intelligence team
 - Technical SEO specialists
@@ -276,6 +308,7 @@ Email: info@the1031center.com
 ## 9. Competitive Advantages vs IPX1031 & Exeter
 
 ### Against IPX1031
+
 - More personalized service messaging
 - Faster site performance
 - Better mobile experience
@@ -283,6 +316,7 @@ Email: info@the1031center.com
 - More comprehensive educational content
 
 ### Against Exeter
+
 - Superior technical SEO implementation
 - Better schema markup coverage
 - More trust signals and social proof

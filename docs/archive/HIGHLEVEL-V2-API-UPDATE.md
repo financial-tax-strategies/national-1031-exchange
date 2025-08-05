@@ -20,5 +20,6 @@
 - Always verify API changes with working implementations before making sweeping changes
 
 ---
-*This document is kept for historical reference only*
-*Updated: January 2025*
+
+_This document is kept for historical reference only_
+_Updated: January 2025_

@@ -1,9 +1,12 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { COMPANY, getPhoneLink } from '../config/company';
+import { seoKeywords } from '../data/seo-keywords';
 ---
 
-<Layout title="America's Most Trusted 1031 Exchange Partner | National 1031 Center">
+<Layout 
+  title="America's Most Trusted 1031 Exchange Partner | National 1031 Center"
+  keywords={seoKeywords.homepage}>
   
   <!-- Hero Section -->
   <section class="relative bg-gradient-to-r from-blue-900 via-blue-800 to-blue-900 text-white overflow-hidden">

@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import { COMPANY, getPhoneLink } from '../config/company';
 import { createArticleSchema, createPersonSchema, createFAQPageSchema, generateJsonLdScript } from '../utils/schema-utils';
+import { seoKeywords } from '../data/seo-keywords';
 
 // Create author schema
 const authorSchema = createPersonSchema({
@@ -76,6 +77,7 @@ const faqSchema = createFAQPageSchema([
 <Layout 
   title="Complete Guide to 1031 Exchanges | Everything You Need to Know"
   description="Master 1031 exchanges with our comprehensive guide. Learn exchange types, deadlines, rules, tax benefits, and avoid common mistakes. Expert guidance from America's trusted QI."
+  keywords={seoKeywords.info.guide}
 >
   
   <!-- Hero Section with TOC -->

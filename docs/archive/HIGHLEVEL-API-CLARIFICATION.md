@@ -25,6 +25,7 @@ After extensive investigation and comparison with working implementations, we've
 ## What This Means
 
 ### Correct Implementation (Reverted)
+
 ```javascript
 // Correct base URL for Private Integration apps
 const baseUrl = 'https://services.leadconnectorhq.com';
@@ -33,42 +34,48 @@ const baseUrl = 'https://services.leadconnectorhq.com';
 const endpoints = {
   contacts: '/contacts/',
   appointments: '/appointments/',
-  calendars: '/calendars/{calendarId}/free-slots'
+  calendars: '/calendars/{calendarId}/free-slots',
 };
 
 // Correct headers
 const headers = {
-  'Authorization': `Bearer ${API_KEY}`,
+  Authorization: `Bearer ${API_KEY}`,
   'Content-Type': 'application/json',
-  'Version': '2021-07-28'  // This is an API version header, not "V2 API"
+  Version: '2021-07-28', // This is an API version header, not "V2 API"
 };
 ```
 
 ### Common Misconception
+
 The `Version: '2021-07-28'` header is often confused as indicating "V2 API", but it's actually just an API version header for the services.leadconnectorhq.com endpoint.
 
 ## Technical Details
 
 ### Authentication
+
 - Uses API Key with Bearer token
 - No OAuth2 required for Private Integration apps
 
 ### Date Formats
+
 Appointments use Unix timestamps in seconds:
+
 ```javascript
 const startTimestamp = Math.floor(startDate.getTime() / 1000);
 ```
 
 ### Custom Fields
+
 Custom fields use array format:
+
 ```javascript
-customFields: [
-  { key: 'field_key', value: 'field_value' }
-]
+customFields: [{ key: 'field_key', value: 'field_value' }];
 ```
 
 ## Environment Variables
+
 Required for Private Integration:
+
 - `PUBLIC_HIGHLEVEL_API_KEY`
 - `PUBLIC_HIGHLEVEL_LOCATION_ID`
 - `PUBLIC_HIGHLEVEL_CALENDAR_ID`
@@ -76,6 +83,7 @@ Required for Private Integration:
 ## Troubleshooting
 
 If the integration isn't working, check:
+
 1. **API Key Permissions** - Ensure the key has proper permissions
 2. **Location ID** - Verify it matches the subaccount
 3. **Calendar ID** - Confirm the calendar exists and is accessible
@@ -89,4 +97,5 @@ If the integration isn't working, check:
 - Contact HighLevel support for API-specific issues
 
 ---
-*Clarified: January 2025*
+
+_Clarified: January 2025_

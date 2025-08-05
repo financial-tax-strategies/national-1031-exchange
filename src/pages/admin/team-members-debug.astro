@@ -66,10 +66,11 @@ if (isSupabaseAdminConfigured() && isAuthenticated) {
   <main class="container mx-auto px-4 py-8">
     <div class="max-w-7xl mx-auto">
       <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-4">
-        <h2 class="text-lg font-bold text-yellow-800 mb-2">DEBUG MODE</h2>
-        <p class="text-yellow-700">This page includes extensive logging. Open browser console to see detailed information.</p>
+        <h2 class="text-lg font-bold text-yellow-800 mb-2">DEBUG MODE - Enhanced for Field Processing</h2>
+        <p class="text-yellow-700">This page includes extensive logging for debugging team member data processing. Open browser console (F12) to see detailed information.</p>
         <p class="text-yellow-700 mt-2">⏰ Page will wait 10 seconds before reloading after save/toggle to allow console inspection.</p>
         <p class="text-yellow-700 mt-2">💡 Tip: Hold SHIFT when clicking Save/Activate to prevent automatic reload.</p>
+        <p class="text-yellow-700 mt-2">🔍 This version includes all new fields and shows data transformation at each step.</p>
       </div>
       
       <div class="flex justify-between items-center mb-8">
@@ -309,14 +310,119 @@ if (isSupabaseAdminConfigured() && isAuthenticated) {
           />
         </div>
         
+        <!-- Education -->
         <div>
-          <label class="block text-sm font-medium text-gray-700">Social Media Links (comma-separated)</label>
-          <input 
-            type="text" 
-            name="same_as" 
-            placeholder="https://linkedin.com/in/username"
+          <label class="block text-sm font-medium text-gray-700">Education (one per line)</label>
+          <textarea 
+            name="alumni_of" 
+            rows="3"
+            placeholder="M.B.A., Finance, Harvard Business School&#10;B.S., Economics, Stanford University"
             class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-          />
+          ></textarea>
+        </div>
+        
+        <!-- Social Media Links -->
+        <div class="space-y-4">
+          <h4 class="font-medium text-gray-700">Social Media Links</h4>
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700">LinkedIn</label>
+              <input 
+                type="url" 
+                name="linkedin_url" 
+                placeholder="https://linkedin.com/in/username"
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Facebook</label>
+              <input 
+                type="url" 
+                name="facebook_url" 
+                placeholder="https://facebook.com/username"
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">X (Twitter)</label>
+              <input 
+                type="url" 
+                name="twitter_url" 
+                placeholder="https://x.com/username"
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Instagram</label>
+              <input 
+                type="url" 
+                name="instagram_url" 
+                placeholder="https://instagram.com/username"
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+              />
+            </div>
+          </div>
+        </div>
+        
+        <!-- Address -->
+        <div class="space-y-4">
+          <h4 class="font-medium text-gray-700">Address</h4>
+          <div class="grid grid-cols-2 gap-4">
+            <div class="col-span-2">
+              <label class="block text-sm font-medium text-gray-700">Street Address</label>
+              <input 
+                type="text" 
+                name="street_address" 
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">City</label>
+              <input 
+                type="text" 
+                name="city" 
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">State</label>
+              <input 
+                type="text" 
+                name="state" 
+                maxlength="2"
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Postal Code</label>
+              <input 
+                type="text" 
+                name="postal_code" 
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+              />
+            </div>
+          </div>
+        </div>
+        
+        <!-- Additional Fields -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Certifications (one per line)</label>
+          <textarea 
+            name="certifications" 
+            rows="3"
+            placeholder="Certified Exchange Specialist (CES)&#10;Real Estate License (CA, FL, TX)"
+            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+          ></textarea>
+        </div>
+        
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Awards (one per line)</label>
+          <textarea 
+            name="awards" 
+            rows="3"
+            placeholder="Excellence in Operations Award (2023)&#10;Innovation in Exchange Services (2022)"
+            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+          ></textarea>
         </div>
         
         <div class="flex items-center">
@@ -410,8 +516,29 @@ if (isSupabaseAdminConfigured() && isAuthenticated) {
       (form.elements.namedItem('years_experience') as HTMLInputElement).value = member.years_experience || '';
       (form.elements.namedItem('display_order') as HTMLInputElement).value = member.display_order || '0';
       (form.elements.namedItem('knows_about') as HTMLInputElement).value = member.knows_about?.join(', ') || '';
-      (form.elements.namedItem('same_as') as HTMLInputElement).value = member.same_as?.join(', ') || '';
       (form.elements.namedItem('is_active') as HTMLInputElement).checked = member.is_active;
+      
+      // Populate education
+      (form.elements.namedItem('alumni_of') as HTMLTextAreaElement).value = member.alumni_of?.join('\n') || '';
+      
+      // Populate social media URLs
+      const socialUrls = member.same_as || [];
+      (form.elements.namedItem('linkedin_url') as HTMLInputElement).value = socialUrls.find(url => url.includes('linkedin.com')) || '';
+      (form.elements.namedItem('facebook_url') as HTMLInputElement).value = socialUrls.find(url => url.includes('facebook.com')) || '';
+      (form.elements.namedItem('twitter_url') as HTMLInputElement).value = socialUrls.find(url => url.includes('twitter.com') || url.includes('x.com')) || '';
+      (form.elements.namedItem('instagram_url') as HTMLInputElement).value = socialUrls.find(url => url.includes('instagram.com')) || '';
+      
+      // Populate address
+      if (member.address) {
+        (form.elements.namedItem('street_address') as HTMLInputElement).value = member.address.streetAddress || '';
+        (form.elements.namedItem('city') as HTMLInputElement).value = member.address.addressLocality || '';
+        (form.elements.namedItem('state') as HTMLInputElement).value = member.address.addressRegion || '';
+        (form.elements.namedItem('postal_code') as HTMLInputElement).value = member.address.postalCode || '';
+      }
+      
+      // Populate additional fields
+      (form.elements.namedItem('certifications') as HTMLTextAreaElement).value = member.certifications?.join('\n') || '';
+      (form.elements.namedItem('awards') as HTMLTextAreaElement).value = member.awards?.join('\n') || '';
       
       modal?.classList.remove('hidden');
     });
@@ -433,12 +560,13 @@ if (isSupabaseAdminConfigured() && isAuthenticated) {
     }
     
     const formData = new FormData(form);
-    const data: any = Object.fromEntries(formData);
+    let data: any = Object.fromEntries(formData);
     
-    console.log('[DEBUG] Raw form data:', data);
+    console.log('[DEBUG] Step 1 - Raw form data:', JSON.stringify(data, null, 2));
     
     // Convert checkbox
     data.is_active = formData.has('is_active');
+    console.log('[DEBUG] Step 2 - After checkbox conversion:', { is_active: data.is_active });
     
     // Convert arrays - ensure they're arrays or null (not empty arrays)
     if (data.knows_about && data.knows_about.trim()) {
@@ -447,13 +575,11 @@ if (isSupabaseAdminConfigured() && isAuthenticated) {
     } else {
       data.knows_about = null;
     }
+    console.log('[DEBUG] Step 3 - After knows_about processing:', { knows_about: data.knows_about });
     
-    if (data.same_as && data.same_as.trim()) {
-      data.same_as = data.same_as.split(',').map((s: string) => s.trim()).filter(Boolean);
-      if (data.same_as.length === 0) data.same_as = null;
-    } else {
-      data.same_as = null;
-    }
+    // Note: same_as will be handled later when we collect individual social media URLs
+    delete data.same_as; // Remove the text field value to avoid conflicts
+    console.log('[DEBUG] Step 4 - Removed same_as field');
     
     // Convert numbers - ensure they're numbers or null, never NaN
     if (data.years_experience && data.years_experience.trim()) {
@@ -493,6 +619,106 @@ if (isSupabaseAdminConfigured() && isAuthenticated) {
       data.slug = data.slug.trim();
     }
     
+    // Format alumni_of (education) from textarea to array
+    const alumniOfText = data.alumni_of?.trim();
+    if (alumniOfText) {
+      data.alumni_of = alumniOfText.split('\n').filter((line: string) => line.trim());
+    } else {
+      data.alumni_of = null;
+    }
+    console.log('[DEBUG] Step 6 - After alumni_of processing:', { alumni_of: data.alumni_of });
+    
+    // Collect and format social media URLs into same_as array
+    console.log('[DEBUG] Step 7a - Social media URLs before processing:', {
+      linkedin_url: data.linkedin_url,
+      facebook_url: data.facebook_url,
+      twitter_url: data.twitter_url,
+      instagram_url: data.instagram_url
+    });
+    
+    const socialUrls = [];
+    const socialFields = ['linkedin_url', 'facebook_url', 'twitter_url', 'instagram_url'];
+    
+    socialFields.forEach(field => {
+      const url = data[field]?.trim();
+      if (url) {
+        socialUrls.push(url);
+      }
+    });
+    
+    // Set same_as only if we have social URLs
+    if (socialUrls.length > 0) {
+      data.same_as = socialUrls;
+    } else {
+      data.same_as = null;
+    }
+    console.log('[DEBUG] Step 7b - After social media processing:', { same_as: data.same_as });
+    
+    // Remove individual social media fields from data after processing
+    socialFields.forEach(field => {
+      delete data[field];
+    });
+    console.log('[DEBUG] Step 7c - Removed individual social media fields');
+    
+    // Format address as JSONB
+    console.log('[DEBUG] Step 8a - Address fields before processing:', {
+      street_address: data.street_address,
+      city: data.city,
+      state: data.state,
+      postal_code: data.postal_code
+    });
+    
+    const addressFields = {
+      street_address: data.street_address?.trim(),
+      city: data.city?.trim(),
+      state: data.state?.trim(),
+      postal_code: data.postal_code?.trim()
+    };
+    
+    const hasAddress = Object.values(addressFields).some(val => val);
+    if (hasAddress) {
+      data.address = {
+        '@type': 'PostalAddress',
+        streetAddress: addressFields.street_address || undefined,
+        addressLocality: addressFields.city || undefined,
+        addressRegion: addressFields.state || undefined,
+        postalCode: addressFields.postal_code || undefined,
+        addressCountry: 'US'
+      };
+      // Remove undefined values from address
+      Object.keys(data.address).forEach(key => {
+        if (data.address[key] === undefined) {
+          delete data.address[key];
+        }
+      });
+    } else {
+      data.address = null;
+    }
+    console.log('[DEBUG] Step 8b - After address processing:', { address: data.address });
+    
+    // Remove individual address fields from data - ensure they're deleted
+    const addressFieldsToRemove = ['street_address', 'city', 'state', 'postal_code'];
+    addressFieldsToRemove.forEach(field => {
+      if (field in data) {
+        delete data[field];
+      }
+    });
+    console.log('[DEBUG] Step 8c - Removed individual address fields');
+    
+    // Format other array fields from textareas
+    ['certifications', 'awards'].forEach(field => {
+      const value = data[field]?.trim();
+      if (value) {
+        data[field] = value.split('\n').filter((line: string) => line.trim());
+      } else {
+        data[field] = null;
+      }
+    });
+    console.log('[DEBUG] Step 9 - After array fields processing:', {
+      certifications: data.certifications,
+      awards: data.awards
+    });
+    
     // Clean up empty strings - convert to null (except required fields)
     const requiredFields = ['name', 'slug', 'display_order', 'is_active'];
     Object.keys(data).forEach(key => {
@@ -500,8 +726,36 @@ if (isSupabaseAdminConfigured() && isAuthenticated) {
         data[key] = null;
       }
     });
+    console.log('[DEBUG] Step 10 - After empty string cleanup');
     
-    console.log('[DEBUG] Processed form data:', JSON.stringify(data, null, 2));
+    // Define allowed fields based on database schema
+    const allowedFields = [
+      'id', 'name', 'slug', 'job_title', 'works_for', 'url', 'image', 
+      'description', 'birth_date', 'nationality', 'address', 'telephone', 
+      'email', 'same_as', 'knows_about', 'alumni_of', 'honorific_prefix', 
+      'honorific_suffix', 'job_title_details', 'awards', 'publications', 
+      'certifications', 'languages_spoken', 'years_experience', 
+      'specializations', 'display_order', 'is_active'
+    ];
+    
+    console.log('[DEBUG] Step 11a - Data keys before filtering:', Object.keys(data));
+    console.log('[DEBUG] Step 11b - Allowed fields:', allowedFields);
+    
+    // Remove any fields not in the allowed list
+    const cleanedData: any = {};
+    Object.keys(data).forEach(key => {
+      if (allowedFields.includes(key) && data[key] !== undefined) {
+        cleanedData[key] = data[key];
+      } else if (!allowedFields.includes(key)) {
+        console.warn(`[DEBUG] Step 11c - Removing unauthorized field: ${key}`);
+      }
+    });
+    
+    // Replace data with cleaned data
+    data = cleanedData;
+    
+    console.log('[DEBUG] Step 12 - FINAL processed form data:', JSON.stringify(data, null, 2));
+    console.log('[DEBUG] Step 12a - Data keys after filtering:', Object.keys(data));
     
     try {
       const isUpdate = !!data.id;

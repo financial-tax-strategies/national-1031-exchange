@@ -2,6 +2,16 @@
 export async function GET() {
   const baseUrl = 'https://the1031center.com';
   
+  // Pages to exclude from sitemap
+  const excludedPaths = [
+    '/admin',
+    '/thank-you',
+    '/404',
+    '/_netlify',
+    '/api',
+    '/login'
+  ];
+  
   // Define all static pages
   const staticPages = [
     // High priority pages
@@ -48,6 +58,7 @@ export async function GET() {
     // Legal pages
     { url: '/privacy', priority: '0.3', changefreq: 'yearly' },
     { url: '/terms', priority: '0.3', changefreq: 'yearly' },
+    { url: '/disclaimer', priority: '0.3', changefreq: 'yearly' },
   ];
 
   // Define dynamic property type pages
@@ -107,10 +118,18 @@ export async function GET() {
     ...competitorPages
   ];
   
+  // Filter out excluded pages
+  const filteredPages = pages.filter(page => {
+    return !excludedPaths.some(excluded => 
+      page.url.startsWith(excluded) || 
+      page.url === excluded
+    );
+  });
+  
   // Generate XML sitemap
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${pages.map(page => `  <url>
+${filteredPages.map(page => `  <url>
     <loc>${baseUrl}${page.url}</loc>
     <lastmod>${new Date().toISOString()}</lastmod>
     <changefreq>${page.changefreq}</changefreq>

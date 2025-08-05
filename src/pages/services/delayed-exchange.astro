@@ -2,11 +2,13 @@
 import Layout from '../../layouts/Layout.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import { COMPANY, getPhoneLink } from '../../config/company';
+import { seoKeywords } from '../../data/seo-keywords';
 ---
 
 <Layout 
   title="Delayed 1031 Exchange Services | Forward Exchange Experts"
   description="Master the standard delayed 1031 exchange with expert guidance. 45-day identification, 180-day completion. Save thousands in taxes with America's trusted QI."
+  keywords={seoKeywords.services.delayed}
 >
   
   <!-- Hero Section -->

@@ -1,11 +1,13 @@
 # 🚨 Immediate Calendar Fix Instructions
 
 ## What's Wrong
+
 Your booking calendar is spinning because it's missing the required environment variables with the correct prefixes.
 
 ## Quick Fix for Local Development
 
 ### 1. Get Your HighLevel Calendar ID
+
 1. Log into HighLevel
 2. Navigate to Calendars
 3. Click on your calendar
@@ -13,6 +15,7 @@ Your booking calendar is spinning because it's missing the required environment 
 5. Copy the ID part: `ABC123XYZ`
 
 ### 2. Get Your Supabase Credentials
+
 1. Go to [Supabase Dashboard](https://app.supabase.com)
 2. Select your project (or create one if needed)
 3. Go to Settings → API
@@ -21,6 +24,7 @@ Your booking calendar is spinning because it's missing the required environment 
    - **anon public key** (starts with `eyJ...`)
 
 ### 3. Update Your .env File
+
 Open your `.env` file and update these values:
 
 ```env
@@ -46,6 +50,7 @@ SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 ```
 
 ### 4. Restart Your Dev Server
+
 ```bash
 # Stop the server (Ctrl+C) and restart
 npm run dev
@@ -65,11 +70,12 @@ See [Netlify Deployment Guide](./docs/NETLIFY_DEPLOYMENT.md) for detailed instru
 ## Still Having Issues?
 
 Check the browser console for specific error messages. Common issues:
+
 - Missing PUBLIC_HIGHLEVEL_CALENDAR_ID - get from HighLevel
 - Missing PUBLIC_HIGHLEVEL_API_KEY or PUBLIC_HIGHLEVEL_LOCATION_ID
 - Missing Supabase credentials - create a project at supabase.com
-- Wrong variable names (missing PUBLIC_ prefix for client-side variables)
+- Wrong variable names (missing PUBLIC\_ prefix for client-side variables)
 
 ---
 
-*Remember: Your .env file contains secrets - keep it local only!*
+_Remember: Your .env file contains secrets - keep it local only!_

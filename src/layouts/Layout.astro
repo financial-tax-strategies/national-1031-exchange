@@ -9,6 +9,7 @@ import { COMPANY } from '../config/company';
 export interface Props {
   title: string;
   description?: string;
+  keywords?: string;
   image?: string;
   canonical?: string;
   noindex?: boolean;
@@ -17,6 +18,7 @@ export interface Props {
 const { 
   title, 
   description = "America's most trusted 1031 exchange qualified intermediary. Defer capital gains taxes with our expert guidance and industry-leading security.",
+  keywords = "1031 exchange, tax deferred exchange, qualified intermediary, capital gains tax deferral, like-kind exchange, 1031 exchange services, property exchange",
   image = "/images/og-image.jpg",
   canonical,
   noindex = false 
@@ -39,6 +41,7 @@ const canonicalURL = canonical || new URL(Astro.url.pathname, site);
     <!-- SEO Meta Tags -->
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
+    <meta name="keywords" content={keywords} />
     <link rel="canonical" href={canonicalURL} />
     {noindex && <meta name="robots" content="noindex, nofollow" />}
     
