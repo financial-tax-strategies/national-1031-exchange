@@ -766,7 +766,7 @@ if (isSupabaseAdminConfigured() && isAuthenticated) {
     e.preventDefault();
     
     const formData = new FormData(form);
-    const data: any = Object.fromEntries(formData);
+    let data: any = Object.fromEntries(formData);
     
     // Convert checkbox
     data.is_active = formData.has('is_active');
