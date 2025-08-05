@@ -1,8 +1,20 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import BreadcrumbSchema from '../../components/BreadcrumbSchema.astro';
 import { COMPANY, getPhoneLink } from '../../config/company';
 import { seoKeywords } from '../../data/seo-keywords';
+import { createServiceSchema, generateJsonLdScript } from '../../utils/schema-utils';
+
+// Create Service schema for delayed exchange
+const serviceSchema = createServiceSchema({
+  name: 'Delayed 1031 Exchange Services',
+  description: 'Professional facilitation of delayed (forward) 1031 exchanges. Defer capital gains taxes by selling your investment property first, then purchasing replacement property within 180 days. Includes secure funds handling, documentation preparation, and IRS compliance.',
+  serviceType: 'Tax-Deferred Exchange',
+  category: 'Financial Services',
+  areaServed: 'United States',
+  serviceUrl: 'https://the1031center.com/services/delayed-exchange'
+});
 ---
 
 <Layout 
@@ -522,52 +534,12 @@ import { seoKeywords } from '../../data/seo-keywords';
   </section>
   
   <!-- Schema Markup -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Service",
-    "name": "Delayed 1031 Exchange",
-    "alternateName": "Forward Exchange",
-    "description": "Standard 1031 exchange service allowing investors to sell investment property first, then purchase replacement property within 180 days while deferring capital gains taxes.",
-    "provider": {
-      "@type": "Organization",
-      "name": "National 1031 Center",
-      "@id": "https://the1031center.com/#organization"
-    },
-    "areaServed": {
-      "@type": "Country",
-      "name": "United States"
-    },
-    "hasOfferCatalog": {
-      "@type": "OfferCatalog",
-      "name": "1031 Exchange Services",
-      "itemListElement": [
-        {
-          "@type": "Offer",
-          "itemOffered": {
-            "@type": "Service",
-            "name": "45-Day Property Identification",
-            "description": "Expert guidance on identifying replacement properties within IRS deadline"
-          }
-        },
-        {
-          "@type": "Offer",
-          "itemOffered": {
-            "@type": "Service",
-            "name": "Secure Fund Holding",
-            "description": "Bonded & insured, segregated account management"
-          }
-        },
-        {
-          "@type": "Offer",
-          "itemOffered": {
-            "@type": "Service",
-            "name": "Exchange Documentation",
-            "description": "Complete IRS-compliant documentation and Form 8824 preparation"
-          }
-        }
-      ]
-    }
-  }
-  </script>
+  <BreadcrumbSchema 
+    items={[
+      { name: 'Home', url: '/' },
+      { name: 'Services', url: '/types-of-1031-exchanges' },
+      { name: 'Delayed Exchange' }
+    ]}
+  />
+  <script type="application/ld+json" set:html={generateJsonLdScript(serviceSchema)} />
 </Layout>

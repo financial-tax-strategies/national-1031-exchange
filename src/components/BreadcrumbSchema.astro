@@ -1,0 +1,30 @@
+---
+import { generateJsonLdScript } from '../utils/schema-utils';
+
+export interface BreadcrumbItem {
+  name: string;
+  url?: string;
+}
+
+export interface Props {
+  items: BreadcrumbItem[];
+}
+
+const { items } = Astro.props;
+
+// Generate BreadcrumbList schema
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": items.map((item, index) => ({
+    "@type": "ListItem",
+    "position": index + 1,
+    "name": item.name,
+    ...(item.url && {
+      "item": item.url.startsWith('http') ? item.url : `https://the1031center.com${item.url}`
+    })
+  }))
+};
+---
+
+<script type="application/ld+json" set:html={generateJsonLdScript(breadcrumbSchema)} />
