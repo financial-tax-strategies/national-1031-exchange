@@ -24,7 +24,7 @@ jobs:
     if: github.ref != 'refs/heads/main' || (github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'staging')
     environment:
       name: staging
-      url: https://staging.national1031exchange.com
+      url: https://staging.the1031center.com
 
     steps:
       - name: Checkout code
@@ -73,7 +73,7 @@ jobs:
     if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'production'))
     environment:
       name: production
-      url: https://national1031exchange.com
+      url: https://the1031center.com
 
     steps:
       - name: Checkout code
@@ -129,7 +129,7 @@ jobs:
             Commit: ${{ github.sha }}
             Author: ${{ github.actor }}
 
-            [View deployment](https://national1031exchange.com)
+            [View deployment](https://the1031center.com)
           draft: false
           prerelease: false
 
