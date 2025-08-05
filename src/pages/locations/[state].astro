@@ -3,6 +3,9 @@ import Layout from '../../layouts/Layout.astro';
 import { COMPANY, getPhoneLink } from '../../config/company';
 import { generateJsonLdScript, wrapInWebPageSchema } from '../../utils/schema-utils';
 
+// Prerender these pages at build time even though the site uses SSR
+export const prerender = true;
+
 export async function getStaticPaths() {
   const states = [
     { slug: 'alabama', name: 'Alabama', abbr: 'AL', capital: 'Montgomery', topCities: ['Birmingham', 'Huntsville', 'Mobile', 'Montgomery'] },
