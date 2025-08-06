@@ -1,32 +1,68 @@
+# Dependabot configuration for automated dependency updates
+# Created: August 06, 2025
+# Purpose: Manage dependency updates with controlled frequency and scope
+
 version: 2
 updates:
-  # Enable version updates for npm
-  - package-ecosystem: "npm"
-    directory: "/"
+  # JavaScript dependencies
+  - package-ecosystem: 'npm'
+    directory: '/'
     schedule:
-      interval: "weekly"
-      day: "monday"
-      time: "09:00"
-    open-pull-requests-limit: 10
-    reviewers:
-      - "matthewdnye"
-    labels:
-      - "dependencies"
-      - "npm"
-    commit-message:
-      prefix: "chore"
-      include: "scope"
-    
-  # Enable security updates for GitHub Actions
-  - package-ecosystem: "github-actions"
-    directory: "/"
-    schedule:
-      interval: "weekly"
+      interval: 'monthly' # Check for updates monthly instead of weekly
+      day: 'monday'
+      time: '04:00'
+      timezone: 'America/Los_Angeles'
+
+    # Limit number of open PRs
     open-pull-requests-limit: 5
-    reviewers:
-      - "matthewdnye"
+
+    # Group updates to reduce PR noise
+    groups:
+      # Group all patch and minor updates together
+      non-breaking:
+        patterns:
+          - '*'
+        update-types:
+          - 'minor'
+          - 'patch'
+
+    # Ignore major version updates for critical packages
+    ignore:
+      # Testing frameworks - major versions often have breaking changes
+      - dependency-name: 'vitest'
+        update-types: ['version-update:semver-major']
+      - dependency-name: '@vitest/*'
+        update-types: ['version-update:semver-major']
+      - dependency-name: 'jsdom'
+        update-types: ['version-update:semver-major']
+      - dependency-name: 'happy-dom'
+        update-types: ['version-update:semver-major']
+
+      # Schema validation - v4 has breaking changes
+      - dependency-name: 'zod'
+        update-types: ['version-update:semver-major']
+
+      # Core framework - review major updates manually
+      - dependency-name: 'astro'
+        update-types: ['version-update:semver-major']
+
+    # Labels for organization
     labels:
-      - "dependencies"
-      - "github-actions"
+      - 'dependencies'
+      - 'automated'
+
+    # Commit message customization
     commit-message:
-      prefix: "ci"
+      prefix: 'deps'
+      include: 'scope'
+
+  # GitHub Actions
+  - package-ecosystem: 'github-actions'
+    directory: '/'
+    schedule:
+      interval: 'monthly'
+    labels:
+      - 'dependencies'
+      - 'github-actions'
+    commit-message:
+      prefix: 'ci'
