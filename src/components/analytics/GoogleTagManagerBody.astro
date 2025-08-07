@@ -14,47 +14,27 @@ const isProduction = import.meta.env.PROD ||
                      isNetlifyProduction;
 
 // Try to load GTM ID from database configuration
-console.log('[GTM-Body] Starting GTM Body configuration load...');
-console.log('[GTM-Body] isSupabaseConfigured:', isSupabaseConfigured());
-console.log('[GTM-Body] Initial GTM_ID from env:', GTM_ID);
-
 if (isSupabaseConfigured()) {
   try {
-    const { data, error } = await supabase
+    const { data } = await supabase
       .from('seo_config')
       .select('analytics')
       .eq('tenant_id', 'default')
       .single();
     
-    console.log('[GTM-Body] Database query result:', { data, error });
-    
-    if (error) {
-      console.error('[GTM-Body] Database query error:', error);
-    } else if (data) {
-      console.log('[GTM-Body] Database data.analytics:', data.analytics);
-      if (data.analytics && data.analytics.gtm_id) {
-        GTM_ID = data.analytics.gtm_id;
-        console.log('[GTM-Body] Updated GTM_ID from database:', GTM_ID);
-      } else {
-        console.log('[GTM-Body] No gtm_id found in database analytics data');
-      }
-    } else {
-      console.log('[GTM-Body] No data returned from database');
+    if (data && data.analytics && data.analytics.gtm_id) {
+      GTM_ID = data.analytics.gtm_id;
     }
   } catch (error) {
-    console.error('[GTM-Body] Exception loading GTM configuration:', error);
+    // Silently fall back to environment variable
   }
 }
 
 // Only use GTM if we have a valid ID
-console.log('[GTM-Body] Final GTM_ID:', GTM_ID);
 const hasValidGTM = GTM_ID && GTM_ID !== 'GTM-XXXXXXX' && GTM_ID !== '' && GTM_ID !== undefined;
-console.log('[GTM-Body] hasValidGTM:', hasValidGTM);
 
-// TEMPORARY FIX: Always load GTM if we have a valid ID
-// Netlify SSR is not setting environment variables correctly
+// Always load GTM if we have a valid ID (SSR mode)
 const shouldLoadGTM = hasValidGTM;
-console.log('[GTM-Body] shouldLoadGTM:', shouldLoadGTM);
 ---
 
 {shouldLoadGTM && (

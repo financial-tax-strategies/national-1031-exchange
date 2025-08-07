@@ -4,6 +4,9 @@
 // falling back to environment variables if not configured
 import { supabase, isSupabaseConfigured } from '../../lib/supabase';
 
+// IMPORTANT: This component should only run server-side
+// Client-side hydration can cause duplicate script loading
+
 let GTM_ID = import.meta.env.PUBLIC_GTM_ID;
 
 // Fix for Netlify SSR - check multiple production indicators
@@ -15,47 +18,28 @@ const isProduction = import.meta.env.PROD ||
                      isNetlifyProduction;
 
 // Try to load GTM ID from database configuration
-console.log('[GTM] Starting GTM configuration load...');
-console.log('[GTM] isSupabaseConfigured:', isSupabaseConfigured());
-console.log('[GTM] Initial GTM_ID from env:', GTM_ID);
-
 if (isSupabaseConfigured()) {
   try {
-    const { data, error } = await supabase
+    const { data } = await supabase
       .from('seo_config')
       .select('analytics')
       .eq('tenant_id', 'default')
       .single();
     
-    console.log('[GTM] Database query result:', { data, error });
-    
-    if (error) {
-      console.error('[GTM] Database query error:', error);
-    } else if (data) {
-      console.log('[GTM] Database data.analytics:', data.analytics);
-      if (data.analytics && data.analytics.gtm_id) {
-        GTM_ID = data.analytics.gtm_id;
-        console.log('[GTM] Updated GTM_ID from database:', GTM_ID);
-      } else {
-        console.log('[GTM] No gtm_id found in database analytics data');
-      }
-    } else {
-      console.log('[GTM] No data returned from database');
+    if (data && data.analytics && data.analytics.gtm_id) {
+      GTM_ID = data.analytics.gtm_id;
     }
   } catch (error) {
-    console.error('[GTM] Exception loading GTM configuration:', error);
+    // Silently fall back to environment variable
+    console.error('Failed to load GTM configuration from database:', error);
   }
 }
 
 // Only use GTM if we have a valid ID
-console.log('[GTM] Final GTM_ID:', GTM_ID);
 const hasValidGTM = GTM_ID && GTM_ID !== 'GTM-XXXXXXX' && GTM_ID !== '' && GTM_ID !== undefined;
-console.log('[GTM] hasValidGTM:', hasValidGTM);
 
-// TEMPORARY FIX: Always load GTM if we have a valid ID
-// Netlify SSR is not setting environment variables correctly
+// Always load GTM if we have a valid ID (SSR mode)
 const shouldLoadGTM = hasValidGTM;
-console.log('[GTM] shouldLoadGTM:', shouldLoadGTM);
 ---
 
 {shouldLoadGTM && (
@@ -128,15 +112,4 @@ console.log('[GTM] shouldLoadGTM:', shouldLoadGTM);
   </>
 )}
 
-{!shouldLoadGTM && (
-  <script>
-    // Development mode - log GTM events to console
-    console.log('Google Tag Manager: Development mode - events will be logged to console.');
-    
-    window.pushDataLayer = (data) => console.log('GTM DataLayer:', data);
-    window.trackHighLevelEvent = (event, data) => console.log('GTM HighLevel Event:', event, data);
-    window.trackLeadValue = (source, value) => console.log('GTM Lead Value:', { source, value });
-    window.trackCalculatorStep = (step, data) => console.log('GTM Calculator Step:', step, data);
-    window.trackFormInteraction = (action, formId, field) => console.log('GTM Form:', { action, formId, field });
-  </script>
-)}
+<!-- Development mode scripts removed to prevent SSR hydration issues -->
