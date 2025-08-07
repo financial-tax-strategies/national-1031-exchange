@@ -27,9 +27,13 @@ if (isSupabaseConfigured()) {
 
 // Only use GA if we have a valid measurement ID
 const hasValidGA = GA_MEASUREMENT_ID && GA_MEASUREMENT_ID !== 'G-XXXXXXXXXX';
+
+// TEMPORARY FIX: Always load GA if we have a valid ID
+// Netlify SSR is not setting environment variables correctly
+const shouldLoadGA = hasValidGA;
 ---
 
-{isProduction && hasValidGA && (
+{shouldLoadGA && (
   <>
     <!-- Google Analytics 4 -->
     <script async src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}></script>
@@ -162,7 +166,7 @@ const hasValidGA = GA_MEASUREMENT_ID && GA_MEASUREMENT_ID !== 'G-XXXXXXXXXX';
   </>
 )}
 
-{!isProduction && (
+{!shouldLoadGA && (
   <script>
     // Development mode - log events to console instead
     console.log('Google Analytics: Development mode - events will be logged to console');

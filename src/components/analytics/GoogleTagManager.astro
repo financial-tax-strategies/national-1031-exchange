@@ -110,10 +110,10 @@ const shouldLoadGTM = hasValidGTM;
   </>
 )}
 
-{!shouldLoadGTM && !isProduction && (
+{!shouldLoadGTM && (
   <script>
     // Development mode - log GTM events to console
-    console.log('Google Tag Manager: Development mode - events will be logged to console. Set PUBLIC_ENABLE_GTM_DEV=true to enable actual GTM.');
+    console.log('Google Tag Manager: Development mode - events will be logged to console.');
     
     window.pushDataLayer = (data) => console.log('GTM DataLayer:', data);
     window.trackHighLevelEvent = (event, data) => console.log('GTM HighLevel Event:', event, data);
