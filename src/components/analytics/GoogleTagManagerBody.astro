@@ -6,10 +6,12 @@ import { supabase, isSupabaseConfigured } from '../../lib/supabase';
 let GTM_ID = import.meta.env.PUBLIC_GTM_ID;
 
 // Fix for Netlify SSR - check multiple production indicators
+// Netlify sets CONTEXT='production' for production deploys
+const isNetlifyProduction = process.env.CONTEXT === 'production' || process.env.NETLIFY === 'true';
 const isProduction = import.meta.env.PROD || 
                      import.meta.env.MODE === 'production' ||
                      process.env.NODE_ENV === 'production' ||
-                     (typeof window !== 'undefined' && window.location.hostname === 'the1031center.com');
+                     isNetlifyProduction;
 
 // Try to load GTM ID from database configuration
 if (isSupabaseConfigured()) {
