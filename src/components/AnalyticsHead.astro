@@ -1,0 +1,113 @@
+---
+// Component to inject analytics and tracking pixels into the head of pages
+// This loads the SEO configuration and adds the appropriate tracking scripts
+
+import { supabase, isSupabaseConfigured } from '../lib/supabase';
+
+let analyticsConfig = {};
+
+// Try to load analytics configuration from database
+if (isSupabaseConfigured()) {
+  try {
+    const { data } = await supabase
+      .from('seo_config')
+      .select('analytics')
+      .eq('tenant_id', 'default')
+      .single();
+    
+    if (data && data.analytics) {
+      analyticsConfig = data.analytics;
+    }
+  } catch (error) {
+    // Silently fail if table doesn't exist or there's an error
+    console.error('Failed to load analytics configuration:', error);
+  }
+}
+---
+
+<!-- Note: Google Analytics 4 and Google Tag Manager are handled by separate components -->
+<!-- This component handles the other pixel types that aren't covered by GA/GTM -->
+
+<!-- Facebook Pixel -->
+{analyticsConfig.fb_pixel_id && (
+  <>
+    <script define:vars={{ fbPixelId: analyticsConfig.fb_pixel_id }}>
+      !function(f,b,e,v,n,t,s)
+      {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+      n.queue=[];t=b.createElement(e);t.async=!0;
+      t.src=v;s=b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t,s)}(window, document,'script',
+      'https://connect.facebook.net/en_US/fbevents.js');
+      fbq('init', fbPixelId);
+      fbq('track', 'PageView');
+    </script>
+    <noscript>
+      <img height="1" width="1" style="display:none"
+        src={`https://www.facebook.com/tr?id=${analyticsConfig.fb_pixel_id}&ev=PageView&noscript=1`}
+      />
+    </noscript>
+  </>
+)}
+
+<!-- LinkedIn Insight Tag -->
+{analyticsConfig.linkedin_id && (
+  <>
+    <script define:vars={{ linkedInId: analyticsConfig.linkedin_id }}>
+      _linkedin_partner_id = linkedInId;
+      window._linkedin_data_partner_ids = window._linkedin_data_partner_ids || [];
+      window._linkedin_data_partner_ids.push(_linkedin_partner_id);
+    </script>
+    <script>
+      (function(l) {
+      if (!l){window.lintrk = function(a,b){window.lintrk.q.push([a,b])};
+      window.lintrk.q=[]}
+      var s = document.getElementsByTagName("script")[0];
+      var b = document.createElement("script");
+      b.type = "text/javascript";b.async = true;
+      b.src = "https://snap.licdn.com/li.lms-analytics/insight.min.js";
+      s.parentNode.insertBefore(b, s);})(window.lintrk);
+    </script>
+    <noscript>
+      <img height="1" width="1" style="display:none;" alt=""
+        src={`https://px.ads.linkedin.com/collect/?pid=${analyticsConfig.linkedin_id}&fmt=gif`}
+      />
+    </noscript>
+  </>
+)}
+
+<!-- Twitter Pixel -->
+{analyticsConfig.twitter_pixel_id && (
+  <script define:vars={{ twitterPixelId: analyticsConfig.twitter_pixel_id }}>
+    !function(e,t,n,s,u,a){e.twq||(s=e.twq=function(){s.exe?s.exe.apply(s,arguments):s.queue.push(arguments);
+    },s.version='1.1',s.queue=[],u=t.createElement(n),u.async=!0,u.src='https://static.ads-twitter.com/uwt.js',
+    a=t.getElementsByTagName(n)[0],a.parentNode.insertBefore(u,a))}(window,document,'script');
+    twq('config',twitterPixelId);
+  </script>
+)}
+
+<!-- Microsoft Clarity -->
+{analyticsConfig.clarity_id && (
+  <script define:vars={{ clarityId: analyticsConfig.clarity_id }}>
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", clarityId);
+  </script>
+)}
+
+<!-- Hotjar -->
+{analyticsConfig.hotjar_id && (
+  <script define:vars={{ hotjarId: analyticsConfig.hotjar_id }}>
+    (function(h,o,t,j,a,r){
+        h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+        h._hjSettings={hjid:parseInt(hotjarId),hjsv:6};
+        a=o.getElementsByTagName('head')[0];
+        r=o.createElement('script');r.async=1;
+        r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+        a.appendChild(r);
+    })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
+  </script>
+)}

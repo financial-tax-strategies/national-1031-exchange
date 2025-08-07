@@ -406,6 +406,66 @@ import AdminLayout from '../../layouts/AdminLayout.astro';
   </main>
 
   <script>
+    // Load existing configuration on page load
+    async function loadConfiguration() {
+      try {
+        const response = await fetch('/api/seo-config');
+        const result = await response.json();
+        
+        if (result.data) {
+          const config = result.data;
+          
+          // Load analytics settings
+          if (config.analytics) {
+            document.getElementById('ga4Id').value = config.analytics.ga4_id || '';
+            document.getElementById('gtmId').value = config.analytics.gtm_id || '';
+            document.getElementById('fbPixelId').value = config.analytics.fb_pixel_id || '';
+            document.getElementById('linkedInId').value = config.analytics.linkedin_id || '';
+            document.getElementById('twitterPixelId').value = config.analytics.twitter_pixel_id || '';
+            document.getElementById('clarityId').value = config.analytics.clarity_id || '';
+            document.getElementById('hotjarId').value = config.analytics.hotjar_id || '';
+          }
+          
+          // Load meta settings
+          if (config.meta) {
+            document.getElementById('defaultDescription').value = config.meta.default_description || '';
+            document.getElementById('defaultAuthor').value = config.meta.default_author || '';
+            document.getElementById('defaultKeywords').value = config.meta.default_keywords || '';
+            document.getElementById('defaultOgImage').value = config.meta.default_og_image || '';
+            
+            // Update character counter
+            const descriptionInput = document.getElementById('defaultDescription');
+            const descriptionCount = document.getElementById('descriptionCount');
+            if (descriptionInput && descriptionCount) {
+              descriptionCount.textContent = descriptionInput.value.length;
+            }
+          }
+          
+          // Load schema settings
+          if (config.schema) {
+            document.getElementById('orgName').value = config.schema.org_name || '';
+            document.getElementById('orgLegalName').value = config.schema.org_legal_name || '';
+            document.getElementById('socialFacebook').value = config.schema.social_facebook || '';
+            document.getElementById('socialLinkedIn').value = config.schema.social_linkedin || '';
+            document.getElementById('socialTwitter').value = config.schema.social_twitter || '';
+            document.getElementById('socialYouTube').value = config.schema.social_youtube || '';
+            document.getElementById('priceRange').value = config.schema.price_range || '$$';
+          }
+          
+          // Load AI bot settings
+          if (config.ai_bots) {
+            document.getElementById('botGPT').checked = config.ai_bots.gpt_bot !== false;
+            document.getElementById('botClaude').checked = config.ai_bots.claude_web !== false;
+            document.getElementById('botPerplexity').checked = config.ai_bots.perplexity_bot !== false;
+            document.getElementById('botYou').checked = config.ai_bots.you_bot !== false;
+            document.getElementById('botCohere').checked = config.ai_bots.cohere_ai !== false;
+          }
+        }
+      } catch (error) {
+        console.error('Failed to load configuration:', error);
+      }
+    }
+
     // Tab switching
     document.querySelectorAll('.tab-button').forEach(button => {
       button.addEventListener('click', () => {
@@ -435,44 +495,88 @@ import AdminLayout from '../../layouts/AdminLayout.astro';
 
     // Save configuration
     document.getElementById('saveConfig').addEventListener('click', async () => {
+      const saveButton = document.getElementById('saveConfig');
+      const originalText = saveButton.textContent;
+      
+      // Disable button and show loading state
+      saveButton.disabled = true;
+      saveButton.textContent = 'Saving...';
+      
       const config = {
         analytics: {
-          ga4Id: document.getElementById('ga4Id').value,
-          gtmId: document.getElementById('gtmId').value,
-          fbPixelId: document.getElementById('fbPixelId').value,
-          linkedInId: document.getElementById('linkedInId').value,
-          twitterPixelId: document.getElementById('twitterPixelId').value,
-          clarityId: document.getElementById('clarityId').value,
-          hotjarId: document.getElementById('hotjarId').value,
+          ga4_id: document.getElementById('ga4Id').value,
+          gtm_id: document.getElementById('gtmId').value,
+          fb_pixel_id: document.getElementById('fbPixelId').value,
+          linkedin_id: document.getElementById('linkedInId').value,
+          twitter_pixel_id: document.getElementById('twitterPixelId').value,
+          clarity_id: document.getElementById('clarityId').value,
+          hotjar_id: document.getElementById('hotjarId').value,
         },
         meta: {
-          defaultDescription: document.getElementById('defaultDescription').value,
-          defaultAuthor: document.getElementById('defaultAuthor').value,
-          defaultKeywords: document.getElementById('defaultKeywords').value,
-          defaultOgImage: document.getElementById('defaultOgImage').value,
+          default_description: document.getElementById('defaultDescription').value,
+          default_author: document.getElementById('defaultAuthor').value,
+          default_keywords: document.getElementById('defaultKeywords').value,
+          default_og_image: document.getElementById('defaultOgImage').value,
         },
         schema: {
-          orgName: document.getElementById('orgName').value,
-          orgLegalName: document.getElementById('orgLegalName').value,
-          socialFacebook: document.getElementById('socialFacebook').value,
-          socialLinkedIn: document.getElementById('socialLinkedIn').value,
-          socialTwitter: document.getElementById('socialTwitter').value,
-          socialYouTube: document.getElementById('socialYouTube').value,
-          priceRange: document.getElementById('priceRange').value,
+          org_name: document.getElementById('orgName').value,
+          org_legal_name: document.getElementById('orgLegalName').value,
+          social_facebook: document.getElementById('socialFacebook').value,
+          social_linkedin: document.getElementById('socialLinkedIn').value,
+          social_twitter: document.getElementById('socialTwitter').value,
+          social_youtube: document.getElementById('socialYouTube').value,
+          price_range: document.getElementById('priceRange').value,
         },
-        aiBots: {
-          gptBot: document.getElementById('botGPT').checked,
-          claudeWeb: document.getElementById('botClaude').checked,
-          perplexityBot: document.getElementById('botPerplexity').checked,
-          youBot: document.getElementById('botYou').checked,
-          cohereAi: document.getElementById('botCohere').checked,
+        ai_bots: {
+          gpt_bot: document.getElementById('botGPT').checked,
+          claude_web: document.getElementById('botClaude').checked,
+          perplexity_bot: document.getElementById('botPerplexity').checked,
+          you_bot: document.getElementById('botYou').checked,
+          cohere_ai: document.getElementById('botCohere').checked,
         }
       };
 
-      // In a real implementation, this would save to Supabase
-      console.log('Saving configuration:', config);
-      alert('Configuration saved successfully!');
+      try {
+        // Save configuration via API
+        const response = await fetch('/api/seo-config', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(config)
+        });
+
+        const result = await response.json();
+        
+        if (response.ok && result.success) {
+          // Show success message
+          alert('Configuration saved successfully!');
+          console.log('Configuration saved:', result.data);
+        } else {
+          // Show error message
+          const errorMessage = result.message || result.error || 'Failed to save configuration';
+          alert(`Error: ${errorMessage}`);
+          console.error('Save failed:', result);
+          
+          // If database is not configured, show additional help
+          if (response.status === 503 && result.sql) {
+            console.log('To enable saving, create the following table in Supabase:');
+            console.log(result.sql);
+          }
+        }
+      } catch (error) {
+        // Show network error
+        alert('Network error: Failed to save configuration');
+        console.error('Network error:', error);
+      } finally {
+        // Re-enable button
+        saveButton.disabled = false;
+        saveButton.textContent = originalText;
+      }
     });
+    
+    // Load configuration when page loads
+    document.addEventListener('DOMContentLoaded', loadConfiguration);
   </script>
 
   <style>

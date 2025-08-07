@@ -1,10 +1,35 @@
 ---
 // Google Analytics 4 component
-const GA_MEASUREMENT_ID = import.meta.env.PUBLIC_GA_MEASUREMENT_ID || 'G-XXXXXXXXXX';
+// This component loads the GA4 measurement ID from the database if available,
+// falling back to environment variables if not configured
+import { supabase, isSupabaseConfigured } from '../../lib/supabase';
+
+let GA_MEASUREMENT_ID = import.meta.env.PUBLIC_GA_MEASUREMENT_ID;
 const isProduction = import.meta.env.PROD;
+
+// Try to load GA4 ID from database configuration
+if (isSupabaseConfigured()) {
+  try {
+    const { data } = await supabase
+      .from('seo_config')
+      .select('analytics')
+      .eq('tenant_id', 'default')
+      .single();
+    
+    if (data && data.analytics && data.analytics.ga4_id) {
+      GA_MEASUREMENT_ID = data.analytics.ga4_id;
+    }
+  } catch (error) {
+    // Silently fall back to environment variable
+    console.error('Failed to load GA4 configuration from database:', error);
+  }
+}
+
+// Only use GA if we have a valid measurement ID
+const hasValidGA = GA_MEASUREMENT_ID && GA_MEASUREMENT_ID !== 'G-XXXXXXXXXX';
 ---
 
-{isProduction && (
+{isProduction && hasValidGA && (
   <>
     <!-- Google Analytics 4 -->
     <script async src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}></script>
