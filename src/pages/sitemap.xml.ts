@@ -2,14 +2,17 @@
 export async function GET() {
   const baseUrl = 'https://the1031center.com';
   
-  // Pages to exclude from sitemap
+  // Pages to exclude from sitemap (non-indexable and system pages)
   const excludedPaths = [
     '/admin',
     '/thank-you',
     '/404',
     '/_netlify',
     '/api',
-    '/login'
+    '/login',
+    '/admin/login',
+    '/schedule-widget', // Widget pages shouldn't be indexed
+    // Add any pages that return 3xx, 4xx, or 5xx status codes
   ];
   
   // Define all static pages

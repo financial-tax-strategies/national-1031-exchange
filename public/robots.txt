@@ -55,9 +55,6 @@ User-agent: CCBot
 Allow: /
 Crawl-delay: 0
 
-# Crawl delay for respect
-Crawl-delay: 1
-
 # Sitemap location
 Sitemap: https://the1031center.com/sitemap.xml
 

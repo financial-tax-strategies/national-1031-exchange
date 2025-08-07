@@ -31,16 +31,19 @@ const fullTitle = title.includes(COMPANY.name) ? title : `${title} | ${COMPANY.n
 const pathname = Astro.url.pathname;
 const canonicalURL = canonical || (pathname === '/' ? site : new URL(pathname, site).toString());
 
-// Truncate for social media with proper lengths
+// Truncate for social media with SearchAtlas recommended lengths
 const truncateString = (str: string, maxLength: number) => {
   if (str.length <= maxLength) return str;
   return str.substring(0, maxLength - 3) + '...';
 };
 
+// SearchAtlas recommendations:
+// OG title: 60 chars, OG desc: 65 chars
+// Twitter title: 55 chars, Twitter desc: 125 chars
 const ogTitle = truncateString(fullTitle, 60);
-const ogDescription = truncateString(description, 160);
-const twitterTitle = truncateString(fullTitle, 70);
-const twitterDescription = truncateString(description, 200);
+const ogDescription = truncateString(description, 65);
+const twitterTitle = truncateString(fullTitle, 55);
+const twitterDescription = truncateString(description, 125);
 ---
 
 <!DOCTYPE html>
@@ -89,6 +92,7 @@ const twitterDescription = truncateString(description, 200);
     
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@national1031" />
     <meta name="twitter:url" content={canonicalURL} />
     <meta name="twitter:title" content={twitterTitle} />
     <meta name="twitter:description" content={twitterDescription} />
