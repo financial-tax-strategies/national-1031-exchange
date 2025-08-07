@@ -7,6 +7,8 @@ const debugInfo = {
   environment: import.meta.env.MODE,
   isProduction: import.meta.env.PROD,
   isDevelopment: import.meta.env.DEV,
+  nodeEnv: process.env.NODE_ENV || 'NOT SET',
+  hostname: typeof window !== 'undefined' ? window.location.hostname : 'SERVER SIDE',
   publicGtmId: import.meta.env.PUBLIC_GTM_ID || 'NOT SET',
   publicEnableGtmDev: import.meta.env.PUBLIC_ENABLE_GTM_DEV || 'NOT SET',
   supabaseConfigured: isSupabaseConfigured(),
