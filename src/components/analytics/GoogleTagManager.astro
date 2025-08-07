@@ -27,9 +27,13 @@ if (isSupabaseConfigured()) {
 
 // Only use GTM if we have a valid ID
 const hasValidGTM = GTM_ID && GTM_ID !== 'GTM-XXXXXXX';
+
+// Allow GTM in development if explicitly enabled via environment variable
+const enableGTMInDev = import.meta.env.PUBLIC_ENABLE_GTM_DEV === 'true';
+const shouldLoadGTM = hasValidGTM && (isProduction || enableGTMInDev);
 ---
 
-{isProduction && hasValidGTM && (
+{shouldLoadGTM && (
   <>
     <!-- Google Tag Manager -->
     <script define:vars={{ GTM_ID }}>
@@ -99,10 +103,10 @@ const hasValidGTM = GTM_ID && GTM_ID !== 'GTM-XXXXXXX';
   </>
 )}
 
-{!isProduction && (
+{!shouldLoadGTM && !isProduction && (
   <script>
     // Development mode - log GTM events to console
-    console.log('Google Tag Manager: Development mode - events will be logged to console');
+    console.log('Google Tag Manager: Development mode - events will be logged to console. Set PUBLIC_ENABLE_GTM_DEV=true to enable actual GTM.');
     
     window.pushDataLayer = (data) => console.log('GTM DataLayer:', data);
     window.trackHighLevelEvent = (event, data) => console.log('GTM HighLevel Event:', event, data);

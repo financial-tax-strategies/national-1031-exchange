@@ -1,0 +1,45 @@
+---
+// Google Tag Manager Body (noscript fallback)
+// This component must be placed immediately after the opening <body> tag
+import { supabase, isSupabaseConfigured } from '../../lib/supabase';
+
+let GTM_ID = import.meta.env.PUBLIC_GTM_ID;
+const isProduction = import.meta.env.PROD;
+
+// Try to load GTM ID from database configuration
+if (isSupabaseConfigured()) {
+  try {
+    const { data } = await supabase
+      .from('seo_config')
+      .select('analytics')
+      .eq('tenant_id', 'default')
+      .single();
+    
+    if (data && data.analytics && data.analytics.gtm_id) {
+      GTM_ID = data.analytics.gtm_id;
+    }
+  } catch (error) {
+    // Silently fall back to environment variable
+  }
+}
+
+// Only use GTM if we have a valid ID
+const hasValidGTM = GTM_ID && GTM_ID !== 'GTM-XXXXXXX';
+
+// Allow GTM in development if explicitly enabled via environment variable
+const enableGTMInDev = import.meta.env.PUBLIC_ENABLE_GTM_DEV === 'true';
+const shouldLoadGTM = hasValidGTM && (isProduction || enableGTMInDev);
+---
+
+{shouldLoadGTM && (
+  <!-- Google Tag Manager (noscript) -->
+  <noscript>
+    <iframe 
+      src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`}
+      height="0" 
+      width="0" 
+      style="display:none;visibility:hidden">
+    </iframe>
+  </noscript>
+  <!-- End Google Tag Manager (noscript) -->
+)}

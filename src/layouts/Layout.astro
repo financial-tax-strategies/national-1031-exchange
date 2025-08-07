@@ -4,6 +4,7 @@ import Navigation from '../components/Navigation.astro';
 import Footer from '../components/Footer.astro';
 import GoogleAnalytics from '../components/analytics/GoogleAnalytics.astro';
 import GoogleTagManager from '../components/analytics/GoogleTagManager.astro';
+import GoogleTagManagerBody from '../components/analytics/GoogleTagManagerBody.astro';
 import AnalyticsHead from '../components/AnalyticsHead.astro';
 import { COMPANY } from '../config/company';
 
@@ -290,11 +291,7 @@ const twitterDescription = truncateString(description, 200);
     <AnalyticsHead />
   </head>
   <body class="min-h-screen bg-white flex flex-col">
-    <!-- Google Tag Manager (noscript) -->
-    <noscript>
-      <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-XXXXXXX"
-        height="0" width="0" style="display:none;visibility:hidden"></iframe>
-    </noscript>
+    <GoogleTagManagerBody />
     
     <Navigation />
     <main class="flex-grow">
