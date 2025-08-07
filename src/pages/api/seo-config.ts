@@ -193,8 +193,8 @@ export const POST: APIRoute = async ({ request }) => {
     
     console.log('[API] Saving SEO configuration:', config);
     
-    // First, check if the table exists
-    const client = isSupabaseAdminConfigured() ? supabaseAdmin : supabase;
+    // Always use admin client for writes to bypass RLS
+    const client = supabaseAdmin;
     const { error: tableCheckError } = await client
       .from('seo_config')
       .select('id')

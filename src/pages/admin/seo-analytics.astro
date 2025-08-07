@@ -1,7 +1,38 @@
 ---
 import AdminLayout from '../../layouts/AdminLayout.astro';
+import { supabase, isSupabaseConfigured } from '../../lib/supabase';
 
 // In production, add authentication check here
+
+// Load SEO configuration server-side
+let initialConfig = {
+  analytics: {},
+  meta: {},
+  schema: {},
+  ai_bots: {
+    gpt_bot: true,
+    claude_web: true,
+    perplexity_bot: true,
+    you_bot: true,
+    cohere_ai: true
+  }
+};
+
+if (isSupabaseConfigured()) {
+  try {
+    const { data } = await supabase
+      .from('seo_config')
+      .select('*')
+      .eq('tenant_id', 'default')
+      .single();
+    
+    if (data) {
+      initialConfig = data;
+    }
+  } catch (error) {
+    console.error('Failed to load initial config:', error);
+  }
+}
 ---
 
 <AdminLayout title="SEO & Analytics Configuration">
@@ -53,6 +84,7 @@ import AdminLayout from '../../layouts/AdminLayout.astro';
                 type="text"
                 id="ga4Id"
                 placeholder="G-XXXXXXXXXX"
+                value={initialConfig.analytics?.ga4_id || ''}
                 class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               />
               <p class="text-sm text-gray-500 mt-1">Format: G-XXXXXXXXXX</p>
@@ -67,6 +99,7 @@ import AdminLayout from '../../layouts/AdminLayout.astro';
                 type="text"
                 id="gtmId"
                 placeholder="GTM-XXXXXXX"
+                value={initialConfig.analytics?.gtm_id || ''}
                 class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               />
               <p class="text-sm text-gray-500 mt-1">Format: GTM-XXXXXXX</p>
@@ -81,6 +114,7 @@ import AdminLayout from '../../layouts/AdminLayout.astro';
                 type="text"
                 id="fbPixelId"
                 placeholder="XXXXXXXXXXXXXXXX"
+                value={initialConfig.analytics?.fb_pixel_id || ''}
                 class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               />
             </div>
@@ -94,6 +128,7 @@ import AdminLayout from '../../layouts/AdminLayout.astro';
                 type="text"
                 id="linkedInId"
                 placeholder="XXXXXXX"
+                value={initialConfig.analytics?.linkedin_id || ''}
                 class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               />
             </div>
@@ -107,6 +142,7 @@ import AdminLayout from '../../layouts/AdminLayout.astro';
                 type="text"
                 id="twitterPixelId"
                 placeholder="XXXXX"
+                value={initialConfig.analytics?.twitter_pixel_id || ''}
                 class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               />
             </div>
@@ -120,6 +156,7 @@ import AdminLayout from '../../layouts/AdminLayout.astro';
                 type="text"
                 id="clarityId"
                 placeholder="XXXXXXXXXX"
+                value={initialConfig.analytics?.clarity_id || ''}
                 class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               />
             </div>
@@ -133,6 +170,7 @@ import AdminLayout from '../../layouts/AdminLayout.astro';
                 type="text"
                 id="hotjarId"
                 placeholder="XXXXXXX"
+                value={initialConfig.analytics?.hotjar_id || ''}
                 class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               />
             </div>
@@ -156,9 +194,9 @@ import AdminLayout from '../../layouts/AdminLayout.astro';
                 maxlength="155"
                 placeholder="America's most trusted 1031 exchange qualified intermediary..."
                 class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              ></textarea>
+              >{initialConfig.meta?.default_description || ''}</textarea>
               <p class="text-sm text-gray-500 mt-1">
-                <span id="descriptionCount">0</span>/155 characters
+                <span id="descriptionCount">{initialConfig.meta?.default_description?.length || 0}</span>/155 characters
               </p>
             </div>
 
@@ -171,6 +209,7 @@ import AdminLayout from '../../layouts/AdminLayout.astro';
                 type="text"
                 id="defaultAuthor"
                 placeholder="Ruth Benjamin, Capital Gains Tax Strategist"
+                value={initialConfig.meta?.default_author || ''}
                 class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               />
             </div>
@@ -184,6 +223,7 @@ import AdminLayout from '../../layouts/AdminLayout.astro';
                 type="text"
                 id="defaultKeywords"
                 placeholder="1031 exchange, capital gains tax deferral, like-kind exchange"
+                value={initialConfig.meta?.default_keywords || ''}
                 class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               />
             </div>
@@ -197,6 +237,7 @@ import AdminLayout from '../../layouts/AdminLayout.astro';
                 type="text"
                 id="defaultOgImage"
                 placeholder="/images/og-image.jpg"
+                value={initialConfig.meta?.default_og_image || ''}
                 class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               />
             </div>
@@ -218,6 +259,7 @@ import AdminLayout from '../../layouts/AdminLayout.astro';
                 type="text"
                 id="orgName"
                 placeholder="National 1031 Center"
+                value={initialConfig.schema?.org_name || ''}
                 class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               />
             </div>
@@ -231,6 +273,7 @@ import AdminLayout from '../../layouts/AdminLayout.astro';
                 type="text"
                 id="orgLegalName"
                 placeholder="National 1031 Center, LLC"
+                value={initialConfig.schema?.org_legal_name || ''}
                 class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               />
             </div>
@@ -245,24 +288,28 @@ import AdminLayout from '../../layouts/AdminLayout.astro';
                   type="text"
                   id="socialFacebook"
                   placeholder="https://facebook.com/national1031center"
+                  value={initialConfig.schema?.social_facebook || ''}
                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 />
                 <input
                   type="text"
                   id="socialLinkedIn"
                   placeholder="https://linkedin.com/company/national1031center"
+                  value={initialConfig.schema?.social_linkedin || ''}
                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 />
                 <input
                   type="text"
                   id="socialTwitter"
                   placeholder="https://twitter.com/national1031"
+                  value={initialConfig.schema?.social_twitter || ''}
                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 />
                 <input
                   type="text"
                   id="socialYouTube"
                   placeholder="https://youtube.com/@national1031center"
+                  value={initialConfig.schema?.social_youtube || ''}
                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>
@@ -277,10 +324,10 @@ import AdminLayout from '../../layouts/AdminLayout.astro';
                 id="priceRange"
                 class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               >
-                <option value="$">$ - Budget</option>
-                <option value="$$" selected>$$ - Moderate</option>
-                <option value="$$$">$$$ - Premium</option>
-                <option value="$$$$">$$$$ - Luxury</option>
+                <option value="$" selected={initialConfig.schema?.price_range === '$'}>$ - Budget</option>
+                <option value="$$" selected={initialConfig.schema?.price_range === '$$' || !initialConfig.schema?.price_range}>$$ - Moderate</option>
+                <option value="$$$" selected={initialConfig.schema?.price_range === '$$$'}>$$$ - Premium</option>
+                <option value="$$$$" selected={initialConfig.schema?.price_range === '$$$$'}>$$$$ - Luxury</option>
               </select>
             </div>
           </div>
@@ -296,7 +343,7 @@ import AdminLayout from '../../layouts/AdminLayout.astro';
             <div class="flex items-center justify-between">
               <span class="font-medium">GPTBot (OpenAI)</span>
               <label class="relative inline-flex items-center cursor-pointer">
-                <input type="checkbox" id="botGPT" class="sr-only peer" checked>
+                <input type="checkbox" id="botGPT" class="sr-only peer" checked={initialConfig.ai_bots?.gpt_bot !== false}>
                 <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
               </label>
             </div>
@@ -304,7 +351,7 @@ import AdminLayout from '../../layouts/AdminLayout.astro';
             <div class="flex items-center justify-between">
               <span class="font-medium">Claude-Web (Anthropic)</span>
               <label class="relative inline-flex items-center cursor-pointer">
-                <input type="checkbox" id="botClaude" class="sr-only peer" checked>
+                <input type="checkbox" id="botClaude" class="sr-only peer" checked={initialConfig.ai_bots?.claude_web !== false}>
                 <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
               </label>
             </div>
@@ -312,7 +359,7 @@ import AdminLayout from '../../layouts/AdminLayout.astro';
             <div class="flex items-center justify-between">
               <span class="font-medium">PerplexityBot</span>
               <label class="relative inline-flex items-center cursor-pointer">
-                <input type="checkbox" id="botPerplexity" class="sr-only peer" checked>
+                <input type="checkbox" id="botPerplexity" class="sr-only peer" checked={initialConfig.ai_bots?.perplexity_bot !== false}>
                 <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
               </label>
             </div>
@@ -320,7 +367,7 @@ import AdminLayout from '../../layouts/AdminLayout.astro';
             <div class="flex items-center justify-between">
               <span class="font-medium">YouBot</span>
               <label class="relative inline-flex items-center cursor-pointer">
-                <input type="checkbox" id="botYou" class="sr-only peer" checked>
+                <input type="checkbox" id="botYou" class="sr-only peer" checked={initialConfig.ai_bots?.you_bot !== false}>
                 <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
               </label>
             </div>
@@ -328,7 +375,7 @@ import AdminLayout from '../../layouts/AdminLayout.astro';
             <div class="flex items-center justify-between">
               <span class="font-medium">Cohere AI</span>
               <label class="relative inline-flex items-center cursor-pointer">
-                <input type="checkbox" id="botCohere" class="sr-only peer" checked>
+                <input type="checkbox" id="botCohere" class="sr-only peer" checked={initialConfig.ai_bots?.cohere_ai !== false}>
                 <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
               </label>
             </div>
@@ -575,8 +622,8 @@ import AdminLayout from '../../layouts/AdminLayout.astro';
       }
     });
     
-    // Load configuration when page loads
-    document.addEventListener('DOMContentLoaded', loadConfiguration);
+    // Load configuration when page loads (not needed with SSR, but kept as fallback)
+    // document.addEventListener('DOMContentLoaded', loadConfiguration);
   </script>
 
   <style>

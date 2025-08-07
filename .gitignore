@@ -27,3 +27,6 @@ pnpm-debug.log*
 
 # test coverage reports
 coverage/
+
+# Local Netlify folder
+.netlify
