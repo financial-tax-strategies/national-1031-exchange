@@ -35,9 +35,9 @@ if (isSupabaseConfigured()) {
 // Only use GTM if we have a valid ID
 const hasValidGTM = GTM_ID && GTM_ID !== 'GTM-XXXXXXX';
 
-// Allow GTM in development if explicitly enabled via environment variable
-const enableGTMInDev = import.meta.env.PUBLIC_ENABLE_GTM_DEV === 'true';
-const shouldLoadGTM = hasValidGTM && (isProduction || enableGTMInDev);
+// TEMPORARY FIX: Always load GTM if we have a valid ID
+// Netlify SSR is not setting environment variables correctly
+const shouldLoadGTM = hasValidGTM;
 ---
 
 {shouldLoadGTM && (
