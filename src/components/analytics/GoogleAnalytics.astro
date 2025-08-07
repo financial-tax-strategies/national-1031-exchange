@@ -8,29 +8,47 @@ let GA_MEASUREMENT_ID = import.meta.env.PUBLIC_GA_MEASUREMENT_ID;
 const isProduction = import.meta.env.PROD;
 
 // Try to load GA4 ID from database configuration
+console.log('[GA4] Starting GA4 configuration load...');
+console.log('[GA4] isSupabaseConfigured:', isSupabaseConfigured());
+console.log('[GA4] Initial GA_MEASUREMENT_ID from env:', GA_MEASUREMENT_ID);
+
 if (isSupabaseConfigured()) {
   try {
-    const { data } = await supabase
+    const { data, error } = await supabase
       .from('seo_config')
       .select('analytics')
       .eq('tenant_id', 'default')
       .single();
     
-    if (data && data.analytics && data.analytics.ga4_id) {
-      GA_MEASUREMENT_ID = data.analytics.ga4_id;
+    console.log('[GA4] Database query result:', { data, error });
+    
+    if (error) {
+      console.error('[GA4] Database query error:', error);
+    } else if (data) {
+      console.log('[GA4] Database data.analytics:', data.analytics);
+      if (data.analytics && data.analytics.ga4_id) {
+        GA_MEASUREMENT_ID = data.analytics.ga4_id;
+        console.log('[GA4] Updated GA_MEASUREMENT_ID from database:', GA_MEASUREMENT_ID);
+      } else {
+        console.log('[GA4] No ga4_id found in database analytics data');
+      }
+    } else {
+      console.log('[GA4] No data returned from database');
     }
   } catch (error) {
-    // Silently fall back to environment variable
-    console.error('Failed to load GA4 configuration from database:', error);
+    console.error('[GA4] Exception loading GA4 configuration:', error);
   }
 }
 
 // Only use GA if we have a valid measurement ID
-const hasValidGA = GA_MEASUREMENT_ID && GA_MEASUREMENT_ID !== 'G-XXXXXXXXXX';
+console.log('[GA4] Final GA_MEASUREMENT_ID:', GA_MEASUREMENT_ID);
+const hasValidGA = GA_MEASUREMENT_ID && GA_MEASUREMENT_ID !== 'G-XXXXXXXXXX' && GA_MEASUREMENT_ID !== '' && GA_MEASUREMENT_ID !== undefined;
+console.log('[GA4] hasValidGA:', hasValidGA);
 
 // TEMPORARY FIX: Always load GA if we have a valid ID
 // Netlify SSR is not setting environment variables correctly
 const shouldLoadGA = hasValidGA;
+console.log('[GA4] shouldLoadGA:', shouldLoadGA);
 ---
 
 {shouldLoadGA && (
