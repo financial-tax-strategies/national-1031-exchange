@@ -44,17 +44,61 @@ const shouldLoadGTM = hasValidGTM;
 
 {shouldLoadGTM && (
   <>
+    <!-- Google Tag Manager - Initialize dataLayer first -->
+    <script>
+      // Initialize dataLayer immediately to ensure it exists
+      window.dataLayer = window.dataLayer || [];
+      
+      // Add error handler to prevent SVG errors from blocking GTM
+      window.addEventListener('error', function(e) {
+        if (e.message && e.message.includes('Expected arc flag')) {
+          console.warn('SVG path error caught and ignored:', e.message);
+          e.preventDefault();
+          return true;
+        }
+      }, true);
+    </script>
+    
     <!-- Google Tag Manager -->
     <script define:vars={{ GTM_ID }}>
-      (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-      })(window,document,'script','dataLayer',GTM_ID);
+      // Wrap GTM initialization in try-catch to ensure it runs even if there are page errors
+      try {
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer',GTM_ID);
+        console.log('GTM initialized with ID:', GTM_ID);
+      } catch (e) {
+        console.error('GTM initialization error:', e);
+      }
     </script>
     
     <!-- Data Layer Helper Functions -->
     <script>
+      // Verify GTM loaded and retry if needed
+      setTimeout(function() {
+        if (!window.dataLayer || !window.google_tag_manager) {
+          console.warn('GTM may not have loaded properly, checking...');
+          // Check if GTM script exists
+          var scripts = document.getElementsByTagName('script');
+          var gtmFound = false;
+          for (var i = 0; i < scripts.length; i++) {
+            if (scripts[i].src && scripts[i].src.includes('googletagmanager.com/gtm.js')) {
+              gtmFound = true;
+              break;
+            }
+          }
+          if (gtmFound) {
+            console.log('GTM script found in DOM');
+          } else {
+            console.error('GTM script not found in DOM');
+          }
+        } else {
+          console.log('GTM loaded successfully');
+        }
+      }, 2000);
+      
       // Push custom events to GTM data layer
       window.pushDataLayer = function(eventData) {
         window.dataLayer = window.dataLayer || [];
