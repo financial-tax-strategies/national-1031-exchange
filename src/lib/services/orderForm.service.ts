@@ -78,6 +78,13 @@ export class OrderFormService {
         }
         
         // Now create the order form submission record with all individual fields
+        console.log('[OrderFormService] Mapped data keys:', Object.keys(mappedData));
+        console.log('[OrderFormService] Sample mapped data:', {
+          firstName: mappedData['1031x_order_first_name'],
+          lastName: mappedData['1031x_order_last_name'],
+          email: mappedData['1031x_order_email']
+        });
+        
         const submissionRecord = {
           id: leadId,
           // All form data fields as defined in the schema
@@ -95,6 +102,13 @@ export class OrderFormService {
           created_at: new Date().toISOString(),
           updated_at: new Date().toISOString()
         };
+        
+        console.log('[OrderFormService] Final submission record keys:', Object.keys(submissionRecord));
+        console.log('[OrderFormService] Final submission record sample:', {
+          firstName: (submissionRecord as any)['1031x_order_first_name'],
+          lastName: (submissionRecord as any)['1031x_order_last_name'],
+          email: (submissionRecord as any)['1031x_order_email']
+        });
         
         const { data: submission, error: dbError } = await this.db.getTable('order_form_submissions')
           .insert(submissionRecord)
