@@ -3,11 +3,12 @@ const currentPath = Astro.url.pathname;
 
 const navItems = [
   { href: '/admin', label: 'Dashboard' },
+  { href: '/admin/orders', label: 'Order Forms' },
+  { href: '/admin/leads', label: 'Leads' },
+  { href: '/admin/appointments', label: 'Appointments' },
   { href: '/admin/highlevel-config', label: 'HighLevel Config' },
   { href: '/admin/seo-analytics', label: 'SEO & Analytics' },
   { href: '/admin/test-integration', label: 'Test Integration' },
-  { href: '/admin/leads', label: 'Leads' },
-  { href: '/admin/appointments', label: 'Appointments' },
 ];
 
 function isActive(href: string): boolean {

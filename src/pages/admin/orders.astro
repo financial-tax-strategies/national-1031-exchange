@@ -1,0 +1,141 @@
+---
+import AdminLayout from '../../layouts/AdminLayout.astro';
+import { supabase, isSupabaseConfigured } from '../../lib/supabase';
+import { OrderSubmissionsTable } from '../../components/admin/OrderSubmissionsTable';
+import { OrderStats } from '../../components/admin/OrderStats';
+
+// TODO: Add authentication check in production
+// const session = await getSession(Astro.request);
+// if (!session || !session.user.isAdmin) {
+//   return Astro.redirect('/admin/login');
+// }
+
+// Fetch order form submissions from database
+let orders = null;
+let stats = null;
+let error = null;
+
+if (isSupabaseConfigured() && supabase) {
+  // Fetch recent orders
+  const ordersResult = await supabase
+    .from('order_form_submissions')
+    .select('*')
+    .order('created_at', { ascending: false })
+    .limit(100);
+  
+  orders = ordersResult.data;
+  error = ordersResult.error;
+  
+  if (error) {
+    console.error('Error fetching orders:', error);
+  }
+  
+  // Calculate stats if we have orders
+  if (orders && orders.length > 0) {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const thisWeek = new Date();
+    thisWeek.setDate(thisWeek.getDate() - 7);
+    const thisMonth = new Date();
+    thisMonth.setDate(thisMonth.getDate() - 30);
+    
+    stats = {
+      total: orders.length,
+      today: orders.filter(o => new Date(o.created_at) >= today).length,
+      thisWeek: orders.filter(o => new Date(o.created_at) >= thisWeek).length,
+      thisMonth: orders.filter(o => new Date(o.created_at) >= thisMonth).length,
+      avgLeadScore: orders.length > 0 ? Math.round(orders.reduce((sum, o) => sum + (o.lead_score || 0), 0) / orders.length) : 0,
+      statusBreakdown: {
+        new: orders.filter(o => o.status === 'new').length,
+        processing: orders.filter(o => o.status === 'processing').length,
+        synced: orders.filter(o => o.status === 'synced').length,
+        error: orders.filter(o => o.status === 'error').length
+      },
+      urgencyBreakdown: {
+        urgent: orders.filter(o => o['1031x_order_urgency_level'] === 'urgent_2_weeks').length,
+        timeSensitive: orders.filter(o => o['1031x_order_urgency_level'] === 'time_sensitive_1').length,
+        gettingReady: orders.filter(o => o['1031x_order_urgency_level'] === 'getting_ready_1_3').length,
+        planning: orders.filter(o => o['1031x_order_urgency_level'] === 'planning_3_plus').length
+      }
+    };
+  }
+}
+---
+
+<AdminLayout title="Order Form Submissions">
+  <main class="container mx-auto px-4 py-8">
+    <div class="max-w-7xl mx-auto">
+      <!-- Header -->
+      <div class="mb-8">
+        <h1 class="text-3xl font-bold text-gray-900">Order Form Submissions</h1>
+        <p class="text-gray-600 mt-2">Review and manage 1031 exchange order form submissions</p>
+      </div>
+      
+      {!isSupabaseConfigured() ? (
+        <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-6">
+          <div class="flex items-start">
+            <svg class="w-6 h-6 text-yellow-600 mr-3 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+            <div>
+              <h3 class="text-yellow-800 font-medium">Database Not Configured</h3>
+              <p class="text-yellow-700 mt-1">
+                Supabase is not configured. Order data cannot be loaded.
+                Please set up your environment variables.
+              </p>
+            </div>
+          </div>
+        </div>
+      ) : error ? (
+        <div class="bg-red-50 border border-red-200 rounded-lg p-6">
+          <div class="flex items-start">
+            <svg class="w-6 h-6 text-red-600 mr-3 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <div>
+              <h3 class="text-red-800 font-medium">Error Loading Orders</h3>
+              <p class="text-red-700 mt-1">{error.message}</p>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <>
+          {/* Statistics Cards */}
+          {stats && <OrderStats stats={stats} client:load />}
+          
+          {/* Orders Table */}
+          <div class="mt-8">
+            {orders && orders.length > 0 ? (
+              <OrderSubmissionsTable 
+                orders={orders} 
+                client:load 
+              />
+            ) : (
+              <div class="bg-white rounded-lg shadow p-12 text-center">
+                <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                <h3 class="mt-4 text-lg font-medium text-gray-900">No Orders Yet</h3>
+                <p class="mt-2 text-sm text-gray-500">
+                  Order form submissions will appear here once customers start submitting the form.
+                </p>
+                <div class="mt-6">
+                  <a
+                    href="/start-exchange"
+                    target="_blank"
+                    class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
+                  >
+                    View Order Form
+                    <svg class="ml-2 -mr-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            )}
+          </div>
+        </>
+      )}
+    </div>
+  </main>
+</AdminLayout>
