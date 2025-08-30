@@ -11,7 +11,7 @@ import type {
   OrderFormData 
 } from '../../lib/types/orderForm';
 import { validateStep } from '../../lib/schemas/orderFormSchemas';
-import { OrderFormService } from '../../lib/services/orderForm.service';
+// OrderFormService removed - using API endpoint instead
 import { generateSessionId } from '../../lib/utils/sessionId';
 import { saveSecureData, loadSecureData, clearSecureData, isEncryptionSupported } from '../../lib/utils/encryption';
 
@@ -72,30 +72,8 @@ export const OrderFormProvider: React.FC<OrderFormProviderProps> = ({
     }
     setSessionId(savedSessionId);
 
-    // Check database connection health
-    const checkDatabaseConnection = async () => {
-      try {
-        const orderFormService = new OrderFormService();
-        // Test database connection
-        const db = orderFormService['db']; // Access private member for health check
-        const isHealthy = await db.healthCheck();
-        
-        if (!isHealthy) {
-          console.warn('Database health check failed');
-          setError('Database connection issue detected. Form submissions may fail.');
-        } else {
-          console.log('Database connection healthy');
-        }
-      } catch (err) {
-        console.error('Database connection check failed:', err);
-        if (import.meta.env.DEV) {
-          setError('Warning: Database connection could not be verified. Check console for details.');
-        }
-      }
-    };
-    
-    // Run health check
-    checkDatabaseConnection();
+    // Database health check removed - handled by API endpoint
+    // The API endpoint will handle all database connections server-side
 
     // Load saved progress with encryption support
     try {
@@ -316,17 +294,28 @@ export const OrderFormProvider: React.FC<OrderFormProviderProps> = ({
         });
       }
       
-      // Submit using comprehensive OrderFormService
-      const orderFormService = new OrderFormService();
-      const submissionId = await orderFormService.submitOrderForm(
-        formState.data as OrderFormData,
-        {
-          sessionId,
-          userAgent: typeof window !== 'undefined' ? window.navigator.userAgent : undefined,
-          ipAddress: undefined, // Would need to get from server
-          formCompletionTime: undefined // Could track this if needed
-        }
-      );
+      // Submit to API endpoint
+      const response = await fetch('/api/order-form-submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          formData: formState.data,
+          metadata: {
+            sessionId,
+            formCompletionTime: undefined // Could track this if needed
+          }
+        })
+      });
+      
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to submit form');
+      }
+      
+      const result = await response.json();
+      const submissionId = result.submissionId;
       
       // Clear saved progress on successful submission
       if (isEncryptionSupported()) {
