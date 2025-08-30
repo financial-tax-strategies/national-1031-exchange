@@ -25,7 +25,7 @@ async function analyzeRecordStructure() {
       .from('order_form_submissions')
       .select('*')
       .order('created_at', { ascending: false })
-      .limit(1);
+      .limit(5);
     
     if (error) {
       console.error('❌ Query error:', error);
@@ -42,6 +42,13 @@ async function analyzeRecordStructure() {
     console.log('------------------------------');
     console.log(`ID: ${latest.id}`);
     console.log(`Created: ${latest.created_at}`);
+    
+    // Show all submissions for comparison
+    console.log('');
+    console.log('📋 All Recent Submissions:');
+    submissions.forEach((sub, idx) => {
+      console.log(`  ${idx + 1}. ${sub.id} - ${sub.created_at} - First: ${sub['1031x_order_first_name'] || 'NULL'}`);
+    });
     console.log('');
     
     console.log('🔍 Form Field Analysis:');

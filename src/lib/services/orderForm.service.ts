@@ -110,19 +110,33 @@ export class OrderFormService {
           email: (submissionRecord as any)['1031x_order_email']
         });
         
+        console.log('[OrderFormService] About to insert submission record...');
+        
         const { data: submission, error: dbError } = await this.db.getTable('order_form_submissions')
           .insert(submissionRecord)
           .select()
           .single();
         
+        console.log('[OrderFormService] Database insert result:', {
+          success: !dbError,
+          hasData: !!submission,
+          errorCode: dbError?.code,
+          errorMessage: dbError?.message
+        });
+        
         if (dbError || !submission) {
-          console.error('Database error details:', {
+          console.error('❌ DATABASE INSERT FAILED - Full error details:', {
             error: dbError,
             code: dbError?.code,
             message: dbError?.message,
             details: dbError?.details,
             hint: dbError?.hint,
-            formData: mappedData
+            submissionRecordKeys: Object.keys(submissionRecord),
+            submissionRecordSample: {
+              firstName: (submissionRecord as any)['1031x_order_first_name'],
+              lastName: (submissionRecord as any)['1031x_order_last_name'],
+              email: (submissionRecord as any)['1031x_order_email']
+            }
           });
           
           // Check for specific database errors
