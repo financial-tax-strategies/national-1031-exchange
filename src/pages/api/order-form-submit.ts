@@ -2,6 +2,7 @@ import type { APIRoute } from 'astro';
 import { OrderFormService } from '../../lib/services/orderForm.service';
 import type { OrderFormData } from '../../lib/types/orderForm';
 
+// API endpoint for order form submissions
 export const POST: APIRoute = async ({ request }) => {
   try {
     // Parse the request body
