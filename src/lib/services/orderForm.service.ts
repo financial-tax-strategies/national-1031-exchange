@@ -2,6 +2,7 @@ import { DatabaseService } from './database.service';
 import { HighLevelService } from './highlevel.service';
 import { EmailService } from './email.service';
 import type { OrderFormData } from '../types/orderForm';
+import { v4 as uuidv4 } from 'uuid';
 
 /**
  * Order Form Service - Comprehensive submission handler
@@ -16,6 +17,13 @@ export class OrderFormService {
     this.db = DatabaseService.getInstance();
     this.highlevel = new HighLevelService();
     this.email = new EmailService();
+  }
+  
+  /**
+   * Generate a unique ID for submissions
+   */
+  private generateUniqueId(): string {
+    return uuidv4();
   }
   
   /**
@@ -36,15 +44,57 @@ export class OrderFormService {
       let useFallback = false;
       
       try {
-        const { data: submission, error: dbError } = await this.db.getTable('order_form_submissions')
-          .insert({
+        // Generate a unique ID for this submission
+        const leadId = this.generateUniqueId();
+        
+        // First, create a lead record (required due to foreign key constraint)
+        const leadRecord = {
+          id: leadId,
+          first_name: mappedData['1031x_order_first_name'],
+          last_name: mappedData['1031x_order_last_name'],
+          email: mappedData['1031x_order_email'],
+          phone: mappedData['1031x_order_phone'],
+          lead_source: 'order_form',
+          lead_status: 'new',
+          lead_score: 0, // Calculate this properly in production
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+          last_activity_at: new Date().toISOString()
+        };
+        
+        const { data: lead, error: leadError } = await this.db.getTable('leads')
+          .insert(leadRecord)
+          .select()
+          .single();
+        
+        if (leadError) {
+          console.error('Failed to create lead:', leadError);
+          throw new Error(`Failed to create lead: ${leadError.message}`);
+        }
+        
+        // Now create the order form submission record
+        const submissionRecord = {
+          id: leadId,
+          lead_id: leadId,
+          step_completed: 6, // Assuming all steps completed if they're submitting
+          completion_status: 'completed',
+          urgency_level: mappedData['1031x_order_urgency_level'],
+          exchange_type: mappedData['1031x_order_exchange_type'],
+          property_sale_price: mappedData['1031x_order_sale_price'],
+          form_data: {
             ...mappedData,
             ip_address: metadata?.ipAddress,
             user_agent: metadata?.userAgent,
             session_id: metadata?.sessionId,
-            form_completion_time_seconds: metadata?.formCompletionTime,
-            status: 'new'
-          })
+            form_completion_time_seconds: metadata?.formCompletionTime
+          },
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+          completed_at: new Date().toISOString()
+        };
+        
+        const { data: submission, error: dbError } = await this.db.getTable('order_form_submissions')
+          .insert(submissionRecord)
           .select()
           .single();
         
@@ -83,7 +133,7 @@ export class OrderFormService {
       
       // Fallback: Generate ID and send directly to email/webhook
       if (useFallback) {
-        submissionId = `fallback-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+        submissionId = uuidv4(); // Use UUID for fallback as well
         console.warn('Using fallback submission method with ID:', submissionId);
         
         // Send admin notification immediately
