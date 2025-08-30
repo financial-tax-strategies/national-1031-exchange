@@ -212,7 +212,8 @@ export const OrderDetailModal: React.FC<OrderDetailModalProps> = ({ order, onClo
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {fields.map(field => {
-                  const value = order[field];
+                  // Check both top-level and form_data for the field
+                  const value = order[field] || (order.form_data && order.form_data[field]);
                   if (value === undefined || value === null || value === '') return null;
                   
                   return (

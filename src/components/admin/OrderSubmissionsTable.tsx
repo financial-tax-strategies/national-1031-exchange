@@ -3,11 +3,28 @@ import { OrderDetailModal } from './OrderDetailModal';
 
 interface OrderSubmission {
   id: string;
-  status: string;
+  status?: string;
+  completion_status?: string;
+  urgency_level?: string;
   lead_score?: number;
   created_at: string;
   updated_at: string;
-  // Form fields with 1031x_order_ prefix
+  // Data can be either directly on the object (old format) or in form_data (new format)
+  form_data?: {
+    '1031x_order_first_name'?: string;
+    '1031x_order_last_name'?: string;
+    '1031x_order_email'?: string;
+    '1031x_order_phone'?: string;
+    '1031x_order_urgency_level'?: string;
+    '1031x_order_property_address'?: string;
+    '1031x_order_property_city'?: string;
+    '1031x_order_property_state'?: string;
+    '1031x_order_sale_price'?: number;
+    '1031x_order_contract_status'?: string;
+    '1031x_order_closing_date'?: string;
+    [key: string]: any;
+  };
+  // Legacy format - fields directly on the object
   '1031x_order_first_name'?: string;
   '1031x_order_last_name'?: string;
   '1031x_order_email'?: string;
@@ -48,12 +65,18 @@ export const OrderSubmissionsTable: React.FC<OrderSubmissionsTableProps> = ({ or
     if (searchTerm) {
       filtered = filtered.filter(order => {
         const searchLower = searchTerm.toLowerCase();
+        const firstName = order.form_data?.['1031x_order_first_name'] || order['1031x_order_first_name'];
+        const lastName = order.form_data?.['1031x_order_last_name'] || order['1031x_order_last_name'];
+        const email = order.form_data?.['1031x_order_email'] || order['1031x_order_email'];
+        const phone = order.form_data?.['1031x_order_phone'] || order['1031x_order_phone'];
+        const address = order.form_data?.['1031x_order_property_address'] || order['1031x_order_property_address'];
+        
         return (
-          order['1031x_order_first_name']?.toLowerCase().includes(searchLower) ||
-          order['1031x_order_last_name']?.toLowerCase().includes(searchLower) ||
-          order['1031x_order_email']?.toLowerCase().includes(searchLower) ||
-          order['1031x_order_phone']?.includes(searchTerm) ||
-          order['1031x_order_property_address']?.toLowerCase().includes(searchLower) ||
+          firstName?.toLowerCase().includes(searchLower) ||
+          lastName?.toLowerCase().includes(searchLower) ||
+          email?.toLowerCase().includes(searchLower) ||
+          phone?.includes(searchTerm) ||
+          address?.toLowerCase().includes(searchLower) ||
           order.id.toLowerCase().includes(searchLower)
         );
       });
@@ -61,12 +84,15 @@ export const OrderSubmissionsTable: React.FC<OrderSubmissionsTableProps> = ({ or
 
     // Status filter
     if (statusFilter !== 'all') {
-      filtered = filtered.filter(order => order.status === statusFilter);
+      filtered = filtered.filter(order => (order.status || order.completion_status) === statusFilter);
     }
 
     // Urgency filter
     if (urgencyFilter !== 'all') {
-      filtered = filtered.filter(order => order['1031x_order_urgency_level'] === urgencyFilter);
+      filtered = filtered.filter(order => {
+        const urgency = order.form_data?.['1031x_order_urgency_level'] || order['1031x_order_urgency_level'] || order.urgency_level;
+        return urgency === urgencyFilter;
+      });
     }
 
     // Sort
@@ -317,27 +343,27 @@ export const OrderSubmissionsTable: React.FC<OrderSubmissionsTableProps> = ({ or
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div>
                       <div className="text-sm font-medium text-gray-900">
-                        {order['1031x_order_first_name']} {order['1031x_order_last_name']}
+                        {order.form_data?.['1031x_order_first_name'] || order['1031x_order_first_name']} {order.form_data?.['1031x_order_last_name'] || order['1031x_order_last_name']}
                       </div>
-                      <div className="text-sm text-gray-500">{order['1031x_order_email']}</div>
-                      <div className="text-sm text-gray-500">{order['1031x_order_phone']}</div>
+                      <div className="text-sm text-gray-500">{order.form_data?.['1031x_order_email'] || order['1031x_order_email']}</div>
+                      <div className="text-sm text-gray-500">{order.form_data?.['1031x_order_phone'] || order['1031x_order_phone']}</div>
                     </div>
                   </td>
                   <td className="px-6 py-4">
                     <div>
                       <div className="text-sm text-gray-900">
-                        {order['1031x_order_property_address']}
+                        {order.form_data?.['1031x_order_property_address'] || order['1031x_order_property_address']}
                       </div>
                       <div className="text-sm text-gray-500">
-                        {order['1031x_order_property_city']}, {order['1031x_order_property_state']}
+                        {order.form_data?.['1031x_order_property_city'] || order['1031x_order_property_city']}, {order.form_data?.['1031x_order_property_state'] || order['1031x_order_property_state']}
                       </div>
                       <div className="text-sm font-medium text-gray-900">
-                        {order['1031x_order_sale_price'] && formatCurrency(order['1031x_order_sale_price'])}
+                        {(order.form_data?.['1031x_order_sale_price'] || order['1031x_order_sale_price']) && formatCurrency(order.form_data?.['1031x_order_sale_price'] || order['1031x_order_sale_price'])}
                       </div>
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    {order['1031x_order_urgency_level'] && getUrgencyBadge(order['1031x_order_urgency_level'])}
+                    {(order.form_data?.['1031x_order_urgency_level'] || order['1031x_order_urgency_level'] || order.urgency_level) && getUrgencyBadge(order.form_data?.['1031x_order_urgency_level'] || order['1031x_order_urgency_level'] || order.urgency_level)}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     {order.lead_score !== undefined && getLeadScoreBadge(order.lead_score)}
