@@ -28,7 +28,12 @@ const testFormSubmission = async () => {
       '1031x_order_has_cpa': 'yes',
       '1031x_order_cpa_name': 'Test CPA',
       '1031x_order_cpa_email': 'cpa@test.com',
-      '1031x_order_urgency_level': 'getting_ready_1_3'
+      '1031x_order_urgency_level': 'getting_ready_1_3',
+      // Service Preferences (Step 6) - Required fields that were missing
+      '1031x_order_contract_preference': 'electronic',
+      '1031x_order_consultation_preference': 'phone',
+      '1031x_order_how_heard': 'google',
+      '1031x_order_additional_notes': 'This is a test submission'
     },
     metadata: {
       sessionId: 'test-session-' + Date.now(),

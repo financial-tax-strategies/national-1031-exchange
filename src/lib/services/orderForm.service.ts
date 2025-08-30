@@ -77,25 +77,23 @@ export class OrderFormService {
           throw new Error(`Failed to create lead: ${leadError.message}`);
         }
         
-        // Now create the order form submission record
+        // Now create the order form submission record with all individual fields
         const submissionRecord = {
           id: leadId,
-          lead_id: leadId,
-          step_completed: 6, // Assuming all steps completed if they're submitting
-          completion_status: 'completed',
-          urgency_level: mappedData['1031x_order_urgency_level'],
-          exchange_type: mappedData['1031x_order_exchange_type'],
-          property_sale_price: mappedData['1031x_order_sale_price'],
-          form_data: {
-            ...mappedData,
-            ip_address: metadata?.ipAddress,
-            user_agent: metadata?.userAgent,
-            session_id: metadata?.sessionId,
-            form_completion_time_seconds: metadata?.formCompletionTime
-          },
+          // All form data fields as defined in the schema
+          ...mappedData,
+          // Metadata fields
+          highlevel_contact_id: null, // Will be updated after HighLevel sync
+          lead_score: 0, // Will be calculated by trigger
+          submission_date: new Date().toISOString(),
+          ip_address: metadata?.ipAddress,
+          user_agent: metadata?.userAgent,
+          session_id: metadata?.sessionId,
+          form_completion_time_seconds: metadata?.formCompletionTime,
+          // Status tracking
+          status: 'new',
           created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-          completed_at: new Date().toISOString()
+          updated_at: new Date().toISOString()
         };
         
         const { data: submission, error: dbError } = await this.db.getTable('order_form_submissions')
