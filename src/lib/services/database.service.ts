@@ -11,12 +11,28 @@ export class DatabaseService {
   private supabase: SupabaseClient<Database>;
   
   private constructor() {
-    const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL;
-    const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY;
+    // Try to get environment variables from multiple sources
+    // This handles both client-side (import.meta.env) and server-side (process.env) contexts
+    const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL || 
+                        (typeof process !== 'undefined' ? process.env.PUBLIC_SUPABASE_URL : undefined);
+    const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || 
+                           (typeof process !== 'undefined' ? process.env.PUBLIC_SUPABASE_ANON_KEY : undefined);
     
     // During build time, we might not have environment variables
     // This allows the build to complete successfully
     if (!supabaseUrl || !supabaseAnonKey) {
+      // Log more details for debugging
+      console.error('Supabase configuration check:', {
+        hasImportMetaEnv: typeof import.meta.env !== 'undefined',
+        hasProcess: typeof process !== 'undefined',
+        importMetaUrl: import.meta.env.PUBLIC_SUPABASE_URL ? 'set' : 'missing',
+        importMetaKey: import.meta.env.PUBLIC_SUPABASE_ANON_KEY ? 'set' : 'missing',
+        processUrl: typeof process !== 'undefined' ? (process.env.PUBLIC_SUPABASE_URL ? 'set' : 'missing') : 'no process',
+        processKey: typeof process !== 'undefined' ? (process.env.PUBLIC_SUPABASE_ANON_KEY ? 'set' : 'missing') : 'no process',
+        mode: import.meta.env.MODE,
+        isServer: typeof window === 'undefined'
+      });
+      
       if (import.meta.env.MODE === 'production' && typeof window !== 'undefined') {
         // Only throw error in production when running in browser
         throw new Error('Supabase configuration missing. Please set PUBLIC_SUPABASE_URL and PUBLIC_SUPABASE_ANON_KEY environment variables.');

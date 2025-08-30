@@ -72,6 +72,13 @@
 [functions]
   directory = "netlify/functions"
   node_bundler = "esbuild"
+  # Include environment variables in functions
+  included_files = [".env"]
+  
+# Ensure environment variables are available in functions
+[functions.environment]
+  # These will be available via process.env in Netlify Functions
+  # They are populated from the Netlify UI environment settings
 
 # Edge functions
 [[edge_functions]]

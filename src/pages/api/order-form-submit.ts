@@ -4,12 +4,18 @@ import type { OrderFormData } from '../../lib/types/orderForm';
 
 // API endpoint for order form submissions
 export const POST: APIRoute = async ({ request }) => {
+  console.log('[API] Order form submission received');
+  
   try {
     // Parse the request body
     const body = await request.json();
     const { formData, metadata } = body;
     
+    console.log('[API] Form data keys:', Object.keys(formData || {}));
+    console.log('[API] Metadata:', metadata);
+    
     if (!formData) {
+      console.error('[API] No form data provided');
       return new Response(JSON.stringify({ 
         error: 'Form data is required' 
       }), {

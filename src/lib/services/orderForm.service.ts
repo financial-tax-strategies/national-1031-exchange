@@ -35,9 +35,13 @@ export class OrderFormService {
     sessionId?: string;
     formCompletionTime?: number;
   }): Promise<string> {
+    console.log('[OrderFormService] Starting form submission');
+    console.log('[OrderFormService] Database client status:', this.db ? 'initialized' : 'not initialized');
+    
     try {
       // Step 1: Convert field names to use 1031x_order_ prefix
       const mappedData = this.mapFieldNames(data);
+      console.log('[OrderFormService] Mapped data keys:', Object.keys(mappedData));
       
       // Step 2: Try to save to Supabase
       let submissionId: string;
@@ -46,6 +50,7 @@ export class OrderFormService {
       try {
         // Generate a unique ID for this submission
         const leadId = this.generateUniqueId();
+        console.log('[OrderFormService] Generated lead ID:', leadId);
         
         // First, create a lead record (required due to foreign key constraint)
         const leadRecord = {
