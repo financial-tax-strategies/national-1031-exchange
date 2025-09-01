@@ -15,12 +15,21 @@ export class DatabaseService {
     // This handles both client-side (import.meta.env) and server-side (process.env) contexts
     const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL || 
                         (typeof process !== 'undefined' ? process.env.PUBLIC_SUPABASE_URL : undefined);
+    
+    // Use service role key for server-side operations (needed for bypassing RLS)
+    // Fall back to anon key for client-side operations
+    const supabaseServiceKey = import.meta.env.SUPABASE_SERVICE_ROLE_KEY || 
+                              (typeof process !== 'undefined' ? process.env.SUPABASE_SERVICE_ROLE_KEY : undefined);
     const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || 
                            (typeof process !== 'undefined' ? process.env.PUBLIC_SUPABASE_ANON_KEY : undefined);
     
+    // Use service role key if available (for server-side operations)
+    // This is needed to bypass RLS policies for order form submissions
+    const supabaseKey = supabaseServiceKey || supabaseAnonKey;
+    
     // During build time, we might not have environment variables
     // This allows the build to complete successfully
-    if (!supabaseUrl || !supabaseAnonKey) {
+    if (!supabaseUrl || !supabaseKey) {
       // Log more details for debugging
       console.error('Supabase configuration check:', {
         hasImportMetaEnv: typeof import.meta.env !== 'undefined',
@@ -45,8 +54,9 @@ export class DatabaseService {
     }
     
     console.log('Initializing Supabase client with URL:', supabaseUrl);
+    console.log('Using key type:', supabaseServiceKey ? 'service_role' : 'anon');
     
-    this.supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
+    this.supabase = createClient<Database>(supabaseUrl, supabaseKey, {
       auth: {
         persistSession: true,
         autoRefreshToken: true,
