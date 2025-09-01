@@ -1,5 +1,5 @@
 // ============================================
-// Property Details Step Component (Step 2)
+// Property Details Step Component (Step 3)
 // National 1031 Center - Order Form
 // ============================================
 
@@ -7,36 +7,25 @@ import React, { useEffect } from 'react';
 import { useOrderForm } from '../OrderFormContext';
 import { FieldError } from '../components/FieldError';
 import { useOrderFormAnalytics } from '../../../lib/analytics/orderFormAnalytics';
-import { stateNames } from '../../../lib/calculators/taxCalculations';
+import { USStateSelect } from '../../ui/USStateSelect';
+import { PropertyTypeSelect } from '../../ui/PropertyTypeSelect';
+import { RadioGroup } from '../../ui/RadioGroup';
+import { CheckboxInput } from '../../ui/CheckboxInput';
+import { Input } from '../../ui/Input';
 
-// ============================================
-// Property Type Options
-// ============================================
-
-const propertyTypes = [
-  { value: 'single_family_rental', label: 'Single Family Rental' },
-  { value: 'multi_family_2_4', label: 'Multi-Family (2-4 units)' },
-  { value: 'apartment_5_plus', label: 'Apartment Building (5+ units)' },
-  { value: 'office', label: 'Office Building' },
-  { value: 'retail', label: 'Retail Property' },
-  { value: 'industrial', label: 'Industrial/Warehouse' },
-  { value: 'land', label: 'Land/Vacant Lot' },
-  { value: 'mixed_use', label: 'Mixed Use' },
-  { value: 'other', label: 'Other Investment Property' }
-];
 
 // ============================================
 // Component
 // ============================================
 
 export const PropertyDetailsStep: React.FC = () => {
-  const { formState, updateField } = useOrderForm();
+  const { formState, updateField, toggleSecondProperty } = useOrderForm();
   const analytics = useOrderFormAnalytics();
   
-  // Track step start
+  // Track step start (Step 3)
   useEffect(() => {
     const sessionId = sessionStorage.getItem('1031_order_form_session') || '';
-    analytics.trackStepStart(2, sessionId);
+    analytics.trackStepStart(3, sessionId);
   }, [analytics]);
   
   const handleInputChange = (field: keyof typeof formState.data, value: string) => {
@@ -65,265 +54,259 @@ export const PropertyDetailsStep: React.FC = () => {
           Property You're Selling
         </h2>
         <p className="text-gray-600">
-          Details about your relinquished property
+          Complete details about your relinquished property
         </p>
       </div>
       
       {/* Property Address */}
-      <div>
-        <label 
-          htmlFor="property-address"
-          className="block text-sm font-medium text-gray-700 mb-2"
-        >
-          Property Street Address <span className="text-red-500">*</span>
-        </label>
-        <input
-          id="property-address"
-          type="text"
-          value={formState.data['1031x_order_property_address'] || ''}
-          onChange={(e) => handleInputChange('1031x_order_property_address', e.target.value)}
-          onFocus={() => {
-            const sessionId = sessionStorage.getItem('1031_order_form_session') || '';
-            analytics.trackFieldInteraction('1031x_order_property_address', 'focus', 2, sessionId);
-          }}
-          className={`
-            w-full px-4 py-3 border rounded-lg
-            focus:ring-2 focus:ring-blue-500 focus:border-blue-500
-            transition-colors duration-200
-            ${formState.errors['1031x_order_property_address'] ? 'border-red-500' : 'border-gray-300'}
-          `}
-          placeholder="123 Main Street"
-          aria-describedby={formState.errors['1031x_order_property_address'] ? 'property-address-error' : undefined}
-          aria-invalid={!!formState.errors['1031x_order_property_address']}
-        />
-        <FieldError 
-          error={formState.errors['1031x_order_property_address']} 
-          fieldId="property-address"
-        />
-      </div>
+      <Input
+        label="Property Street Address"
+        name="1031x_order_property_address"
+        value={formState.data['1031x_order_property_address'] || ''}
+        onChange={(value) => handleInputChange('1031x_order_property_address', value)}
+        error={formState.errors['1031x_order_property_address']}
+        placeholder="123 Main Street"
+        required
+      />
       
-      {/* City, State, ZIP */}
-      <div className="grid md:grid-cols-3 gap-4">
-        {/* City */}
+      {/* City, State, ZIP, County */}
+      <div className="grid md:grid-cols-4 gap-4">
         <div className="md:col-span-1">
-          <label 
-            htmlFor="property-city"
-            className="block text-sm font-medium text-gray-700 mb-2"
-          >
-            City <span className="text-red-500">*</span>
-          </label>
-          <input
-            id="property-city"
-            type="text"
+          <Input
+            label="City"
+            name="1031x_order_property_city"
             value={formState.data['1031x_order_property_city'] || ''}
-            onChange={(e) => handleInputChange('1031x_order_property_city', e.target.value)}
-            onFocus={() => {
-              const sessionId = sessionStorage.getItem('1031_order_form_session') || '';
-              analytics.trackFieldInteraction('1031x_order_property_city', 'focus', 2, sessionId);
-            }}
-            className={`
-              w-full px-4 py-3 border rounded-lg
-              focus:ring-2 focus:ring-blue-500 focus:border-blue-500
-              transition-colors duration-200
-              ${formState.errors['1031x_order_property_city'] ? 'border-red-500' : 'border-gray-300'}
-            `}
+            onChange={(value) => handleInputChange('1031x_order_property_city', value)}
+            error={formState.errors['1031x_order_property_city']}
             placeholder="San Francisco"
-            aria-describedby={formState.errors['1031x_order_property_city'] ? 'property-city-error' : undefined}
-            aria-invalid={!!formState.errors['1031x_order_property_city']}
-          />
-          <FieldError 
-            error={formState.errors['1031x_order_property_city']} 
-            fieldId="property-city"
+            required
           />
         </div>
         
-        {/* State */}
         <div className="md:col-span-1">
-          <label 
-            htmlFor="property-state"
-            className="block text-sm font-medium text-gray-700 mb-2"
-          >
-            State <span className="text-red-500">*</span>
-          </label>
-          <select
-            id="property-state"
+          <USStateSelect
+            label="State"
+            name="1031x_order_property_state"
             value={formState.data['1031x_order_property_state'] || ''}
-            onChange={(e) => handleInputChange('1031x_order_property_state', e.target.value)}
-            onFocus={() => {
-              const sessionId = sessionStorage.getItem('1031_order_form_session') || '';
-              analytics.trackFieldInteraction('1031x_order_property_state', 'focus', 2, sessionId);
-            }}
-            className={`
-              w-full px-4 py-3 border rounded-lg
-              focus:ring-2 focus:ring-blue-500 focus:border-blue-500
-              transition-colors duration-200
-              ${formState.errors['1031x_order_property_state'] ? 'border-red-500' : 'border-gray-300'}
-            `}
-            aria-describedby={formState.errors['1031x_order_property_state'] ? 'property-state-error' : undefined}
-            aria-invalid={!!formState.errors['1031x_order_property_state']}
-          >
-            <option value="">Select state...</option>
-            {Object.entries(stateNames).map(([abbr, name]) => (
-              <option key={abbr} value={abbr}>{name}</option>
-            ))}
-          </select>
-          <FieldError 
-            error={formState.errors['1031x_order_property_state']} 
-            fieldId="property-state"
+            onChange={(value) => handleInputChange('1031x_order_property_state', value)}
+            error={formState.errors['1031x_order_property_state']}
+            required
           />
         </div>
         
-        {/* ZIP */}
         <div className="md:col-span-1">
-          <label 
-            htmlFor="property-zip"
-            className="block text-sm font-medium text-gray-700 mb-2"
-          >
-            ZIP Code <span className="text-red-500">*</span>
-          </label>
-          <input
-            id="property-zip"
-            type="text"
+          <Input
+            label="ZIP Code"
+            name="1031x_order_property_zip"
             value={formState.data['1031x_order_property_zip'] || ''}
-            onChange={(e) => handleInputChange('1031x_order_property_zip', e.target.value)}
-            onFocus={() => {
-              const sessionId = sessionStorage.getItem('1031_order_form_session') || '';
-              analytics.trackFieldInteraction('1031x_order_property_zip', 'focus', 2, sessionId);
-            }}
-            className={`
-              w-full px-4 py-3 border rounded-lg
-              focus:ring-2 focus:ring-blue-500 focus:border-blue-500
-              transition-colors duration-200
-              ${formState.errors['1031x_order_property_zip'] ? 'border-red-500' : 'border-gray-300'}
-            `}
+            onChange={(value) => handleInputChange('1031x_order_property_zip', value)}
+            error={formState.errors['1031x_order_property_zip']}
             placeholder="94105"
             maxLength={10}
-            aria-describedby={formState.errors['1031x_order_property_zip'] ? 'property-zip-error' : undefined}
-            aria-invalid={!!formState.errors['1031x_order_property_zip']}
+            required
           />
-          <FieldError 
-            error={formState.errors['1031x_order_property_zip']} 
-            fieldId="property-zip"
+        </div>
+        
+        <div className="md:col-span-1">
+          <Input
+            label="County"
+            name="1031_order_property_county"
+            value={formState.data['1031_order_property_county'] || ''}
+            onChange={(value) => handleInputChange('1031_order_property_county', value)}
+            error={formState.errors['1031_order_property_county']}
+            placeholder="San Francisco County"
           />
         </div>
       </div>
       
-      {/* Property Type */}
-      <div>
-        <label 
-          htmlFor="property-type"
-          className="block text-sm font-medium text-gray-700 mb-2"
-        >
-          Property Type <span className="text-red-500">*</span>
-        </label>
-        <select
-          id="property-type"
+      {/* Property Type and Legal Description */}
+      <div className="grid md:grid-cols-2 gap-4">
+        <PropertyTypeSelect
+          label="Property Type"
+          name="1031x_order_property_type"
           value={formState.data['1031x_order_property_type'] || ''}
-          onChange={(e) => handleInputChange('1031x_order_property_type', e.target.value)}
-          onFocus={() => {
-            const sessionId = sessionStorage.getItem('1031_order_form_session') || '';
-            analytics.trackFieldInteraction('1031x_order_property_type', 'focus', 2, sessionId);
-          }}
-          className={`
-            w-full px-4 py-3 border rounded-lg
-            focus:ring-2 focus:ring-blue-500 focus:border-blue-500
-            transition-colors duration-200
-            ${formState.errors['1031x_order_property_type'] ? 'border-red-500' : 'border-gray-300'}
-          `}
-          aria-describedby={formState.errors['1031x_order_property_type'] ? 'property-type-error' : undefined}
-          aria-invalid={!!formState.errors['1031x_order_property_type']}
-        >
-          <option value="">Select property type...</option>
-          {propertyTypes.map(type => (
-            <option key={type.value} value={type.value}>{type.label}</option>
-          ))}
-        </select>
-        <FieldError 
-          error={formState.errors['1031x_order_property_type']} 
-          fieldId="property-type"
+          onChange={(value) => handleInputChange('1031x_order_property_type', value)}
+          error={formState.errors['1031x_order_property_type']}
+          required
+        />
+        
+        <Input
+          label="Legal Description / APN"
+          name="1031_order_property_legal_description"
+          value={formState.data['1031_order_property_legal_description'] || ''}
+          onChange={(value) => handleInputChange('1031_order_property_legal_description', value)}
+          error={formState.errors['1031_order_property_legal_description']}
+          placeholder="Assessor Parcel Number or Legal Description"
         />
       </div>
       
       {/* Financial Information */}
-      <div className="grid md:grid-cols-2 gap-6">
-        {/* Sale Price */}
-        <div>
-          <label 
-            htmlFor="sale-price"
-            className="block text-sm font-medium text-gray-700 mb-2"
-          >
-            Expected Sale Price <span className="text-red-500">*</span>
-          </label>
-          <div className="relative">
-            <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">$</span>
-            <input
-              id="sale-price"
-              type="text"
-              value={formatCurrency(formState.data['1031x_order_sale_price'])}
-              onChange={(e) => handleNumberChange('1031x_order_sale_price', e.target.value)}
-              onFocus={() => {
-                const sessionId = sessionStorage.getItem('1031_order_form_session') || '';
-                analytics.trackFieldInteraction('1031x_order_sale_price', 'focus', 2, sessionId);
-              }}
-              className={`
-                w-full pl-8 pr-4 py-3 border rounded-lg
-                focus:ring-2 focus:ring-blue-500 focus:border-blue-500
-                transition-colors duration-200
-                ${formState.errors['1031x_order_sale_price'] ? 'border-red-500' : 'border-gray-300'}
-              `}
-              placeholder="1,000,000"
-              aria-describedby={formState.errors['1031x_order_sale_price'] ? 'sale-price-error' : undefined}
-              aria-invalid={!!formState.errors['1031x_order_sale_price']}
-            />
-          </div>
-          <FieldError 
-            error={formState.errors['1031x_order_sale_price']} 
-            fieldId="sale-price"
+      <div className="space-y-4">
+        <h3 className="text-lg font-semibold text-gray-900">Financial Information</h3>
+        
+        <div className="grid md:grid-cols-2 gap-4">
+          <Input
+            label="Expected Sale Price"
+            name="1031x_order_sale_price"
+            type="currency"
+            value={formatCurrency(formState.data['1031x_order_sale_price'])}
+            onChange={(value) => handleNumberChange('1031x_order_sale_price', value)}
+            error={formState.errors['1031x_order_sale_price']}
+            placeholder="1,000,000"
+            required
+          />
+          
+          <Input
+            label="Current Mortgage Balance"
+            name="1031x_order_mortgage_balance"
+            type="currency"
+            value={formatCurrency(formState.data['1031x_order_mortgage_balance'])}
+            onChange={(value) => handleNumberChange('1031x_order_mortgage_balance', value)}
+            error={formState.errors['1031x_order_mortgage_balance']}
+            placeholder="400,000"
           />
         </div>
         
-        {/* Mortgage Balance */}
-        <div>
-          <label 
-            htmlFor="mortgage-balance"
-            className="block text-sm font-medium text-gray-700 mb-2"
-          >
-            Current Mortgage Balance (optional)
-          </label>
-          <div className="relative">
-            <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">$</span>
-            <input
-              id="mortgage-balance"
-              type="text"
-              value={formatCurrency(formState.data['1031x_order_mortgage_balance'])}
-              onChange={(e) => handleNumberChange('1031x_order_mortgage_balance', e.target.value)}
-              onFocus={() => {
-                const sessionId = sessionStorage.getItem('1031_order_form_session') || '';
-                analytics.trackFieldInteraction('1031x_order_mortgage_balance', 'focus', 2, sessionId);
-              }}
-              className={`
-                w-full pl-8 pr-4 py-3 border rounded-lg
-                focus:ring-2 focus:ring-blue-500 focus:border-blue-500
-                transition-colors duration-200
-                ${formState.errors['1031x_order_mortgage_balance'] ? 'border-red-500' : 'border-gray-300'}
-              `}
-              placeholder="400,000"
-              aria-describedby={formState.errors['1031x_order_mortgage_balance'] ? 'mortgage-balance-error' : undefined}
-              aria-invalid={!!formState.errors['1031x_order_mortgage_balance']}
-            />
-          </div>
-          <FieldError 
-            error={formState.errors['1031x_order_mortgage_balance']} 
-            fieldId="mortgage-balance"
+        <div className="grid md:grid-cols-2 gap-4">
+          <Input
+            label="Original Purchase Price"
+            name="1031_order_property_purchase_price"
+            type="currency"
+            value={formatCurrency(formState.data['1031_order_property_purchase_price'])}
+            onChange={(value) => handleNumberChange('1031_order_property_purchase_price', value)}
+            error={formState.errors['1031_order_property_purchase_price']}
+            placeholder="750,000"
+          />
+          
+          <Input
+            label="Purchase Date"
+            name="1031_order_property_purchase_date"
+            type="date"
+            value={formState.data['1031_order_property_purchase_date'] || ''}
+            onChange={(value) => handleInputChange('1031_order_property_purchase_date', value)}
+            error={formState.errors['1031_order_property_purchase_date']}
           />
         </div>
+        
+        <div className="grid md:grid-cols-2 gap-4">
+          <Input
+            label="Capital Improvements Amount"
+            name="1031_order_property_improvements"
+            type="currency"
+            value={formatCurrency(formState.data['1031_order_property_improvements'])}
+            onChange={(value) => handleNumberChange('1031_order_property_improvements', value)}
+            error={formState.errors['1031_order_property_improvements']}
+            placeholder="50,000"
+            helpText="Total amount spent on capital improvements"
+          />
+          
+          <Input
+            label="Annual Rental Income"
+            name="1031_order_property_rental_income"
+            type="currency"
+            value={formatCurrency(formState.data['1031_order_property_rental_income'])}
+            onChange={(value) => handleNumberChange('1031_order_property_rental_income', value)}
+            error={formState.errors['1031_order_property_rental_income']}
+            placeholder="60,000"
+          />
+        </div>
+      </div>
+      
+      {/* Property Ownership */}
+      <div className="space-y-4">
+        <h3 className="text-lg font-semibold text-gray-900">Property Ownership</h3>
+        
+        <RadioGroup
+          label="How is title currently held?"
+          name="1031_order_property_title_held"
+          value={formState.data['1031_order_property_title_held'] || ''}
+          onChange={(value) => handleInputChange('1031_order_property_title_held', value)}
+          error={formState.errors['1031_order_property_title_held']}
+          options={[
+            { value: 'individual', label: 'Individual' },
+            { value: 'joint_tenants', label: 'Joint Tenants' },
+            { value: 'tenants_in_common', label: 'Tenants in Common' },
+            { value: 'community_property', label: 'Community Property' },
+            { value: 'llc', label: 'LLC' },
+            { value: 'trust', label: 'Trust' },
+            { value: 'partnership', label: 'Partnership' },
+            { value: 'corporation', label: 'Corporation' },
+            { value: 'other', label: 'Other' }
+          ]}
+        />
+        
+        <Input
+          label="Ownership Percentage"
+          name="1031_order_property_ownership_percentage"
+          type="number"
+          value={formState.data['1031_order_property_ownership_percentage'] || ''}
+          onChange={(value) => handleInputChange('1031_order_property_ownership_percentage', value)}
+          error={formState.errors['1031_order_property_ownership_percentage']}
+          placeholder="100"
+          min="0"
+          max="100"
+          helpText="Enter percentage (0-100)"
+        />
+      </div>
+      
+      {/* Additional Properties */}
+      <div className="space-y-4">
+        <CheckboxInput
+          label="I have a second property to include in this exchange"
+          name="hasSecondProperty"
+          checked={formState.data.hasSecondProperty || false}
+          onChange={(checked) => {
+            toggleSecondProperty(checked);
+            analytics.trackFieldInteraction('hasSecondProperty', 'change', 3, sessionStorage.getItem('1031_order_form_session') || '');
+          }}
+          description="Check this if you're selling multiple properties in this 1031 exchange"
+        />
+      </div>
+      
+      {/* Additional Property Information */}
+      <div className="space-y-4">
+        <h3 className="text-lg font-semibold text-gray-900">Additional Information</h3>
+        
+        <RadioGroup
+          label="Property Use"
+          name="1031_order_property_use"
+          value={formState.data['1031_order_property_use'] || ''}
+          onChange={(value) => handleInputChange('1031_order_property_use', value)}
+          error={formState.errors['1031_order_property_use']}
+          options={[
+            { value: 'investment', label: 'Investment Property (100% rental)' },
+            { value: 'business', label: 'Business Property' },
+            { value: 'mixed_use', label: 'Mixed Use (partially owner-occupied)' },
+            { value: 'vacation_rental', label: 'Vacation Rental' },
+            { value: 'land', label: 'Land/Development' }
+          ]}
+        />
+        
+        <Input
+          label="Property Manager/Agent Name"
+          name="1031_order_property_manager"
+          value={formState.data['1031_order_property_manager'] || ''}
+          onChange={(value) => handleInputChange('1031_order_property_manager', value)}
+          error={formState.errors['1031_order_property_manager']}
+          placeholder="John Smith Realty"
+        />
+        
+        <Input
+          label="Property Manager/Agent Phone"
+          name="1031_order_property_manager_phone"
+          type="tel"
+          value={formState.data['1031_order_property_manager_phone'] || ''}
+          onChange={(value) => handleInputChange('1031_order_property_manager_phone', value)}
+          error={formState.errors['1031_order_property_manager_phone']}
+          placeholder="(555) 123-4567"
+        />
       </div>
       
       {/* Information Box */}
       <div className="bg-blue-50 p-4 rounded-lg">
         <p className="text-sm text-blue-900">
-          <strong>Note:</strong> The sale price and mortgage information help us calculate 
-          your potential tax savings and determine the best exchange strategy for your situation.
+          <strong>Note:</strong> This information helps us calculate your potential tax savings, 
+          determine the best exchange strategy, and ensure all properties qualify for 1031 exchange treatment.
         </p>
       </div>
     </div>

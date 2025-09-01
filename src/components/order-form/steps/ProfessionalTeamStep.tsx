@@ -1,5 +1,5 @@
 // ============================================
-// Professional Team Step Component (Step 5)
+// Professional Team Step Component (Step 6)
 // National 1031 Center - Order Form
 // ============================================
 
@@ -7,6 +7,9 @@ import React, { useEffect } from 'react';
 import { useOrderForm } from '../OrderFormContext';
 import { FieldError } from '../components/FieldError';
 import { useOrderFormAnalytics } from '../../../lib/analytics/orderFormAnalytics';
+import { Input } from '../../ui/Input';
+import { Select } from '../../ui/Select';
+import { RadioGroup } from '../../ui/RadioGroup';
 
 // ============================================
 // Options
@@ -26,10 +29,10 @@ export const ProfessionalTeamStep: React.FC = () => {
   const { formState, updateField } = useOrderForm();
   const analytics = useOrderFormAnalytics();
   
-  // Track step start
+  // Track step start (Step 6)
   useEffect(() => {
     const sessionId = sessionStorage.getItem('1031_order_form_session') || '';
-    analytics.trackStepStart(5, sessionId);
+    analytics.trackStepStart(6, sessionId);
   }, [analytics]);
   
   const handleInputChange = (field: keyof typeof formState.data, value: string) => {
@@ -50,112 +53,70 @@ export const ProfessionalTeamStep: React.FC = () => {
         </p>
       </div>
       
-      {/* CPA Status */}
-      <div>
-        <label 
-          htmlFor="has-cpa"
-          className="block text-sm font-medium text-gray-700 mb-2"
-        >
-          Do you have a CPA or tax advisor? <span className="text-red-500">*</span>
-        </label>
-        <select
-          id="has-cpa"
+      {/* CPA/Tax Advisor Section */}
+      <div className="space-y-4">
+        <h3 className="text-lg font-semibold text-gray-900">Tax Professional</h3>
+        
+        <Select
+          label="Do you have a CPA or tax advisor?"
+          name="1031x_order_has_cpa"
           value={formState.data['1031x_order_has_cpa'] || ''}
-          onChange={(e) => handleInputChange('1031x_order_has_cpa', e.target.value)}
-          onFocus={() => {
-            const sessionId = sessionStorage.getItem('1031_order_form_session') || '';
-            analytics.trackFieldInteraction('1031x_order_has_cpa', 'focus', 5, sessionId);
-          }}
-          className={`
-            w-full px-4 py-3 border rounded-lg
-            focus:ring-2 focus:ring-blue-500 focus:border-blue-500
-            transition-colors duration-200
-            ${formState.errors['1031x_order_has_cpa'] ? 'border-red-500' : 'border-gray-300'}
-          `}
-          aria-describedby={formState.errors['1031x_order_has_cpa'] ? 'has-cpa-error' : undefined}
-          aria-invalid={!!formState.errors['1031x_order_has_cpa']}
-        >
-          <option value="">Select option...</option>
-          {cpaOptions.map(option => (
-            <option key={option.value} value={option.value}>{option.label}</option>
-          ))}
-        </select>
-        <FieldError 
-          error={formState.errors['1031x_order_has_cpa']} 
-          fieldId="has-cpa"
+          onChange={(value) => handleInputChange('1031x_order_has_cpa', value)}
+          error={formState.errors['1031x_order_has_cpa']}
+          options={cpaOptions}
+          required
         />
       </div>
       
       {/* CPA Details - Conditional */}
       {showCPAFields && (
-        <>
-          <div>
-            <label 
-              htmlFor="cpa-name"
-              className="block text-sm font-medium text-gray-700 mb-2"
-            >
-              CPA Name
-            </label>
-            <input
-              id="cpa-name"
-              type="text"
+        <div className="space-y-4 ml-4 border-l-2 border-gray-200 pl-4">
+          <div className="grid md:grid-cols-2 gap-4">
+            <Input
+              label="CPA Name"
+              name="1031x_order_cpa_name"
               value={formState.data['1031x_order_cpa_name'] || ''}
-              onChange={(e) => handleInputChange('1031x_order_cpa_name', e.target.value)}
-              onFocus={() => {
-                const sessionId = sessionStorage.getItem('1031_order_form_session') || '';
-                analytics.trackFieldInteraction('1031x_order_cpa_name', 'focus', 5, sessionId);
-              }}
-              className={`
-                w-full px-4 py-3 border rounded-lg
-                focus:ring-2 focus:ring-blue-500 focus:border-blue-500
-                transition-colors duration-200
-                ${formState.errors['1031x_order_cpa_name'] ? 'border-red-500' : 'border-gray-300'}
-              `}
+              onChange={(value) => handleInputChange('1031x_order_cpa_name', value)}
+              error={formState.errors['1031x_order_cpa_name']}
               placeholder="John Smith, CPA"
-              aria-describedby={formState.errors['1031x_order_cpa_name'] ? 'cpa-name-error' : undefined}
-              aria-invalid={!!formState.errors['1031x_order_cpa_name']}
             />
-            <FieldError 
-              error={formState.errors['1031x_order_cpa_name']} 
-              fieldId="cpa-name"
+            
+            <Input
+              label="CPA Firm"
+              name="1031_order_cpa_firm"
+              value={formState.data['1031_order_cpa_firm'] || ''}
+              onChange={(value) => handleInputChange('1031_order_cpa_firm', value)}
+              error={formState.errors['1031_order_cpa_firm']}
+              placeholder="Smith & Associates CPAs"
             />
           </div>
           
-          <div>
-            <label 
-              htmlFor="cpa-email"
-              className="block text-sm font-medium text-gray-700 mb-2"
-            >
-              CPA Email (optional)
-            </label>
-            <input
-              id="cpa-email"
+          <div className="grid md:grid-cols-2 gap-4">
+            <Input
+              label="CPA Phone"
+              name="1031_order_cpa_phone"
+              type="tel"
+              value={formState.data['1031_order_cpa_phone'] || ''}
+              onChange={(value) => handleInputChange('1031_order_cpa_phone', value)}
+              error={formState.errors['1031_order_cpa_phone']}
+              placeholder="(555) 123-4567"
+            />
+            
+            <Input
+              label="CPA Email"
+              name="1031x_order_cpa_email"
               type="email"
               value={formState.data['1031x_order_cpa_email'] || ''}
-              onChange={(e) => handleInputChange('1031x_order_cpa_email', e.target.value)}
-              onFocus={() => {
-                const sessionId = sessionStorage.getItem('1031_order_form_session') || '';
-                analytics.trackFieldInteraction('1031x_order_cpa_email', 'focus', 5, sessionId);
-              }}
-              className={`
-                w-full px-4 py-3 border rounded-lg
-                focus:ring-2 focus:ring-blue-500 focus:border-blue-500
-                transition-colors duration-200
-                ${formState.errors['1031x_order_cpa_email'] ? 'border-red-500' : 'border-gray-300'}
-              `}
+              onChange={(value) => handleInputChange('1031x_order_cpa_email', value)}
+              error={formState.errors['1031x_order_cpa_email']}
               placeholder="john@smithcpa.com"
-              aria-describedby={formState.errors['1031x_order_cpa_email'] ? 'cpa-email-error' : undefined}
-              aria-invalid={!!formState.errors['1031x_order_cpa_email']}
             />
-            <FieldError 
-              error={formState.errors['1031x_order_cpa_email']} 
-              fieldId="cpa-email"
-            />
-            <p className="mt-1 text-sm text-gray-500">
-              We can coordinate with your CPA to ensure proper tax planning
-            </p>
           </div>
-        </>
+          
+          <p className="text-sm text-gray-500">
+            We can coordinate with your CPA to ensure proper tax planning
+          </p>
+        </div>
       )}
       
       {/* CPA Referral Message */}
@@ -170,72 +131,159 @@ export const ProfessionalTeamStep: React.FC = () => {
       )}
       
       {/* Realtor Information */}
-      <div className="border-t pt-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">
-          Real Estate Professional (optional)
-        </h3>
+      <div className="space-y-4">
+        <h3 className="text-lg font-semibold text-gray-900">Real Estate Professional</h3>
         
-        <div>
-          <label 
-            htmlFor="realtor-name"
-            className="block text-sm font-medium text-gray-700 mb-2"
-          >
-            Realtor/Broker Name
-          </label>
-          <input
-            id="realtor-name"
-            type="text"
+        <div className="grid md:grid-cols-2 gap-4">
+          <Input
+            label="Realtor/Broker Name"
+            name="1031x_order_realtor_name"
             value={formState.data['1031x_order_realtor_name'] || ''}
-            onChange={(e) => handleInputChange('1031x_order_realtor_name', e.target.value)}
-            onFocus={() => {
-              const sessionId = sessionStorage.getItem('1031_order_form_session') || '';
-              analytics.trackFieldInteraction('1031x_order_realtor_name', 'focus', 5, sessionId);
-            }}
-            className={`
-              w-full px-4 py-3 border rounded-lg
-              focus:ring-2 focus:ring-blue-500 focus:border-blue-500
-              transition-colors duration-200
-              ${formState.errors['1031x_order_realtor_name'] ? 'border-red-500' : 'border-gray-300'}
-            `}
+            onChange={(value) => handleInputChange('1031x_order_realtor_name', value)}
+            error={formState.errors['1031x_order_realtor_name']}
             placeholder="Jane Doe, Realtor"
-            aria-describedby={formState.errors['1031x_order_realtor_name'] ? 'realtor-name-error' : undefined}
-            aria-invalid={!!formState.errors['1031x_order_realtor_name']}
           />
-          <FieldError 
-            error={formState.errors['1031x_order_realtor_name']} 
-            fieldId="realtor-name"
+          
+          <Input
+            label="Realtor/Broker Company"
+            name="1031_order_realtor_company"
+            value={formState.data['1031_order_realtor_company'] || ''}
+            onChange={(value) => handleInputChange('1031_order_realtor_company', value)}
+            error={formState.errors['1031_order_realtor_company']}
+            placeholder="ABC Realty Group"
           />
         </div>
         
-        <div className="mt-4">
-          <label 
-            htmlFor="realtor-email"
-            className="block text-sm font-medium text-gray-700 mb-2"
-          >
-            Realtor/Broker Email
-          </label>
-          <input
-            id="realtor-email"
+        <div className="grid md:grid-cols-2 gap-4">
+          <Input
+            label="Realtor/Broker Phone"
+            name="1031_order_realtor_phone"
+            type="tel"
+            value={formState.data['1031_order_realtor_phone'] || ''}
+            onChange={(value) => handleInputChange('1031_order_realtor_phone', value)}
+            error={formState.errors['1031_order_realtor_phone']}
+            placeholder="(555) 123-4567"
+          />
+          
+          <Input
+            label="Realtor/Broker Email"
+            name="1031x_order_realtor_email"
             type="email"
             value={formState.data['1031x_order_realtor_email'] || ''}
-            onChange={(e) => handleInputChange('1031x_order_realtor_email', e.target.value)}
-            onFocus={() => {
-              const sessionId = sessionStorage.getItem('1031_order_form_session') || '';
-              analytics.trackFieldInteraction('1031x_order_realtor_email', 'focus', 5, sessionId);
-            }}
-            className={`
-              w-full px-4 py-3 border rounded-lg
-              focus:ring-2 focus:ring-blue-500 focus:border-blue-500
-              transition-colors duration-200
-              ${formState.errors['1031x_order_realtor_email'] ? 'border-red-500' : 'border-gray-300'}
-            `}
+            onChange={(value) => handleInputChange('1031x_order_realtor_email', value)}
+            error={formState.errors['1031x_order_realtor_email']}
             placeholder="jane@realty.com"
-            aria-describedby={formState.errors['1031x_order_realtor_email'] ? 'realtor-email-error' : undefined}
-            aria-invalid={!!formState.errors['1031x_order_realtor_email']}
           />
-          <FieldError 
-            error={formState.errors['1031x_order_realtor_email']} 
-            fieldId="realtor-email"
+        </div>
+      </div>
+      
+      {/* Attorney Information */}
+      <div className="space-y-4">
+        <h3 className="text-lg font-semibold text-gray-900">Legal Professional</h3>
+        
+        <RadioGroup
+          label="Do you have an attorney for this transaction?"
+          name="1031_order_has_attorney"
+          value={formState.data['1031_order_has_attorney'] || ''}
+          onChange={(value) => handleInputChange('1031_order_has_attorney', value)}
+          error={formState.errors['1031_order_has_attorney']}
+          options={[
+            { value: 'yes', label: 'Yes, I have an attorney' },
+            { value: 'no', label: 'No attorney involved' },
+            { value: 'need_referral', label: 'I need an attorney referral' }
+          ]}
+        />
+        
+        {formState.data['1031_order_has_attorney'] === 'yes' && (
+          <div className="space-y-4 ml-4 border-l-2 border-gray-200 pl-4">
+            <div className="grid md:grid-cols-2 gap-4">
+              <Input
+                label="Attorney Name"
+                name="1031_order_attorney_name"
+                value={formState.data['1031_order_attorney_name'] || ''}
+                onChange={(value) => handleInputChange('1031_order_attorney_name', value)}
+                error={formState.errors['1031_order_attorney_name']}
+                placeholder="John Doe, Esq."
+              />
+              
+              <Input
+                label="Law Firm"
+                name="1031_order_attorney_firm"
+                value={formState.data['1031_order_attorney_firm'] || ''}
+                onChange={(value) => handleInputChange('1031_order_attorney_firm', value)}
+                error={formState.errors['1031_order_attorney_firm']}
+                placeholder="Doe & Associates"
+              />
+            </div>
+            
+            <div className="grid md:grid-cols-2 gap-4">
+              <Input
+                label="Attorney Phone"
+                name="1031_order_attorney_phone"
+                type="tel"
+                value={formState.data['1031_order_attorney_phone'] || ''}
+                onChange={(value) => handleInputChange('1031_order_attorney_phone', value)}
+                error={formState.errors['1031_order_attorney_phone']}
+                placeholder="(555) 123-4567"
+              />
+              
+              <Input
+                label="Attorney Email"
+                name="1031_order_attorney_email"
+                type="email"
+                value={formState.data['1031_order_attorney_email'] || ''}
+                onChange={(value) => handleInputChange('1031_order_attorney_email', value)}
+                error={formState.errors['1031_order_attorney_email']}
+                placeholder="john@lawfirm.com"
+              />
+            </div>
+          </div>
+        )}
+      </div>
+      
+      {/* Financial Advisor Information */}
+      <div className="space-y-4">
+        <h3 className="text-lg font-semibold text-gray-900">Financial Advisor (Optional)</h3>
+        
+        <div className="grid md:grid-cols-2 gap-4">
+          <Input
+            label="Financial Advisor Name"
+            name="1031_order_financial_advisor_name"
+            value={formState.data['1031_order_financial_advisor_name'] || ''}
+            onChange={(value) => handleInputChange('1031_order_financial_advisor_name', value)}
+            error={formState.errors['1031_order_financial_advisor_name']}
+            placeholder="Sarah Johnson, CFP"
+          />
+          
+          <Input
+            label="Financial Advisor Firm"
+            name="1031_order_financial_advisor_firm"
+            value={formState.data['1031_order_financial_advisor_firm'] || ''}
+            onChange={(value) => handleInputChange('1031_order_financial_advisor_firm', value)}
+            error={formState.errors['1031_order_financial_advisor_firm']}
+            placeholder="Wealth Management Inc."
+          />
+        </div>
+        
+        <div className="grid md:grid-cols-2 gap-4">
+          <Input
+            label="Financial Advisor Phone"
+            name="1031_order_financial_advisor_phone"
+            type="tel"
+            value={formState.data['1031_order_financial_advisor_phone'] || ''}
+            onChange={(value) => handleInputChange('1031_order_financial_advisor_phone', value)}
+            error={formState.errors['1031_order_financial_advisor_phone']}
+            placeholder="(555) 123-4567"
+          />
+          
+          <Input
+            label="Financial Advisor Email"
+            name="1031_order_financial_advisor_email"
+            type="email"
+            value={formState.data['1031_order_financial_advisor_email'] || ''}
+            onChange={(value) => handleInputChange('1031_order_financial_advisor_email', value)}
+            error={formState.errors['1031_order_financial_advisor_email']}
+            placeholder="sarah@wealthmgmt.com"
           />
         </div>
       </div>

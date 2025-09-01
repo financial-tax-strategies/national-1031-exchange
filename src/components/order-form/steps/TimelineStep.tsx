@@ -1,12 +1,15 @@
 // ============================================
-// Timeline Step Component (Step 3)
+// Timeline Step Component (Step 5)
 // National 1031 Center - Order Form
 // ============================================
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useOrderForm } from '../OrderFormContext';
 import { FieldError } from '../components/FieldError';
 import { useOrderFormAnalytics } from '../../../lib/analytics/orderFormAnalytics';
+import { Input } from '../../ui/Input';
+import { Select } from '../../ui/Select';
+import { RadioGroup } from '../../ui/RadioGroup';
 
 // ============================================
 // Contract Status Options
@@ -35,10 +38,10 @@ export const TimelineStep: React.FC = () => {
   const { formState, updateField } = useOrderForm();
   const analytics = useOrderFormAnalytics();
   
-  // Track step start
+  // Track step start (Step 5)
   useEffect(() => {
     const sessionId = sessionStorage.getItem('1031_order_form_session') || '';
-    analytics.trackStepStart(3, sessionId);
+    analytics.trackStepStart(5, sessionId);
   }, [analytics]);
   
   // Determine if date fields should be shown
@@ -95,148 +98,231 @@ export const TimelineStep: React.FC = () => {
         </p>
       </div>
       
-      {/* Contract Status */}
-      <div>
-        <label 
-          htmlFor="contract-status"
-          className="block text-sm font-medium text-gray-700 mb-2"
-        >
-          What's the current status of your property? <span className="text-red-500">*</span>
-        </label>
-        <select
-          id="contract-status"
+      {/* Sale Status Section */}
+      <div className="space-y-4">
+        <h3 className="text-lg font-semibold text-gray-900">Sale Status</h3>
+        
+        <Select
+          label="What's the current status of your property?"
+          name="1031x_order_contract_status"
           value={formState.data['1031x_order_contract_status'] || ''}
-          onChange={(e) => handleInputChange('1031x_order_contract_status', e.target.value)}
-          onFocus={() => {
-            const sessionId = sessionStorage.getItem('1031_order_form_session') || '';
-            analytics.trackFieldInteraction('1031x_order_contract_status', 'focus', 3, sessionId);
-          }}
-          className={`
-            w-full px-4 py-3 border rounded-lg
-            focus:ring-2 focus:ring-blue-500 focus:border-blue-500
-            transition-colors duration-200
-            ${formState.errors['1031x_order_contract_status'] ? 'border-red-500' : 'border-gray-300'}
-          `}
-          aria-describedby={formState.errors['1031x_order_contract_status'] ? 'contract-status-error' : undefined}
-          aria-invalid={!!formState.errors['1031x_order_contract_status']}
-        >
-          <option value="">Select status...</option>
-          {contractStatuses.map(status => (
-            <option key={status.value} value={status.value}>{status.label}</option>
-          ))}
-        </select>
-        <FieldError 
-          error={formState.errors['1031x_order_contract_status']} 
-          fieldId="contract-status"
+          onChange={(value) => handleInputChange('1031x_order_contract_status', value)}
+          error={formState.errors['1031x_order_contract_status']}
+          options={contractStatuses}
+          required
+        />
+        
+        {/* Listing Agent Information */}
+        <div className="grid md:grid-cols-2 gap-4">
+          <Input
+            label="Listing Agent Name"
+            name="1031_order_listing_agent_name"
+            value={formState.data['1031_order_listing_agent_name'] || ''}
+            onChange={(value) => handleInputChange('1031_order_listing_agent_name', value)}
+            error={formState.errors['1031_order_listing_agent_name']}
+            placeholder="Jane Doe"
+          />
+          
+          <Input
+            label="Listing Agent Phone"
+            name="1031_order_listing_agent_phone"
+            type="tel"
+            value={formState.data['1031_order_listing_agent_phone'] || ''}
+            onChange={(value) => handleInputChange('1031_order_listing_agent_phone', value)}
+            error={formState.errors['1031_order_listing_agent_phone']}
+            placeholder="(555) 123-4567"
+          />
+        </div>
+        
+        <div className="grid md:grid-cols-2 gap-4">
+          <Input
+            label="Listing Agent Email"
+            name="1031_order_listing_agent_email"
+            type="email"
+            value={formState.data['1031_order_listing_agent_email'] || ''}
+            onChange={(value) => handleInputChange('1031_order_listing_agent_email', value)}
+            error={formState.errors['1031_order_listing_agent_email']}
+            placeholder="jane@realty.com"
+          />
+          
+          <Input
+            label="Listing Agent Company"
+            name="1031_order_listing_agent_company"
+            value={formState.data['1031_order_listing_agent_company'] || ''}
+            onChange={(value) => handleInputChange('1031_order_listing_agent_company', value)}
+            error={formState.errors['1031_order_listing_agent_company']}
+            placeholder="ABC Realty"
+          />
+        </div>
+      </div>
+      
+      {/* Important Dates */}
+      <div className="space-y-4">
+        <h3 className="text-lg font-semibold text-gray-900">Important Dates</h3>
+        
+        {/* Conditional Date Fields */}
+        {showClosingDate && (
+          <Input
+            label="Closing Date"
+            name="1031x_order_closing_date"
+            type="date"
+            value={formState.data['1031x_order_closing_date'] || ''}
+            onChange={(value) => handleInputChange('1031x_order_closing_date', value)}
+            error={formState.errors['1031x_order_closing_date']}
+            min={today}
+            required
+            helpText="Your 45-day identification period will start on this date"
+          />
+        )}
+        
+        {showListingDate && (
+          <Input
+            label="Expected Listing Date"
+            name="1031x_order_expected_listing_date"
+            type="date"
+            value={formState.data['1031x_order_expected_listing_date'] || ''}
+            onChange={(value) => handleInputChange('1031x_order_expected_listing_date', value)}
+            error={formState.errors['1031x_order_expected_listing_date']}
+            min={today}
+            required
+          />
+        )}
+        
+        {/* Escrow Information */}
+        <div className="grid md:grid-cols-2 gap-4">
+          <Input
+            label="Escrow Number"
+            name="1031_order_escrow_number"
+            value={formState.data['1031_order_escrow_number'] || ''}
+            onChange={(value) => handleInputChange('1031_order_escrow_number', value)}
+            error={formState.errors['1031_order_escrow_number']}
+            placeholder="ESC-123456"
+          />
+          
+          <Input
+            label="Escrow Company"
+            name="1031_order_escrow_company"
+            value={formState.data['1031_order_escrow_company'] || ''}
+            onChange={(value) => handleInputChange('1031_order_escrow_company', value)}
+            error={formState.errors['1031_order_escrow_company']}
+            placeholder="ABC Title & Escrow"
+          />
+        </div>
+        
+        <div className="grid md:grid-cols-2 gap-4">
+          <Input
+            label="Escrow Officer Name"
+            name="1031_order_escrow_officer_name"
+            value={formState.data['1031_order_escrow_officer_name'] || ''}
+            onChange={(value) => handleInputChange('1031_order_escrow_officer_name', value)}
+            error={formState.errors['1031_order_escrow_officer_name']}
+            placeholder="John Smith"
+          />
+          
+          <Input
+            label="Escrow Officer Phone"
+            name="1031_order_escrow_officer_phone"
+            type="tel"
+            value={formState.data['1031_order_escrow_officer_phone'] || ''}
+            onChange={(value) => handleInputChange('1031_order_escrow_officer_phone', value)}
+            error={formState.errors['1031_order_escrow_officer_phone']}
+            placeholder="(555) 123-4567"
+          />
+        </div>
+        
+        <Input
+          label="Escrow Officer Email"
+          name="1031_order_escrow_officer_email"
+          type="email"
+          value={formState.data['1031_order_escrow_officer_email'] || ''}
+          onChange={(value) => handleInputChange('1031_order_escrow_officer_email', value)}
+          error={formState.errors['1031_order_escrow_officer_email']}
+          placeholder="john@escrow.com"
         />
       </div>
       
-      {/* Conditional Date Fields */}
-      {showClosingDate && (
-        <div>
-          <label 
-            htmlFor="closing-date"
-            className="block text-sm font-medium text-gray-700 mb-2"
-          >
-            Closing Date <span className="text-red-500">*</span>
-          </label>
-          <input
-            id="closing-date"
-            type="date"
-            value={formState.data['1031x_order_closing_date'] || ''}
-            onChange={(e) => handleInputChange('1031x_order_closing_date', e.target.value)}
-            onFocus={() => {
-              const sessionId = sessionStorage.getItem('1031_order_form_session') || '';
-              analytics.trackFieldInteraction('1031x_order_closing_date', 'focus', 3, sessionId);
-            }}
-            min={today}
-            className={`
-              w-full px-4 py-3 border rounded-lg
-              focus:ring-2 focus:ring-blue-500 focus:border-blue-500
-              transition-colors duration-200
-              ${formState.errors['1031x_order_closing_date'] ? 'border-red-500' : 'border-gray-300'}
-            `}
-            aria-describedby={formState.errors['1031x_order_closing_date'] ? 'closing-date-error' : undefined}
-            aria-invalid={!!formState.errors['1031x_order_closing_date']}
-          />
-          <FieldError 
-            error={formState.errors['1031x_order_closing_date']} 
-            fieldId="closing-date"
-          />
-          <p className="mt-1 text-sm text-gray-500">
-            Your 45-day identification period will start on this date
-          </p>
-        </div>
-      )}
-      
-      {showListingDate && (
-        <div>
-          <label 
-            htmlFor="listing-date"
-            className="block text-sm font-medium text-gray-700 mb-2"
-          >
-            Expected Listing Date <span className="text-red-500">*</span>
-          </label>
-          <input
-            id="listing-date"
-            type="date"
-            value={formState.data['1031x_order_expected_listing_date'] || ''}
-            onChange={(e) => handleInputChange('1031x_order_expected_listing_date', e.target.value)}
-            onFocus={() => {
-              const sessionId = sessionStorage.getItem('1031_order_form_session') || '';
-              analytics.trackFieldInteraction('1031x_order_expected_listing_date', 'focus', 3, sessionId);
-            }}
-            min={today}
-            className={`
-              w-full px-4 py-3 border rounded-lg
-              focus:ring-2 focus:ring-blue-500 focus:border-blue-500
-              transition-colors duration-200
-              ${formState.errors['1031x_order_expected_listing_date'] ? 'border-red-500' : 'border-gray-300'}
-            `}
-            aria-describedby={formState.errors['1031x_order_expected_listing_date'] ? 'listing-date-error' : undefined}
-            aria-invalid={!!formState.errors['1031x_order_expected_listing_date']}
-          />
-          <FieldError 
-            error={formState.errors['1031x_order_expected_listing_date']} 
-            fieldId="listing-date"
-          />
-        </div>
-      )}
-      
-      {/* Urgency Level */}
-      <div>
-        <label 
-          htmlFor="urgency-level"
-          className="block text-sm font-medium text-gray-700 mb-2"
-        >
-          How soon do you need to complete your exchange? <span className="text-red-500">*</span>
-        </label>
-        <select
-          id="urgency-level"
+      {/* Urgency and Replacement Property */}
+      <div className="space-y-4">
+        <h3 className="text-lg font-semibold text-gray-900">Exchange Timing</h3>
+        
+        <Select
+          label="How soon do you need to complete your exchange?"
+          name="1031x_order_urgency_level"
           value={formState.data['1031x_order_urgency_level'] || ''}
-          onChange={(e) => handleInputChange('1031x_order_urgency_level', e.target.value)}
-          onFocus={() => {
-            const sessionId = sessionStorage.getItem('1031_order_form_session') || '';
-            analytics.trackFieldInteraction('1031x_order_urgency_level', 'focus', 3, sessionId);
-          }}
-          className={`
-            w-full px-4 py-3 border rounded-lg
-            focus:ring-2 focus:ring-blue-500 focus:border-blue-500
-            transition-colors duration-200
-            ${formState.errors['1031x_order_urgency_level'] ? 'border-red-500' : 'border-gray-300'}
-          `}
-          aria-describedby={formState.errors['1031x_order_urgency_level'] ? 'urgency-level-error' : undefined}
-          aria-invalid={!!formState.errors['1031x_order_urgency_level']}
-        >
-          <option value="">Select timeframe...</option>
-          {urgencyLevels.map(level => (
-            <option key={level.value} value={level.value}>{level.label}</option>
-          ))}
-        </select>
-        <FieldError 
-          error={formState.errors['1031x_order_urgency_level']} 
-          fieldId="urgency-level"
+          onChange={(value) => handleInputChange('1031x_order_urgency_level', value)}
+          error={formState.errors['1031x_order_urgency_level']}
+          options={urgencyLevels}
+          required
         />
+        
+        <RadioGroup
+          label="Have you identified replacement property?"
+          name="1031_order_replacement_identified"
+          value={formState.data['1031_order_replacement_identified'] || ''}
+          onChange={(value) => handleInputChange('1031_order_replacement_identified', value)}
+          error={formState.errors['1031_order_replacement_identified']}
+          options={[
+            { value: 'yes', label: 'Yes, I have specific properties in mind' },
+            { value: 'partial', label: 'I have some ideas but need help' },
+            { value: 'no', label: 'No, I need assistance finding properties' }
+          ]}
+        />
+        
+        {formState.data['1031_order_replacement_identified'] === 'yes' && (
+          <div className="space-y-4">
+            <Input
+              label="Replacement Property Address"
+              name="1031_order_replacement_address"
+              value={formState.data['1031_order_replacement_address'] || ''}
+              onChange={(value) => handleInputChange('1031_order_replacement_address', value)}
+              error={formState.errors['1031_order_replacement_address']}
+              placeholder="123 New Property St"
+            />
+            
+            <div className="grid md:grid-cols-3 gap-4">
+              <Input
+                label="City"
+                name="1031_order_replacement_city"
+                value={formState.data['1031_order_replacement_city'] || ''}
+                onChange={(value) => handleInputChange('1031_order_replacement_city', value)}
+                error={formState.errors['1031_order_replacement_city']}
+                placeholder="Los Angeles"
+              />
+              
+              <Input
+                label="State"
+                name="1031_order_replacement_state"
+                value={formState.data['1031_order_replacement_state'] || ''}
+                onChange={(value) => handleInputChange('1031_order_replacement_state', value)}
+                error={formState.errors['1031_order_replacement_state']}
+                placeholder="CA"
+              />
+              
+              <Input
+                label="ZIP Code"
+                name="1031_order_replacement_zip"
+                value={formState.data['1031_order_replacement_zip'] || ''}
+                onChange={(value) => handleInputChange('1031_order_replacement_zip', value)}
+                error={formState.errors['1031_order_replacement_zip']}
+                placeholder="90001"
+              />
+            </div>
+            
+            <Input
+              label="Expected Purchase Price"
+              name="1031_order_replacement_price"
+              type="currency"
+              value={formState.data['1031_order_replacement_price'] ? formState.data['1031_order_replacement_price'].toLocaleString('en-US') : ''}
+              onChange={(value) => {
+                const cleaned = value.replace(/[^0-9.]/g, '');
+                const numValue = cleaned === '' ? undefined : parseFloat(cleaned);
+                updateField('1031_order_replacement_price', numValue);
+              }}
+              error={formState.errors['1031_order_replacement_price']}
+              placeholder="1,200,000"
+            />
+          </div>
+        )}
       </div>
       
       {/* Urgency Alert */}

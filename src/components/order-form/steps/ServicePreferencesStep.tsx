@@ -1,5 +1,5 @@
 // ============================================
-// Service Preferences Step Component (Step 6)
+// Service Preferences Step Component (Step 7)
 // National 1031 Center - Order Form
 // ============================================
 
@@ -7,6 +7,10 @@ import React, { useEffect } from 'react';
 import { useOrderForm } from '../OrderFormContext';
 import { FieldError } from '../components/FieldError';
 import { useOrderFormAnalytics } from '../../../lib/analytics/orderFormAnalytics';
+import { Select } from '../../ui/Select';
+import { RadioGroup } from '../../ui/RadioGroup';
+import { CheckboxInput } from '../../ui/CheckboxInput';
+import { Input } from '../../ui/Input';
 
 // ============================================
 // Options
@@ -42,10 +46,10 @@ export const ServicePreferencesStep: React.FC = () => {
   const { formState, updateField } = useOrderForm();
   const analytics = useOrderFormAnalytics();
   
-  // Track step start
+  // Track step start (Step 7)
   useEffect(() => {
     const sessionId = sessionStorage.getItem('1031_order_form_session') || '';
-    analytics.trackStepStart(6, sessionId);
+    analytics.trackStepStart(7, sessionId);
   }, [analytics]);
   
   const handleInputChange = (field: keyof typeof formState.data, value: string) => {
@@ -72,39 +76,18 @@ export const ServicePreferencesStep: React.FC = () => {
         </p>
       </div>
       
-      {/* Contract Preference */}
-      <div>
-        <label 
-          htmlFor="contract-preference"
-          className="block text-sm font-medium text-gray-700 mb-2"
-        >
-          How would you prefer to sign your exchange agreements? <span className="text-red-500">*</span>
-        </label>
-        <select
-          id="contract-preference"
+      {/* Service Preferences Section */}
+      <div className="space-y-4">
+        <h3 className="text-lg font-semibold text-gray-900">Service Preferences</h3>
+        
+        <Select
+          label="How would you prefer to sign your exchange agreements?"
+          name="1031x_order_contract_preference"
           value={formState.data['1031x_order_contract_preference'] || ''}
-          onChange={(e) => handleInputChange('1031x_order_contract_preference', e.target.value)}
-          onFocus={() => {
-            const sessionId = sessionStorage.getItem('1031_order_form_session') || '';
-            analytics.trackFieldInteraction('1031x_order_contract_preference', 'focus', 6, sessionId);
-          }}
-          className={`
-            w-full px-4 py-3 border rounded-lg
-            focus:ring-2 focus:ring-blue-500 focus:border-blue-500
-            transition-colors duration-200
-            ${formState.errors['1031x_order_contract_preference'] ? 'border-red-500' : 'border-gray-300'}
-          `}
-          aria-describedby={formState.errors['1031x_order_contract_preference'] ? 'contract-preference-error' : undefined}
-          aria-invalid={!!formState.errors['1031x_order_contract_preference']}
-        >
-          <option value="">Select preference...</option>
-          {contractPreferences.map(option => (
-            <option key={option.value} value={option.value}>{option.label}</option>
-          ))}
-        </select>
-        <FieldError 
-          error={formState.errors['1031x_order_contract_preference']} 
-          fieldId="contract-preference"
+          onChange={(value) => handleInputChange('1031x_order_contract_preference', value)}
+          error={formState.errors['1031x_order_contract_preference']}
+          options={contractPreferences}
+          required
         />
       </div>
       
@@ -129,114 +112,159 @@ export const ServicePreferencesStep: React.FC = () => {
         </div>
       )}
       
-      {/* Consultation Preference */}
-      <div>
-        <label 
-          htmlFor="consultation-preference"
-          className="block text-sm font-medium text-gray-700 mb-2"
-        >
-          How would you like to conduct your initial consultation? <span className="text-red-500">*</span>
-        </label>
-        <select
-          id="consultation-preference"
+      {/* Consultation Preferences */}
+      <div className="space-y-4">
+        <Select
+          label="How would you like to conduct your initial consultation?"
+          name="1031x_order_consultation_preference"
           value={formState.data['1031x_order_consultation_preference'] || ''}
-          onChange={(e) => handleInputChange('1031x_order_consultation_preference', e.target.value)}
-          onFocus={() => {
-            const sessionId = sessionStorage.getItem('1031_order_form_session') || '';
-            analytics.trackFieldInteraction('1031x_order_consultation_preference', 'focus', 6, sessionId);
-          }}
-          className={`
-            w-full px-4 py-3 border rounded-lg
-            focus:ring-2 focus:ring-blue-500 focus:border-blue-500
-            transition-colors duration-200
-            ${formState.errors['1031x_order_consultation_preference'] ? 'border-red-500' : 'border-gray-300'}
-          `}
-          aria-describedby={formState.errors['1031x_order_consultation_preference'] ? 'consultation-preference-error' : undefined}
-          aria-invalid={!!formState.errors['1031x_order_consultation_preference']}
-        >
-          <option value="">Select preference...</option>
-          {consultationPreferences.map(option => (
-            <option key={option.value} value={option.value}>{option.label}</option>
-          ))}
-        </select>
-        <FieldError 
-          error={formState.errors['1031x_order_consultation_preference']} 
-          fieldId="consultation-preference"
+          onChange={(value) => handleInputChange('1031x_order_consultation_preference', value)}
+          error={formState.errors['1031x_order_consultation_preference']}
+          options={consultationPreferences}
+          required
+        />
+        
+        <RadioGroup
+          label="Best time to contact you?"
+          name="1031_order_best_contact_time"
+          value={formState.data['1031_order_best_contact_time'] || ''}
+          onChange={(value) => handleInputChange('1031_order_best_contact_time', value)}
+          error={formState.errors['1031_order_best_contact_time']}
+          options={[
+            { value: 'morning', label: 'Morning (8am-12pm)' },
+            { value: 'afternoon', label: 'Afternoon (12pm-5pm)' },
+            { value: 'evening', label: 'Evening (5pm-8pm)' },
+            { value: 'anytime', label: 'Anytime during business hours' }
+          ]}
+          orientation="horizontal"
         />
       </div>
       
-      {/* How They Heard About Us */}
-      <div>
-        <label 
-          htmlFor="how-heard"
-          className="block text-sm font-medium text-gray-700 mb-2"
-        >
-          How did you hear about us? <span className="text-red-500">*</span>
-        </label>
-        <select
-          id="how-heard"
+      {/* Referral Information */}
+      <div className="space-y-4">
+        <h3 className="text-lg font-semibold text-gray-900">Referral Information</h3>
+        
+        <Select
+          label="How did you hear about us?"
+          name="1031x_order_how_heard"
           value={formState.data['1031x_order_how_heard'] || ''}
-          onChange={(e) => handleInputChange('1031x_order_how_heard', e.target.value)}
-          onFocus={() => {
-            const sessionId = sessionStorage.getItem('1031_order_form_session') || '';
-            analytics.trackFieldInteraction('1031x_order_how_heard', 'focus', 6, sessionId);
-          }}
-          className={`
-            w-full px-4 py-3 border rounded-lg
-            focus:ring-2 focus:ring-blue-500 focus:border-blue-500
-            transition-colors duration-200
-            ${formState.errors['1031x_order_how_heard'] ? 'border-red-500' : 'border-gray-300'}
-          `}
-          aria-describedby={formState.errors['1031x_order_how_heard'] ? 'how-heard-error' : undefined}
-          aria-invalid={!!formState.errors['1031x_order_how_heard']}
-        >
-          <option value="">Select source...</option>
-          {referralSources.map(source => (
-            <option key={source.value} value={source.value}>{source.label}</option>
-          ))}
-        </select>
-        <FieldError 
-          error={formState.errors['1031x_order_how_heard']} 
-          fieldId="how-heard"
+          onChange={(value) => handleInputChange('1031x_order_how_heard', value)}
+          error={formState.errors['1031x_order_how_heard']}
+          options={referralSources}
+          required
+        />
+        
+        {(formState.data['1031x_order_how_heard'] === 'cpa_referral' || 
+          formState.data['1031x_order_how_heard'] === 'realtor_referral' || 
+          formState.data['1031x_order_how_heard'] === 'previous_client') && (
+          <Input
+            label="Referral Name"
+            name="1031_order_referral_name"
+            value={formState.data['1031_order_referral_name'] || ''}
+            onChange={(value) => handleInputChange('1031_order_referral_name', value)}
+            error={formState.errors['1031_order_referral_name']}
+            placeholder="Name of person who referred you"
+          />
+        )}
+        
+        {formState.data['1031x_order_how_heard'] === 'other' && (
+          <Input
+            label="Please specify"
+            name="1031_order_referral_other"
+            value={formState.data['1031_order_referral_other'] || ''}
+            onChange={(value) => handleInputChange('1031_order_referral_other', value)}
+            error={formState.errors['1031_order_referral_other']}
+            placeholder="How did you hear about us?"
+          />
+        )}
+      </div>
+      
+      {/* Exchange Goals */}
+      <div className="space-y-4">
+        <h3 className="text-lg font-semibold text-gray-900">Exchange Goals</h3>
+        
+        <RadioGroup
+          label="Primary goal for this exchange?"
+          name="1031_order_primary_goal"
+          value={formState.data['1031_order_primary_goal'] || ''}
+          onChange={(value) => handleInputChange('1031_order_primary_goal', value)}
+          error={formState.errors['1031_order_primary_goal']}
+          options={[
+            { value: 'defer_taxes', label: 'Defer capital gains taxes' },
+            { value: 'upgrade_property', label: 'Upgrade to better property' },
+            { value: 'diversify', label: 'Diversify portfolio' },
+            { value: 'consolidate', label: 'Consolidate properties' },
+            { value: 'relocate', label: 'Relocate investments' },
+            { value: 'estate_planning', label: 'Estate planning' }
+          ]}
+        />
+        
+        <CheckboxInput
+          label="I would like information about Delaware Statutory Trusts (DSTs)"
+          name="1031_order_interested_dst"
+          checked={formState.data['1031_order_interested_dst'] || false}
+          onChange={(checked) => updateField('1031_order_interested_dst', checked)}
+          description="DSTs offer passive investment options for 1031 exchanges"
+        />
+        
+        <CheckboxInput
+          label="I would like information about Qualified Opportunity Zones"
+          name="1031_order_interested_qoz"
+          checked={formState.data['1031_order_interested_qoz'] || false}
+          onChange={(checked) => updateField('1031_order_interested_qoz', checked)}
+          description="Alternative tax deferral strategy to consider"
         />
       </div>
       
-      {/* Additional Notes */}
-      <div>
-        <label 
-          htmlFor="additional-notes"
-          className="block text-sm font-medium text-gray-700 mb-2"
-        >
-          Any special circumstances or questions? (optional)
-        </label>
-        <textarea
-          id="additional-notes"
-          value={formState.data['1031x_order_additional_notes'] || ''}
-          onChange={(e) => handleTextAreaChange('1031x_order_additional_notes', e.target.value)}
-          onFocus={() => {
-            const sessionId = sessionStorage.getItem('1031_order_form_session') || '';
-            analytics.trackFieldInteraction('1031x_order_additional_notes', 'focus', 6, sessionId);
-          }}
-          rows={4}
-          className={`
-            w-full px-4 py-3 border rounded-lg
-            focus:ring-2 focus:ring-blue-500 focus:border-blue-500
-            transition-colors duration-200
-            ${formState.errors['1031x_order_additional_notes'] ? 'border-red-500' : 'border-gray-300'}
-          `}
-          placeholder="Tell us about any unique aspects of your exchange or questions you have..."
-          aria-describedby={formState.errors['1031x_order_additional_notes'] ? 'additional-notes-error' : undefined}
-          aria-invalid={!!formState.errors['1031x_order_additional_notes']}
-        />
-        <div className="flex justify-between items-center mt-1">
-          <FieldError 
-            error={formState.errors['1031x_order_additional_notes']} 
-            fieldId="additional-notes"
+      {/* Additional Information */}
+      <div className="space-y-4">
+        <h3 className="text-lg font-semibold text-gray-900">Additional Information</h3>
+        
+        <div>
+          <label 
+            htmlFor="additional-notes"
+            className="block text-sm font-medium text-gray-700 mb-2"
+          >
+            Any special circumstances or questions? (optional)
+          </label>
+          <textarea
+            id="additional-notes"
+            value={formState.data['1031x_order_additional_notes'] || ''}
+            onChange={(e) => handleTextAreaChange('1031x_order_additional_notes', e.target.value)}
+            onFocus={() => {
+              const sessionId = sessionStorage.getItem('1031_order_form_session') || '';
+              analytics.trackFieldInteraction('1031x_order_additional_notes', 'focus', 7, sessionId);
+            }}
+            rows={4}
+            className={`
+              w-full px-4 py-3 border rounded-lg
+              focus:ring-2 focus:ring-blue-500 focus:border-blue-500
+              transition-colors duration-200
+              ${formState.errors['1031x_order_additional_notes'] ? 'border-red-500' : 'border-gray-300'}
+            `}
+            placeholder="Tell us about any unique aspects of your exchange or questions you have..."
+            aria-describedby={formState.errors['1031x_order_additional_notes'] ? 'additional-notes-error' : undefined}
+            aria-invalid={!!formState.errors['1031x_order_additional_notes']}
           />
-          <span className={`text-sm ${remainingChars < 50 ? 'text-red-600' : 'text-gray-500'}`}>
-            {remainingChars} characters remaining
-          </span>
+          <div className="flex justify-between items-center mt-1">
+            <FieldError 
+              error={formState.errors['1031x_order_additional_notes']} 
+              fieldId="additional-notes"
+            />
+            <span className={`text-sm ${remainingChars < 50 ? 'text-red-600' : 'text-gray-500'}`}>
+              {remainingChars} characters remaining
+            </span>
+          </div>
         </div>
+        
+        <Input
+          label="Promo Code (if applicable)"
+          name="1031_order_promo_code"
+          value={formState.data['1031_order_promo_code'] || ''}
+          onChange={(value) => handleInputChange('1031_order_promo_code', value)}
+          error={formState.errors['1031_order_promo_code']}
+          placeholder="Enter promo code"
+        />
       </div>
       
       {/* Summary Box */}

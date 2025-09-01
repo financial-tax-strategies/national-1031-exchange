@@ -11,21 +11,25 @@ import type { FormStep } from '../../../lib/types/orderForm';
 // ============================================
 
 const stepLabels: Record<FormStep, string> = {
-  1: 'Basic Info',
-  2: 'Property Details',
-  3: 'Timeline',
-  4: 'Exchange Goals',
-  5: 'Your Team',
-  6: 'Preferences'
+  1: 'Contact Info',
+  2: 'Entity Info',
+  3: 'Property Details',
+  4: 'Second Property',
+  5: 'Timeline',
+  6: 'Your Team',
+  7: 'Exchange Goals',
+  8: 'Preferences'
 };
 
 const stepDescriptions: Record<FormStep, string> = {
   1: 'Contact information',
-  2: 'Property being sold',
-  3: 'Important dates',
-  4: 'Exchange strategy',
-  5: 'Professional team',
-  6: 'Service preferences'
+  2: 'Taxpayer details',
+  3: 'Property being sold',
+  4: 'Additional property',
+  5: 'Important dates',
+  6: 'Professional team',
+  7: 'Exchange strategy',
+  8: 'Service preferences'
 };
 
 // ============================================
@@ -36,6 +40,7 @@ interface ProgressIndicatorProps {
   currentStep: FormStep;
   completedSteps: FormStep[];
   onStepClick?: (step: FormStep) => void;
+  hasSecondProperty?: boolean;
 }
 
 // ============================================
@@ -45,9 +50,11 @@ interface ProgressIndicatorProps {
 export const ProgressIndicator: React.FC<ProgressIndicatorProps> = ({
   currentStep,
   completedSteps,
-  onStepClick
+  onStepClick,
+  hasSecondProperty = false
 }) => {
-  const steps: FormStep[] = [1, 2, 3, 4, 5, 6];
+  // Include or exclude step 4 based on hasSecondProperty
+  const steps: FormStep[] = hasSecondProperty ? [1, 2, 3, 4, 5, 6, 7, 8] : [1, 2, 3, 5, 6, 7, 8];
   
   const getStepStatus = (step: FormStep) => {
     if (step === currentStep) return 'current';
@@ -65,7 +72,7 @@ export const ProgressIndicator: React.FC<ProgressIndicatorProps> = ({
       {/* Progress Bar - Moved to top */}
       <div className="overflow-hidden h-2 mb-4 text-xs flex rounded-full bg-gray-200">
         <div
-          style={{ width: `${(completedSteps.length / 6) * 100}%` }}
+          style={{ width: `${(completedSteps.length / (hasSecondProperty ? 8 : 7)) * 100}%` }}
           className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-900 transition-all duration-500 ease-out"
         />
       </div>
@@ -73,7 +80,7 @@ export const ProgressIndicator: React.FC<ProgressIndicatorProps> = ({
       {/* Step Count */}
       <div className="text-center mb-6">
         <span className="text-sm text-gray-600">
-          Step {currentStep} of 6
+          Step {currentStep} of {hasSecondProperty ? 8 : 7}
         </span>
       </div>
       
@@ -179,7 +186,7 @@ export const ProgressIndicator: React.FC<ProgressIndicatorProps> = ({
           
           {/* Next Step Info */}
           <div className="text-right">
-            {currentStep < 6 && (
+            {currentStep < (hasSecondProperty ? 8 : 7) && (
               <div className="text-xs text-gray-500">
                 Next: {stepLabels[(currentStep + 1) as FormStep]}
               </div>

@@ -7,11 +7,13 @@ import React, { useEffect, useRef } from 'react';
 import { OrderFormProvider, useOrderForm } from './OrderFormContext';
 import { ProgressIndicator } from './components/ProgressIndicator';
 import { StepNavigation } from './components/StepNavigation';
-import { BasicInfoStep } from './steps/BasicInfoStep';
+import { ContactInfoStep } from './steps/ContactInfoStep';
+import { EntityInfoStep } from './steps/EntityInfoStep';
 import { PropertyDetailsStep } from './steps/PropertyDetailsStep';
+import { AdditionalPropertiesStep } from './steps/AdditionalPropertiesStep';
 import { TimelineStep } from './steps/TimelineStep';
-import { ExchangeGoalsStep } from './steps/ExchangeGoalsStep';
 import { ProfessionalTeamStep } from './steps/ProfessionalTeamStep';
+import { ExchangeGoalsStep } from './steps/ExchangeGoalsStep';
 import { ServicePreferencesStep } from './steps/ServicePreferencesStep';
 import type { FormStep } from '../../lib/types/orderForm';
 import { COMPANY, getPhoneLink } from '../../config/company';
@@ -21,12 +23,14 @@ import { COMPANY, getPhoneLink } from '../../config/company';
 // ============================================
 
 const stepComponents = {
-  1: BasicInfoStep,
-  2: PropertyDetailsStep,
-  3: TimelineStep,
-  4: ExchangeGoalsStep,
-  5: ProfessionalTeamStep,
-  6: ServicePreferencesStep
+  1: ContactInfoStep,
+  2: EntityInfoStep,
+  3: PropertyDetailsStep,
+  4: AdditionalPropertiesStep,
+  5: TimelineStep,
+  6: ProfessionalTeamStep,
+  7: ExchangeGoalsStep,
+  8: ServicePreferencesStep
 } as const;
 
 // ============================================
@@ -48,7 +52,10 @@ const OrderFormContent: React.FC = () => {
   
   const formContainerRef = useRef<HTMLDivElement>(null);
   const CurrentStepComponent = stepComponents[formState.currentStep];
-  const isLastStep = formState.currentStep === 6;
+  const isLastStep = formState.currentStep === 8;
+  
+  // Skip step 4 if no second property
+  const shouldShowStep = formState.currentStep === 4 ? formState.hasSecondProperty : true;
   
   // Track page view for analytics and scroll to form
   useEffect(() => {
@@ -73,6 +80,7 @@ const OrderFormContent: React.FC = () => {
           currentStep={formState.currentStep}
           completedSteps={formState.completedSteps}
           onStepClick={(step: FormStep) => goToStep(step)}
+          hasSecondProperty={formState.hasSecondProperty}
         />
       </div>
       

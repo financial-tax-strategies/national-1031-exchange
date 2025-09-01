@@ -23,7 +23,8 @@ const initialFormState: FormState = {
   currentStep: 1,
   data: {},
   completedSteps: [],
-  errors: {}
+  errors: {},
+  hasSecondProperty: false
 };
 
 // ============================================
@@ -167,6 +168,29 @@ export const OrderFormProvider: React.FC<OrderFormProviderProps> = ({
   }, [saveProgress, sessionId]);
 
   // ============================================
+  // Update Multiple Fields
+  // ============================================
+  
+  const updateMultipleFields = useCallback((fields: Partial<OrderFormData>) => {
+    setFormState(prev => {
+      const newState = {
+        ...prev,
+        data: {
+          ...prev.data,
+          ...fields
+        },
+        errors: Object.keys(fields).reduce((acc, field) => ({
+          ...acc,
+          [field]: undefined
+        }), prev.errors)
+      };
+      
+      saveProgress(newState);
+      return newState;
+    });
+  }, [saveProgress]);
+
+  // ============================================
   // Step Validation
   // ============================================
   
@@ -210,7 +234,12 @@ export const OrderFormProvider: React.FC<OrderFormProviderProps> = ({
     setError(null);
     
     setFormState(prev => {
-      const nextStepNum = Math.min(prev.currentStep + 1, 6) as FormStep;
+      // Skip step 4 if no second property
+      let nextStepNum = prev.currentStep + 1;
+      if (nextStepNum === 4 && !prev.hasSecondProperty) {
+        nextStepNum = 5;
+      }
+      nextStepNum = Math.min(nextStepNum, 8) as FormStep;
       const newCompletedSteps = prev.completedSteps.includes(prev.currentStep)
         ? prev.completedSteps
         : [...prev.completedSteps, prev.currentStep];
@@ -239,7 +268,12 @@ export const OrderFormProvider: React.FC<OrderFormProviderProps> = ({
     setError(null);
     
     setFormState(prev => {
-      const prevStepNum = Math.max(prev.currentStep - 1, 1) as FormStep;
+      // Skip step 4 if no second property when going back
+      let prevStepNum = prev.currentStep - 1;
+      if (prevStepNum === 4 && !prev.hasSecondProperty) {
+        prevStepNum = 3;
+      }
+      prevStepNum = Math.max(prevStepNum, 1) as FormStep;
       const newState = {
         ...prev,
         currentStep: prevStepNum
@@ -272,8 +306,9 @@ export const OrderFormProvider: React.FC<OrderFormProviderProps> = ({
   // ============================================
   
   const submitForm = useCallback(async () => {
-    // Validate all steps
-    for (let step = 1; step <= 6; step++) {
+    // Validate all steps (skip step 4 if no second property)
+    for (let step = 1; step <= 8; step++) {
+      if (step === 4 && !formState.hasSecondProperty) continue;
       const result = validateStep(step, formState.data);
       if (!result.success) {
         setError(`Please complete step ${step} before submitting`);
@@ -384,7 +419,7 @@ export const OrderFormProvider: React.FC<OrderFormProviderProps> = ({
   
   const canGoNext = useMemo(() => {
     // Can't proceed if we're on the last step
-    if (formState.currentStep >= 6) return false;
+    if (formState.currentStep >= 8) return false;
     
     // Custom validation logic for better UX during form filling
     const data = formState.data;
@@ -414,20 +449,76 @@ export const OrderFormProvider: React.FC<OrderFormProviderProps> = ({
   const canGoPrevious = formState.currentStep > 1;
 
   // ============================================
+  // Toggle Second Property
+  // ============================================
+  
+  const toggleSecondProperty = useCallback(() => {
+    setFormState(prev => {
+      const newState = {
+        ...prev,
+        hasSecondProperty: !prev.hasSecondProperty
+      };
+      saveProgress(newState);
+      return newState;
+    });
+  }, [saveProgress]);
+
+  // ============================================
+  // Save and Load Progress Functions
+  // ============================================
+  
+  const saveProgressManually = useCallback(async () => {
+    try {
+      saveProgress(formState);
+      return Promise.resolve();
+    } catch (error) {
+      console.error('Error saving progress:', error);
+      return Promise.reject(error);
+    }
+  }, [formState, saveProgress]);
+  
+  const loadSavedProgress = useCallback(async () => {
+    try {
+      if (isEncryptionSupported()) {
+        const decryptedData = loadSecureData(STORAGE_KEY);
+        if (decryptedData && decryptedData.formState) {
+          setFormState(decryptedData.formState);
+        }
+      } else {
+        const savedProgress = localStorage.getItem(STORAGE_KEY);
+        if (savedProgress) {
+          const parsed = JSON.parse(savedProgress);
+          if (parsed.timestamp && Date.now() - parsed.timestamp < 24 * 60 * 60 * 1000) {
+            setFormState(parsed.formState);
+          }
+        }
+      }
+      return Promise.resolve();
+    } catch (error) {
+      console.error('Error loading progress:', error);
+      return Promise.reject(error);
+    }
+  }, []);
+
+  // ============================================
   // Context Value
   // ============================================
   
   const contextValue: OrderFormContextType = {
     formState,
     updateField,
+    updateMultipleFields,
     nextStep,
     previousStep,
     goToStep,
     submitForm,
+    saveProgress: saveProgressManually,
+    loadSavedProgress,
     isLoading,
     error,
     canGoNext,
-    canGoPrevious
+    canGoPrevious,
+    toggleSecondProperty
   };
 
   return (
