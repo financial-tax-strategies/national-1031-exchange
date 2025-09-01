@@ -3,7 +3,7 @@
 // National 1031 Center - Order Form
 // ============================================
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useOrderForm } from '../OrderFormContext';
 import { Input } from '../../ui/Input';
 import { Select } from '../../ui/Select';
@@ -12,6 +12,13 @@ import { RadioGroup } from '../../ui/RadioGroup';
 export const EntityInfoStep: React.FC = () => {
   const { formState, updateField } = useOrderForm();
   const { data, errors } = formState;
+  
+  // Initialize default value if not set
+  useEffect(() => {
+    if (!data['1031x_order_title_held_as_entity']) {
+      updateField('1031x_order_title_held_as_entity', 'individual');
+    }
+  }, []);
 
   // Determine if this is an entity exchange
   const isEntity = data['1031x_order_title_held_as_entity'] === 'entity';
@@ -38,6 +45,7 @@ export const EntityInfoStep: React.FC = () => {
           { value: 'entity', label: 'Entity (LLC, Partnership, Corporation, Trust, etc.)' }
         ]}
         error={errors['1031x_order_title_held_as_entity']}
+        required
       />
 
       {/* Entity Information - Show only if entity is selected */}
