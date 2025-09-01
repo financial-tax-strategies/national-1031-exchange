@@ -52,32 +52,7 @@ export class OrderFormService {
         const leadId = this.generateUniqueId();
         console.log('[OrderFormService] Generated lead ID:', leadId);
         
-        // First, create a lead record (required due to foreign key constraint)
-        const leadRecord = {
-          id: leadId,
-          first_name: mappedData['1031x_order_first_name'],
-          last_name: mappedData['1031x_order_last_name'],
-          email: mappedData['1031x_order_email'],
-          phone: mappedData['1031x_order_phone'],
-          lead_source: 'order_form',
-          lead_status: 'new',
-          lead_score: 0, // Calculate this properly in production
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-          last_activity_at: new Date().toISOString()
-        };
-        
-        const { data: lead, error: leadError } = await this.db.getTable('leads')
-          .insert(leadRecord)
-          .select()
-          .single();
-        
-        if (leadError) {
-          console.error('Failed to create lead:', leadError);
-          throw new Error(`Failed to create lead: ${leadError.message}`);
-        }
-        
-        // Now create the order form submission record with all individual fields
+        // Create the order form submission record using the current schema format
         console.log('[OrderFormService] Mapped data keys:', Object.keys(mappedData));
         console.log('[OrderFormService] Sample mapped data:', {
           firstName: mappedData['1031x_order_first_name'],
@@ -85,29 +60,40 @@ export class OrderFormService {
           email: mappedData['1031x_order_email']
         });
         
-        const submissionRecord = {
-          id: leadId,
-          // All form data fields as defined in the schema
+        // Extract summary fields for top-level columns
+        const urgencyLevel = mappedData['1031x_order_urgency_level'];
+        const exchangeType = mappedData['1031x_order_exchange_type'];
+        const propertySalePrice = mappedData['1031x_order_sale_price'];
+        
+        // Add metadata to form data
+        const formDataWithMetadata = {
           ...mappedData,
-          // Metadata fields
-          highlevel_contact_id: null, // Will be updated after HighLevel sync
-          lead_score: 0, // Will be calculated by trigger
-          submission_date: new Date().toISOString(),
           ip_address: metadata?.ipAddress,
           user_agent: metadata?.userAgent,
           session_id: metadata?.sessionId,
-          form_completion_time_seconds: metadata?.formCompletionTime,
-          // Status tracking
-          status: 'new',
+          form_completion_time_seconds: metadata?.formCompletionTime
+        };
+        
+        const submissionRecord = {
+          id: leadId,
+          lead_id: null, // Now nullable - no lead record required
+          step_completed: 6, // Assuming complete form submission
+          completion_status: 'completed',
+          urgency_level: urgencyLevel,
+          exchange_type: exchangeType,
+          property_sale_price: propertySalePrice,
+          form_data: formDataWithMetadata, // All form data stored as JSON
           created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString()
+          updated_at: new Date().toISOString(),
+          completed_at: new Date().toISOString()
         };
         
         console.log('[OrderFormService] Final submission record keys:', Object.keys(submissionRecord));
         console.log('[OrderFormService] Final submission record sample:', {
-          firstName: (submissionRecord as any)['1031x_order_first_name'],
-          lastName: (submissionRecord as any)['1031x_order_last_name'],
-          email: (submissionRecord as any)['1031x_order_email']
+          urgencyLevel: submissionRecord.urgency_level,
+          exchangeType: submissionRecord.exchange_type,
+          propertySalePrice: submissionRecord.property_sale_price,
+          formDataKeys: Object.keys(submissionRecord.form_data || {})
         });
         
         console.log('[OrderFormService] About to insert submission record...');
@@ -133,9 +119,10 @@ export class OrderFormService {
             hint: dbError?.hint,
             submissionRecordKeys: Object.keys(submissionRecord),
             submissionRecordSample: {
-              firstName: (submissionRecord as any)['1031x_order_first_name'],
-              lastName: (submissionRecord as any)['1031x_order_last_name'],
-              email: (submissionRecord as any)['1031x_order_email']
+              urgencyLevel: submissionRecord.urgency_level,
+              exchangeType: submissionRecord.exchange_type,
+              propertySalePrice: submissionRecord.property_sale_price,
+              hasFormData: !!submissionRecord.form_data
             }
           });
           
@@ -217,9 +204,12 @@ export class OrderFormService {
     originalData: OrderFormData
   ): Promise<void> {
     try {
-      // Update status to processing
+      // Update completion status to processing
       await this.db.getTable('order_form_submissions')
-        .update({ status: 'processing' })
+        .update({ 
+          completion_status: 'processing',
+          updated_at: new Date().toISOString()
+        })
         .eq('id', submissionId);
       
       // Step 1: Send admin notification email
@@ -234,22 +224,45 @@ export class OrderFormService {
       // Step 4: Trigger webhooks
       await this.triggerWebhooks(submissionId, mappedData);
       
-      // Update status to synced
+      // Update completion status to synced and store highlevel contact ID in form_data
+      const { data: currentRecord } = await this.db.getTable('order_form_submissions')
+        .select('form_data')
+        .eq('id', submissionId)
+        .single();
+      
+      const updatedFormData = {
+        ...(currentRecord?.form_data || {}),
+        highlevel_contact_id: highlevelContactId
+      };
+      
       await this.db.getTable('order_form_submissions')
         .update({ 
-          status: 'synced',
-          highlevel_contact_id: highlevelContactId
+          completion_status: 'synced',
+          form_data: updatedFormData,
+          updated_at: new Date().toISOString()
         })
         .eq('id', submissionId);
       
     } catch (error: any) {
       console.error('Async processing error:', error);
       
-      // Update status to error
+      // Update completion status to error and store error in form_data
+      const { data: currentRecord } = await this.db.getTable('order_form_submissions')
+        .select('form_data')
+        .eq('id', submissionId)
+        .single();
+      
+      const updatedFormData = {
+        ...(currentRecord?.form_data || {}),
+        error_message: error.message,
+        error_timestamp: new Date().toISOString()
+      };
+      
       await this.db.getTable('order_form_submissions')
         .update({ 
-          status: 'error',
-          error_message: error.message
+          completion_status: 'error',
+          form_data: updatedFormData,
+          updated_at: new Date().toISOString()
         })
         .eq('id', submissionId);
     }
@@ -329,11 +342,22 @@ export class OrderFormService {
         html: body
       });
       
-      // Update tracking
+      // Update tracking in form_data
+      const { data: currentRecord } = await this.db.getTable('order_form_submissions')
+        .select('form_data')
+        .eq('id', submissionId)
+        .single();
+      
+      const updatedFormData = {
+        ...(currentRecord?.form_data || {}),
+        admin_notification_sent: true,
+        admin_notification_sent_at: new Date().toISOString()
+      };
+      
       await this.db.getTable('order_form_submissions')
         .update({ 
-          admin_notification_sent: true,
-          admin_notification_sent_at: new Date().toISOString()
+          form_data: updatedFormData,
+          updated_at: new Date().toISOString()
         })
         .eq('id', submissionId);
       
@@ -416,11 +440,22 @@ export class OrderFormService {
         html: body
       });
       
-      // Update tracking
+      // Update tracking in form_data
+      const { data: currentRecord } = await this.db.getTable('order_form_submissions')
+        .select('form_data')
+        .eq('id', submissionId)
+        .single();
+      
+      const updatedFormData = {
+        ...(currentRecord?.form_data || {}),
+        user_confirmation_sent: true,
+        user_confirmation_sent_at: new Date().toISOString()
+      };
+      
       await this.db.getTable('order_form_submissions')
         .update({ 
-          user_confirmation_sent: true,
-          user_confirmation_sent_at: new Date().toISOString()
+          form_data: updatedFormData,
+          updated_at: new Date().toISOString()
         })
         .eq('id', submissionId);
       
@@ -548,11 +583,22 @@ export class OrderFormService {
       
       await Promise.all(webhookPromises);
       
-      // Update tracking
+      // Update tracking in form_data
+      const { data: currentRecord } = await this.db.getTable('order_form_submissions')
+        .select('form_data')
+        .eq('id', submissionId)
+        .single();
+      
+      const updatedFormData = {
+        ...(currentRecord?.form_data || {}),
+        webhook_sent: true,
+        webhook_sent_at: new Date().toISOString()
+      };
+      
       await this.db.getTable('order_form_submissions')
         .update({ 
-          webhook_sent: true,
-          webhook_sent_at: new Date().toISOString()
+          form_data: updatedFormData,
+          updated_at: new Date().toISOString()
         })
         .eq('id', submissionId);
       
