@@ -29,9 +29,14 @@ const emailSchema = z.string()
 // Step 1: Contact Information Schema
 // ============================================
 export const contactInfoSchema = z.object({
-  '1031x_order_name': z.string()
-    .min(2, 'Full name must be at least 2 characters')
-    .max(100, 'Name must be less than 100 characters'),
+  // Use the actual field names that ContactInfoStep populates via backward compatibility
+  '1031x_order_first_name': z.string()
+    .min(2, 'First name must be at least 2 characters')
+    .max(50, 'First name must be less than 50 characters'),
+  
+  '1031x_order_last_name': z.string()
+    .min(2, 'Last name must be at least 2 characters')
+    .max(50, 'Last name must be less than 50 characters'),
   
   '1031x_order_email': emailSchema,
   
@@ -46,17 +51,28 @@ export const contactInfoSchema = z.object({
       return val;
     }),
   
-  // Optional spouse fields
-  '1031_order_spouse_name': z.string().optional(),
-  '1031_order_spouse_email': z.string().email().optional().or(z.literal('')),
-  '1031_order_spouse_phone': z.string().optional(),
+  '1031x_order_preferred_contact': z.enum(['phone', 'email', 'text', 'no_preference']),
   
-  // Optional mailing address  
-  '1031_order_mailing_address': z.string().optional(),
-  '1031_order_mailing_city': z.string().optional(),
-  '1031_order_mailing_state': z.string().optional(),
-  '1031_order_mailing_zip': z.string().optional(),
-  '1031_order_mailing_country': z.string().optional()
+  // Optional spouse fields (using actual field names from form)
+  '1031x_order_spouse_first_name': z.string().optional(),
+  '1031x_order_spouse_last_name': z.string().optional(),
+  '1031x_order_spouse_email': z.string().email().optional().or(z.literal('')),
+  '1031x_order_spouse_phone': z.string().optional(),
+  '1031x_order_spouse_mobile_phone': z.string().optional(),
+  
+  // Optional mailing address (using actual field names from form)
+  '1031x_order_seller_mailing_street_address': z.string().optional(),
+  '1031x_order_seller_mailing_city': z.string().optional(),
+  '1031x_order_seller_mailing_state': z.string().optional(),
+  '1031x_order_seller_mailing_zip': z.string().optional(),
+  
+  // Additional optional fields from ContactInfoStep
+  '1031x_order_contact_first_name': z.string().optional(),
+  '1031x_order_contact_last_name': z.string().optional(),
+  '1031x_order_contact_email': z.string().email().optional().or(z.literal('')),
+  '1031x_order_contact_phone': z.string().optional(),
+  '1031x_order_contact_mobile_phone': z.string().optional(),
+  '1031x_order_contact_country': z.string().optional()
 });
 
 // ============================================
