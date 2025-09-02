@@ -38,7 +38,7 @@ export const ProfessionalTeamStep: React.FC = () => {
     if (!formState.data['1031x_order_has_cpa']) {
       updateField('1031x_order_has_cpa', 'yes');
     }
-  }, [analytics]);
+  }, [analytics, formState.data, updateField]);
   
   const handleInputChange = (field: keyof typeof formState.data, value: string) => {
     updateField(field, value);

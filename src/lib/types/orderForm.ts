@@ -335,7 +335,7 @@ export interface OrderFormContextType {
   error: string | null;
   canGoNext: boolean;
   canGoPrevious: boolean;
-  toggleSecondProperty: () => void; // New: Toggle Step 4 visibility
+  toggleSecondProperty: (value: boolean) => void; // New: Toggle Step 4 visibility
 }
 
 // ============================================

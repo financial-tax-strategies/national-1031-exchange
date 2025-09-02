@@ -452,11 +452,11 @@ export const OrderFormProvider: React.FC<OrderFormProviderProps> = ({
   // Toggle Second Property
   // ============================================
   
-  const toggleSecondProperty = useCallback(() => {
+  const toggleSecondProperty = useCallback((value: boolean) => {
     setFormState(prev => {
       const newState = {
         ...prev,
-        hasSecondProperty: !prev.hasSecondProperty
+        hasSecondProperty: value
       };
       saveProgress(newState);
       return newState;
