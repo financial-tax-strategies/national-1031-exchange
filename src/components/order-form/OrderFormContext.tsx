@@ -424,8 +424,8 @@ export const OrderFormProvider: React.FC<OrderFormProviderProps> = ({
     // Custom validation logic for better UX during form filling
     const data = formState.data;
     
-    if (formState.currentStep === 2) {
-      // Step 2: Property Details - Check if user has filled required fields
+    if (formState.currentStep === 3) {
+      // Step 3: Property Details - Check if user has filled required fields
       const hasAddress = data['1031x_order_property_address'] && data['1031x_order_property_address'].length >= 5;
       const hasCity = data['1031x_order_property_city'] && data['1031x_order_property_city'].length >= 2;
       const hasState = data['1031x_order_property_state'] && data['1031x_order_property_state'].length === 2;
