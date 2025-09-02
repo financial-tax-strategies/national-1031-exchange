@@ -1,5 +1,5 @@
 // ============================================
-// Review Step Component (Step 8)
+// Review Step Component (Step 9)
 // National 1031 Center - Order Form
 // ============================================
 
@@ -16,10 +16,10 @@ export const ReviewStep: React.FC = () => {
   const { formState, updateField } = useOrderForm();
   const analytics = useOrderFormAnalytics();
   
-  // Track step start (Step 8)
+  // Track step start (Step 9)
   useEffect(() => {
     const sessionId = sessionStorage.getItem('1031_order_form_session') || '';
-    analytics.trackStepStart(8, sessionId);
+    analytics.trackStepStart(9, sessionId);
   }, [analytics]);
   
   // Format currency values

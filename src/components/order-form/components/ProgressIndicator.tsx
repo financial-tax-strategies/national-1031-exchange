@@ -18,7 +18,8 @@ const stepLabels: Record<FormStep, string> = {
   5: 'Timeline',
   6: 'Your Team',
   7: 'Exchange Goals',
-  8: 'Preferences'
+  8: 'Preferences',
+  9: 'Review & Submit'
 };
 
 const stepDescriptions: Record<FormStep, string> = {
@@ -29,7 +30,8 @@ const stepDescriptions: Record<FormStep, string> = {
   5: 'Important dates',
   6: 'Professional team',
   7: 'Exchange strategy',
-  8: 'Service preferences'
+  8: 'Service preferences',
+  9: 'Review and submit'
 };
 
 // ============================================
@@ -54,7 +56,17 @@ export const ProgressIndicator: React.FC<ProgressIndicatorProps> = ({
   hasSecondProperty = false
 }) => {
   // Include or exclude step 4 based on hasSecondProperty
-  const steps: FormStep[] = hasSecondProperty ? [1, 2, 3, 4, 5, 6, 7, 8] : [1, 2, 3, 5, 6, 7, 8];
+  const steps: FormStep[] = hasSecondProperty ? [1, 2, 3, 4, 5, 6, 7, 8, 9] : [1, 2, 3, 5, 6, 7, 8, 9];
+  
+  // Get display step number (accounting for skipped step 4)
+  const getDisplayStepNumber = (step: FormStep): number => {
+    if (!hasSecondProperty && step > 4) {
+      return steps.indexOf(step) + 1;
+    }
+    return step;
+  };
+  
+  const displayStepNumber = getDisplayStepNumber(currentStep);
   
   const getStepStatus = (step: FormStep) => {
     if (step === currentStep) return 'current';
@@ -72,7 +84,7 @@ export const ProgressIndicator: React.FC<ProgressIndicatorProps> = ({
       {/* Progress Bar - Moved to top */}
       <div className="overflow-hidden h-2 mb-4 text-xs flex rounded-full bg-gray-200">
         <div
-          style={{ width: `${(completedSteps.length / (hasSecondProperty ? 8 : 7)) * 100}%` }}
+          style={{ width: `${(completedSteps.length / (hasSecondProperty ? 9 : 8)) * 100}%` }}
           className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-900 transition-all duration-500 ease-out"
         />
       </div>
@@ -80,7 +92,7 @@ export const ProgressIndicator: React.FC<ProgressIndicatorProps> = ({
       {/* Step Count */}
       <div className="text-center mb-6">
         <span className="text-sm text-gray-600">
-          Step {currentStep} of {hasSecondProperty ? 8 : 7}
+          Step {displayStepNumber} of {hasSecondProperty ? 9 : 8}
         </span>
       </div>
       
@@ -134,7 +146,7 @@ export const ProgressIndicator: React.FC<ProgressIndicatorProps> = ({
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
                           </svg>
                         ) : (
-                          <span className="text-sm font-semibold">{step}</span>
+                          <span className="text-sm font-semibold">{getDisplayStepNumber(step)}</span>
                         )}
                       </div>
                     </div>
@@ -186,7 +198,7 @@ export const ProgressIndicator: React.FC<ProgressIndicatorProps> = ({
           
           {/* Next Step Info */}
           <div className="text-right">
-            {currentStep < (hasSecondProperty ? 8 : 7) && (
+            {currentStep < (hasSecondProperty ? 9 : 8) && (
               <div className="text-xs text-gray-500">
                 Next: {stepLabels[(currentStep + 1) as FormStep]}
               </div>

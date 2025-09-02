@@ -261,7 +261,39 @@ export const timelineSchema = z.object({
   }
 });
 
-// Note: Exchange Goals moved to Service Preferences (Step 7)
+// ============================================
+// Step 7: Exchange Goals Schema
+// ============================================
+export const exchangeGoalsSchema = z.object({
+  '1031x_order_replacement_property_identified': z.enum([
+    'yes_specific',
+    'yes_multiple', 
+    'no_searching',
+    'need_help'
+  ]),
+  
+  '1031x_order_exchange_type': z.enum([
+    'standard_delayed',
+    'reverse',
+    'improvement',
+    'not_sure'
+  ]),
+  
+  '1031x_order_cash_out_amount': z.enum([
+    'no_cash',
+    'minimal_50k',
+    'moderate_50_200k',
+    'significant_200k_plus',
+    'not_sure'
+  ]),
+  
+  '1031x_order_dst_interest': z.enum([
+    'interested',
+    'traditional_only',
+    'learn_both',
+    'not_familiar'
+  ])
+});
 
 // ============================================
 // Step 6: Professional Team Schema
@@ -310,7 +342,7 @@ export const servicePreferencesSchema = z.object({
 });
 
 // ============================================
-// Step 8: Review Schema
+// Step 9: Review Schema
 // ============================================
 export const reviewSchema = z.object({
   'consent_accuracy': z.boolean().refine(val => val === true, {
@@ -341,8 +373,9 @@ export const stepSchemas = {
   4: additionalPropertiesSchema,
   5: timelineSchema,
   6: professionalTeamSchema,
-  7: servicePreferencesSchema,
-  8: reviewSchema
+  7: exchangeGoalsSchema,
+  8: servicePreferencesSchema,
+  9: reviewSchema
 } as const;
 
 // ============================================

@@ -15,6 +15,7 @@ import { TimelineStep } from './steps/TimelineStep';
 import { ProfessionalTeamStep } from './steps/ProfessionalTeamStep';
 import { ExchangeGoalsStep } from './steps/ExchangeGoalsStep';
 import { ServicePreferencesStep } from './steps/ServicePreferencesStep';
+import { ReviewStep } from './steps/ReviewStep';
 import type { FormStep } from '../../lib/types/orderForm';
 import { COMPANY, getPhoneLink } from '../../config/company';
 
@@ -30,7 +31,8 @@ const stepComponents = {
   5: TimelineStep,
   6: ProfessionalTeamStep,
   7: ExchangeGoalsStep,
-  8: ServicePreferencesStep
+  8: ServicePreferencesStep,
+  9: ReviewStep
 } as const;
 
 // ============================================
@@ -52,7 +54,7 @@ const OrderFormContent: React.FC = () => {
   
   const formContainerRef = useRef<HTMLDivElement>(null);
   const CurrentStepComponent = stepComponents[formState.currentStep];
-  const isLastStep = formState.currentStep === 8;
+  const isLastStep = formState.currentStep === 9;
   
   // Skip step 4 if no second property
   const shouldShowStep = formState.currentStep === 4 ? formState.hasSecondProperty : true;

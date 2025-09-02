@@ -1,5 +1,5 @@
 // ============================================
-// Service Preferences Step Component (Step 7)
+// Service Preferences Step Component (Step 8)
 // National 1031 Center - Order Form
 // ============================================
 
@@ -46,10 +46,10 @@ export const ServicePreferencesStep: React.FC = () => {
   const { formState, updateField } = useOrderForm();
   const analytics = useOrderFormAnalytics();
   
-  // Track step start (Step 7)
+  // Track step start (Step 8)
   useEffect(() => {
     const sessionId = sessionStorage.getItem('1031_order_form_session') || '';
-    analytics.trackStepStart(7, sessionId);
+    analytics.trackStepStart(8, sessionId);
   }, [analytics]);
   
   const handleInputChange = (field: keyof typeof formState.data, value: string) => {

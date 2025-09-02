@@ -1,5 +1,5 @@
 // ============================================
-// Exchange Goals Step Component (Step 4)
+// Exchange Goals Step Component (Step 7)
 // National 1031 Center - Order Form
 // ============================================
 
@@ -53,7 +53,7 @@ export const ExchangeGoalsStep: React.FC = () => {
   // Track step start
   useEffect(() => {
     const sessionId = sessionStorage.getItem('1031_order_form_session') || '';
-    analytics.trackStepStart(4, sessionId);
+    analytics.trackStepStart(7, sessionId);
   }, [analytics]);
   
   const handleInputChange = (field: keyof typeof formState.data, value: string) => {

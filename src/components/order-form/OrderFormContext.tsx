@@ -239,7 +239,7 @@ export const OrderFormProvider: React.FC<OrderFormProviderProps> = ({
       if (nextStepNum === 4 && !prev.hasSecondProperty) {
         nextStepNum = 5;
       }
-      nextStepNum = Math.min(nextStepNum, 8) as FormStep;
+      nextStepNum = Math.min(nextStepNum, 9) as FormStep;
       const newCompletedSteps = prev.completedSteps.includes(prev.currentStep)
         ? prev.completedSteps
         : [...prev.completedSteps, prev.currentStep];
@@ -307,7 +307,7 @@ export const OrderFormProvider: React.FC<OrderFormProviderProps> = ({
   
   const submitForm = useCallback(async () => {
     // Validate all steps (skip step 4 if no second property)
-    for (let step = 1; step <= 8; step++) {
+    for (let step = 1; step <= 9; step++) {
       if (step === 4 && !formState.hasSecondProperty) continue;
       const result = validateStep(step, formState.data);
       if (!result.success) {
@@ -419,7 +419,7 @@ export const OrderFormProvider: React.FC<OrderFormProviderProps> = ({
   
   const canGoNext = useMemo(() => {
     // Can't proceed if we're on the last step
-    if (formState.currentStep >= 8) return false;
+    if (formState.currentStep >= 9) return false;
     
     // Custom validation logic for better UX during form filling
     const data = formState.data;
