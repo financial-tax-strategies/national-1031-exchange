@@ -76,7 +76,7 @@ export const ProfessionalTeamStep: React.FC = () => {
               label="CPA Name"
               name="1031x_order_cpa_name"
               value={formState.data['1031x_order_cpa_name'] || ''}
-              onChange={(value) => handleInputChange('1031x_order_cpa_name', value)}
+              onChange={(e) => handleInputChange('1031x_order_cpa_name', e.target.value)}
               error={formState.errors['1031x_order_cpa_name']}
               placeholder="John Smith, CPA"
             />
@@ -85,7 +85,7 @@ export const ProfessionalTeamStep: React.FC = () => {
               label="CPA Firm"
               name="1031_order_cpa_firm"
               value={formState.data['1031_order_cpa_firm'] || ''}
-              onChange={(value) => handleInputChange('1031_order_cpa_firm', value)}
+              onChange={(e) => handleInputChange('1031_order_cpa_firm', e.target.value)}
               error={formState.errors['1031_order_cpa_firm']}
               placeholder="Smith & Associates CPAs"
             />
@@ -97,7 +97,7 @@ export const ProfessionalTeamStep: React.FC = () => {
               name="1031_order_cpa_phone"
               type="tel"
               value={formState.data['1031_order_cpa_phone'] || ''}
-              onChange={(value) => handleInputChange('1031_order_cpa_phone', value)}
+              onChange={(e) => handleInputChange('1031_order_cpa_phone', e.target.value)}
               error={formState.errors['1031_order_cpa_phone']}
               placeholder="(555) 123-4567"
             />
@@ -107,7 +107,7 @@ export const ProfessionalTeamStep: React.FC = () => {
               name="1031x_order_cpa_email"
               type="email"
               value={formState.data['1031x_order_cpa_email'] || ''}
-              onChange={(value) => handleInputChange('1031x_order_cpa_email', value)}
+              onChange={(e) => handleInputChange('1031x_order_cpa_email', e.target.value)}
               error={formState.errors['1031x_order_cpa_email']}
               placeholder="john@smithcpa.com"
             />
@@ -139,7 +139,7 @@ export const ProfessionalTeamStep: React.FC = () => {
             label="Realtor/Broker Name"
             name="1031x_order_realtor_name"
             value={formState.data['1031x_order_realtor_name'] || ''}
-            onChange={(value) => handleInputChange('1031x_order_realtor_name', value)}
+            onChange={(e) => handleInputChange('1031x_order_realtor_name', e.target.value)}
             error={formState.errors['1031x_order_realtor_name']}
             placeholder="Jane Doe, Realtor"
           />
@@ -148,7 +148,7 @@ export const ProfessionalTeamStep: React.FC = () => {
             label="Realtor/Broker Company"
             name="1031_order_realtor_company"
             value={formState.data['1031_order_realtor_company'] || ''}
-            onChange={(value) => handleInputChange('1031_order_realtor_company', value)}
+            onChange={(e) => handleInputChange('1031_order_realtor_company', e.target.value)}
             error={formState.errors['1031_order_realtor_company']}
             placeholder="ABC Realty Group"
           />
@@ -160,7 +160,7 @@ export const ProfessionalTeamStep: React.FC = () => {
             name="1031_order_realtor_phone"
             type="tel"
             value={formState.data['1031_order_realtor_phone'] || ''}
-            onChange={(value) => handleInputChange('1031_order_realtor_phone', value)}
+            onChange={(e) => handleInputChange('1031_order_realtor_phone', e.target.value)}
             error={formState.errors['1031_order_realtor_phone']}
             placeholder="(555) 123-4567"
           />
@@ -170,7 +170,7 @@ export const ProfessionalTeamStep: React.FC = () => {
             name="1031x_order_realtor_email"
             type="email"
             value={formState.data['1031x_order_realtor_email'] || ''}
-            onChange={(value) => handleInputChange('1031x_order_realtor_email', value)}
+            onChange={(e) => handleInputChange('1031x_order_realtor_email', e.target.value)}
             error={formState.errors['1031x_order_realtor_email']}
             placeholder="jane@realty.com"
           />
@@ -201,7 +201,7 @@ export const ProfessionalTeamStep: React.FC = () => {
                 label="Attorney Name"
                 name="1031_order_attorney_name"
                 value={formState.data['1031_order_attorney_name'] || ''}
-                onChange={(value) => handleInputChange('1031_order_attorney_name', value)}
+                onChange={(e) => handleInputChange('1031_order_attorney_name', e.target.value)}
                 error={formState.errors['1031_order_attorney_name']}
                 placeholder="John Doe, Esq."
               />
@@ -210,7 +210,7 @@ export const ProfessionalTeamStep: React.FC = () => {
                 label="Law Firm"
                 name="1031_order_attorney_firm"
                 value={formState.data['1031_order_attorney_firm'] || ''}
-                onChange={(value) => handleInputChange('1031_order_attorney_firm', value)}
+                onChange={(e) => handleInputChange('1031_order_attorney_firm', e.target.value)}
                 error={formState.errors['1031_order_attorney_firm']}
                 placeholder="Doe & Associates"
               />
@@ -222,7 +222,7 @@ export const ProfessionalTeamStep: React.FC = () => {
                 name="1031_order_attorney_phone"
                 type="tel"
                 value={formState.data['1031_order_attorney_phone'] || ''}
-                onChange={(value) => handleInputChange('1031_order_attorney_phone', value)}
+                onChange={(e) => handleInputChange('1031_order_attorney_phone', e.target.value)}
                 error={formState.errors['1031_order_attorney_phone']}
                 placeholder="(555) 123-4567"
               />
@@ -232,7 +232,7 @@ export const ProfessionalTeamStep: React.FC = () => {
                 name="1031_order_attorney_email"
                 type="email"
                 value={formState.data['1031_order_attorney_email'] || ''}
-                onChange={(value) => handleInputChange('1031_order_attorney_email', value)}
+                onChange={(e) => handleInputChange('1031_order_attorney_email', e.target.value)}
                 error={formState.errors['1031_order_attorney_email']}
                 placeholder="john@lawfirm.com"
               />
@@ -250,7 +250,7 @@ export const ProfessionalTeamStep: React.FC = () => {
             label="Financial Advisor Name"
             name="1031_order_financial_advisor_name"
             value={formState.data['1031_order_financial_advisor_name'] || ''}
-            onChange={(value) => handleInputChange('1031_order_financial_advisor_name', value)}
+            onChange={(e) => handleInputChange('1031_order_financial_advisor_name', e.target.value)}
             error={formState.errors['1031_order_financial_advisor_name']}
             placeholder="Sarah Johnson, CFP"
           />
@@ -259,7 +259,7 @@ export const ProfessionalTeamStep: React.FC = () => {
             label="Financial Advisor Firm"
             name="1031_order_financial_advisor_firm"
             value={formState.data['1031_order_financial_advisor_firm'] || ''}
-            onChange={(value) => handleInputChange('1031_order_financial_advisor_firm', value)}
+            onChange={(e) => handleInputChange('1031_order_financial_advisor_firm', e.target.value)}
             error={formState.errors['1031_order_financial_advisor_firm']}
             placeholder="Wealth Management Inc."
           />
@@ -271,7 +271,7 @@ export const ProfessionalTeamStep: React.FC = () => {
             name="1031_order_financial_advisor_phone"
             type="tel"
             value={formState.data['1031_order_financial_advisor_phone'] || ''}
-            onChange={(value) => handleInputChange('1031_order_financial_advisor_phone', value)}
+            onChange={(e) => handleInputChange('1031_order_financial_advisor_phone', e.target.value)}
             error={formState.errors['1031_order_financial_advisor_phone']}
             placeholder="(555) 123-4567"
           />
@@ -281,7 +281,7 @@ export const ProfessionalTeamStep: React.FC = () => {
             name="1031_order_financial_advisor_email"
             type="email"
             value={formState.data['1031_order_financial_advisor_email'] || ''}
-            onChange={(value) => handleInputChange('1031_order_financial_advisor_email', value)}
+            onChange={(e) => handleInputChange('1031_order_financial_advisor_email', e.target.value)}
             error={formState.errors['1031_order_financial_advisor_email']}
             placeholder="sarah@wealthmgmt.com"
           />

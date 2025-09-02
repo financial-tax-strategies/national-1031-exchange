@@ -161,7 +161,7 @@ export const ServicePreferencesStep: React.FC = () => {
             label="Referral Name"
             name="1031_order_referral_name"
             value={formState.data['1031_order_referral_name'] || ''}
-            onChange={(value) => handleInputChange('1031_order_referral_name', value)}
+            onChange={(e) => handleInputChange('1031_order_referral_name', e.target.value)}
             error={formState.errors['1031_order_referral_name']}
             placeholder="Name of person who referred you"
           />
@@ -172,7 +172,7 @@ export const ServicePreferencesStep: React.FC = () => {
             label="Please specify"
             name="1031_order_referral_other"
             value={formState.data['1031_order_referral_other'] || ''}
-            onChange={(value) => handleInputChange('1031_order_referral_other', value)}
+            onChange={(e) => handleInputChange('1031_order_referral_other', e.target.value)}
             error={formState.errors['1031_order_referral_other']}
             placeholder="How did you hear about us?"
           />
@@ -261,7 +261,7 @@ export const ServicePreferencesStep: React.FC = () => {
           label="Promo Code (if applicable)"
           name="1031_order_promo_code"
           value={formState.data['1031_order_promo_code'] || ''}
-          onChange={(value) => handleInputChange('1031_order_promo_code', value)}
+          onChange={(e) => handleInputChange('1031_order_promo_code', e.target.value)}
           error={formState.errors['1031_order_promo_code']}
           placeholder="Enter promo code"
         />

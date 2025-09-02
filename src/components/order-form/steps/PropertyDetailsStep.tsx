@@ -63,7 +63,7 @@ export const PropertyDetailsStep: React.FC = () => {
         label="Property Street Address"
         name="1031x_order_property_address"
         value={formState.data['1031x_order_property_address'] || ''}
-        onChange={(value) => handleInputChange('1031x_order_property_address', value)}
+        onChange={(e) => handleInputChange('1031x_order_property_address', e.target.value)}
         error={formState.errors['1031x_order_property_address']}
         placeholder="123 Main Street"
         required
@@ -76,7 +76,7 @@ export const PropertyDetailsStep: React.FC = () => {
             label="City"
             name="1031x_order_property_city"
             value={formState.data['1031x_order_property_city'] || ''}
-            onChange={(value) => handleInputChange('1031x_order_property_city', value)}
+            onChange={(e) => handleInputChange('1031x_order_property_city', e.target.value)}
             error={formState.errors['1031x_order_property_city']}
             placeholder="San Francisco"
             required
@@ -99,7 +99,7 @@ export const PropertyDetailsStep: React.FC = () => {
             label="ZIP Code"
             name="1031x_order_property_zip"
             value={formState.data['1031x_order_property_zip'] || ''}
-            onChange={(value) => handleInputChange('1031x_order_property_zip', value)}
+            onChange={(e) => handleInputChange('1031x_order_property_zip', e.target.value)}
             error={formState.errors['1031x_order_property_zip']}
             placeholder="94105"
             maxLength={10}
@@ -112,7 +112,7 @@ export const PropertyDetailsStep: React.FC = () => {
             label="County"
             name="1031_order_property_county"
             value={formState.data['1031_order_property_county'] || ''}
-            onChange={(value) => handleInputChange('1031_order_property_county', value)}
+            onChange={(e) => handleInputChange('1031_order_property_county', e.target.value)}
             error={formState.errors['1031_order_property_county']}
             placeholder="San Francisco County"
           />
@@ -134,7 +134,7 @@ export const PropertyDetailsStep: React.FC = () => {
           label="Legal Description / APN"
           name="1031_order_property_legal_description"
           value={formState.data['1031_order_property_legal_description'] || ''}
-          onChange={(value) => handleInputChange('1031_order_property_legal_description', value)}
+          onChange={(e) => handleInputChange('1031_order_property_legal_description', e.target.value)}
           error={formState.errors['1031_order_property_legal_description']}
           placeholder="Assessor Parcel Number or Legal Description"
         />
@@ -150,7 +150,7 @@ export const PropertyDetailsStep: React.FC = () => {
             name="1031x_order_sale_price"
             type="currency"
             value={formatCurrency(formState.data['1031x_order_sale_price'])}
-            onChange={(value) => handleNumberChange('1031x_order_sale_price', value)}
+            onChange={(e) => handleNumberChange('1031x_order_sale_price', e.target.value)}
             error={formState.errors['1031x_order_sale_price']}
             placeholder="1,000,000"
             required
@@ -161,7 +161,7 @@ export const PropertyDetailsStep: React.FC = () => {
             name="1031x_order_mortgage_balance"
             type="currency"
             value={formatCurrency(formState.data['1031x_order_mortgage_balance'])}
-            onChange={(value) => handleNumberChange('1031x_order_mortgage_balance', value)}
+            onChange={(e) => handleNumberChange('1031x_order_mortgage_balance', e.target.value)}
             error={formState.errors['1031x_order_mortgage_balance']}
             placeholder="400,000"
           />
@@ -173,7 +173,7 @@ export const PropertyDetailsStep: React.FC = () => {
             name="1031_order_property_purchase_price"
             type="currency"
             value={formatCurrency(formState.data['1031_order_property_purchase_price'])}
-            onChange={(value) => handleNumberChange('1031_order_property_purchase_price', value)}
+            onChange={(e) => handleNumberChange('1031_order_property_purchase_price', e.target.value)}
             error={formState.errors['1031_order_property_purchase_price']}
             placeholder="750,000"
           />
@@ -183,7 +183,7 @@ export const PropertyDetailsStep: React.FC = () => {
             name="1031_order_property_purchase_date"
             type="date"
             value={formState.data['1031_order_property_purchase_date'] || ''}
-            onChange={(value) => handleInputChange('1031_order_property_purchase_date', value)}
+            onChange={(e) => handleInputChange('1031_order_property_purchase_date', e.target.value)}
             error={formState.errors['1031_order_property_purchase_date']}
           />
         </div>
@@ -194,7 +194,7 @@ export const PropertyDetailsStep: React.FC = () => {
             name="1031_order_property_improvements"
             type="currency"
             value={formatCurrency(formState.data['1031_order_property_improvements'])}
-            onChange={(value) => handleNumberChange('1031_order_property_improvements', value)}
+            onChange={(e) => handleNumberChange('1031_order_property_improvements', e.target.value)}
             error={formState.errors['1031_order_property_improvements']}
             placeholder="50,000"
             helpText="Total amount spent on capital improvements"
@@ -205,7 +205,7 @@ export const PropertyDetailsStep: React.FC = () => {
             name="1031_order_property_rental_income"
             type="currency"
             value={formatCurrency(formState.data['1031_order_property_rental_income'])}
-            onChange={(value) => handleNumberChange('1031_order_property_rental_income', value)}
+            onChange={(e) => handleNumberChange('1031_order_property_rental_income', e.target.value)}
             error={formState.errors['1031_order_property_rental_income']}
             placeholder="60,000"
           />
@@ -240,7 +240,7 @@ export const PropertyDetailsStep: React.FC = () => {
           name="1031_order_property_ownership_percentage"
           type="number"
           value={formState.data['1031_order_property_ownership_percentage'] || ''}
-          onChange={(value) => handleInputChange('1031_order_property_ownership_percentage', value)}
+          onChange={(e) => handleInputChange('1031_order_property_ownership_percentage', e.target.value)}
           error={formState.errors['1031_order_property_ownership_percentage']}
           placeholder="100"
           min="0"

@@ -118,7 +118,7 @@ export const TimelineStep: React.FC = () => {
             label="Listing Agent Name"
             name="1031_order_listing_agent_name"
             value={formState.data['1031_order_listing_agent_name'] || ''}
-            onChange={(value) => handleInputChange('1031_order_listing_agent_name', value)}
+            onChange={(e) => handleInputChange('1031_order_listing_agent_name', e.target.value)}
             error={formState.errors['1031_order_listing_agent_name']}
             placeholder="Jane Doe"
           />
@@ -128,7 +128,7 @@ export const TimelineStep: React.FC = () => {
             name="1031_order_listing_agent_phone"
             type="tel"
             value={formState.data['1031_order_listing_agent_phone'] || ''}
-            onChange={(value) => handleInputChange('1031_order_listing_agent_phone', value)}
+            onChange={(e) => handleInputChange('1031_order_listing_agent_phone', e.target.value)}
             error={formState.errors['1031_order_listing_agent_phone']}
             placeholder="(555) 123-4567"
           />
@@ -140,7 +140,7 @@ export const TimelineStep: React.FC = () => {
             name="1031_order_listing_agent_email"
             type="email"
             value={formState.data['1031_order_listing_agent_email'] || ''}
-            onChange={(value) => handleInputChange('1031_order_listing_agent_email', value)}
+            onChange={(e) => handleInputChange('1031_order_listing_agent_email', e.target.value)}
             error={formState.errors['1031_order_listing_agent_email']}
             placeholder="jane@realty.com"
           />
@@ -149,7 +149,7 @@ export const TimelineStep: React.FC = () => {
             label="Listing Agent Company"
             name="1031_order_listing_agent_company"
             value={formState.data['1031_order_listing_agent_company'] || ''}
-            onChange={(value) => handleInputChange('1031_order_listing_agent_company', value)}
+            onChange={(e) => handleInputChange('1031_order_listing_agent_company', e.target.value)}
             error={formState.errors['1031_order_listing_agent_company']}
             placeholder="ABC Realty"
           />
@@ -167,7 +167,7 @@ export const TimelineStep: React.FC = () => {
             name="1031x_order_closing_date"
             type="date"
             value={formState.data['1031x_order_closing_date'] || ''}
-            onChange={(value) => handleInputChange('1031x_order_closing_date', value)}
+            onChange={(e) => handleInputChange('1031x_order_closing_date', e.target.value)}
             error={formState.errors['1031x_order_closing_date']}
             min={today}
             required
@@ -181,7 +181,7 @@ export const TimelineStep: React.FC = () => {
             name="1031x_order_expected_listing_date"
             type="date"
             value={formState.data['1031x_order_expected_listing_date'] || ''}
-            onChange={(value) => handleInputChange('1031x_order_expected_listing_date', value)}
+            onChange={(e) => handleInputChange('1031x_order_expected_listing_date', e.target.value)}
             error={formState.errors['1031x_order_expected_listing_date']}
             min={today}
             required
@@ -194,7 +194,7 @@ export const TimelineStep: React.FC = () => {
             label="Escrow Number"
             name="1031_order_escrow_number"
             value={formState.data['1031_order_escrow_number'] || ''}
-            onChange={(value) => handleInputChange('1031_order_escrow_number', value)}
+            onChange={(e) => handleInputChange('1031_order_escrow_number', e.target.value)}
             error={formState.errors['1031_order_escrow_number']}
             placeholder="ESC-123456"
           />
@@ -203,7 +203,7 @@ export const TimelineStep: React.FC = () => {
             label="Escrow Company"
             name="1031_order_escrow_company"
             value={formState.data['1031_order_escrow_company'] || ''}
-            onChange={(value) => handleInputChange('1031_order_escrow_company', value)}
+            onChange={(e) => handleInputChange('1031_order_escrow_company', e.target.value)}
             error={formState.errors['1031_order_escrow_company']}
             placeholder="ABC Title & Escrow"
           />
@@ -214,7 +214,7 @@ export const TimelineStep: React.FC = () => {
             label="Escrow Officer Name"
             name="1031_order_escrow_officer_name"
             value={formState.data['1031_order_escrow_officer_name'] || ''}
-            onChange={(value) => handleInputChange('1031_order_escrow_officer_name', value)}
+            onChange={(e) => handleInputChange('1031_order_escrow_officer_name', e.target.value)}
             error={formState.errors['1031_order_escrow_officer_name']}
             placeholder="John Smith"
           />
@@ -224,7 +224,7 @@ export const TimelineStep: React.FC = () => {
             name="1031_order_escrow_officer_phone"
             type="tel"
             value={formState.data['1031_order_escrow_officer_phone'] || ''}
-            onChange={(value) => handleInputChange('1031_order_escrow_officer_phone', value)}
+            onChange={(e) => handleInputChange('1031_order_escrow_officer_phone', e.target.value)}
             error={formState.errors['1031_order_escrow_officer_phone']}
             placeholder="(555) 123-4567"
           />
@@ -235,7 +235,7 @@ export const TimelineStep: React.FC = () => {
           name="1031_order_escrow_officer_email"
           type="email"
           value={formState.data['1031_order_escrow_officer_email'] || ''}
-          onChange={(value) => handleInputChange('1031_order_escrow_officer_email', value)}
+          onChange={(e) => handleInputChange('1031_order_escrow_officer_email', e.target.value)}
           error={formState.errors['1031_order_escrow_officer_email']}
           placeholder="john@escrow.com"
         />
@@ -274,7 +274,7 @@ export const TimelineStep: React.FC = () => {
               label="Replacement Property Address"
               name="1031_order_replacement_address"
               value={formState.data['1031_order_replacement_address'] || ''}
-              onChange={(value) => handleInputChange('1031_order_replacement_address', value)}
+              onChange={(e) => handleInputChange('1031_order_replacement_address', e.target.value)}
               error={formState.errors['1031_order_replacement_address']}
               placeholder="123 New Property St"
             />
@@ -284,7 +284,7 @@ export const TimelineStep: React.FC = () => {
                 label="City"
                 name="1031_order_replacement_city"
                 value={formState.data['1031_order_replacement_city'] || ''}
-                onChange={(value) => handleInputChange('1031_order_replacement_city', value)}
+                onChange={(e) => handleInputChange('1031_order_replacement_city', e.target.value)}
                 error={formState.errors['1031_order_replacement_city']}
                 placeholder="Los Angeles"
               />
@@ -302,7 +302,7 @@ export const TimelineStep: React.FC = () => {
                 label="ZIP Code"
                 name="1031_order_replacement_zip"
                 value={formState.data['1031_order_replacement_zip'] || ''}
-                onChange={(value) => handleInputChange('1031_order_replacement_zip', value)}
+                onChange={(e) => handleInputChange('1031_order_replacement_zip', e.target.value)}
                 error={formState.errors['1031_order_replacement_zip']}
                 placeholder="90001"
               />
