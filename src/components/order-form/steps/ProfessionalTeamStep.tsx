@@ -29,10 +29,15 @@ export const ProfessionalTeamStep: React.FC = () => {
   const { formState, updateField } = useOrderForm();
   const analytics = useOrderFormAnalytics();
   
-  // Track step start (Step 6)
+  // Track step start (Step 6) and initialize required fields
   useEffect(() => {
     const sessionId = sessionStorage.getItem('1031_order_form_session') || '';
     analytics.trackStepStart(6, sessionId);
+    
+    // Initialize required field if not set
+    if (!formState.data['1031x_order_has_cpa']) {
+      updateField('1031x_order_has_cpa', 'yes');
+    }
   }, [analytics]);
   
   const handleInputChange = (field: keyof typeof formState.data, value: string) => {

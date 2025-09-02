@@ -212,43 +212,6 @@ export const PropertyDetailsStep: React.FC = () => {
         </div>
       </div>
       
-      {/* Property Ownership */}
-      <div className="space-y-4">
-        <h3 className="text-lg font-semibold text-gray-900">Property Ownership</h3>
-        
-        <RadioGroup
-          label="How is title currently held?"
-          name="1031_order_property_title_held"
-          value={formState.data['1031_order_property_title_held'] || ''}
-          onChange={(value) => handleInputChange('1031_order_property_title_held', value)}
-          error={formState.errors['1031_order_property_title_held']}
-          options={[
-            { value: 'individual', label: 'Individual' },
-            { value: 'joint_tenants', label: 'Joint Tenants' },
-            { value: 'tenants_in_common', label: 'Tenants in Common' },
-            { value: 'community_property', label: 'Community Property' },
-            { value: 'llc', label: 'LLC' },
-            { value: 'trust', label: 'Trust' },
-            { value: 'partnership', label: 'Partnership' },
-            { value: 'corporation', label: 'Corporation' },
-            { value: 'other', label: 'Other' }
-          ]}
-        />
-        
-        <Input
-          label="Ownership Percentage"
-          name="1031_order_property_ownership_percentage"
-          type="number"
-          value={formState.data['1031_order_property_ownership_percentage'] || ''}
-          onChange={(e) => handleInputChange('1031_order_property_ownership_percentage', e.target.value)}
-          error={formState.errors['1031_order_property_ownership_percentage']}
-          placeholder="100"
-          min="0"
-          max="100"
-          helpText="Enter percentage (0-100)"
-        />
-      </div>
-      
       {/* Additional Properties */}
       <div className="space-y-4">
         <CheckboxInput

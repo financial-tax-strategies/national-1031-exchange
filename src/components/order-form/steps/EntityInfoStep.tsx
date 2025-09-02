@@ -34,19 +34,57 @@ export const EntityInfoStep: React.FC = () => {
         </p>
       </div>
 
-      {/* Title Held As */}
+      {/* Title Held As - Primary Choice */}
       <RadioGroup
-        label="How is title to the property held?"
+        label="Is the property held by an individual or entity?"
         name="1031x_order_title_held_as_entity"
         value={data['1031x_order_title_held_as_entity'] || 'individual'}
         onChange={(value) => updateField('1031x_order_title_held_as_entity', value)}
         options={[
-          { value: 'individual', label: 'Individual(s)' },
+          { value: 'individual', label: 'Individual(s) or Married Couple' },
           { value: 'entity', label: 'Entity (LLC, Partnership, Corporation, Trust, etc.)' }
         ]}
         error={errors['1031x_order_title_held_as_entity']}
         required
       />
+
+      {/* Specific Ownership Type */}
+      <div className="space-y-4">
+        <RadioGroup
+          label="How is title currently held?"
+          name="1031_order_property_title_held"
+          value={data['1031_order_property_title_held'] || ''}
+          onChange={(value) => updateField('1031_order_property_title_held', value)}
+          error={errors['1031_order_property_title_held']}
+          options={isEntity ? [
+            { value: 'llc', label: 'LLC' },
+            { value: 'trust', label: 'Trust' },
+            { value: 'partnership', label: 'Partnership' },
+            { value: 'corporation', label: 'Corporation' },
+            { value: 'other', label: 'Other Entity Type' }
+          ] : [
+            { value: 'individual', label: 'Individual' },
+            { value: 'joint_tenants', label: 'Joint Tenants' },
+            { value: 'tenants_in_common', label: 'Tenants in Common' },
+            { value: 'community_property', label: 'Community Property' }
+          ]}
+          required
+        />
+        
+        {/* Ownership Percentage */}
+        <Input
+          label="Ownership Percentage"
+          name="1031_order_property_ownership_percentage"
+          type="number"
+          value={data['1031_order_property_ownership_percentage'] || ''}
+          onChange={(e) => updateField('1031_order_property_ownership_percentage', e.target.value)}
+          error={errors['1031_order_property_ownership_percentage']}
+          placeholder="100"
+          min="0"
+          max="100"
+          helperText="Enter your ownership percentage (0-100)"
+        />
+      </div>
 
       {/* Entity Information - Show only if entity is selected */}
       {isEntity && (
@@ -124,35 +162,34 @@ export const EntityInfoStep: React.FC = () => {
         </>
       )}
 
-      {/* SSN for Individuals */}
-      {!isEntity && (
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-          <div className="flex items-start">
-            <svg 
-              className="w-5 h-5 text-blue-600 mr-2 flex-shrink-0 mt-0.5" 
-              fill="none" 
-              stroke="currentColor" 
-              viewBox="0 0 24 24"
-            >
-              <path 
-                strokeLinecap="round" 
-                strokeLinejoin="round" 
-                strokeWidth="2" 
-                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
-            <div>
-              <h4 className="text-sm font-semibold text-blue-900 mb-1">
-                Tax Identification Information
-              </h4>
-              <p className="text-sm text-blue-800">
-                Your Social Security Number (SSN) will be collected securely later in the process 
-                when exchange documents are prepared. It is not required at this time.
-              </p>
-            </div>
+      {/* Tax ID Information Note */}
+      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+        <div className="flex items-start">
+          <svg 
+            className="w-5 h-5 text-blue-600 mr-2 flex-shrink-0 mt-0.5" 
+            fill="none" 
+            stroke="currentColor" 
+            viewBox="0 0 24 24"
+          >
+            <path 
+              strokeLinecap="round" 
+              strokeLinejoin="round" 
+              strokeWidth="2" 
+              d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+          <div>
+            <h4 className="text-sm font-semibold text-blue-900 mb-1">
+              Tax Identification Information
+            </h4>
+            <p className="text-sm text-blue-800">
+              {isEntity 
+                ? "The entity's EIN has been captured above. Additional tax documentation may be required later."
+                : "Your Social Security Number (SSN) will be collected securely later in the process when exchange documents are prepared. It is not required at this time."}
+            </p>
           </div>
         </div>
-      )}
+      </div>
 
       {/* Additional Information */}
       <div className="bg-gray-50 rounded-lg p-4">

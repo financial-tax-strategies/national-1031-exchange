@@ -94,7 +94,11 @@ export const entityInfoBaseSchema = z.object({
   // Individual fields
   '1031_order_entity_type': z.string().optional(),
   '1031_order_entity_name': z.string().optional(),
-  '1031_order_entity_ein': z.string().optional()
+  '1031_order_entity_ein': z.string().optional(),
+  
+  // Ownership fields (moved from PropertyDetailsStep)
+  '1031_order_property_title_held': z.string().optional(),
+  '1031_order_property_ownership_percentage': z.string().optional()
 }).superRefine((data, ctx) => {
   // Only validate entity fields if entity is explicitly selected
   if (data['1031x_order_title_held_as_entity'] === 'entity') {
