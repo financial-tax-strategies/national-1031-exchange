@@ -81,20 +81,20 @@ export const ExchangeGoalsStep: React.FC = () => {
         </label>
         <select
           id="replacement-identified"
-          value={formState.data['1031x_order_replacement_identified'] || ''}
-          onChange={(e) => handleInputChange('1031x_order_replacement_identified', e.target.value)}
+          value={formState.data['1031x_order_replacement_property_identified'] || ''}
+          onChange={(e) => handleInputChange('1031x_order_replacement_property_identified', e.target.value)}
           onFocus={() => {
             const sessionId = sessionStorage.getItem('1031_order_form_session') || '';
-            analytics.trackFieldInteraction('1031x_order_replacement_identified', 'focus', 4, sessionId);
+            analytics.trackFieldInteraction('1031x_order_replacement_property_identified', 'focus', 4, sessionId);
           }}
           className={`
             w-full px-4 py-3 border rounded-lg
             focus:ring-2 focus:ring-blue-500 focus:border-blue-500
             transition-colors duration-200
-            ${formState.errors['1031x_order_replacement_identified'] ? 'border-red-500' : 'border-gray-300'}
+            ${formState.errors['1031x_order_replacement_property_identified'] ? 'border-red-500' : 'border-gray-300'}
           `}
-          aria-describedby={formState.errors['1031x_order_replacement_identified'] ? 'replacement-identified-error' : undefined}
-          aria-invalid={!!formState.errors['1031x_order_replacement_identified']}
+          aria-describedby={formState.errors['1031x_order_replacement_property_identified'] ? 'replacement-identified-error' : undefined}
+          aria-invalid={!!formState.errors['1031x_order_replacement_property_identified']}
         >
           <option value="">Select status...</option>
           {replacementOptions.map(option => (
@@ -102,7 +102,7 @@ export const ExchangeGoalsStep: React.FC = () => {
           ))}
         </select>
         <FieldError 
-          error={formState.errors['1031x_order_replacement_identified']} 
+          error={formState.errors['1031x_order_replacement_property_identified']} 
           fieldId="replacement-identified"
         />
       </div>
@@ -156,20 +156,20 @@ export const ExchangeGoalsStep: React.FC = () => {
         </label>
         <select
           id="cash-out"
-          value={formState.data['1031x_order_cash_out_needed'] || ''}
-          onChange={(e) => handleInputChange('1031x_order_cash_out_needed', e.target.value)}
+          value={formState.data['1031x_order_cash_out_amount'] || ''}
+          onChange={(e) => handleInputChange('1031x_order_cash_out_amount', e.target.value)}
           onFocus={() => {
             const sessionId = sessionStorage.getItem('1031_order_form_session') || '';
-            analytics.trackFieldInteraction('1031x_order_cash_out_needed', 'focus', 4, sessionId);
+            analytics.trackFieldInteraction('1031x_order_cash_out_amount', 'focus', 4, sessionId);
           }}
           className={`
             w-full px-4 py-3 border rounded-lg
             focus:ring-2 focus:ring-blue-500 focus:border-blue-500
             transition-colors duration-200
-            ${formState.errors['1031x_order_cash_out_needed'] ? 'border-red-500' : 'border-gray-300'}
+            ${formState.errors['1031x_order_cash_out_amount'] ? 'border-red-500' : 'border-gray-300'}
           `}
-          aria-describedby={formState.errors['1031x_order_cash_out_needed'] ? 'cash-out-error' : undefined}
-          aria-invalid={!!formState.errors['1031x_order_cash_out_needed']}
+          aria-describedby={formState.errors['1031x_order_cash_out_amount'] ? 'cash-out-error' : undefined}
+          aria-invalid={!!formState.errors['1031x_order_cash_out_amount']}
         >
           <option value="">Select option...</option>
           {cashOutOptions.map(option => (
@@ -177,7 +177,7 @@ export const ExchangeGoalsStep: React.FC = () => {
           ))}
         </select>
         <FieldError 
-          error={formState.errors['1031x_order_cash_out_needed']} 
+          error={formState.errors['1031x_order_cash_out_amount']} 
           fieldId="cash-out"
         />
         <p className="mt-1 text-sm text-gray-500">
