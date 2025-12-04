@@ -1,0 +1,27 @@
+# Auto-add workflow-labeled issues to Solopreneur Active Work project
+# Add this file to: .github/workflows/add-to-project.yml in each repo
+#
+# SETUP REQUIRED:
+# 1. Create a PAT at https://github.com/settings/tokens with scope: project
+# 2. Add as org/user secret named ADD_TO_PROJECT_PAT
+#    - For user repos: https://github.com/settings/secrets/actions
+#    - For org repos: https://github.com/organizations/infinitewealthbuilder/settings/secrets/actions
+
+name: Add to Solopreneur Project
+
+on:
+  issues:
+    types: [labeled]
+
+jobs:
+  add-to-project:
+    runs-on: ubuntu-latest
+    # Only run if the label is a workflow label
+    if: contains(fromJson('["🔬 research", "📋 planning", "🔨 building", "⏸️ blocked"]'), github.event.label.name)
+
+    steps:
+      - name: Add issue to project
+        uses: actions/add-to-project@v1.0.2
+        with:
+          project-url: https://github.com/users/matthewdnye/projects/1
+          github-token: ${{ secrets.ADD_TO_PROJECT_PAT }}
