@@ -57,7 +57,7 @@ export default function HighLevelConfigComponent() {
         location_id: locationId,
         calendar_id: calendarId,
         webhook_secret: webhookSecret,
-        webhook_url: `${window.location.origin}/.netlify/functions/highlevel-webhook`,
+        webhook_url: `${window.location.origin}/api/webhooks/highlevel`,
         timezone: 'America/New_York',
         is_active: isActive
       };
@@ -220,7 +220,7 @@ export default function HighLevelConfigComponent() {
           Add this URL to your HighLevel webhooks:
         </p>
         <code className="block bg-white px-3 py-2 rounded border border-yellow-300 text-xs break-all">
-          {window.location.origin}/.netlify/functions/highlevel-webhook
+          {window.location.origin}/api/webhooks/highlevel
         </code>
       </div>
       

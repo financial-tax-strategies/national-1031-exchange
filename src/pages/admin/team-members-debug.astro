@@ -759,7 +759,7 @@ if (isSupabaseAdminConfigured() && isAuthenticated) {
     
     try {
       const isUpdate = !!data.id;
-      const url = isUpdate ? '/.netlify/functions/team-members-update' : '/api/team-members';
+      const url = '/api/team-members';
       const method = isUpdate ? 'PATCH' : 'POST';
       
       console.log(`[DEBUG] Sending ${method} to ${url}`);
@@ -863,7 +863,7 @@ if (isSupabaseAdminConfigured() && isAuthenticated) {
         try {
           console.log('[DEBUG] Toggling status for:', { id, is_active: !isActive });
           
-          const response = await fetch('/.netlify/functions/team-members-update', {
+          const response = await fetch('/api/team-members', {
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ id, is_active: !isActive })

@@ -1,50 +1,96 @@
-# CLAUDE.md - Project Knowledge Base
+# Claude Code Guidelines for National 1031 Exchange Website
 
-This file contains important solutions and project-specific knowledge for Claude Code sessions.
+## Project Overview
 
-## Team Admin Interface - SSR Solution
+**What**: Marketing website for The 1031 Center (national-1031-exchange.com)
+**Stack**: Astro 5, React 19 (islands), TypeScript, Tailwind CSS 4, Supabase, Vercel SSR
+**Rendering**: Server-Side Rendering (SSR) via Vercel adapter
 
-**Problem**: Team member updates in the admin interface were saving successfully to the database but not showing immediately. The updates would only appear after a site rebuild.
-
-**Root Cause**: The site was using Astro's Static Site Generation (SSG) mode by default, which pre-builds all pages at deploy time. Database updates wouldn't be reflected until the next build.
-
-**Solution**: Convert to Server-Side Rendering (SSR) to render pages dynamically on each request.
-
-### Implementation Steps:
-
-1. Install Netlify adapter:
-
-   ```bash
-   npm install @astrojs/netlify
-   ```
-
-2. Update `astro.config.mjs`:
-
-   ```javascript
-   import netlify from '@astrojs/netlify';
-
-   export default defineConfig({
-     site: 'https://the1031center.com',
-     output: 'server', // Enable SSR
-     adapter: netlify(), // Use Netlify adapter
-     // ... rest of config
-   });
-   ```
-
-3. Build and deploy - Netlify will automatically detect SSR and set up edge functions.
-
-**Status**: Implemented and merged in PR #47. The live site now renders pages dynamically, so team member updates appear immediately.
-
-## Lint and Type Check Commands
-
-When making code changes, run these commands before marking tasks complete:
+## Quick Commands
 
 ```bash
-# Run linting
-npm run lint
+# Development
+npm run dev              # Start Astro dev server
+npm run build            # Production build
+npm run preview          # Preview production build
 
-# Run type checking
-npm run typecheck
+# Quality checks (run before completing any task)
+npm run typecheck        # TypeScript validation
+npm run lint             # ESLint (auto-fix)
+
+# Testing
+npm run test             # Vitest watch mode
+npm run test:ci          # CI mode with coverage
+npm run test:ui          # Vitest UI
 ```
 
-If these commands are not found, ask the user for the correct commands and update this file.
+## Architecture
+
+### SSR Configuration
+The site uses SSR (not static generation) for dynamic content:
+
+```javascript
+// astro.config.mjs
+output: 'server'
+adapter: vercel()
+```
+
+**Why SSR**: Database updates (like team member changes) appear immediately without rebuild.
+
+### React Islands
+Use React components for interactive UI within Astro pages:
+```astro
+---
+import MyComponent from '../components/MyComponent';
+---
+<MyComponent client:load />
+```
+
+## Key Files
+
+| File | Purpose |
+|------|---------|
+| `astro.config.mjs` | Astro + Vercel SSR configuration |
+| `src/pages/` | File-based routing |
+| `src/components/` | Astro + React components |
+| `src/layouts/` | Page layouts |
+
+## Before Completing Any Task
+
+```bash
+npm run typecheck    # Must pass
+npm run lint         # Must pass
+npm run build        # Must succeed
+```
+
+## Known Solutions
+
+### Team Admin Interface - SSR Fix
+**Problem**: Team member updates weren't showing until site rebuild.
+**Solution**: Converted to SSR mode (see `astro.config.mjs`).
+**PR**: #47
+
+## Supabase Integration
+
+```typescript
+import { createClient } from '@supabase/supabase-js';
+
+const supabase = createClient(
+  import.meta.env.PUBLIC_SUPABASE_URL,
+  import.meta.env.PUBLIC_SUPABASE_ANON_KEY
+);
+```
+
+## Deployment
+
+- **Platform**: Vercel
+- **SSR**: Vercel Serverless Functions (auto-configured by adapter)
+- **Preview Deploys**: PR previews via Vercel Git integration
+
+## ⚠️ Critical Notes
+
+- **SSR mode** - Pages render on each request, not at build time
+- **Astro 5** - Uses latest content collections and features
+- **Tailwind CSS 4** - New syntax (use `@import "tailwindcss"`)
+- **React 19** - Latest React with islands architecture
+- **Node 20+** - Required by engine specification

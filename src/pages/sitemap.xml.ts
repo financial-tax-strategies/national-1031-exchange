@@ -7,7 +7,7 @@ export async function GET() {
     '/admin',
     '/thank-you',
     '/404',
-    '/_netlify',
+    '/_vercel',
     '/api',
     '/login',
     '/admin/login',

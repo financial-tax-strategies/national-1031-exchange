@@ -37,7 +37,7 @@ import AdminLayout from '../../layouts/AdminLayout.astro';
       
       <div class="mt-6 bg-yellow-50 border border-yellow-200 rounded-lg p-4">
         <p class="text-sm text-yellow-800">
-          This test page directly calls the Netlify Function and shows detailed results.
+          This test page directly calls the API route and shows detailed results.
           Check the browser console for additional logging.
         </p>
       </div>
@@ -78,7 +78,7 @@ import AdminLayout from '../../layouts/AdminLayout.astro';
     
     // Test the update
     try {
-      log('Sending PATCH request to Netlify Function...');
+      log('Sending PATCH request to API route...');
       
       const updateData = {
         id: ruthId,
@@ -87,7 +87,7 @@ import AdminLayout from '../../layouts/AdminLayout.astro';
       
       log(`Request body: ${JSON.stringify(updateData, null, 2)}`);
       
-      const response = await fetch('/.netlify/functions/team-members-update', {
+      const response = await fetch('/api/team-members', {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',

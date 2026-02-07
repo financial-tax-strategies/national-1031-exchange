@@ -48,18 +48,6 @@ export default function HighLevelContactForm() {
         }
       });
 
-      // Submit to Netlify Forms for backup
-      const netlifyFormData = new FormData();
-      netlifyFormData.append('form-name', 'contact');
-      Object.entries(formData).forEach(([key, value]) => {
-        netlifyFormData.append(key, value);
-      });
-
-      await fetch('/', {
-        method: 'POST',
-        body: netlifyFormData
-      });
-
       // Redirect to thank you page
       window.location.href = '/thank-you';
     } catch (err) {

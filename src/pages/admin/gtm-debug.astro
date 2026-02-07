@@ -8,8 +8,8 @@ const debugInfo = {
   isProduction: import.meta.env.PROD,
   isDevelopment: import.meta.env.DEV,
   nodeEnv: process.env.NODE_ENV || 'NOT SET',
-  netlifyContext: process.env.CONTEXT || 'NOT SET',
-  isNetlify: process.env.NETLIFY || 'NOT SET',
+  vercelEnv: process.env.VERCEL_ENV || 'NOT SET',
+  isVercel: process.env.VERCEL || 'NOT SET',
   hostname: typeof window !== 'undefined' ? window.location.hostname : 'SERVER SIDE',
   publicGtmId: import.meta.env.PUBLIC_GTM_ID || 'NOT SET',
   publicEnableGtmDev: import.meta.env.PUBLIC_ENABLE_GTM_DEV || 'NOT SET',
@@ -76,15 +76,15 @@ const shouldLoadGTM = hasValidGTM && (debugInfo.isProduction || enableGTMInDev);
           </div>
           
           <div>
-            <strong>Netlify CONTEXT:</strong>
-            <span class={`ml-2 font-mono ${debugInfo.netlifyContext === 'production' ? 'text-green-600' : ''}`}>
-              {debugInfo.netlifyContext}
+            <strong>Vercel ENV:</strong>
+            <span class={`ml-2 font-mono ${debugInfo.vercelEnv === 'production' ? 'text-green-600' : ''}`}>
+              {debugInfo.vercelEnv}
             </span>
           </div>
-          
+
           <div>
-            <strong>Is Netlify:</strong>
-            <span class="ml-2 font-mono">{debugInfo.isNetlify}</span>
+            <strong>Is Vercel:</strong>
+            <span class="ml-2 font-mono">{debugInfo.isVercel}</span>
           </div>
           
           <div>
@@ -178,10 +178,10 @@ const shouldLoadGTM = hasValidGTM && (debugInfo.isProduction || enableGTMInDev);
           </a>
           
           <div class="mt-4">
-            <strong>To Fix on Netlify:</strong>
+            <strong>To Fix on Vercel:</strong>
             <ol class="list-decimal list-inside mt-2 space-y-1">
               <li>Ensure GTM ID is saved in database via /admin/seo-analytics</li>
-              <li>OR add PUBLIC_GTM_ID environment variable in Netlify settings</li>
+              <li>OR add PUBLIC_GTM_ID environment variable in Vercel project settings</li>
               <li>Redeploy after adding environment variables</li>
             </ol>
           </div>

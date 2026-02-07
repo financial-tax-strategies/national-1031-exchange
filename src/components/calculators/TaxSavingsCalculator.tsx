@@ -100,10 +100,10 @@ export const TaxSavingsCalculator: React.FC<CalculatorProps> = ({ onLeadCapture 
         }
       }
       
-      // Send lead data to Netlify Function
+      // Send lead data to API
       if (result) {
         try {
-          const response = await fetch('/.netlify/functions/capture-lead', {
+          const response = await fetch('/api/capture-lead', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
